@@ -1,0 +1,2949 @@
+{
+  "people": [
+    {
+      "id": "human.musk",
+      "type": "human",
+      "title": "Elon Musk",
+      "aliases": [
+        "Musk"
+      ],
+      "tier": "C",
+      "domain": "Aerospace / EV / AI / Orbital",
+      "bets": [
+        {
+          "yr": 1995,
+          "stake": {
+            "capital": "Dropped Stanford PhD in 2 days",
+            "time": "2yr",
+            "reputation": "unknown grad student",
+            "control": "full"
+          },
+          "consensus_delta": "Zip2 was a web-directory for newspapers; web advertising unproven",
+          "enabler": "Web adoption curve; browser penetration crossing inflection",
+          "thesis": "Local business directories would migrate online before incumbents reacted",
+          "outcome": "Sold to Compaq Feb 1999 ~$307M; take ~$22M",
+          "survival_mechanism": "Fast product-market feedback; pre-dotcom bubble timing",
+          "anatomy": null
+        },
+        {
+          "yr": 1999,
+          "stake": {
+            "capital": "~$12M of $22M Zip2 proceeds",
+            "time": "3yr",
+            "reputation": "dot-com millionaire",
+            "control": "lost"
+          },
+          "consensus_delta": "Digital payments required banks; no startup could build financial rails",
+          "enabler": "Web + credit card penetration + PayPal's Confinity merger path",
+          "thesis": "Online banking could be rebuilt from first principles",
+          "outcome": "X.com merged with Confinity → PayPal → eBay Oct 2002 $1.5B; take ~$170-180M; control lost to board",
+          "survival_mechanism": "Merger with Confinity (which had the Beaming distribution advantage)",
+          "anatomy": null
+        },
+        {
+          "yr": 2002,
+          "stake": {
+            "capital": "~$100M into SpaceX + ~$70M into Tesla + ~$10M SolarCity (~all PayPal proceeds)",
+            "time": "indefinite",
+            "reputation": "2x dot-com winner",
+            "control": "kept"
+          },
+          "consensus_delta": "Post-dotcom: rockets were billionaire-vanity graveyard (Beal, Kistler, Rotary dead). EVs a 90-year failure category.",
+          "enabler": "Commodity avionics/COTS electronics collapsing aerospace cost floors; Li-ion cost curve (laptop cells) crossing automotive viability",
+          "thesis": "Commodity electronics could undercut aerospace cost structures; Li-ion could cross automotive viability",
+          "outcome": "The defining bet. Both companies near-death simultaneously in 2008. Falcon 1's 4th launch succeeds Sep 28 2008 with money for ~1 more attempt. NASA CRS $1.6B Dec 23 2008. Tesla financing closes Christmas Eve 2008.",
+          "survival_mechanism": "Government as first customer. Controlled inside rounds at the bottom (anti-Jobs). Sequencing: survival before scale.",
+          "anatomy": {
+            "stake": 5,
+            "asymmetry": 5,
+            "consensus": 5,
+            "timing": 4,
+            "control": 5,
+            "survival": 4
+          }
+        }
+      ],
+      "chain": [
+        "PayPal ~$170M → survived 2008 by weeks (both SpaceX + Tesla) → Falcon 9/Dragon commercial viability",
+        "Reusability demonstrated 2015-17 → launch cost near-monopoly",
+        "Launch cost monopoly → Starlink vertical demand (SpaceX as own biggest customer)",
+        "Starlink cash machine → funds Starship development",
+        "Starship + orbital ambition → xAI founded 2023",
+        "Feb 2026: SpaceX absorbs xAI at $1.25T combined, share exchange 0.1433 — largest merger by valuation in history",
+        "IPO filed May 20 2026 at $1.75T target, ~$50B+ raise, June 2026 debut"
+      ],
+      "current_state": {
+        "vintage": "2026-06",
+        "facts": [
+          "SpaceX 2025 revenue ~$16B; xAI burned ~$9.5B in 9mo 2025",
+          "IPO targets $1.75T (~90-110× sales) — Scottish Mortgage marks $1.25T",
+          "Starlink ARPU declining: $99 (2023) → $66 (Q1 2026)",
+          "FCC filing: 1M-satellite 'orbital compute' thesis",
+          "Falcon 9 booster recovery at >90% success rate; Starship orbital test programs ongoing"
+        ]
+      },
+      "future_paths": [
+        {
+          "path": "Starship full reuse achieved → $/kg collapse → orbital-industry window opens",
+          "p": 0.5,
+          "horizon": "2029",
+          "falsifier": "No reflown Starship at commercial cadence by end 2028"
+        },
+        {
+          "path": "IPO marks the cycle top the way Lucent did in 1999",
+          "p": 0.35,
+          "horizon": "2028",
+          "falsifier": "SpaceX 2027 revenue >$30B with positive FCF"
+        },
+        {
+          "path": "Orbital compute becomes economically viable",
+          "p": 0.15,
+          "horizon": "2032",
+          "falsifier": "Thermal/launch-cost math published and failing at claimed economics"
+        }
+      ],
+      "dead_bodies": [
+        {
+          "name": "Beal Aerospace",
+          "why": "Andrew Beal's $200M private rocket program; shut down 2000, cited government competition"
+        },
+        {
+          "name": "Kistler Aerospace",
+          "why": "Reusable rocket company; filed bankruptcy twice 2003 and 2006; NASA contract revoked"
+        },
+        {
+          "name": "Rotary Rocket",
+          "why": "Roton reusable rocket; never flew orbital; shut down 2001"
+        },
+        {
+          "name": "Lucent Technologies (IPO cycle analogy)",
+          "why": "1996 IPO at peak of telecom capex cycle; 2001 stock -95%; vendor-financing inflated apparent revenue before the writedown"
+        }
+      ],
+      "lessons": [
+        "Stake totality + control retention + government-as-first-customer is the repeatable structure",
+        "The 2008 weeks-from-zero moment is the honest base-rate reminder: survivorship is not inevitable",
+        "Two simultaneous near-death bets: the structure required both to survive (correlated downside was the actual bet)",
+        "Insider rounds at the bottom (anti-Jobs) kept control through the valley — this is the structural move others miss"
+      ],
+      "body": "PayPal ~$170M → survived 2008 by weeks (both SpaceX + Tesla) → Falcon 9/Dragon commercial viability\nReusability demonstrated 2015-17 → launch cost near-monopoly\nLaunch cost monopoly → Starlink vertical demand (SpaceX as own biggest customer)\nStarlink cash machine → funds Starship development\nStarship + orbital ambition → xAI founded 2023\nFeb 2026: SpaceX absorbs xAI at $1.25T combined, share exchange 0.1433 — largest merger by valuation in history\nIPO filed May 20 2026 at $1.75T target, ~$50B+ raise, June 2026 debut",
+      "as_of": "2026-06-01",
+      "half_life_days": 365,
+      "signals": [
+        {
+          "label": "Starship integrated flight test schedule",
+          "url": "https://www.spacex.com/vehicles/starship/",
+          "cadence_days": 30,
+          "last_checked": "2026-05-01",
+          "log": [
+            {
+              "date": "2026-05-01",
+              "note": "IFT-8 completed March 2026; full orbit achieved; payload fairing recovery testing ongoing"
+            }
+          ]
+        },
+        {
+          "label": "xAI / Grok model releases + Colossus cluster news",
+          "url": "https://x.ai",
+          "cadence_days": 14,
+          "last_checked": "2026-05-20",
+          "log": [
+            {
+              "date": "2026-05-20",
+              "note": "Grok 3.5 released, 1M context; Colossus Memphis Phase 2 (200k H100) online per Musk tweet"
+            }
+          ]
+        }
+      ],
+      "links": [
+        {
+          "to": "tree.spacex-xai-merger",
+          "rel": "context"
+        },
+        {
+          "to": "tree.spacex-ipo",
+          "rel": "context"
+        },
+        {
+          "to": "tree.orbital-compute",
+          "rel": "context"
+        },
+        {
+          "to": "window.orbital-compute",
+          "rel": "context"
+        }
+      ],
+      "cf": "hi",
+      "review_after_months": 6
+    },
+    {
+      "id": "human.jobs",
+      "type": "human",
+      "title": "Steve Jobs",
+      "aliases": [
+        "Jobs"
+      ],
+      "tier": "P",
+      "domain": "Consumer computing / Mobile / Distribution",
+      "bets": [
+        {
+          "yr": 1976,
+          "stake": {
+            "capital": "$1,300 (calculator sale + Wozniak's HP shares)",
+            "time": "full commitment",
+            "reputation": "dropout visionary",
+            "control": "lost 1985"
+          },
+          "consensus_delta": "Personal computers were hobbyist toys; IBM owned enterprise, nobody owned consumer",
+          "enabler": "Microprocessor cost curve crossing consumer affordability; Wozniak's engineering",
+          "thesis": "Personal computer as consumer appliance, not just business tool",
+          "outcome": "Apple to ~$1B revenue by 1982. Jobs ousted by board and Sculley May 1985 — the canonical control-loss story.",
+          "survival_mechanism": "Wozniak's technical excellence; venture backing from Markkula",
+          "anatomy": null
+        },
+        {
+          "yr": 1985,
+          "stake": {
+            "capital": "~$10M into NeXT; ~$10M for Lucasfilm's Computer Graphics group (became Pixar)",
+            "time": "10yr exile",
+            "reputation": "fired founder",
+            "control": "maintained in new ventures"
+          },
+          "consensus_delta": "Jobs was a difficult person who failed at Apple; NeXT was dismissed as overpriced Unix",
+          "enabler": "CGI crossing practical film production threshold; Disney's appetite for animated features",
+          "thesis": "NeXT: premium workstation + OS. Pixar: CGI film production at commercial quality",
+          "outcome": "Pixar Disney contract; Toy Story Nov 1995 IPO makes Jobs ~billionaire. Disney acquires Pixar $7.4B (2006). NeXT acquired by Apple $429M (1997).",
+          "survival_mechanism": "Pixar's Disney contract; Toy Story production revenue paid the bills while NeXT failed commercially",
+          "anatomy": null
+        },
+        {
+          "yr": 1997,
+          "stake": {
+            "capital": "NeXT acquisition; his reputation",
+            "time": "until death",
+            "reputation": "returning founder",
+            "control": "regained"
+          },
+          "consensus_delta": "Apple was dying; the right move was selling to Sun or licensing Mac OS",
+          "enabler": "NeXT's OS (became macOS); design sensibility that had compounded through exile; iMac as beachhead",
+          "thesis": "Product simplicity + vertical integration = sustainable premium pricing; eliminate SKUs ruthlessly",
+          "outcome": "Apple from near-bankruptcy to ~$350B market cap at Jobs' death 2011. iPhone (2007) deliberately cannibalized the iPod (the profit engine) — consensus thought him mad.",
+          "survival_mechanism": "Microsoft's $150M investment (Aug 1997) bought 12 months; iMac 1998 break-even; iPod 2001 cash generation",
+          "anatomy": {
+            "stake": 4,
+            "asymmetry": 5,
+            "consensus": 4,
+            "timing": 5,
+            "control": 4,
+            "survival": 3
+          }
+        }
+      ],
+      "chain": [
+        "Apple I/II market validation → personal computer category created",
+        "Ousted 1985 → NeXT (failed commercially) + Pixar (succeeded) → exile as forced diversification",
+        "Returned with NeXT OS (became macOS) → product simplicity doctrine applied",
+        "iMac (1998) → iPod (2001) → iTunes Store (2003) → locked distribution",
+        "Deliberate iPod cannibalization (2007, iPhone) → capacitive touch + ARM mobile compute + flash storage crossing viability",
+        "App Store 2008 (initially resisted internally) → platform rents at 30%",
+        "Vertical integration at every layer → premium pricing sustained post-commoditization"
+      ],
+      "current_state": {
+        "vintage": "2026-06",
+        "facts": [
+          "Jobs died Oct 5, 2011. Legacy analysis only.",
+          "Apple market cap ~$3.3T (Jun 2026) — the platform rents compound",
+          "iPhone revenue still ~50% of Apple; App Store ~$100B gross 2025"
+        ]
+      },
+      "future_paths": [
+        {
+          "path": "Apple sustains platform rent via regulatory capture until antitrust breaks App Store",
+          "p": 0.45,
+          "horizon": "2030",
+          "falsifier": "EU/DOJ forces meaningful sideloading adoption >20% of installs"
+        },
+        {
+          "path": "Apple loses mobile generation to next hardware paradigm (AR/spatial)",
+          "p": 0.3,
+          "horizon": "2030",
+          "falsifier": "Apple Vision Pro or successor reaches 50M units/yr"
+        }
+      ],
+      "dead_bodies": [
+        {
+          "name": "General Magic",
+          "why": "The iPhone thesis 15 years early (1990-1996) — right idea (pocket communicator), wrong enabler timing (cellular + battery not ready); dead 1996"
+        },
+        {
+          "name": "Palm",
+          "why": "Smartphone lead squandered; failed to transition to touchscreen era; acquired by HP 2010, shut down"
+        },
+        {
+          "name": "Nokia",
+          "why": "Smartphone lead lost; Symbian bet while touchscreen crossed; acquired by MSFT 2013"
+        },
+        {
+          "name": "Blackberry",
+          "why": "Enterprise keyboard-phone moat didn't survive consumer-first touchscreen shift"
+        }
+      ],
+      "lessons": [
+        "Being early = being wrong; General Magic had the Jobs thesis 15yr early and died",
+        "Cannibalize yourself before others do — deliberately killed iPod with iPhone",
+        "Exile creates optionality: NeXT failed but its OS became macOS; Pixar funded the return",
+        "Control lost is devastating; regained only if the returning asset (NeXT OS) has genuine leverage"
+      ],
+      "body": "Apple I/II market validation → personal computer category created\nOusted 1985 → NeXT (failed commercially) + Pixar (succeeded) → exile as forced diversification\nReturned with NeXT OS (became macOS) → product simplicity doctrine applied\niMac (1998) → iPod (2001) → iTunes Store (2003) → locked distribution\nDeliberate iPod cannibalization (2007, iPhone) → capacitive touch + ARM mobile compute + flash storage crossing viability\nApp Store 2008 (initially resisted internally) → platform rents at 30%\nVertical integration at every layer → premium pricing sustained post-commoditization",
+      "as_of": "2026-06-01",
+      "half_life_days": 180,
+      "signals": [],
+      "links": [
+        {
+          "to": "tree.corp",
+          "rel": "context"
+        }
+      ],
+      "cf": "hi",
+      "review_after_months": 6
+    },
+    {
+      "id": "human.ellison",
+      "type": "human",
+      "title": "Larry Ellison",
+      "aliases": [
+        "Ellison"
+      ],
+      "tier": "C",
+      "domain": "Enterprise database / Cloud infrastructure",
+      "bets": [
+        {
+          "yr": 1977,
+          "stake": {
+            "capital": "~$2,000 personal savings",
+            "time": "career",
+            "reputation": "IBM contractor",
+            "control": "full"
+          },
+          "consensus_delta": "Relational model = academic toy, too slow for real hardware. IBM had the research but wasn't commercializing it.",
+          "enabler": "CPU/memory cost curves making the 'inefficient' elegant relational model viable — bet on hardware curves rescuing software theory",
+          "thesis": "Commercialize IBM's own Codd (1970) relational-model research faster than IBM could",
+          "outcome": "First commercial SQL RDBMS (1979) before IBM. Oracle grows to dominant enterprise database vendor.",
+          "survival_mechanism": "B2B lock-in via switching costs + maintenance revenue annuity; aggressive sales culture",
+          "anatomy": {
+            "stake": 4,
+            "asymmetry": 5,
+            "consensus": 5,
+            "timing": 5,
+            "control": 5,
+            "survival": 3
+          }
+        },
+        {
+          "yr": 1990,
+          "stake": {
+            "capital": "company survival",
+            "time": "3yr",
+            "reputation": "near-zero",
+            "control": "maintained through crisis"
+          },
+          "consensus_delta": "Oracle was dead after the 1990 accounting blowup (stock -80%)",
+          "enabler": "Existing customer lock-in as moat; switching costs prevented churn despite the crisis",
+          "thesis": "Maintenance-revenue annuity would survive the crisis; product still best in class",
+          "outcome": "Oracle survived; rebuilt. Moat: the switching costs meant customers couldn't leave even through the scandal.",
+          "survival_mechanism": "Maintenance revenue annuity; customers too locked in to switch",
+          "anatomy": null
+        },
+        {
+          "yr": 2025,
+          "stake": {
+            "capital": "Oracle balance sheet; Ellison personal credibility",
+            "time": "5+yr",
+            "reputation": "legacy enterprise CEO pivoting late",
+            "control": "maintained"
+          },
+          "consensus_delta": "Oracle too old/slow to compete in cloud-native AI era; AWS/Azure/GCP had won",
+          "enabler": "AI capex wave creates demand for any credible large-scale training infrastructure; Oracle's datacenters + networking + contracts",
+          "thesis": "Oracle Cloud Infrastructure could capture AI training workloads that AWS/Azure were too expensive or constrained to serve",
+          "outcome": "OpenAI mega-backlog RPO ~$455B (disclosed Sep 2025); stock +~36% in a day; Ellison briefly world's richest. OCI capex ~86% of revenue. Stargate participation. [cf:md — verify RPO number]",
+          "survival_mechanism": "Existing balance sheet; 40yr enterprise relationships provided Stargate credibility",
+          "anatomy": null
+        }
+      ],
+      "chain": [
+        "Read Codd's 1970 paper → built commercial SQL DB before IBM could (1979)",
+        "First-mover + switching costs → maintenance annuity → 40yr compound",
+        "1990 near-death → survived via lock-in moat → rebuilt",
+        "2025: AI capex wave → OCI as training infrastructure → OpenAI contract → $455B RPO",
+        "OCI capex 86% of revenue → vendor financing structure (flag)"
+      ],
+      "current_state": {
+        "vintage": "2026-06",
+        "facts": [
+          "Oracle market cap ~$350B (Jun 2026)",
+          "OCI capex ~86% of revenue — vendor-financing-era structure",
+          "OpenAI RPO ~$455B (Sep 2025 disclosure) — largest non-Microsoft AI commitment",
+          "Stargate project participation alongside MSFT, NVIDIA",
+          "cf:md on RPO figure — verify against Oracle IR"
+        ]
+      },
+      "future_paths": [
+        {
+          "path": "OCI AI infrastructure revenue grows into the $455B backlog over 5yr",
+          "p": 0.5,
+          "horizon": "2030",
+          "falsifier": "OpenAI RPO revisions downward >30% in next 2 earnings"
+        },
+        {
+          "path": "Oracle's vendor-financing structure produces Lucent-style write-downs",
+          "p": 0.35,
+          "horizon": "2028",
+          "falsifier": "FCF positive on OCI segment by 2027"
+        }
+      ],
+      "dead_bodies": [
+        {
+          "name": "Ingres",
+          "why": "Better relational technology in the 1980s; Oracle's aggressive sales culture beat better engineering"
+        },
+        {
+          "name": "dBase / Ashton-Tate",
+          "why": "Desktop database king; failed to make enterprise transition; acquired by Borland 1991, dissolved"
+        },
+        {
+          "name": "Informix",
+          "why": "Database competitor; acquired by IBM 2001 after losing the enterprise DB war to Oracle"
+        }
+      ],
+      "lessons": [
+        "Commercialize the incumbent's own research faster than the incumbent can; IBM handed Oracle its roadmap",
+        "Bet on cost curves, not current benchmarks — the relational model was 'too slow' until it wasn't",
+        "Switching costs are the rent; once established, maintain them through crises (1990 shows this)",
+        "40-year maintenance annuities are the most durable business model in enterprise software"
+      ],
+      "body": "Read Codd's 1970 paper → built commercial SQL DB before IBM could (1979)\nFirst-mover + switching costs → maintenance annuity → 40yr compound\n1990 near-death → survived via lock-in moat → rebuilt\n2025: AI capex wave → OCI as training infrastructure → OpenAI contract → $455B RPO\nOCI capex 86% of revenue → vendor financing structure (flag)",
+      "as_of": "2026-06-01",
+      "half_life_days": 365,
+      "signals": [],
+      "links": [
+        {
+          "to": "tree.capex",
+          "rel": "context"
+        },
+        {
+          "to": "tree.loops",
+          "rel": "context"
+        }
+      ],
+      "cf": "md",
+      "review_after_months": 6
+    },
+    {
+      "id": "human.huang",
+      "type": "human",
+      "title": "Jensen Huang",
+      "aliases": [
+        "Huang"
+      ],
+      "tier": "C",
+      "domain": "Semiconductors / GPU / AI infrastructure",
+      "bets": [
+        {
+          "yr": 1993,
+          "stake": {
+            "capital": "$2M seed",
+            "time": "career",
+            "reputation": "unknown immigrant engineer",
+            "control": "full"
+          },
+          "consensus_delta": "3D graphics was a niche; no one would buy a graphics chip from a startup with no semiconductor experience",
+          "enabler": "Nintendo/Sega 3D gaming boom incoming; polygon-based 3D crossing viability",
+          "thesis": "3D graphics would mass-market; build a dedicated chip architecture for it",
+          "outcome": "NV1 failure (1995-96) nearly killed the company; NV3/RIVA 128 (1997) saved it; GeForce 256 (1999) established dominance",
+          "survival_mechanism": "Pivoted architecture after NV1; deal with SEGA for Saturn/Dreamcast kept cash flowing",
+          "anatomy": null
+        },
+        {
+          "yr": 2006,
+          "stake": {
+            "capital": "Years of GPU profit margin; NVIDIA's goodwill with shareholders",
+            "time": "8yr (2006-2014)",
+            "reputation": "gaming chip CEO",
+            "control": "full"
+          },
+          "consensus_delta": "General-purpose GPU computing had no market; scientists would just use CPUs; no one would learn CUDA",
+          "enabler": "Dennard scaling ended (2005-07); parallel compute becoming the only path; neural net research beginning",
+          "thesis": "Invest years of GPU margin into a general-purpose programming layer before any market demanded it — CUDA",
+          "outcome": "CUDA (2007) + decade of academic/research adoption with zero consumer demand. When AlexNet (2012) hit, CUDA was the only ergonomic path. 15yr moat established.",
+          "survival_mechanism": "Gaming division profitability funded the CUDA decade; hardware sold even without CUDA adoption",
+          "anatomy": {
+            "stake": 4,
+            "asymmetry": 5,
+            "consensus": 5,
+            "timing": 5,
+            "control": 5,
+            "survival": 3
+          }
+        }
+      ],
+      "chain": [
+        "Gaming subsidized GPU hardware (1993-2006) — see tree node",
+        "CUDA (2007): years of margin sacrifice building general-purpose layer with no market demand",
+        "AlexNet (2012): neural nets need parallel compute → CUDA was the ONLY ergonomic option",
+        "CUDA moat established: 15+ yr of code targets it; switching is a career-ending migration",
+        "Transformer (2017) + scaling era: NVIDIA GPUs capture all AI training workloads",
+        "H100 (2022): $30k ASP; NVDA market cap ~$5T by Jun 2026"
+      ],
+      "current_state": {
+        "vintage": "2026-06",
+        "facts": [
+          "NVIDIA market cap ~$5.0T (Jun 2026) — highest in history",
+          "H200/B100/B200 roadmap; GB200 Grace Blackwell NVL72 for rack-scale",
+          "DeepSeek shock (Jan 2025) demonstrated efficiency can substitute compute — NVDA -17% in one day",
+          "Export controls limit China sales but China substitution (Huawei Ascend) advancing",
+          "HBM as next binding constraint; SK Hynix/Micron supply allocation critical"
+        ]
+      },
+      "future_paths": [
+        {
+          "path": "NVIDIA maintains GPU dominance through next architecture transition (wafer-scale / photonics)",
+          "p": 0.55,
+          "horizon": "2030",
+          "falsifier": "Google TPU or AMD MI series captures >20% AI training market share"
+        },
+        {
+          "path": "CUDA moat erodes via new programming paradigms (OpenAI Triton / JAX / custom silicon)",
+          "p": 0.3,
+          "horizon": "2030",
+          "falsifier": "Major lab ships frontier model trained without CUDA"
+        }
+      ],
+      "dead_bodies": [
+        {
+          "name": "3dfx Interactive",
+          "why": "First mover in consumer 3D graphics; acquired by NVIDIA 2000 after losing performance war"
+        },
+        {
+          "name": "Silicon Graphics (SGI)",
+          "why": "Workstation 3D graphics leader; failed to transition to commodity GPUs; bankrupt 2009"
+        },
+        {
+          "name": "~80+ GPU startups of the 1990s",
+          "why": "Market too small and competitive before the mass-market gaming trigger arrived"
+        }
+      ],
+      "lessons": [
+        "Invest margin into platform infrastructure years before any market demands it — CUDA is the definitive example",
+        "The best capital allocation decision in the era: no one demanded CUDA for 8 years",
+        "Hardware moats compound when the programming model captures the developer base; changing the stack requires rewriting the entire ecosystem",
+        "Consumer market (gaming) can fund the capex for entirely different end-markets (AI training)"
+      ],
+      "body": "Gaming subsidized GPU hardware (1993-2006) — see tree node\nCUDA (2007): years of margin sacrifice building general-purpose layer with no market demand\nAlexNet (2012): neural nets need parallel compute → CUDA was the ONLY ergonomic option\nCUDA moat established: 15+ yr of code targets it; switching is a career-ending migration\nTransformer (2017) + scaling era: NVIDIA GPUs capture all AI training workloads\nH100 (2022): $30k ASP; NVDA market cap ~$5T by Jun 2026",
+      "as_of": "2026-06-01",
+      "half_life_days": 365,
+      "signals": [
+        {
+          "label": "NVDA quarterly earnings + DC guidance",
+          "url": "https://investor.nvidia.com",
+          "cadence_days": 90,
+          "last_checked": "2026-02-26",
+          "log": [
+            {
+              "date": "2026-02-26",
+              "note": "Q4FY26 revenue $39.3B +78% YoY; Blackwell Ultra sampling; Rubin roadmap 2027 confirmed"
+            }
+          ]
+        },
+        {
+          "label": "Jensen public interviews / GTC announcements",
+          "url": "https://www.nvidia.com/en-us/gtc/",
+          "cadence_days": 30,
+          "last_checked": "2026-03-20",
+          "log": [
+            {
+              "date": "2026-03-20",
+              "note": "GTC March 2026: Blackwell Ultra B300 announced; 'physical AI' as 3rd wave thesis stated explicitly"
+            }
+          ]
+        }
+      ],
+      "links": [
+        {
+          "to": "tree.cuda",
+          "rel": "context"
+        },
+        {
+          "to": "tree.gaming",
+          "rel": "context"
+        },
+        {
+          "to": "tree.transformer",
+          "rel": "context"
+        },
+        {
+          "to": "tree.alexnet",
+          "rel": "context"
+        },
+        {
+          "to": "atlas.nvda",
+          "rel": "context"
+        }
+      ],
+      "cf": "hi",
+      "review_after_months": 6
+    },
+    {
+      "id": "human.yadegari",
+      "type": "human",
+      "title": "Zach Yadegari (Cal AI)",
+      "aliases": [
+        "AI)"
+      ],
+      "tier": "W",
+      "domain": "Consumer AI apps / Distribution arbitrage",
+      "bets": [
+        {
+          "yr": 2024,
+          "stake": {
+            "capital": "$2k initial marketing test",
+            "time": "high school senior time",
+            "reputation": "teenager",
+            "control": "kept through acquisition"
+          },
+          "consensus_delta": "A high-school student from a classroom couldn't compete with VC-backed consumer AI apps; the market was saturated",
+          "enabler": "Vision API (GPT-4 Vision) enabling calories-from-photo; TikTok/IG short-video creator distribution at scale; existing diet-app willingness-to-pay",
+          "thesis": "New capability (vision→calories) × new distribution channel (short-video creators) × existing willingness-to-pay (diet apps)",
+          "outcome": "$2k marketing test → first month $28k → influencer + performance-ad engine → ~$30M ARR 2025, ~$40M trailing-12m, $5.7M in Jan 2026 alone, 15M+ downloads → acquired by MyFitnessPal, deal closed Dec 2025, terms undisclosed (8-9 figure range), team retained. [cf:hi, TechCrunch/Inc Mar 2026]",
+          "survival_mechanism": "Performance marketing + creator partnerships; speed advantage of zero bureaucracy; Feb 2024 launch from classroom",
+          "anatomy": {
+            "stake": 2,
+            "asymmetry": 5,
+            "consensus": 2,
+            "timing": 5,
+            "control": 5,
+            "survival": 4
+          }
+        }
+      ],
+      "chain": [
+        "GPT-4 Vision API release → calorie-counting from photo becomes possible",
+        "$2k performance marketing test → signal on CAC economics",
+        "Creator partnerships on TikTok/IG → viral loops + paid performance-ad stack",
+        "$28k month 1 → $30M ARR by ~mid-2025 → $5.7M in Jan 2026 alone",
+        "MyFitnessPal acquires Dec 2025 — incumbent had been watching Sensor Tower ranks for a year"
+      ],
+      "current_state": {
+        "vintage": "2026-06",
+        "facts": [
+          "Acquired by MyFitnessPal Dec 2025; terms undisclosed but 8-9 figure range",
+          "15M+ downloads at time of acquisition",
+          "$40M trailing-12m revenue at acquisition",
+          "Team retained; Yadegari was 17 at launch, 18 at acquisition"
+        ]
+      },
+      "future_paths": [
+        {
+          "path": "Yadegari launches next window bet; pattern repeats",
+          "p": 0.6,
+          "horizon": "2027",
+          "falsifier": "No new company founded by 2027"
+        },
+        {
+          "path": "MyFitnessPal fails to retain user base post-acquisition",
+          "p": 0.4,
+          "horizon": "2027",
+          "falsifier": "Cal AI MAU stable 12mo post-acquisition"
+        }
+      ],
+      "dead_bodies": [
+        {
+          "name": "Thousands of 2023-24 thin wrappers",
+          "why": "OpenAI/Anthropic shipped the feature they were wrapping; CAC inflation; model-price deflation erased margins"
+        },
+        {
+          "name": "MyFitnessPal itself (near-death)",
+          "why": "Incumbent that Yadegari disrupted was already in decline; the acquisition was defensive, not confidence"
+        }
+      ],
+      "lessons": [
+        "Window formula: new capability API × new distribution channel × existing willingness-to-pay × teenage speed",
+        "The window creates alpha, not the tactic — Base44 used opposite distribution (organic vs paid) and won simultaneously",
+        "Speed advantage of zero bureaucracy: a classroom-launched app outmoved incumbents with 100-person teams",
+        "First sale at 16 (~$100k, 'Totally Science') → Cal AI: serial window-riding, compounding fast"
+      ],
+      "body": "GPT-4 Vision API release → calorie-counting from photo becomes possible\n$2k performance marketing test → signal on CAC economics\nCreator partnerships on TikTok/IG → viral loops + paid performance-ad stack\n$28k month 1 → $30M ARR by ~mid-2025 → $5.7M in Jan 2026 alone\nMyFitnessPal acquires Dec 2025 — incumbent had been watching Sensor Tower ranks for a year",
+      "as_of": "2026-06-01",
+      "half_life_days": 90,
+      "signals": [],
+      "links": [
+        {
+          "to": "tree.wrapper-window",
+          "rel": "context"
+        },
+        {
+          "to": "tree.agentic-shift",
+          "rel": "context"
+        },
+        {
+          "to": "tree.acquihire-wave",
+          "rel": "context"
+        },
+        {
+          "to": "window.ai-wrapper-window",
+          "rel": "context"
+        }
+      ],
+      "cf": "hi",
+      "review_after_months": 6
+    },
+    {
+      "id": "human.shlomo",
+      "type": "human",
+      "title": "Shlomo Priymak (Base44)",
+      "aliases": [
+        "(Base44)"
+      ],
+      "tier": "W",
+      "domain": "No-code / Vibe coding / Solo SaaS",
+      "bets": [
+        {
+          "yr": 2025,
+          "stake": {
+            "capital": "zero funding",
+            "time": "solo full-time",
+            "reputation": "unknown developer",
+            "control": "full → sold"
+          },
+          "consensus_delta": "No-code app builders were a crowded market; no individual developer could compete with VC-backed teams",
+          "enabler": "LLM code generation crossing 'vibe coding' threshold (Feb 2025, month of launch); build-in-public LinkedIn/X culture as free distribution",
+          "thesis": "LLM code generation enables solo developer to build and ship a full app platform; organic LinkedIn/X distribution replaces paid CAC",
+          "outcome": "$1M ARR in ~3 weeks. ~$189k profit in May 2025. Wix acquires Jun 2025 for $80M cash on ~$3.5M revenue (~22× multiple). Post-acquisition ~$150M ARR by May 2026. Additional ~$90M earn-out on track — earn-out exceeding headline price, i.e., Wix underpaid the trajectory. [cf:hi, Calcalist/Inc]",
+          "survival_mechanism": "Zero burn rate (no funding, no employees); organic founder-audience distribution on LinkedIn/X; product-market fit immediately obvious",
+          "anatomy": {
+            "stake": 2,
+            "asymmetry": 5,
+            "consensus": 3,
+            "timing": 5,
+            "control": 5,
+            "survival": 5
+          }
+        }
+      ],
+      "chain": [
+        "Feb 2025: 'vibe coding' coined (same month as launch) — timing was the window",
+        "Build-in-public posts on LinkedIn/X → organic viral distribution, zero paid",
+        "$1M ARR in ~3 weeks → $189k profit month of May → Wix inbound M&A inquiry",
+        "Wix acquires Jun 2025 $80M cash on $3.5M LTM revenue (~22×)",
+        "Post-acquisition: $150M ARR by May 2026 — ~43× the LTM revenue at acquisition",
+        "~$90M earn-out on track — acquirer demonstrably underpaid"
+      ],
+      "current_state": {
+        "vintage": "2026-06",
+        "facts": [
+          "Acquired by Wix Jun 2025 for $80M cash",
+          "~$150M ARR by May 2026 (per reporting)",
+          "~$90M earn-out on track, expected to exceed headline acquisition price",
+          "Wix underpaid the trajectory — clearest signal that the window was bigger than even the winner knew"
+        ]
+      },
+      "future_paths": [
+        {
+          "path": "Base44 platform grows to $500M ARR within Wix; becomes Wix's AI-native product line",
+          "p": 0.45,
+          "horizon": "2028",
+          "falsifier": "ARR growth decelerates below 50% YoY by end 2026"
+        },
+        {
+          "path": "Wix integration friction kills growth; earn-out missed",
+          "p": 0.3,
+          "horizon": "2027",
+          "falsifier": "Earn-out achieved in full"
+        }
+      ],
+      "dead_bodies": [
+        {
+          "name": "Bubble (pre-AI era)",
+          "why": "No-code platform that grew slowly over a decade; the pre-LLM version of the bet. Survived but never reached escape velocity."
+        },
+        {
+          "name": "Webflow",
+          "why": "Design-first no-code; raised $120M+; still not profitable at scale. The VC-backed version of the bet, slower than the solo version."
+        },
+        {
+          "name": "Glide, Adalo, Softr",
+          "why": "No-code app platforms pre-AI; all faced ceiling on what they could build; LLM era made them obsolete"
+        }
+      ],
+      "lessons": [
+        "Same window as Cal AI (opposite distribution: organic vs paid) — the window, not the tactic, was the alpha",
+        "Zero burn rate is an unfair advantage in a window bet: no VC to disappoint, no team to manage, decision speed = single person",
+        "Build-in-public is a distribution strategy, not a marketing tactic — Priymak had the audience before the product",
+        "Wix acquirer insight: when an incumbent buys a solo-founder product at 22× revenue, they are buying time + talent, acknowledging they couldn't build it"
+      ],
+      "body": "Feb 2025: 'vibe coding' coined (same month as launch) — timing was the window\nBuild-in-public posts on LinkedIn/X → organic viral distribution, zero paid\n$1M ARR in ~3 weeks → $189k profit month of May → Wix inbound M&A inquiry\nWix acquires Jun 2025 $80M cash on $3.5M LTM revenue (~22×)\nPost-acquisition: $150M ARR by May 2026 — ~43× the LTM revenue at acquisition\n~$90M earn-out on track — acquirer demonstrably underpaid",
+      "as_of": "2026-06-01",
+      "half_life_days": 90,
+      "signals": [],
+      "links": [
+        {
+          "to": "tree.wrapper-window",
+          "rel": "context"
+        },
+        {
+          "to": "tree.acquihire-wave",
+          "rel": "context"
+        },
+        {
+          "to": "window.ai-wrapper-window",
+          "rel": "context"
+        }
+      ],
+      "cf": "hi",
+      "review_after_months": 6
+    },
+    {
+      "id": "human.chang",
+      "type": "human",
+      "title": "Morris Chang",
+      "aliases": [
+        "Chang"
+      ],
+      "tier": "C",
+      "domain": "Semiconductors / Foundry model",
+      "bets": [
+        {
+          "yr": 1987,
+          "stake": {
+            "capital": "Reputation + late career: founded TSMC at 56 after being passed over for TI CEO",
+            "time": "remainder of career",
+            "reputation": "respected TI exec betting on an unproven business model",
+            "control": "shared (Taiwan govt 48%, Philips 27%)"
+          },
+          "consensus_delta": "Every serious chipmaker designed AND manufactured (IDM model). A fab that only made other people's chips was considered a contract shop with no future — Intel and TI saw no threat.",
+          "enabler": "Taiwan government industrial policy (ITRI) seeking a flagship; process technology licensable from Philips; rising mask costs starting to strain small design houses",
+          "thesis": "Separate design from manufacturing. A pure-play foundry that never competes with its customers can aggregate everyone's volume and win on process scale.",
+          "outcome": "TSMC created the fabless industry as a side effect: NVIDIA, Qualcomm, Broadcom, Apple silicon all exist because the foundry exists. TSMC became the indispensable node of the entire digital economy.",
+          "survival_mechanism": "Government anchor funding; never competing with customers meant every fabless win was a TSMC win",
+          "anatomy": {
+            "stake": 4,
+            "asymmetry": 5,
+            "consensus": 5,
+            "timing": 5,
+            "control": 3,
+            "survival": 4
+          }
+        },
+        {
+          "yr": 2009,
+          "stake": {
+            "capital": "Returned as CEO at 77 during financial crisis; doubled capex into the downturn",
+            "time": "5yr second act",
+            "reputation": "founder risking legacy",
+            "control": "full"
+          },
+          "consensus_delta": "2009 consensus: cut capex, survive the crisis. Chang fired his successor and raised capex ~2x into the worst demand year in memory.",
+          "enabler": "Smartphone wave visible in design pipelines 2 years before revenue; 28nm node transition approaching",
+          "thesis": "Mobile silicon demand would make 28nm the biggest node ever; whoever had capacity ready would take everything",
+          "outcome": "TSMC's 28nm dominance (~90%+ share at peak) funded the leading-edge treadmill that competitors then couldn't afford to ride. GlobalFoundries quit at 7nm (2018); only Samsung remains, behind.",
+          "survival_mechanism": "Foundry model's customer diversification — no single end-market crash could kill the order book",
+          "anatomy": {
+            "stake": 3,
+            "asymmetry": 4,
+            "consensus": 4,
+            "timing": 5,
+            "control": 5,
+            "survival": 4
+          }
+        }
+      ],
+      "chain": [
+        "TI passes Chang over for CEO → Taiwan's ITRI recruits him → TSMC founded 1987",
+        "Pure-play foundry → fabless startups become viable → NVIDIA (1993) can exist without a fab",
+        "Customer-aggregated volume → process leadership → mask/EUV costs become a moat only TSMC can amortize",
+        "2009 capex double-down → 28nm mobile dominance → Apple A-series sole-source",
+        "AI wave 2023→ every frontier chip (NVIDIA, AMD, custom silicon) funnels through TSMC advanced nodes + CoWoS packaging",
+        "Single point of failure for the digital economy, sitting 110 miles from China"
+      ],
+      "current_state": {
+        "vintage": "2026-06",
+        "facts": [
+          "Retired 2018; legacy structure intact under Liu/Wei leadership",
+          "TSMC >60% global foundry share, >90% at leading edge",
+          "Arizona fabs ramping (N4 yields reported at Taiwan parity 2025, cf:md); Japan/Germany fabs in progress",
+          "CoWoS advanced packaging the binding constraint of the AI build-out 2023-25"
+        ]
+      },
+      "future_paths": [
+        {
+          "path": "Geographic diversification succeeds; TSMC becomes a distributed utility and the Taiwan discount narrows",
+          "p": 0.5,
+          "horizon": "2030",
+          "falsifier": "Overseas fabs stuck >20% cost premium or trailing-node-only through 2028"
+        },
+        {
+          "path": "Taiwan-strait crisis forces emergency re-architecture of global supply chain",
+          "p": 0.15,
+          "horizon": "2030",
+          "falsifier": "No blockade or kinetic event by 2030"
+        },
+        {
+          "path": "Intel foundry resurrects as credible second source under US pressure",
+          "p": 0.3,
+          "horizon": "2029",
+          "falsifier": "Intel 18A/14A fails to land a top-10 fabless customer by 2027"
+        }
+      ],
+      "dead_bodies": [
+        {
+          "name": "UMC",
+          "why": "Taiwan's other foundry; kept a hybrid model and own-brand ambitions early; permanently a node behind — the half-commitment counterfactual"
+        },
+        {
+          "name": "GlobalFoundries",
+          "why": "AMD's spun-off fabs; abandoned 7nm in 2018 — proof the capex treadmill kills everyone who isn't aggregating the whole industry's volume"
+        },
+        {
+          "name": "SMIC",
+          "why": "State-backed follower; export controls capped it at trailing edge — shows the model is replicable but the ecosystem position is not"
+        }
+      ],
+      "lessons": [
+        "The biggest bets are business-model bets, not technology bets — TSMC used licensed process tech",
+        "Founded at 56: the late-career founder with full domain knowledge is an underpriced archetype",
+        "Never compete with your customers is a structural moat disguised as a courtesy",
+        "Counter-cyclical capex (2009) is the foundry version of buying the bottom — physical capacity is the slowest variable"
+      ],
+      "body": "TI passes Chang over for CEO → Taiwan's ITRI recruits him → TSMC founded 1987\nPure-play foundry → fabless startups become viable → NVIDIA (1993) can exist without a fab\nCustomer-aggregated volume → process leadership → mask/EUV costs become a moat only TSMC can amortize\n2009 capex double-down → 28nm mobile dominance → Apple A-series sole-source\nAI wave 2023→ every frontier chip (NVIDIA, AMD, custom silicon) funnels through TSMC advanced nodes + CoWoS packaging\nSingle point of failure for the digital economy, sitting 110 miles from China",
+      "as_of": "2026-06-01",
+      "half_life_days": 365,
+      "signals": [
+        {
+          "label": "TSMC Arizona ramp updates",
+          "url": "https://ir.tsmc.com",
+          "cadence_days": 90,
+          "last_checked": "2026-04-17",
+          "log": [
+            {
+              "date": "2026-04-17",
+              "note": "N4P first silicon shipped; N2 Arizona groundbreaking planned H2 2026 — Chang thesis playing out"
+            }
+          ]
+        }
+      ],
+      "links": [
+        {
+          "to": "tree.tsmc-foundry",
+          "rel": "context"
+        },
+        {
+          "to": "tree.moore",
+          "rel": "context"
+        },
+        {
+          "to": "tree.bottleneck",
+          "rel": "context"
+        },
+        {
+          "to": "window.reshoring-chips",
+          "rel": "context"
+        }
+      ],
+      "cf": "hi",
+      "review_after_months": 12
+    },
+    {
+      "id": "human.son",
+      "type": "human",
+      "title": "Masayoshi Son",
+      "aliases": [
+        "Son"
+      ],
+      "tier": "C",
+      "domain": "Telecom / Internet / AI capital",
+      "bets": [
+        {
+          "yr": 2000,
+          "stake": {
+            "capital": "$20M into Alibaba (after 5-minute meeting with Jack Ma)",
+            "time": "held 14+ years",
+            "reputation": "dot-com high-flyer",
+            "control": "minority stake"
+          },
+          "consensus_delta": "Chinese e-commerce in 2000: no payment rails, no logistics, no consumer trust, post-bubble capital flight from anything internet",
+          "enabler": "China WTO accession trajectory; internet penetration S-curve at its base",
+          "thesis": "China would industrialize consumption online and one platform would aggregate it",
+          "outcome": "Peak value >$100B — the single greatest venture return ever recorded. Funded everything after.",
+          "survival_mechanism": "Small absolute check; SoftBank's telecom cash flows carried the holding period",
+          "anatomy": {
+            "stake": 2,
+            "asymmetry": 5,
+            "consensus": 4,
+            "timing": 5,
+            "control": 2,
+            "survival": 3
+          }
+        },
+        {
+          "yr": 2006,
+          "stake": {
+            "capital": "$15B+ LBO of Vodafone Japan — largest in Japanese history; bet-the-company leverage",
+            "time": "5yr to vindication",
+            "reputation": "reckless after -96% stock crash",
+            "control": "full"
+          },
+          "consensus_delta": "Vodafone Japan was a failing #3 carrier; SoftBank had no telecom experience and had just lost more money than any human in history (-$70B personal in dot-com crash)",
+          "enabler": "Secret: Son met Jobs pre-iPhone and secured Japan exclusivity on a phone that didn't exist yet",
+          "thesis": "Mobile internet would obsolete carrier hierarchies; an exclusive on the device that causes the shift resets the market",
+          "outcome": "iPhone exclusivity 2008 transformed SoftBank Mobile into the growth carrier; LBO paid off and funded Vision Fund era",
+          "survival_mechanism": "Japanese bank relationships willing to roll debt; carrier cash flows are recession-proof",
+          "anatomy": {
+            "stake": 5,
+            "asymmetry": 4,
+            "consensus": 4,
+            "timing": 5,
+            "control": 4,
+            "survival": 3
+          }
+        },
+        {
+          "yr": 2016,
+          "stake": {
+            "capital": "$32B Arm acquisition + $100B Vision Fund (Saudi PIF $45B anchor)",
+            "time": "decade",
+            "reputation": "the man who lost the most money ever, redeemed once",
+            "control": "GP control, LP obligations"
+          },
+          "consensus_delta": "Consensus was actually WITH him on tech, against him on price discipline — the contrarian element was scale and speed of deployment, which proved to be the flaw",
+          "enabler": "ZIRP: $100B of near-free capital seeking duration",
+          "thesis": "Information revolution singularity; own the chokepoints (Arm) and spray the application layer",
+          "outcome": "WeWork -$14B+ (the canonical governance failure), Katerra/Zume/Wirecard zeros — but Arm 2023 IPO + holdings recovered the fund era. Net: survived his own excess.",
+          "survival_mechanism": "Arm as the hard asset under the speculative book; ability to sell Alibaba in tranches to cover margin",
+          "anatomy": {
+            "stake": 4,
+            "asymmetry": 4,
+            "consensus": 2,
+            "timing": 2,
+            "control": 3,
+            "survival": 3
+          }
+        },
+        {
+          "yr": 2025,
+          "stake": {
+            "capital": "$30B+ committed to OpenAI; Stargate datacenter JV; Ampere acquisition",
+            "time": "open",
+            "reputation": "final act",
+            "control": "minority"
+          },
+          "consensus_delta": "This time he is the consensus — buying the most agreed-upon asset at the top of the most agreed-upon cycle. The bet is on his own pattern inverting.",
+          "enabler": "AI capex supercycle; OpenAI's need for non-Microsoft capital",
+          "thesis": "ASI is the final platform; the only error is under-allocation",
+          "outcome": "Open. SoftBank sold its entire NVIDIA stake (Oct 2025) to fund it — all-in, again.",
+          "survival_mechanism": "Arm equity as collateral; Japanese rates still low",
+          "anatomy": {
+            "stake": 5,
+            "asymmetry": 4,
+            "consensus": 1,
+            "timing": 2,
+            "control": 2,
+            "survival": 2
+          }
+        }
+      ],
+      "chain": [
+        "Software distribution (1981) → Comdex/Yahoo stakes → dot-com peak: briefly richest man on earth",
+        "Crash: -96%, -$70B — survives via telecom cash flows (the lesson others read as luck, he read as license)",
+        "Alibaba $20M → >$100B: one outlier pays for every failure, the power-law internalized as identity",
+        "Vodafone Japan LBO + secret iPhone exclusivity → redemption",
+        "ZIRP + Saudi capital → Vision Fund: the pattern at toxic scale → WeWork",
+        "Arm IPO recovery → 2025: everything into OpenAI/Stargate — variance maximalism, final act"
+      ],
+      "current_state": {
+        "vintage": "2026-06",
+        "facts": [
+          "SoftBank committed ~$30B+ to OpenAI (largest single backer of the round); Stargate JV with OpenAI/Oracle/MGX",
+          "Sold entire NVIDIA position (~$5.8B, Oct 2025) to fund AI commitments",
+          "Arm ~90% owned — the hard asset; Ampere acquired 2025",
+          "Vision Fund era net: roughly flat against a decade of S&P — the price of variance (cf:md)"
+        ]
+      },
+      "future_paths": [
+        {
+          "path": "OpenAI stake marks down >50% in an AI financing shakeout; Son survives via Arm again",
+          "p": 0.4,
+          "horizon": "2028",
+          "falsifier": "OpenAI raises or IPOs at >$500B post-2027 with improving unit economics"
+        },
+        {
+          "path": "Stargate completes and SoftBank captures durable AI-infrastructure rent",
+          "p": 0.35,
+          "horizon": "2029",
+          "falsifier": "Stargate phase-1 sites not energized at promised GW scale by end 2027"
+        },
+        {
+          "path": "The final act works: SoftBank becomes the Berkshire of the AI era",
+          "p": 0.2,
+          "horizon": "2032",
+          "falsifier": "SoftBank NAV discount widens past 60% / forced Arm sale"
+        }
+      ],
+      "dead_bodies": [
+        {
+          "name": "WeWork",
+          "why": "-$14B+; governance abdication at scale — capital as a substitute for judgment. Neumann walked with ~$1B+; LPs ate the loss"
+        },
+        {
+          "name": "Katerra",
+          "why": "$2B+ into construction-tech rollup; bankrupt 2021 — capital cannot compress industries whose constraint is physics and permits"
+        },
+        {
+          "name": "Zume Pizza",
+          "why": "$375M for pizza robots; the Vision Fund check size forcing startups into premature scale was the actual killer"
+        },
+        {
+          "name": "FTX stake",
+          "why": "$100M written to zero in days — diligence speed matched to deployment speed"
+        }
+      ],
+      "lessons": [
+        "One Alibaba pays for everything: power-law internalized as strategy — but only with a cash-flow engine that survives the drawdowns",
+        "The Vodafone/iPhone move is the masterpiece: secure the exclusive on the thing that resets the market before it exists",
+        "Vision Fund is the cautionary inversion: the same conviction, deployed as consensus at scale, destroys alpha",
+        "His survival mechanism was never the bets — it was Japanese banking relationships and a hard asset he refused to sell"
+      ],
+      "body": "Software distribution (1981) → Comdex/Yahoo stakes → dot-com peak: briefly richest man on earth\nCrash: -96%, -$70B — survives via telecom cash flows (the lesson others read as luck, he read as license)\nAlibaba $20M → >$100B: one outlier pays for every failure, the power-law internalized as identity\nVodafone Japan LBO + secret iPhone exclusivity → redemption\nZIRP + Saudi capital → Vision Fund: the pattern at toxic scale → WeWork\nArm IPO recovery → 2025: everything into OpenAI/Stargate — variance maximalism, final act",
+      "as_of": "2026-06-01",
+      "half_life_days": 365,
+      "signals": [],
+      "links": [
+        {
+          "to": "tree.capex",
+          "rel": "context"
+        },
+        {
+          "to": "tree.loops",
+          "rel": "context"
+        },
+        {
+          "to": "tree.cloud",
+          "rel": "context"
+        },
+        {
+          "to": "window.sovereign-ai",
+          "rel": "context"
+        },
+        {
+          "to": "window.zirp-saas",
+          "rel": "context"
+        }
+      ],
+      "cf": "hi",
+      "review_after_months": 6
+    },
+    {
+      "id": "human.bezos",
+      "type": "human",
+      "title": "Jeff Bezos",
+      "aliases": [
+        "Bezos"
+      ],
+      "tier": "C",
+      "domain": "E-commerce / Cloud / Space",
+      "bets": [
+        {
+          "yr": 1994,
+          "stake": {
+            "capital": "Left D.E. Shaw SVP track; $10K founding + parents' $245K life savings",
+            "time": "open-ended",
+            "reputation": "quant walking away from a sure career",
+            "control": "kept"
+          },
+          "consensus_delta": "Web retail in 1994 was a hobbyist curiosity; the regret-minimization framework — judge the decision at 80, not at 35 — was the actual innovation",
+          "enabler": "Web growing 2300%/yr; books as the perfect wedge (infinite catalog, standard product, shippable)",
+          "thesis": "Start with books, become the everything store; obsess over customer, not competitor",
+          "outcome": "Survived the dot-com crash that killed every comparable (Webvan, Pets.com) via 2000 convertible raise weeks before the window shut",
+          "survival_mechanism": "Raised $672M convertible debt Feb 2000 — one month before the crash closed capital markets. Timing of the raise, not the model, was survival.",
+          "anatomy": {
+            "stake": 4,
+            "asymmetry": 5,
+            "consensus": 3,
+            "timing": 5,
+            "control": 4,
+            "survival": 4
+          }
+        },
+        {
+          "yr": 2003,
+          "stake": {
+            "capital": "Years of negative free cash flow into internal infrastructure during post-crash winter",
+            "time": "3yr to launch, 10yr to consensus",
+            "reputation": "already mocked as profitless",
+            "control": "full"
+          },
+          "consensus_delta": "A retailer selling compute? Wall Street saw a distraction. Competitors (Google, Microsoft) had the tech and didn't ship it for 4+ years — the consensus blindness was industry-wide",
+          "enabler": "Internal need: Amazon's own infrastructure pain produced the product. Hardened APIs as company policy (the 2002 mandate)",
+          "thesis": "Compute as metered utility; developers will rent infrastructure the way they consume electricity",
+          "outcome": "AWS launched 2006; created the cloud category; still ~60% of Amazon operating income. Precondition for both the SaaS decade and the AI training era.",
+          "survival_mechanism": "Retail cash flows funded the build; no external capital needed meant no one could vote it down",
+          "anatomy": {
+            "stake": 4,
+            "asymmetry": 5,
+            "consensus": 5,
+            "timing": 4,
+            "control": 5,
+            "survival": 4
+          }
+        },
+        {
+          "yr": 2000,
+          "stake": {
+            "capital": "~$1B/yr personal Amazon stock sales into Blue Origin",
+            "time": "25yr and counting",
+            "reputation": "secondary to Musk in the public narrative",
+            "control": "sole owner"
+          },
+          "consensus_delta": "Gradatim Ferociter (step by step, ferociously) vs SpaceX's iterate-by-explosion; consensus now says the tortoise lost the decade",
+          "enabler": "Personal wealth removing all funding risk — and all funding discipline",
+          "thesis": "Millions of people living and working in space; move heavy industry off-Earth",
+          "outcome": "New Glenn flew 2025; Blue lags SpaceX by ~8 years in cadence. The control case for whether external pressure is a feature.",
+          "survival_mechanism": "Infinite personal funding — survival guaranteed, urgency forfeited",
+          "anatomy": {
+            "stake": 3,
+            "asymmetry": 3,
+            "consensus": 3,
+            "timing": 2,
+            "control": 5,
+            "survival": 5
+          }
+        }
+      ],
+      "chain": [
+        "D.E. Shaw quant sees web growth stats → regret-minimization → books wedge 1994",
+        "Everything-store flywheel: selection → traffic → sellers → selection",
+        "Feb 2000: $672M convertible raised weeks before the window shut — survives the extinction event",
+        "Internal infra pain + 2002 API mandate → AWS 2006 → cloud category created",
+        "AWS = precondition: ZIRP SaaS decade runs on it; AI training era rents from it",
+        "Prime + logistics capex moat → retail margin structurally thin but unassailable",
+        "2021 steps back; Blue Origin and Washington Post as the post-CEO portfolio"
+      ],
+      "current_state": {
+        "vintage": "2026-06",
+        "facts": [
+          "Executive chairman; sells ~$5-10B/yr for Blue Origin and philanthropy",
+          "AWS ~$110B+ run rate, facing genuine AI-era competition (Azure/OpenAI gravity) for the first time",
+          "New Glenn flying; Kuiper constellation deploying against Starlink (cf:md)",
+          "Amazon capex guided to ~$200B 2026, mostly AI infrastructure (cf:md)"
+        ]
+      },
+      "future_paths": [
+        {
+          "path": "AWS loses cloud-AI era leadership to Microsoft/OpenAI gravity despite Anthropic hedge",
+          "p": 0.4,
+          "horizon": "2028",
+          "falsifier": "AWS AI-workload share stabilizes >35% on independent measurement through 2027"
+        },
+        {
+          "path": "Blue Origin reaches competitive heavy-lift cadence and the duopoly forms",
+          "p": 0.3,
+          "horizon": "2029",
+          "falsifier": "Fewer than 12 New Glenn flights/yr by end 2028"
+        },
+        {
+          "path": "Robotics inflects Amazon retail margins structurally (the next AWS-style internal-need product)",
+          "p": 0.45,
+          "horizon": "2029",
+          "falsifier": "Fulfillment cost per unit flat or rising through 2027"
+        }
+      ],
+      "dead_bodies": [
+        {
+          "name": "Webvan",
+          "why": "$800M+ burned on grocery delivery 1999-2001 — the same thesis Amazon Fresh later won, a decade early on infrastructure that didn't exist; right idea, wrong slow variables"
+        },
+        {
+          "name": "Pets.com",
+          "why": "The mascot of dot-com excess; unit economics negative at any scale — proximity to a good thesis (online retail) is not the thesis"
+        },
+        {
+          "name": "Fire Phone",
+          "why": "Amazon's own $170M writeoff — proof the flywheel doesn't transfer to hardware ego projects; institutionalized as 'failure is fine' lore"
+        },
+        {
+          "name": "Kozmo",
+          "why": "1-hour delivery 1998 — the Prime Now thesis, 17 years early; timing IS the thesis"
+        }
+      ],
+      "lessons": [
+        "Regret-minimization is a decision algorithm for irreversible bets — judge from the deathbed, not the quarter",
+        "The Feb 2000 raise: survival is a capital-markets timing skill, separate from operating skill",
+        "AWS pattern: your internal pain, productized, is the highest-conviction startup — the customer already exists (you)",
+        "Blue Origin counterfactual: unlimited funding without external forcing is how the tortoise stays a tortoise"
+      ],
+      "body": "D.E. Shaw quant sees web growth stats → regret-minimization → books wedge 1994\nEverything-store flywheel: selection → traffic → sellers → selection\nFeb 2000: $672M convertible raised weeks before the window shut — survives the extinction event\nInternal infra pain + 2002 API mandate → AWS 2006 → cloud category created\nAWS = precondition: ZIRP SaaS decade runs on it; AI training era rents from it\nPrime + logistics capex moat → retail margin structurally thin but unassailable\n2021 steps back; Blue Origin and Washington Post as the post-CEO portfolio",
+      "as_of": "2026-06-01",
+      "half_life_days": 365,
+      "signals": [],
+      "links": [
+        {
+          "to": "tree.cloud",
+          "rel": "context"
+        },
+        {
+          "to": "tree.web",
+          "rel": "context"
+        },
+        {
+          "to": "tree.capex",
+          "rel": "context"
+        },
+        {
+          "to": "window.zirp-saas",
+          "rel": "context"
+        },
+        {
+          "to": "window.orbital-compute",
+          "rel": "context"
+        }
+      ],
+      "cf": "hi",
+      "review_after_months": 12
+    },
+    {
+      "id": "human.thiel",
+      "type": "human",
+      "title": "Peter Thiel",
+      "aliases": [
+        "Thiel"
+      ],
+      "tier": "C",
+      "domain": "Payments / Intelligence software / Contrarian capital",
+      "bets": [
+        {
+          "yr": 1998,
+          "stake": {
+            "capital": "Founded Confinity (→PayPal) post-law-clerk career swerve",
+            "time": "4yr",
+            "reputation": "none yet",
+            "control": "shared, then merged with Musk's X.com"
+          },
+          "consensus_delta": "Digital payments needed banks; fraud would eat any startup alive",
+          "enabler": "eBay's seller base needed payments the banks wouldn't build; email as the rail",
+          "thesis": "New currency-transfer layer on the internet, outside the banking system",
+          "outcome": "eBay acquisition Oct 2002 $1.5B; Thiel's ~$55M became the seed of everything after. The 'PayPal Mafia' as the real asset.",
+          "survival_mechanism": "Fraud-detection tooling (Gausebeck-Levchin) as the actual moat; merger with X.com consolidated the category",
+          "anatomy": {
+            "stake": 3,
+            "asymmetry": 4,
+            "consensus": 3,
+            "timing": 4,
+            "control": 3,
+            "survival": 4
+          }
+        },
+        {
+          "yr": 2004,
+          "stake": {
+            "capital": "$500K into Facebook for 10.2% — first outside check",
+            "time": "8yr to IPO",
+            "reputation": "PayPal credibility",
+            "control": "board seat, no control"
+          },
+          "consensus_delta": "Friendster and MySpace already 'won' social; a college directory was a feature, not a company",
+          "enabler": "Real-identity graph (college email verification) — the structural difference everyone else missed",
+          "thesis": "Network effects on verified identity beat scale on pseudonymous identity",
+          "outcome": ">$1B return on $500K — possibly the best angel check ever written. Sold most at IPO (the exit discipline nobody copies).",
+          "survival_mechanism": "Check sized to lose; asymmetry did all the work",
+          "anatomy": {
+            "stake": 1,
+            "asymmetry": 5,
+            "consensus": 4,
+            "timing": 5,
+            "control": 1,
+            "survival": 5
+          }
+        },
+        {
+          "yr": 2003,
+          "stake": {
+            "capital": "Co-founded Palantir; personal capital + Founders Fund when VCs refused for years",
+            "time": "17yr to IPO",
+            "reputation": "staked on an unfashionable customer: the state",
+            "control": "kept via structure"
+          },
+          "consensus_delta": "Post-9/11 VCs wouldn't touch government sales: long cycles, low margins, ethical heat. Silicon Valley's institutional allergy to the state was the arbitrage",
+          "enabler": "In-Q-Tel (CIA venture arm) as first money; intelligence community's data-integration pain",
+          "thesis": "Government is the highest-value underserved software customer; whoever tolerates the sales cycle owns it for decades",
+          "outcome": "IPO 2020; defense-AI rerating 2023-25 made it a top-20 US company by market cap (cf:md). Anduril (FF-backed) repeated the playbook in hardware.",
+          "survival_mechanism": "Thiel's personal capital bridged a decade VCs wouldn't fund; gov contracts, once won, are annuities",
+          "anatomy": {
+            "stake": 4,
+            "asymmetry": 4,
+            "consensus": 5,
+            "timing": 3,
+            "control": 4,
+            "survival": 4
+          }
+        }
+      ],
+      "chain": [
+        "PayPal $55M + the Mafia network → Founders Fund + the angel network that seeded Web 2.0",
+        "Facebook $500K → $1B+: asymmetry as doctrine ('what important truth do few agree with you on?')",
+        "Palantir: government-as-customer when the Valley refused — same move as Musk's NASA, applied to software",
+        "Zero to One codifies it: competition is for losers, monopoly via secrets",
+        "Anduril/defense-tech wave 2017→: his unfashionable-customer thesis becomes the consensus a decade later",
+        "Political capital deployment 2016/2024 — the same contrarian sizing applied outside markets (cf:md on returns)"
+      ],
+      "current_state": {
+        "vintage": "2026-06",
+        "facts": [
+          "Founders Fund: defense/hard-tech tilt fully vindicated by 2024-26 procurement shift",
+          "Palantir among the most valuable software companies; Anduril valued ~$30B+ (cf:md)",
+          "Sold most Palantir personal stake in tranches 2024-25 (cf:md) — exit discipline pattern repeating",
+          "The 'contrarian truth' question now taught in every accelerator — the edge is crowded"
+        ]
+      },
+      "future_paths": [
+        {
+          "path": "Defense-tech window matures; Anduril IPOs as the new prime",
+          "p": 0.55,
+          "horizon": "2027",
+          "falsifier": "Anduril fails to win a program-of-record >$1B by 2027"
+        },
+        {
+          "path": "Palantir's AI-era multiple compresses >60% in a shakeout",
+          "p": 0.45,
+          "horizon": "2028",
+          "falsifier": "Revenue growth sustains >30% YoY with expanding FCF through 2027"
+        },
+        {
+          "path": "His political-capital bets convert into durable regulatory advantage for portfolio",
+          "p": 0.35,
+          "horizon": "2028",
+          "falsifier": "No major portfolio company wins sole-source federal awards at scale"
+        }
+      ],
+      "dead_bodies": [
+        {
+          "name": "Clarium Capital",
+          "why": "His macro hedge fund: peaked ~$8B, right theses (oil, dollar) with wrong timing and sizing — proof that contrarian-truth doctrine does not transfer to liquid markets where timing is the whole game"
+        },
+        {
+          "name": "Friendster/MySpace",
+          "why": "The consensus social winners his Facebook check bet against — scale without verified identity was the dead end"
+        },
+        {
+          "name": "The VCs who passed on Palantir for a decade",
+          "why": "Not a company death but a category death: an entire asset class structurally unable to underwrite the state as customer"
+        }
+      ],
+      "lessons": [
+        "Size the check to the asymmetry, not the conviction: $500K/10% beats $50M/1% on the same insight",
+        "Unfashionable customers (government) are mispriced for structural reasons that persist for decades",
+        "Clarium is the honest record: the same brain lost in liquid markets — edge is domain-specific",
+        "Exit discipline: he sold Facebook at IPO and Palantir into the rerating — contrarian on the way out too"
+      ],
+      "body": "PayPal $55M + the Mafia network → Founders Fund + the angel network that seeded Web 2.0\nFacebook $500K → $1B+: asymmetry as doctrine ('what important truth do few agree with you on?')\nPalantir: government-as-customer when the Valley refused — same move as Musk's NASA, applied to software\nZero to One codifies it: competition is for losers, monopoly via secrets\nAnduril/defense-tech wave 2017→: his unfashionable-customer thesis becomes the consensus a decade later\nPolitical capital deployment 2016/2024 — the same contrarian sizing applied outside markets (cf:md on returns)",
+      "as_of": "2026-06-01",
+      "half_life_days": 365,
+      "signals": [],
+      "links": [
+        {
+          "to": "tree.oai",
+          "rel": "context"
+        },
+        {
+          "to": "tree.race",
+          "rel": "context"
+        },
+        {
+          "to": "window.defense-tech",
+          "rel": "context"
+        },
+        {
+          "to": "window.zirp-saas",
+          "rel": "context"
+        }
+      ],
+      "cf": "hi",
+      "review_after_months": 12
+    },
+    {
+      "id": "human.buffett",
+      "type": "human",
+      "title": "Warren Buffett",
+      "aliases": [
+        "Buffett"
+      ],
+      "tier": "C",
+      "domain": "Capital allocation / The anti-bet",
+      "bets": [
+        {
+          "yr": 1988,
+          "stake": {
+            "capital": "$1B into Coca-Cola — ~25% of Berkshire's book value",
+            "time": "held 38yr and counting",
+            "reputation": "value investor buying a 'fully priced' brand",
+            "control": "none"
+          },
+          "consensus_delta": "Post-Black-Monday 1987; Graham-school value orthodoxy said KO was too expensive. Buying quality at fair price over fair at cheap price was Munger's heresy, executed at conviction size",
+          "enabler": "Crash gave the entry; float from insurance operations gave permanent capital that could never be margin-called",
+          "thesis": "A durable consumer monopoly compounds untouched for decades; the holding period IS the edge",
+          "outcome": "The template position: ~16x plus dividends; the public proof that inactivity outcompounds activity",
+          "survival_mechanism": "Insurance float = leverage with no margin calls; the structure makes panic-selling impossible",
+          "anatomy": {
+            "stake": 4,
+            "asymmetry": 3,
+            "consensus": 3,
+            "timing": 4,
+            "control": 1,
+            "survival": 5
+          }
+        },
+        {
+          "yr": 2008,
+          "stake": {
+            "capital": "$20B+ deployed into Goldman/GE/BAC preferreds at the bottom",
+            "time": "weeks of deployment",
+            "reputation": "the last credible counterparty on earth",
+            "control": "preferred terms"
+          },
+          "consensus_delta": "October 2008: consensus was systemic collapse. He sold the put on American capitalism, in public, with terms only he could command (10% coupons + warrants)",
+          "enabler": "50 years of hoarded credibility + cash — the bet was prepared for decades before the moment existed",
+          "thesis": "Be greedy when others are fearful — executed as a structural advantage (his signature WAS the collateral)",
+          "outcome": "~$10B+ profit on the crisis deals; the reputational annuity compounded further",
+          "survival_mechanism": "Cash hoard criticized as drag for years was the option premium for this exact moment",
+          "anatomy": {
+            "stake": 4,
+            "asymmetry": 4,
+            "consensus": 4,
+            "timing": 5,
+            "control": 3,
+            "survival": 5
+          }
+        },
+        {
+          "yr": 2016,
+          "stake": {
+            "capital": "~$36B into Apple (peak position ~$170B+) — largest position in Berkshire history",
+            "time": "held",
+            "reputation": "the man who swore off tech for 50 years",
+            "control": "none"
+          },
+          "consensus_delta": "Mild — Apple was already loved. The contrarian act was internal: breaking his own circle-of-competence rule when the facts changed (iPhone = consumer staple with switching costs, not tech)",
+          "enabler": "Recategorization: Apple as Coca-Cola with a screen. The insight was taxonomic, not technical",
+          "thesis": "Ecosystem lock-in + buybacks = a consumer monopoly wearing a tech costume",
+          "outcome": "~$100B+ gain — the best single position in firm history, made past age 85",
+          "survival_mechanism": "Sized within float structure; trimmed 2024-25 into strength (cf:hi)",
+          "anatomy": {
+            "stake": 4,
+            "asymmetry": 3,
+            "consensus": 2,
+            "timing": 4,
+            "control": 1,
+            "survival": 5
+          }
+        }
+      ],
+      "chain": [
+        "Graham apprenticeship → cigar-butt value → Munger converts him to quality-at-scale",
+        "Insurance float (National Indemnity 1967) → permanent leverage no one can call — the structural invention everything rests on",
+        "Coca-Cola 1988 → the hold-forever template → 'our favorite holding period is forever'",
+        "Avoided dot-com entirely → mocked in 1999 ('lost his touch') → vindicated by 2002",
+        "2008: the prepared opportunist — credibility itself as the asset deployed",
+        "Apple 2016: rule-breaking at 86 when the categorization changed — the system updated, the discipline didn't",
+        "May 2025: announces handover; Abel CEO Jan 2026 — the 60-year compounding run ends on schedule"
+      ],
+      "current_state": {
+        "vintage": "2026-06",
+        "facts": [
+          "Stepped down as CEO end-2025; Greg Abel operating, Buffett remains chairman (cf:hi)",
+          "Berkshire cash position ~$350B at handover — the option premium at maximum, market at highs (cf:md)",
+          "Trimmed Apple substantially 2024-25; never bought NVIDIA or any AI name",
+          "The missing-the-AI-wave critique is identical in structure to the 1999 critique — resolution pending"
+        ]
+      },
+      "future_paths": [
+        {
+          "path": "Post-Buffett Berkshire trades at persistent conglomerate discount; breakup pressure by activists",
+          "p": 0.45,
+          "horizon": "2029",
+          "falsifier": "BRK matches or beats SPX over Abel's first 3 years"
+        },
+        {
+          "path": "The ~$350B cash is deployed into an AI-shakeout bottom — the 2008 playbook one more time, posthumously institutional",
+          "p": 0.4,
+          "horizon": "2028",
+          "falsifier": "Cash still >$300B with no major deployment after a >25% market drawdown"
+        },
+        {
+          "path": "The no-AI abstention is vindicated as the 1999 call repeated",
+          "p": 0.3,
+          "horizon": "2028",
+          "falsifier": "AI capex translates into durable >15% FCF growth at hyperscalers through 2028"
+        }
+      ],
+      "dead_bodies": [
+        {
+          "name": "Dexter Shoes",
+          "why": "Paid in Berkshire stock (1993) for a company that went to zero — his self-declared worst deal: the error wasn't the asset, it was the currency (~$10B+ in foregone BRK)"
+        },
+        {
+          "name": "IBM",
+          "why": "The failed first tech exception (2011-17): bought the incumbent narrative, exited flat — proof his Apple insight was taxonomy, not tech competence"
+        },
+        {
+          "name": "Berkshire Hathaway itself (textile mill)",
+          "why": "The original purchase was a value trap he ran for 20 years out of discipline-turned-stubbornness — named the whole vehicle after his worst habit as a reminder"
+        },
+        {
+          "name": "LTCM (the counter-ghost)",
+          "why": "Genius + leverage + illiquidity, 1998. The fund he almost bought at the bottom and didn't need to — the anti-Berkshire: brilliance with margin calls"
+        }
+      ],
+      "lessons": [
+        "The anti-bet IS a bet: 50 years of refusing what you don't understand is a position with carry costs, and he paid them publicly in 1999 and 2023-25",
+        "Float is the masterstroke: permanent leverage without margin calls — structure beats stock-picking",
+        "The 2008 trades were 50 years in preparation: hoarded credibility + cash = an option nobody else could write",
+        "Apple proves the system can update without breaking: the rule was never 'no tech,' it was 'no unknowable economics'"
+      ],
+      "body": "Graham apprenticeship → cigar-butt value → Munger converts him to quality-at-scale\nInsurance float (National Indemnity 1967) → permanent leverage no one can call — the structural invention everything rests on\nCoca-Cola 1988 → the hold-forever template → 'our favorite holding period is forever'\nAvoided dot-com entirely → mocked in 1999 ('lost his touch') → vindicated by 2002\n2008: the prepared opportunist — credibility itself as the asset deployed\nApple 2016: rule-breaking at 86 when the categorization changed — the system updated, the discipline didn't\nMay 2025: announces handover; Abel CEO Jan 2026 — the 60-year compounding run ends on schedule",
+      "as_of": "2026-06-01",
+      "half_life_days": 365,
+      "signals": [],
+      "links": [
+        {
+          "to": "tree.capex",
+          "rel": "context"
+        },
+        {
+          "to": "tree.gap",
+          "rel": "context"
+        },
+        {
+          "to": "window.zirp-saas",
+          "rel": "context"
+        }
+      ],
+      "cf": "hi",
+      "review_after_months": 12
+    },
+    {
+      "id": "human.zhang",
+      "type": "human",
+      "title": "Zhang Yiming",
+      "aliases": [
+        "Yiming"
+      ],
+      "tier": "C",
+      "domain": "Recommendation algorithms / Attention markets",
+      "bets": [
+        {
+          "yr": 2012,
+          "stake": {
+            "capital": "Founded ByteDance after 4 prior startups; SIG + Yuri Milner early backing",
+            "time": "9yr to stepping down",
+            "reputation": "serial founder, unproven at scale",
+            "control": "kept until 2021"
+          },
+          "consensus_delta": "2012 consensus: distribution = search (Baidu) or social graph (Tencent). A recommendation-first feed with no social graph and no search was considered a content farm",
+          "enabler": "Smartphone penetration in China crossing 50%; ML recommendation systems maturing; incumbents structurally unable to cannibalize their graph/search cash cows",
+          "thesis": "The algorithm IS the distribution: machine-learned interest graphs beat declared social graphs at capturing attention",
+          "outcome": "Toutiao → Douyin (2016) → Musical.ly acquisition $1B (2017) → TikTok: the largest attention arbitrage in history; first Chinese consumer product to win globally",
+          "survival_mechanism": "Multiple product shots on the same algorithmic engine; revenue from Chinese ads funded the global land grab",
+          "anatomy": {
+            "stake": 3,
+            "asymmetry": 5,
+            "consensus": 4,
+            "timing": 5,
+            "control": 4,
+            "survival": 3
+          }
+        },
+        {
+          "yr": 2021,
+          "stake": {
+            "capital": "Stepped down as CEO at 38 at the peak",
+            "time": "permanent",
+            "reputation": "traded visibility for survival",
+            "control": "retained economics, shed the title"
+          },
+          "consensus_delta": "Founders don't quit at the top. But Jack Ma's 2020 disappearance had just demonstrated what visible founder-power costs under Beijing's crackdown",
+          "enabler": "Reading the regulatory regime change one cycle ahead — the same pattern-recognition applied to politics",
+          "thesis": "In a state-power regime shift, the founder's visibility is a liability to the asset; step back before being stepped on",
+          "outcome": "ByteDance survived the crackdown intact while Alibaba/Didi/Ant were dismembered. Net worth ~$45B+ — richest Chinese founder (cf:md)",
+          "survival_mechanism": "The resignation WAS the mechanism",
+          "anatomy": {
+            "stake": 3,
+            "asymmetry": 3,
+            "consensus": 4,
+            "timing": 5,
+            "control": 2,
+            "survival": 5
+          }
+        }
+      ],
+      "chain": [
+        "4 failed/small startups → pattern: distribution is the game, content is fungible",
+        "Toutiao 2012: recommendation beats search/social for attention → engagement metrics incumbents can't match",
+        "Douyin 2016 + Musical.ly 2017: same engine, video form factor → TikTok global",
+        "US growth → CFIUS scrutiny 2019 → divest-or-ban law 2024 → US JV restructuring 2025 (Oracle/Silver Lake/MGX, cf:md)",
+        "2021: steps down ahead of crackdown — survives what dismembered Alibaba/Ant/Didi",
+        "The algorithm itself becomes contested sovereign asset: export-controlled by China, demanded by US — the first time a recommendation model is treated as strategic technology"
+      ],
+      "current_state": {
+        "vintage": "2026-06",
+        "facts": [
+          "ByteDance revenue >$150B (2024, cf:md) — rivals Meta; still private",
+          "TikTok US restructured into JV with US investors holding majority, algorithm licensed under Chinese export approval (cf:md)",
+          "Zhang largest individual shareholder ~20%; no operational role; based partly in Singapore",
+          "Doubao/AI push: ByteDance among the largest AI capex spenders in China (cf:md)"
+        ]
+      },
+      "future_paths": [
+        {
+          "path": "ByteDance IPO (HK or split listings) unlocks the largest private valuation overhang in the world",
+          "p": 0.4,
+          "horizon": "2028",
+          "falsifier": "Still private with no filed prospectus by end 2028"
+        },
+        {
+          "path": "Algorithm export-control regime hardens; recommendation models join chips as sovereign-controlled tech",
+          "p": 0.55,
+          "horizon": "2027",
+          "falsifier": "China removes recsys from export-control catalogue"
+        },
+        {
+          "path": "ByteDance wins a top-3 position in consumer AI agents on distribution alone",
+          "p": 0.35,
+          "horizon": "2028",
+          "falsifier": "Doubao MAU stagnates below WeChat-AI/Apple-AI equivalents through 2027"
+        }
+      ],
+      "dead_bodies": [
+        {
+          "name": "Vine",
+          "why": "Short video 4 years before Douyin, shut down 2017 by Twitter — the same product without a recommendation engine or monetization patience; form factor was never the moat"
+        },
+        {
+          "name": "Quibi",
+          "why": "$1.75B for premium short video 2020 — content-first, algorithm-absent; died in 6 months while TikTok grew through the same pandemic"
+        },
+        {
+          "name": "Renren/Kaixin001",
+          "why": "China's Facebook clones — bet the social graph in the market where the interest graph won"
+        },
+        {
+          "name": "Jack Ma (as cautionary trajectory)",
+          "why": "Not dead but dismembered: Ant IPO cancelled 48hr before listing, founder vanished from public life — the visible-founder cost Zhang's 2021 resignation was priced against"
+        }
+      ],
+      "lessons": [
+        "The interest graph beats the social graph — declared preferences lie, behavior doesn't; this is now every feed's architecture",
+        "Acquiring Musical.ly for its user base and porting the algorithm is the cleanest tech-transfer acquisition ever executed",
+        "Regulatory regime change is a slow variable readable years ahead: Zhang read 2020-21 Beijing correctly and traded title for survival",
+        "Attention is a commodity market with network effects — the first truly global Chinese consumer win came from the most culturally neutral asset: an algorithm"
+      ],
+      "body": "4 failed/small startups → pattern: distribution is the game, content is fungible\nToutiao 2012: recommendation beats search/social for attention → engagement metrics incumbents can't match\nDouyin 2016 + Musical.ly 2017: same engine, video form factor → TikTok global\nUS growth → CFIUS scrutiny 2019 → divest-or-ban law 2024 → US JV restructuring 2025 (Oracle/Silver Lake/MGX, cf:md)\n2021: steps down ahead of crackdown — survives what dismembered Alibaba/Ant/Didi\nThe algorithm itself becomes contested sovereign asset: export-controlled by China, demanded by US — the first time a recommendation model is treated as strategic technology",
+      "as_of": "2026-06-01",
+      "half_life_days": 365,
+      "signals": [],
+      "links": [
+        {
+          "to": "tree.smartphone",
+          "rel": "context"
+        },
+        {
+          "to": "tree.web",
+          "rel": "context"
+        },
+        {
+          "to": "tree.labor",
+          "rel": "context"
+        },
+        {
+          "to": "window.app-store-gold-rush",
+          "rel": "context"
+        },
+        {
+          "to": "window.meta-leverage-shift",
+          "rel": "context"
+        }
+      ],
+      "cf": "md",
+      "review_after_months": 6
+    },
+    {
+      "id": "human.hassabis",
+      "type": "human",
+      "title": "Demis Hassabis",
+      "aliases": [
+        "Hassabis"
+      ],
+      "tier": "P",
+      "domain": "AGI research / AI for science",
+      "bets": [
+        {
+          "yr": 2010,
+          "stake": {
+            "capital": "Founded DeepMind when 'AGI' was academic career suicide",
+            "time": "open-ended",
+            "reputation": "games prodigy + neuroscience PhD betting both on a fringe goal",
+            "control": "shared with Legg/Suleyman"
+          },
+          "consensus_delta": "2010: 'AGI' was a crank word. Serious ML people did narrow applications; saying 'general intelligence' out loud cost you funding and tenure. Thiel's Founders Fund wrote the first check precisely because it was unfundable elsewhere",
+          "enabler": "Deep learning's quiet pre-2012 progress; games as a legible benchmark ladder (Atari → Go); neuroscience framing as differentiation",
+          "thesis": "Intelligence is learnable by general algorithms; games provide the gradient of increasingly hard, measurable environments",
+          "outcome": "Atari DQN 2013 → the demo that triggered the 2014 acquisition bidding",
+          "survival_mechanism": "Thiel/Musk angel capital; London location (cheaper, defensible talent pool, away from Valley poaching)",
+          "anatomy": {
+            "stake": 4,
+            "asymmetry": 5,
+            "consensus": 5,
+            "timing": 4,
+            "control": 3,
+            "survival": 3
+          }
+        },
+        {
+          "yr": 2014,
+          "stake": {
+            "capital": "Sold to Google for ~$650M — pre-revenue, pre-product",
+            "time": "the rest of the mission",
+            "reputation": "sold out the mission, said critics",
+            "control": "negotiated ethics board + research autonomy"
+          },
+          "consensus_delta": "Founders don't sell the mission pre-product. But Hassabis priced what nobody else had: AGI research would need corporate-scale compute YEARS before scaling laws made this consensus (Kaplan 2020)",
+          "enabler": "Google's compute + Facebook's competing bid driving terms",
+          "thesis": "The mission requires compute that only a hyperscaler can provide; sell the company, keep the research agenda",
+          "outcome": "AlphaGo 2016 (the public shock), AlphaZero, AlphaFold 2020 — the compute-access trade paid in full",
+          "survival_mechanism": "Ethics board + autonomy terms; being in London kept operational independence from Mountain View",
+          "anatomy": {
+            "stake": 3,
+            "asymmetry": 4,
+            "consensus": 4,
+            "timing": 5,
+            "control": 3,
+            "survival": 5
+          }
+        },
+        {
+          "yr": 2018,
+          "stake": {
+            "capital": "Years of DeepMind credibility into protein folding — a 50-year grand challenge",
+            "time": "4yr to CASP14 win",
+            "reputation": "all of it",
+            "control": "full research control"
+          },
+          "consensus_delta": "Structural biology consensus: folding was decades away; an ML team without wet-lab pedigree winning CASP was considered absurd",
+          "enabler": "Transformer-era architectures + PDB's 50 years of open structural data + games-honed engineering culture",
+          "thesis": "AI does novel science, not just games — folding is the proof case with maximal scientific legibility",
+          "outcome": "CASP14 2020 effectively solved the problem; 200M+ structures released free; Nobel Prize in Chemistry 2024 — the first AI-native Nobel",
+          "survival_mechanism": "Google's patience capital; the games track record bought internal license for a moonshot",
+          "anatomy": {
+            "stake": 4,
+            "asymmetry": 5,
+            "consensus": 4,
+            "timing": 4,
+            "control": 4,
+            "survival": 4
+          }
+        }
+      ],
+      "chain": [
+        "Chess master at 13 → game design (Theme Park at 17) → neuroscience PhD: the intelligence obsession runs the whole arc",
+        "DeepMind 2010 with games-as-benchmark thesis → Atari DQN → Google acquisition 2014",
+        "The compute-access trade: sold equity, kept agenda — 6 years before scaling laws made the logic public",
+        "AlphaGo beats Lee Sedol 2016: 280M Chinese viewers; the event that triggered China's national AI strategy — a geopolitical chain-reaction from a board game",
+        "AlphaFold 2020 → Nobel 2024: AI does novel science, the thesis vindicated at the highest level",
+        "2023: merged with Google Brain into Google DeepMind, Hassabis runs all of Google's AI — the acquired founder now commands the acquirer's frontier effort",
+        "Isomorphic Labs spinout: folding → drug discovery, the commercial second act"
+      ],
+      "current_state": {
+        "vintage": "2026-06",
+        "facts": [
+          "CEO Google DeepMind: Gemini line is Google's frontier bet under his command",
+          "Nobel Chemistry 2024 (with Jumper) for AlphaFold",
+          "Isomorphic Labs raised $600M (2025); pharma partnerships with Lilly/Novartis (cf:hi)",
+          "Runs the only frontier lab inside a company that owns its full stack: TPUs, data, distribution"
+        ]
+      },
+      "future_paths": [
+        {
+          "path": "Isomorphic delivers an AI-designed drug candidate into Phase 2 — the AlphaFold-to-medicine chain completes",
+          "p": 0.45,
+          "horizon": "2029",
+          "falsifier": "No Isomorphic-originated candidate in human trials by end 2028"
+        },
+        {
+          "path": "Gemini line keeps Google in the top-2 of the frontier race on his research-first culture",
+          "p": 0.6,
+          "horizon": "2027",
+          "falsifier": "Gemini falls out of top-3 on independent capability evals for 2 consecutive cycles"
+        },
+        {
+          "path": "AI-for-science becomes the decade's compounding surprise (materials, fusion, biology) with DeepMind the central node",
+          "p": 0.5,
+          "horizon": "2030",
+          "falsifier": "No second Nobel-tier AI-native scientific result by 2030"
+        }
+      ],
+      "dead_bodies": [
+        {
+          "name": "Vicarious",
+          "why": "Neuroscience-inspired AGI lab, same era, same framing — raised $150M+, acquihired quietly by Alphabet 2022; the thesis without the games-benchmark discipline or the compute trade"
+        },
+        {
+          "name": "Numenta",
+          "why": "Jeff Hawkins' neuro-first intelligence research since 2005 — intellectually serious, never scaled; proof that the neuroscience framing alone was not the edge"
+        },
+        {
+          "name": "Cyc",
+          "why": "40 years of hand-coded symbolic knowledge — the pre-learning AGI bet; the graveyard that made 'AGI' a crank word DeepMind had to launder"
+        }
+      ],
+      "lessons": [
+        "The compute-access trade: he priced the scaling era 6 years early and paid for it with equity — selling can be the conviction move",
+        "Benchmark ladders (games → CASP) make fringe research legible to capital — measurability is a fundraising technology",
+        "AlphaGo shows demos are geopolitical events: one match triggered a national strategy in Beijing",
+        "Mission-preserving acquisition terms (ethics board, autonomy, London) are negotiable when two acquirers bid — auction dynamics buy independence"
+      ],
+      "body": "Chess master at 13 → game design (Theme Park at 17) → neuroscience PhD: the intelligence obsession runs the whole arc\nDeepMind 2010 with games-as-benchmark thesis → Atari DQN → Google acquisition 2014\nThe compute-access trade: sold equity, kept agenda — 6 years before scaling laws made the logic public\nAlphaGo beats Lee Sedol 2016: 280M Chinese viewers; the event that triggered China's national AI strategy — a geopolitical chain-reaction from a board game\nAlphaFold 2020 → Nobel 2024: AI does novel science, the thesis vindicated at the highest level\n2023: merged with Google Brain into Google DeepMind, Hassabis runs all of Google's AI — the acquired founder now commands the acquirer's frontier effort\nIsomorphic Labs spinout: folding → drug discovery, the commercial second act",
+      "as_of": "2026-06-01",
+      "half_life_days": 180,
+      "signals": [],
+      "links": [
+        {
+          "to": "tree.alexnet",
+          "rel": "context"
+        },
+        {
+          "to": "tree.corp",
+          "rel": "context"
+        },
+        {
+          "to": "tree.alphafold",
+          "rel": "context"
+        },
+        {
+          "to": "tree.transformer",
+          "rel": "context"
+        },
+        {
+          "to": "window.sovereign-ai",
+          "rel": "context"
+        }
+      ],
+      "cf": "hi",
+      "review_after_months": 6
+    },
+    {
+      "id": "human.sutskever",
+      "type": "human",
+      "title": "Ilya Sutskever",
+      "aliases": [
+        "Sutskever"
+      ],
+      "tier": "P",
+      "domain": "Deep learning / Scaling conviction",
+      "bets": [
+        {
+          "yr": 2012,
+          "stake": {
+            "capital": "PhD years on neural nets through the winter when the field had moved on",
+            "time": "decade of unfashionable work",
+            "reputation": "Hinton's student in a dismissed subfield",
+            "control": "n/a"
+          },
+          "consensus_delta": "2000s ML consensus: neural nets were a dead end — SVMs and graphical models won the benchmarks and the citations",
+          "enabler": "GPUs crossing the throughput threshold; ImageNet providing the scoreboard; Hinton's lab as the last redoubt",
+          "thesis": "Neural networks fail only for scale reasons; with enough compute and data they win everything",
+          "outcome": "AlexNet (with Krizhevsky, under Hinton): top-5 error 26.2%→15.3% — the discontinuity that started the modern era. Google acquires the 3-person 'company' for ~$44M",
+          "survival_mechanism": "Academic shelter (Hinton's lab, CIFAR funding) through the winter",
+          "anatomy": {
+            "stake": 3,
+            "asymmetry": 5,
+            "consensus": 5,
+            "timing": 5,
+            "control": 2,
+            "survival": 4
+          }
+        },
+        {
+          "yr": 2015,
+          "stake": {
+            "capital": "Left Google Brain's certainty for OpenAI co-founder/chief scientist",
+            "time": "8yr",
+            "reputation": "the AlexNet name lent the nonprofit its scientific credibility",
+            "control": "research direction, not governance"
+          },
+          "consensus_delta": "Leaving Google's resources for a nonprofit was considered career mismanagement; 'AGI within decades' was still a fringe position even post-AlexNet",
+          "enabler": "Musk/Altman capital; the scaling intuition that bigger was not yet priced in anywhere",
+          "thesis": "Scale is the algorithm: predict-the-next-token at sufficient size yields general capability",
+          "outcome": "GPT line under his research direction: GPT-2→3→4 — the scaling conviction became the industry's organizing principle",
+          "survival_mechanism": "Microsoft capital (2019) arrived when the nonprofit structure hit its funding ceiling",
+          "anatomy": {
+            "stake": 4,
+            "asymmetry": 5,
+            "consensus": 4,
+            "timing": 5,
+            "control": 2,
+            "survival": 3
+          }
+        },
+        {
+          "yr": 2023,
+          "stake": {
+            "capital": "Joined the board action removing Altman — Nov 2023",
+            "time": "72 hours",
+            "reputation": "spent nearly all of it",
+            "control": "discovered he had none"
+          },
+          "consensus_delta": "The governance structure said the board could fire the CEO; the capital structure (Microsoft, employees' equity) said otherwise. He bet on paper authority against money gravity",
+          "enabler": "Nonprofit board's formal power — which proved to be the fiction",
+          "thesis": "Safety governance should bind commercial velocity when they conflict",
+          "outcome": "Total reversal in 72 hours: 95% of employees threatened to walk, Altman returned, Sutskever recanted publicly, board dissolved. The clearest natural experiment ever run on where power actually lives in an AI lab",
+          "survival_mechanism": "None — the failed bet; he left within months",
+          "anatomy": {
+            "stake": 5,
+            "asymmetry": 1,
+            "consensus": 3,
+            "timing": 1,
+            "control": 1,
+            "survival": 2
+          }
+        },
+        {
+          "yr": 2024,
+          "stake": {
+            "capital": "Founded SSI (Safe Superintelligence Inc) — no product, no revenue, by design",
+            "time": "open",
+            "reputation": "the last pure conviction asset in the field",
+            "control": "full"
+          },
+          "consensus_delta": "A lab that pledges to ship NOTHING until superintelligence is safe — no API, no products, no interim revenue — is either the only honest position or the largest tuition payment in venture history",
+          "enabler": "His name alone: $1B at founding, ~$30B+ valuation by 2025 (cf:md) with zero disclosed work",
+          "thesis": "Straight-shot superintelligence: skip the product treadmill entirely; one team, one goal, no commercial distraction",
+          "outcome": "Open. The purest experiment in conviction-as-asset ever run",
+          "survival_mechanism": "Burn discipline + investors who underwrote the no-product pledge knowingly",
+          "anatomy": {
+            "stake": 4,
+            "asymmetry": 5,
+            "consensus": 4,
+            "timing": 3,
+            "control": 5,
+            "survival": 2
+          }
+        }
+      ],
+      "chain": [
+        "Hinton's lab through the neural winter → AlexNet 2012: present at the founding discontinuity",
+        "Google Brain: seq2seq (2014) — the line that leads to attention and the Transformer",
+        "OpenAI 2015: scaling conviction institutionalized → GPT-2/3/4 under his research direction",
+        "Nov 2023 board action: the governance bet, lost in 72 hours — paper power vs capital gravity, settled empirically",
+        "SSI 2024: conviction distilled to its purest form — $30B+ valuation on zero product (cf:md)",
+        "The only person present at all three eras: the breakthrough (2012), the scaling (2019-23), and whatever comes next"
+      ],
+      "current_state": {
+        "vintage": "2026-06",
+        "facts": [
+          "SSI valued ~$30B+ (2025 reporting, cf:md); zero products, zero papers, zero API by design",
+          "Recruiting against labs paying $10M+ packages with a no-liquidity, no-product pitch — and getting researchers",
+          "Said to be pursuing non-transformer scaling directions (pure speculation in public domain, cf:lo)",
+          "The Nov 2023 episode remains the canonical case study in AI-lab governance impotence"
+        ]
+      },
+      "future_paths": [
+        {
+          "path": "SSI ships nothing and is acquihired — the conviction premium decays into a talent transaction",
+          "p": 0.35,
+          "horizon": "2028",
+          "falsifier": "SSI releases a model, product, or major research result"
+        },
+        {
+          "path": "SSI raises again at >$60B still without product — conviction-as-asset keeps compounding",
+          "p": 0.4,
+          "horizon": "2027",
+          "falsifier": "Next raise flat/down or structure converts toward productization"
+        },
+        {
+          "path": "The straight-shot thesis is right and SSI emerges with a frontier-surpassing system",
+          "p": 0.1,
+          "horizon": "2030",
+          "falsifier": "Frontier labs' deployed systems exceed SSI's first public result"
+        }
+      ],
+      "dead_bodies": [
+        {
+          "name": "Element AI",
+          "why": "Research-celebrity lab (Bengio-affiliated), $250M+ raised, no product discipline — fire-sold to ServiceNow for parts in 2020; the research-brand-without-product path SSI is explicitly gambling against"
+        },
+        {
+          "name": "The OpenAI nonprofit board (Nov 2023)",
+          "why": "Not a company but a structure: formal governance authority evaporated on contact with capital — the death that taught Sutskever what SSI's full-control structure now encodes"
+        },
+        {
+          "name": "Covariant",
+          "why": "Top-tier research founders (Abbeel et al.), robotics AI — absorbed by Amazon 2024 in a licensing-acquihire; the gravity SSI must escape"
+        }
+      ],
+      "lessons": [
+        "Being right early pays only at the discontinuity: the neural-net conviction was worthless for a decade, then priceless in one afternoon",
+        "Nov 2023 is the empirical answer to 'who governs AI labs': capital and talent, not boards — he paid full tuition for everyone to learn it",
+        "SSI inverts every lesson of the product era: if conviction is the scarcest asset, price it directly — zero product as a feature",
+        "The three-era presence (2012/2019/2024) is itself the signal: when he moves, the field's center of gravity is announcing itself"
+      ],
+      "body": "Hinton's lab through the neural winter → AlexNet 2012: present at the founding discontinuity\nGoogle Brain: seq2seq (2014) — the line that leads to attention and the Transformer\nOpenAI 2015: scaling conviction institutionalized → GPT-2/3/4 under his research direction\nNov 2023 board action: the governance bet, lost in 72 hours — paper power vs capital gravity, settled empirically\nSSI 2024: conviction distilled to its purest form — $30B+ valuation on zero product (cf:md)\nThe only person present at all three eras: the breakthrough (2012), the scaling (2019-23), and whatever comes next",
+      "as_of": "2026-06-01",
+      "half_life_days": 180,
+      "signals": [],
+      "links": [
+        {
+          "to": "tree.alexnet",
+          "rel": "context"
+        },
+        {
+          "to": "tree.oai",
+          "rel": "context"
+        },
+        {
+          "to": "tree.laws",
+          "rel": "context"
+        },
+        {
+          "to": "tree.gpt3",
+          "rel": "context"
+        },
+        {
+          "to": "tree.reasoning",
+          "rel": "context"
+        },
+        {
+          "to": "window.acquihire-signal",
+          "rel": "context"
+        },
+        {
+          "to": "window.sovereign-ai",
+          "rel": "context"
+        }
+      ],
+      "cf": "md",
+      "review_after_months": 6
+    },
+    {
+      "id": "human.amodei",
+      "type": "human",
+      "title": "Dario Amodei",
+      "aliases": [
+        "Amodei"
+      ],
+      "tier": "P",
+      "domain": "Scaling laws / Safety as strategy",
+      "bets": [
+        {
+          "yr": 2016,
+          "stake": {
+            "capital": "Left Google for OpenAI to lead safety+scaling research",
+            "time": "5yr",
+            "reputation": "physicist-turned-ML-researcher",
+            "control": "research lead, no governance"
+          },
+          "consensus_delta": "Empirical scaling research was unglamorous engineering when the field chased architectures; 'predictable capability from compute' sounded like an accounting exercise, not science",
+          "enabler": "OpenAI's compute commitment; GPT-1/2 as the testbed",
+          "thesis": "Capability is a smooth, predictable function of compute, data, and parameters — measure it, then bet on the curve",
+          "outcome": "GPT-2/GPT-3 scaling work (with Kaplan et al. 2020): the paper class that made $100B datacenters underwritable — you cannot finance a miracle, you can finance a power law",
+          "survival_mechanism": "The results were immediately load-bearing for the org's fundraising — indispensability as job security",
+          "anatomy": {
+            "stake": 3,
+            "asymmetry": 4,
+            "consensus": 4,
+            "timing": 5,
+            "control": 2,
+            "survival": 4
+          }
+        },
+        {
+          "yr": 2021,
+          "stake": {
+            "capital": "Left OpenAI with 6 senior colleagues incl. sister Daniela to found Anthropic",
+            "time": "open-ended",
+            "reputation": "walking out of the leading lab on a disagreement",
+            "control": "CEO, with structure (LTBT) designed from his Nov-2023-avoidant priors"
+          },
+          "consensus_delta": "'A safety-focused lab' read as a niche nonprofit play; the consensus was that being second-mover in frontier models with LESS capital was structurally doomed",
+          "enabler": "The scaling laws he co-wrote: he knew exactly what compute would buy; safety differentiation as enterprise positioning was unpriced",
+          "thesis": "Safety and capability are complements at the frontier — enterprises will pay for the trustworthy frontier model; constraint is a moat",
+          "outcome": "Claude line; ~$1B → ~$30B ARR in roughly 15 months (2025-26, cf:md) — fastest enterprise software ramp on record, dominated by coding",
+          "survival_mechanism": "Google then Amazon ($8B) compute deals — renting the hyperscaler rivalry instead of being owned by one side",
+          "anatomy": {
+            "stake": 4,
+            "asymmetry": 5,
+            "consensus": 3,
+            "timing": 5,
+            "control": 4,
+            "survival": 4
+          }
+        },
+        {
+          "yr": 2024,
+          "stake": {
+            "capital": "Bet the company on code: Claude optimized for software engineering over consumer chat",
+            "time": "2yr",
+            "reputation": "staked on enterprise over virality",
+            "control": "full"
+          },
+          "consensus_delta": "Consumer chat was the visible market (ChatGPT's 100M users); coding looked like a feature, not the wedge. It was the wedge: highest willingness-to-pay, clearest eval, fastest feedback loop",
+          "enabler": "Code is the one domain where output is machine-verifiable — RL on verifiable rewards compounds fastest exactly there",
+          "thesis": "The first durable AI labor market is software labor; win the developers and the enterprise follows",
+          "outcome": "Claude Code + API coding dominance drove the ARR ramp; competitor labs reoriented to follow (cf:md)",
+          "survival_mechanism": "Enterprise contracts = revenue durability consumer chat never had",
+          "anatomy": {
+            "stake": 4,
+            "asymmetry": 4,
+            "consensus": 3,
+            "timing": 5,
+            "control": 4,
+            "survival": 3
+          }
+        }
+      ],
+      "chain": [
+        "Physics PhD → Baidu (speech, with Ng) → Google → OpenAI: the empiricist arc",
+        "Scaling laws 2020: the financeable power law — the intellectual artifact under the entire capex supercycle",
+        "2021: walks with the team that believed the curve AND feared it — Anthropic as the hedged-conviction structure",
+        "Claude + constitutional AI: safety as product feature, not tax",
+        "Compute deals with BOTH Google and Amazon: the rented-neutrality move",
+        "Coding wedge 2024-25 → ~$30B ARR (cf:md): the fastest enterprise ramp ever, built on the most verifiable domain",
+        "'Machines of Loving Grace' + public compute-curve essays: the founder as the field's macro forecaster"
+      ],
+      "current_state": {
+        "vintage": "2026-06",
+        "facts": [
+          "Anthropic ARR ~$30B (mid-2026 reporting, cf:md), heavily enterprise/coding",
+          "Valuation ~$350B region in latest round (cf:md)",
+          "Compute: multi-cloud (AWS Trainium + Google TPU) — deliberately unowned by either",
+          "Publicly forecasting AI-driven labor displacement while selling the displacing tool — the tension is the brand"
+        ]
+      },
+      "future_paths": [
+        {
+          "path": "Anthropic IPO or mega-round at >$500B as enterprise AI consolidates to a duopoly with OpenAI",
+          "p": 0.45,
+          "horizon": "2027",
+          "falsifier": "ARR growth decelerates below 50% YoY or enterprise share erodes to a third player"
+        },
+        {
+          "path": "The coding moat erodes as verifiable-RL commoditizes across labs",
+          "p": 0.4,
+          "horizon": "2027",
+          "falsifier": "Claude retains >40% of AI-coding-agent market on independent telemetry through 2027"
+        },
+        {
+          "path": "Safety differentiation becomes regulatory advantage: compliance regimes effectively mandate Anthropic-style practices",
+          "p": 0.35,
+          "horizon": "2028",
+          "falsifier": "Major AI regulation passes with no audit/safety-case requirements resembling its practices"
+        }
+      ],
+      "dead_bodies": [
+        {
+          "name": "Inflection AI",
+          "why": "Same vintage, consumer-first (Pi), $1.5B raised — team absorbed by Microsoft Mar 2024 in the original pseudo-acquihire; the consumer-empathy bet against the enterprise-verifiability bet, settled"
+        },
+        {
+          "name": "Adept",
+          "why": "Agents-first before models could support agents; absorbed by Amazon 2024 — right thesis, one model generation early; timing IS the thesis again"
+        },
+        {
+          "name": "Character.AI",
+          "why": "Consumer engagement king (chat companions) — founders licensed back to Google 2024; engagement without enterprise willingness-to-pay was a dead end at frontier cost structures"
+        }
+      ],
+      "lessons": [
+        "Write the curve, then trade on it: the scaling-laws authors were the best-positioned actors of the decade — proprietary macro research as career capital",
+        "Constraint as moat: 'we won't ship X' converts into 'enterprises trust us with X' — the safety tax inverted into pricing power",
+        "Multi-cloud compute neutrality: rent the rivalry between your potential owners; never let one own your substrate",
+        "Pick the domain where output is verifiable (code): RL compounds fastest where reward is cleanest — domain selection beat model superiority"
+      ],
+      "body": "Physics PhD → Baidu (speech, with Ng) → Google → OpenAI: the empiricist arc\nScaling laws 2020: the financeable power law — the intellectual artifact under the entire capex supercycle\n2021: walks with the team that believed the curve AND feared it — Anthropic as the hedged-conviction structure\nClaude + constitutional AI: safety as product feature, not tax\nCompute deals with BOTH Google and Amazon: the rented-neutrality move\nCoding wedge 2024-25 → ~$30B ARR (cf:md): the fastest enterprise ramp ever, built on the most verifiable domain\n'Machines of Loving Grace' + public compute-curve essays: the founder as the field's macro forecaster",
+      "as_of": "2026-06-01",
+      "half_life_days": 180,
+      "signals": [],
+      "links": [
+        {
+          "to": "tree.laws",
+          "rel": "context"
+        },
+        {
+          "to": "tree.oai",
+          "rel": "context"
+        },
+        {
+          "to": "tree.anthropic-ramp",
+          "rel": "context"
+        },
+        {
+          "to": "tree.agentic-shift",
+          "rel": "context"
+        },
+        {
+          "to": "tree.reasoning",
+          "rel": "context"
+        },
+        {
+          "to": "window.agentic-vertical",
+          "rel": "context"
+        },
+        {
+          "to": "window.acquihire-signal",
+          "rel": "context"
+        }
+      ],
+      "cf": "md",
+      "review_after_months": 6
+    },
+    {
+      "id": "human.su",
+      "type": "human",
+      "title": "Lisa Su",
+      "aliases": [
+        "Su"
+      ],
+      "tier": "P",
+      "domain": "Semiconductors / Turnaround engineering",
+      "bets": [
+        {
+          "yr": 2014,
+          "stake": {
+            "capital": "Took AMD CEO with stock ~$2 and bankruptcy rumors priced in",
+            "time": "decade",
+            "reputation": "IBM-pedigree engineer taking the industry's poisoned chalice",
+            "control": "full operational"
+          },
+          "consensus_delta": "'AMD is structurally dead' was consensus: x86 duopoly loser, fabs sold, console-margin business, $2.2B debt. The job itself was considered career-ending",
+          "enabler": "Intel's coming process stumbles (10nm) were not yet visible; TSMC's rise meant fabless AMD could ride someone else's process leadership for the first time",
+          "thesis": "One great architecture (Zen), no hedges, chiplet economics: small dies = yield advantage that monolithic Intel cannot structurally match",
+          "outcome": "Zen 2017 → datacenter share from ~0% to >30%; stock ~$2 → ~50-100x over the decade; Intel — the 'safe' giant — became the cautionary tale instead",
+          "survival_mechanism": "Console semi-custom revenue (Sony/Microsoft) as the cash bridge through the 3-year Zen development valley",
+          "anatomy": {
+            "stake": 4,
+            "asymmetry": 4,
+            "consensus": 4,
+            "timing": 4,
+            "control": 3,
+            "survival": 4
+          }
+        },
+        {
+          "yr": 2022,
+          "stake": {
+            "capital": "$49B all-stock Xilinx acquisition — largest semi deal then closed",
+            "time": "integration years",
+            "reputation": "turnaround complete, now empire-building",
+            "control": "full"
+          },
+          "consensus_delta": "Mild contrarianism — FPGA+CPU synergy was questioned but not ridiculed",
+          "enabler": "Stock-as-currency after the rerating; data-center heterogeneous-compute thesis",
+          "thesis": "Adaptive computing (FPGA) + CPU + GPU under one roof = the full datacenter silicon menu",
+          "outcome": "Embedded segment cushioned the 2022-23 PC downturn; AI era made the full-menu thesis more valuable",
+          "survival_mechanism": "All-stock structure — no leverage taken into the cycle",
+          "anatomy": {
+            "stake": 3,
+            "asymmetry": 3,
+            "consensus": 2,
+            "timing": 3,
+            "control": 4,
+            "survival": 4
+          }
+        },
+        {
+          "yr": 2023,
+          "stake": {
+            "capital": "MI300/350/400 line + ROCm software push against CUDA's 15-year moat",
+            "time": "ongoing",
+            "reputation": "the second act: from beating a stumbling Intel to attacking a peaking NVIDIA",
+            "control": "full"
+          },
+          "consensus_delta": "Consensus: CUDA lock-in is unbreakable; AMD is the permanent #2 taking scraps. The bet: at $200B+/yr of AI capex, customers will FUND a second source into existence",
+          "enabler": "Hyperscalers' monopsony fear of NVIDIA; PyTorch/Triton abstraction layers eroding CUDA's API lock; OpenAI/Oracle multi-GW AMD commitments 2025 (cf:md)",
+          "thesis": "Buyers with $100B budgets do not tolerate a sole supplier; be the credible alternative when the dam breaks",
+          "outcome": "Open: MI-line revenue multi-billion and growing; OpenAI warrant deal 2025 aligned the biggest customer with AMD equity upside (cf:md)",
+          "survival_mechanism": "CPU/embedded businesses fund the GPU assault indefinitely — she can lose for years and stay",
+          "anatomy": {
+            "stake": 4,
+            "asymmetry": 4,
+            "consensus": 3,
+            "timing": 3,
+            "control": 4,
+            "survival": 4
+          }
+        }
+      ],
+      "chain": [
+        "MIT PhD (SOI research) → IBM (copper interconnect era) → Freescale → AMD 2012, CEO 2014",
+        "Zen bet: one architecture, no hedge, console cash as the bridge",
+        "Chiplets: yield economics as architecture — the structural advantage Intel's monolithic dies couldn't answer",
+        "Intel's 10nm/7nm stumbles open the door exactly as Zen matures: prepared luck",
+        "Datacenter share 0→30%+; the $2 stock becomes a top-10 semi company",
+        "Xilinx 2022 → full-menu silicon → AI era: MI-line + ROCm assault on CUDA",
+        "2025: OpenAI/Oracle gigawatt-scale AMD commitments — customers funding the second source into existence (cf:md)"
+      ],
+      "current_state": {
+        "vintage": "2026-06",
+        "facts": [
+          "MI400 generation shipping; AI accelerator revenue multi-billion/yr but still <15% of NVIDIA's (cf:md)",
+          "OpenAI warrant structure: customer equity-aligned with AMD's success (cf:md)",
+          "ROCm maturity remains the honest gap vs CUDA — software, not silicon, is the moat being assaulted",
+          "Named among likely Intel-crisis beneficiaries as US pushes second-source policy (cf:lo)"
+        ]
+      },
+      "future_paths": [
+        {
+          "path": "AMD takes >20% of AI accelerator market as hyperscalers enforce dual-sourcing",
+          "p": 0.35,
+          "horizon": "2028",
+          "falsifier": "MI-line share still <10% of accelerator revenue exiting 2027"
+        },
+        {
+          "path": "CUDA moat erodes via compiler/framework abstraction (PyTorch/Triton/MLIR) faster than expected",
+          "p": 0.4,
+          "horizon": "2028",
+          "falsifier": "ROCm-targeted workloads remain <15% of open-framework deployments through 2027"
+        },
+        {
+          "path": "The turnaround playbook gets a third act: Su recruited into an Intel-rescue or national-champion role",
+          "p": 0.15,
+          "horizon": "2028",
+          "falsifier": "She publicly recommits to AMD through the decade / no approach reported"
+        }
+      ],
+      "dead_bodies": [
+        {
+          "name": "Graphcore",
+          "why": "Right market (AI accelerators), real silicon, $700M raised — sold to SoftBank for parts 2024; proof that against an ecosystem moat, good chips without software gravity die"
+        },
+        {
+          "name": "Wave Computing",
+          "why": "Dataflow AI-chip pioneer, bankrupt 2020 — first-mover in AI silicon means nothing without a customer bridge to survive the development valley (Su's console revenue was exactly that bridge)"
+        },
+        {
+          "name": "Intel (as living cautionary)",
+          "why": "The incumbent that lost by NOT betting: hedged architectures, kept fabs, missed mobile AND AI, process stumbles 10nm/7nm — the anti-Zen: every option kept open, every battle lost"
+        },
+        {
+          "name": "Opteron-era AMD (internal ghost)",
+          "why": "AMD had beaten Intel before (2003-06) and squandered it via the ATI debt and fab burden — the institutional memory that shaped the fabless, focused, no-hedge 2014 rebuild"
+        }
+      ],
+      "lessons": [
+        "Turnarounds are architecture bets with cash bridges: Zen + console revenue — the bet AND the survival mechanism designed together",
+        "Chiplets: when you can't outspend, change the yield math — economics embedded in architecture",
+        "The Intel counterfactual is the registry's cleanest lesson: hedging every option is the riskiest position",
+        "Second-source dynamics: at sufficient buyer scale, customers will finance your existence — position as the credible alternative and wait for monopsony fear"
+      ],
+      "body": "MIT PhD (SOI research) → IBM (copper interconnect era) → Freescale → AMD 2012, CEO 2014\nZen bet: one architecture, no hedge, console cash as the bridge\nChiplets: yield economics as architecture — the structural advantage Intel's monolithic dies couldn't answer\nIntel's 10nm/7nm stumbles open the door exactly as Zen matures: prepared luck\nDatacenter share 0→30%+; the $2 stock becomes a top-10 semi company\nXilinx 2022 → full-menu silicon → AI era: MI-line + ROCm assault on CUDA\n2025: OpenAI/Oracle gigawatt-scale AMD commitments — customers funding the second source into existence (cf:md)",
+      "as_of": "2026-06-01",
+      "half_life_days": 180,
+      "signals": [],
+      "links": [
+        {
+          "to": "tree.moore",
+          "rel": "context"
+        },
+        {
+          "to": "tree.bottleneck",
+          "rel": "context"
+        },
+        {
+          "to": "tree.memory-supercycle",
+          "rel": "context"
+        },
+        {
+          "to": "tree.tsmc-foundry",
+          "rel": "context"
+        },
+        {
+          "to": "window.memory-supercycle",
+          "rel": "context"
+        },
+        {
+          "to": "window.reshoring-chips",
+          "rel": "context"
+        }
+      ],
+      "cf": "hi",
+      "review_after_months": 6
+    },
+    {
+      "id": "human.keller",
+      "type": "human",
+      "title": "Jim Keller",
+      "aliases": [
+        "Keller"
+      ],
+      "tier": "P",
+      "domain": "Chip architecture / Human capital as the slow variable",
+      "bets": [
+        {
+          "yr": 1998,
+          "stake": {
+            "capital": "Career repeatedly staked on 'the architecture is wrong, let me rebuild it'",
+            "time": "2-4yr per institution",
+            "reputation": "recompiled each time",
+            "control": "technical, never corporate"
+          },
+          "consensus_delta": "At each stop the consensus was institutional: the existing roadmap is fine. His pattern: it isn't, and the rebuild takes fewer people than you think",
+          "enabler": "DEC Alpha training (the finest CPU school ever assembled, dissolved into the industry when DEC died)",
+          "thesis": "Small senior teams rebuilding from first principles beat large teams iterating on legacy",
+          "outcome": "AMD K7/K8 (Athlon/Opteron — first to beat Intel, x86-64 ISA that Intel was forced to adopt), Apple A4/A5 (iPhone silicon foundation), AMD Zen (with Su), Tesla FSD chip, Intel (left when politics beat physics), Tenstorrent CEO",
+          "survival_mechanism": "Reputation portable across institutions — the only chip architect whose personal brand exceeds every employer's",
+          "anatomy": {
+            "stake": 3,
+            "asymmetry": 4,
+            "consensus": 3,
+            "timing": 4,
+            "control": 3,
+            "survival": 5
+          }
+        },
+        {
+          "yr": 2016,
+          "stake": {
+            "capital": "Left AMD mid-Zen-glory for Tesla autopilot hardware — a car company with no silicon team",
+            "time": "2yr",
+            "reputation": "staked on automotive silicon being a real category",
+            "control": "built the team from zero"
+          },
+          "consensus_delta": "Car companies buy chips, they don't design them — Mobileye/NVIDIA had the market. The bet: vertical integration would reach silicon, and inference-per-watt would be the binding constraint",
+          "enabler": "Musk's appetite for vertical integration; NPU design space wide open in 2016",
+          "thesis": "Custom inference silicon at the edge beats general-purpose — design for the exact workload",
+          "outcome": "Tesla FSD chip (2019): 21x Mobileye performance claim at launch; validated the custom-AI-silicon path every hyperscaler then followed",
+          "survival_mechanism": "Two-year project scope — in, build, ship, out before institutional decay",
+          "anatomy": {
+            "stake": 3,
+            "asymmetry": 4,
+            "consensus": 3,
+            "timing": 4,
+            "control": 3,
+            "survival": 5
+          }
+        },
+        {
+          "yr": 2021,
+          "stake": {
+            "capital": "CEO of Tenstorrent — first time running the company, not the design",
+            "time": "open",
+            "reputation": "all of it, in the hardest market (NVIDIA's shadow)",
+            "control": "full"
+          },
+          "consensus_delta": "AI-chip startups were already a graveyard by 2021 (Wave dead, Graphcore dying). The bet: RISC-V openness + licensing model + chiplets = survive where closed full-stack challengers died",
+          "enabler": "RISC-V maturity; Samsung/Hyundai/Bezos capital ($700M+ raised, ~$2.6B valuation 2024, cf:md); sovereign-AI customers wanting non-NVIDIA, non-US-locked options",
+          "thesis": "Sell licensable, open AI compute building blocks — be the Arm of AI silicon, not the next NVIDIA",
+          "outcome": "Open: design wins in Japan (Rapidus/LSTC), automotive, edge (cf:md); the licensing model is the differentiated survival path",
+          "survival_mechanism": "IP licensing revenue arrives before silicon volume — the model funds the assault",
+          "anatomy": {
+            "stake": 4,
+            "asymmetry": 4,
+            "consensus": 3,
+            "timing": 2,
+            "control": 5,
+            "survival": 3
+          }
+        }
+      ],
+      "chain": [
+        "DEC Alpha (the school) → AMD K7/K8: x86-64 — Intel forced to adopt AMD's ISA, the deepest humiliation available",
+        "SiByte/PA Semi → Apple: A4/A5 — the silicon foundation of the iPhone moat",
+        "AMD again 2012-15: Zen with Su — the turnaround's technical core",
+        "Tesla 2016-18: FSD chip — proved custom edge-AI silicon; every hyperscaler's custom-chip program follows the template",
+        "Intel 2018-20: the one that didn't work — politics as the un-debuggable system; left",
+        "Tenstorrent 2021→: RISC-V licensing model; the architect finally owns the company",
+        "The meta-pattern: institutions decay, craft compounds — he is the control group proving talent, not org, was the variable"
+      ],
+      "current_state": {
+        "vintage": "2026-06",
+        "facts": [
+          "Tenstorrent: $700M+ raised (Samsung, Bezos Expeditions, Hyundai); ~$2.6B+ valuation (cf:md)",
+          "Licensing + chiplet strategy; Japan sovereign-silicon partnerships (cf:md)",
+          "Publicly argues CUDA moat is overrated and compilers will commoditize it — talking his book, with credentials",
+          "Every major CPU/AI lineage of 30 years carries his fingerprints: Athlon, x86-64, Apple A-series, Zen, FSD"
+        ]
+      },
+      "future_paths": [
+        {
+          "path": "Tenstorrent wins a sovereign or edge niche large enough to sustain the licensing model independently",
+          "p": 0.35,
+          "horizon": "2028",
+          "falsifier": "No design win shipping >100K units/yr equivalent by end 2027"
+        },
+        {
+          "path": "RISC-V cracks the datacenter AI duopoly as the open ISA for custom accelerators",
+          "p": 0.35,
+          "horizon": "2030",
+          "falsifier": "RISC-V remains <5% of datacenter AI silicon by 2029"
+        },
+        {
+          "path": "Acquired by a sovereign-backed or hyperscaler buyer needing instant silicon credibility",
+          "p": 0.4,
+          "horizon": "2028",
+          "falsifier": "Still independent past 2028"
+        }
+      ],
+      "dead_bodies": [
+        {
+          "name": "Transmeta",
+          "why": "The most brilliant team of its era (incl. Torvalds), betting x86 translation — technically gorgeous, commercially dead 2009; brilliance without a wedge customer is art, not business"
+        },
+        {
+          "name": "DEC",
+          "why": "His alma mater: the best CPU team ever assembled, killed by corporate strategy failure above the engineering line — the original lesson that institutions, not architectures, are the mortal layer"
+        },
+        {
+          "name": "Intel's internal projects post-2020",
+          "why": "What he left behind: the institutional-decay counterfactual he keeps escaping — roadmaps owned by committees outlive the engineers who could have fixed them"
+        }
+      ],
+      "lessons": [
+        "The human is the slow variable: institutions decayed around him for 30 years while his craft compounded — bet on people whose skills transfer, not orgs whose moats decay",
+        "Two-to-four-year project scoping: in, rebuild, ship, leave before politics — tenure design as a career strategy",
+        "x86-64 lesson: the insurgent can set the standard the incumbent is forced to adopt — architecture as leverage",
+        "His Tenstorrent structure (licensing, open ISA) encodes every prior lesson: own the company, keep the model capital-light, sell to those locked out of the duopoly"
+      ],
+      "body": "DEC Alpha (the school) → AMD K7/K8: x86-64 — Intel forced to adopt AMD's ISA, the deepest humiliation available\nSiByte/PA Semi → Apple: A4/A5 — the silicon foundation of the iPhone moat\nAMD again 2012-15: Zen with Su — the turnaround's technical core\nTesla 2016-18: FSD chip — proved custom edge-AI silicon; every hyperscaler's custom-chip program follows the template\nIntel 2018-20: the one that didn't work — politics as the un-debuggable system; left\nTenstorrent 2021→: RISC-V licensing model; the architect finally owns the company\nThe meta-pattern: institutions decay, craft compounds — he is the control group proving talent, not org, was the variable",
+      "as_of": "2026-06-01",
+      "half_life_days": 180,
+      "signals": [],
+      "links": [
+        {
+          "to": "tree.moore",
+          "rel": "context"
+        },
+        {
+          "to": "tree.dennard",
+          "rel": "context"
+        },
+        {
+          "to": "tree.cuda",
+          "rel": "context"
+        },
+        {
+          "to": "tree.smartphone",
+          "rel": "context"
+        },
+        {
+          "to": "window.sovereign-ai",
+          "rel": "context"
+        },
+        {
+          "to": "window.robotics-embodiment",
+          "rel": "context"
+        }
+      ],
+      "cf": "hi",
+      "review_after_months": 6
+    },
+    {
+      "id": "human.wang",
+      "type": "human",
+      "title": "Alexandr Wang",
+      "aliases": [
+        "Wang"
+      ],
+      "tier": "W",
+      "domain": "Data infrastructure / The acquihire apex",
+      "bets": [
+        {
+          "yr": 2016,
+          "stake": {
+            "capital": "Dropped MIT at 19 for Scale AI (YC S16)",
+            "time": "9yr to the Meta event",
+            "reputation": "teenage dropout in an unglamorous niche",
+            "control": "kept until 2025"
+          },
+          "consensus_delta": "2016: everyone wanted to BUILD models; labeling training data was considered BPO work with an API — low-status, low-moat outsourcing",
+          "enabler": "Deep learning's data hunger compounding; autonomous-vehicle boom needing millions of labeled frames; later: RLHF making human feedback THE bottleneck",
+          "thesis": "Every AI wave, whatever wins, needs labeled data — sell the picks and shovels to all sides",
+          "outcome": "Scale rode three successive waves with the same infrastructure: AV labeling → government/defense data → RLHF for frontier labs. Revenue ~$870M (2024), valuation $14B+ (cf:md)",
+          "survival_mechanism": "Customer diversification across waves; when AV funding died, defense and RLHF were already ramping",
+          "anatomy": {
+            "stake": 3,
+            "asymmetry": 5,
+            "consensus": 3,
+            "timing": 5,
+            "control": 3,
+            "survival": 4
+          }
+        },
+        {
+          "yr": 2020,
+          "stake": {
+            "capital": "Pushed Scale into defense contracts when tech employees were walking out over Pentagon work",
+            "time": "ongoing",
+            "reputation": "contrarian-patriot positioning in an industry allergic to it",
+            "control": "full"
+          },
+          "consensus_delta": "Post-Project-Maven walkouts (Google 2018), defense AI was radioactive in the Valley. Wang went toward it loudly — op-eds, DC testimony, the works",
+          "enabler": "The Thiel/Palantir playbook, re-run a generation later: unfashionable customer, structural mispricing",
+          "thesis": "US-China AI competition makes government the most durable customer; first-mover in trust wins decade-long contracts",
+          "outcome": "CDAO contracts, defense revenue line; positioned Wang as the Valley's China-hawk wunderkind — the political capital later relevant to the Meta deal's regulatory shape",
+          "survival_mechanism": "Commercial RLHF revenue meant defense was optionality, not dependence",
+          "anatomy": {
+            "stake": 2,
+            "asymmetry": 4,
+            "consensus": 4,
+            "timing": 4,
+            "control": 4,
+            "survival": 4
+          }
+        },
+        {
+          "yr": 2025,
+          "stake": {
+            "capital": "Sold 49% of Scale to Meta for $14.3B; became Meta's Chief AI Officer running Superintelligence Labs at 28",
+            "time": "open",
+            "reputation": "from founder to the most expensive hire in history",
+            "control": "traded for scale"
+          },
+          "consensus_delta": "Founders don't abandon their company at peak for a job. But the structure (49% non-control investment + talent extraction) was the acquihire-wave apex: Meta paid $14.3B principally for one person and his network",
+          "enabler": "Meta's Llama-4 stumble + Zuckerberg's panic-mode talent raid; antitrust environment making outright acquisition impossible — the 49% structure IS the regulatory workaround",
+          "thesis": "Frontier-lab compute + Meta's distribution beats independent data-infra ownership; his marginal impact is higher allocating $100B than running labeling ops",
+          "outcome": "Open. Scale's neutrality died same week (Google/OpenAI cut ties as customers) — the cost of the trade priced immediately",
+          "survival_mechanism": "The $14.3B de-risked everything personally; Scale continues under new CEO with Meta capital",
+          "anatomy": {
+            "stake": 4,
+            "asymmetry": 4,
+            "consensus": 2,
+            "timing": 5,
+            "control": 2,
+            "survival": 3
+          }
+        }
+      ],
+      "chain": [
+        "MIT dropout at 19 → YC → labeling for the AV boom: picks-and-shovels while everyone chased models",
+        "AV winter → pivot to government + RLHF: same infrastructure, new waves — the diversification that survived",
+        "RLHF era: human feedback becomes THE frontier bottleneck; Scale sits on the choke point",
+        "Defense positioning 2020→: the Thiel playbook re-run; DC credibility as moat",
+        "Jun 2025: Meta $14.3B for 49% + Wang as Chief AI Officer — the acquihire wave's apex specimen",
+        "Scale's customer neutrality dies on announcement (OpenAI/Google exit) — proof the asset was always the position between labs, and the position was sold"
+      ],
+      "current_state": {
+        "vintage": "2026-06",
+        "facts": [
+          "Meta Chief AI Officer, running Superintelligence Labs; recruited dozens at $100M+ packages (cf:md)",
+          "Scale AI continues independently-ish; lost frontier-lab customers on announcement (cf:hi)",
+          "Personal: ~$3B+ from the transaction at 28 (cf:md)",
+          "Meta's frontier results under his org: pending — the entire bet still open"
+        ]
+      },
+      "future_paths": [
+        {
+          "path": "Meta ships a top-2 frontier model under Wang and the $14.3B looks cheap",
+          "p": 0.35,
+          "horizon": "2027",
+          "falsifier": "Meta's flagship model outside top-3 on independent evals through 2027"
+        },
+        {
+          "path": "Wang departs Meta within 3 years — the acquihire pattern's standard decay",
+          "p": 0.4,
+          "horizon": "2028",
+          "falsifier": "Still Chief AI Officer mid-2028"
+        },
+        {
+          "path": "Scale AI, neutrality lost, declines into a Meta-captive vendor",
+          "p": 0.45,
+          "horizon": "2027",
+          "falsifier": "Scale signs a new frontier-lab customer at pre-2025 scale"
+        }
+      ],
+      "dead_bodies": [
+        {
+          "name": "Appen",
+          "why": "The Australian incumbent that owned labeling before Scale: -95% from peak as Scale ate the market — incumbency in services is a depreciating asset when the customer's needs change waves"
+        },
+        {
+          "name": "Mighty AI",
+          "why": "Scale's direct AV-labeling competitor; sold to Uber for parts 2019 — single-wave dependence (AV only) where Scale diversified"
+        },
+        {
+          "name": "Figure Eight (CrowdFlower)",
+          "why": "The labeling pioneer, sold to Appen 2019 for a fraction of past valuation — first mover in the right market, exhausted before the wave that mattered (RLHF) arrived"
+        }
+      ],
+      "lessons": [
+        "Picks-and-shovels with wave-diversification: the same infrastructure sold to AV, defense, and RLHF — the wedge survives wave death only if the customer base rotates",
+        "The unfashionable-customer playbook (defense) is repeatable: Thiel 2003 → Wang 2020 — each generation's allergy is the next's arbitrage",
+        "The 49% structure is the antitrust-era acquisition: study it — non-control investment + talent extraction + commercial agreement = merger without merger review",
+        "Neutrality is an asset that dies instantly on alignment: Scale's inter-lab position was worth more than its operations, and selling it ended it — price your neutrality before someone else does"
+      ],
+      "body": "MIT dropout at 19 → YC → labeling for the AV boom: picks-and-shovels while everyone chased models\nAV winter → pivot to government + RLHF: same infrastructure, new waves — the diversification that survived\nRLHF era: human feedback becomes THE frontier bottleneck; Scale sits on the choke point\nDefense positioning 2020→: the Thiel playbook re-run; DC credibility as moat\nJun 2025: Meta $14.3B for 49% + Wang as Chief AI Officer — the acquihire wave's apex specimen\nScale's customer neutrality dies on announcement (OpenAI/Google exit) — proof the asset was always the position between labs, and the position was sold",
+      "as_of": "2026-06-01",
+      "half_life_days": 90,
+      "signals": [],
+      "links": [
+        {
+          "to": "tree.acquihire-wave",
+          "rel": "context"
+        },
+        {
+          "to": "tree.rlhf",
+          "rel": "context"
+        },
+        {
+          "to": "tree.corp",
+          "rel": "context"
+        },
+        {
+          "to": "window.acquihire-signal",
+          "rel": "context"
+        },
+        {
+          "to": "window.defense-tech",
+          "rel": "context"
+        }
+      ],
+      "cf": "md",
+      "review_after_months": 6
+    },
+    {
+      "id": "human.levels",
+      "type": "human",
+      "title": "Pieter Levels",
+      "aliases": [
+        "Levels"
+      ],
+      "tier": "W",
+      "domain": "Solo leverage / The anti-venture model",
+      "bets": [
+        {
+          "yr": 2014,
+          "stake": {
+            "capital": "Zero — a public challenge: 12 startups in 12 months, solo, no funding",
+            "time": "the year, then the decade",
+            "reputation": "built the audience BY making the bet public",
+            "control": "total, permanent"
+          },
+          "consensus_delta": "2014 startup orthodoxy: raise VC, hire, scale, exit. A solo founder shipping monthly with no funding was considered a hobbyist, definitionally not a 'real' startup",
+          "enabler": "Stripe + AWS + remote-work emergence: the full company stack operable by one person for $100/mo",
+          "thesis": "Most startups die of costs, not competition; zero burn + many shots + public building = positive expectancy without venture",
+          "outcome": "Nomad List + Remote OK emerged from the 12; most others killed fast and cheap — the point. ~$3M+/yr revenue, zero employees, ever (cf:md)",
+          "survival_mechanism": "Zero burn = infinite runway; killing products in weeks costs nothing; the audience compounds across products",
+          "anatomy": {
+            "stake": 2,
+            "asymmetry": 4,
+            "consensus": 3,
+            "timing": 4,
+            "control": 5,
+            "survival": 5
+          }
+        },
+        {
+          "yr": 2022,
+          "stake": {
+            "capital": "Shipped PhotoAI/InteriorAI within weeks of Stable Diffusion's release",
+            "time": "weeks per product",
+            "reputation": "established audience as distribution",
+            "control": "full"
+          },
+          "consensus_delta": "Mild — but speed was the edge: he shipped paid AI products while funded teams were still hiring; the wrapper window's first profitable occupant",
+          "enabler": "Stable Diffusion open weights (Aug 2022) + his existing 500K+ audience = zero-CAC product launches in days",
+          "thesis": "New model capability × existing audience × days-to-ship = window profits before competition exists",
+          "outcome": "PhotoAI ~$1-2M/yr at peak (cf:md); the live proof-of-concept for the entire wrapper window — and for its decay (revenue declining as platforms absorbed the feature, openly published)",
+          "survival_mechanism": "Portfolio rotation: when a product decays he ships the next; no single point of failure",
+          "anatomy": {
+            "stake": 2,
+            "asymmetry": 4,
+            "consensus": 2,
+            "timing": 5,
+            "control": 5,
+            "survival": 5
+          }
+        }
+      ],
+      "chain": [
+        "2014: '12 startups in 12 months' public challenge → audience compounds with each ship",
+        "Nomad List/Remote OK survive the cull → ~$3M/yr solo, the existence proof",
+        "Build-in-public becomes a movement: thousands copy the model — he IS the meta-leverage-shift node",
+        "Aug 2022 Stable Diffusion → PhotoAI in weeks: first profitable occupant of the wrapper window",
+        "Publishes revenue dashboards including the DECLINE — the only honest decay data in the window",
+        "2024→: the model he pioneered (solo + AI tools + audience) becomes the default path for a generation of builders priced out of venture"
+      ],
+      "current_state": {
+        "vintage": "2026-06",
+        "facts": [
+          "~$3M+/yr across portfolio, still zero employees (cf:md, self-reported but consistently verified by payment-processor screenshots)",
+          "X audience >600K — the distribution asset underneath everything (cf:md)",
+          "Publicly documents product revenue decay as platforms absorb features — the honest wrapper-window dataset",
+          "The archetype cited in every individual-leverage analysis, including this tool's meta-leverage-shift trend"
+        ]
+      },
+      "future_paths": [
+        {
+          "path": "The solo-leverage model becomes the statistical default for sub-$10M ARR software businesses",
+          "p": 0.55,
+          "horizon": "2028",
+          "falsifier": "Solo/duo-founder share of new profitable SaaS declines on available cohort data through 2027"
+        },
+        {
+          "path": "Levels sells something for 8 figures, converting the anti-exit stance",
+          "p": 0.25,
+          "horizon": "2028",
+          "falsifier": "All products remain independent through 2028"
+        },
+        {
+          "path": "Agentic AI inverts his edge: shipping speed commoditizes and audience becomes the ONLY moat",
+          "p": 0.5,
+          "horizon": "2027",
+          "falsifier": "Audience-less solo products demonstrably succeed at scale in 2026-27 cohorts"
+        }
+      ],
+      "dead_bodies": [
+        {
+          "name": "Most of his own 12 startups",
+          "why": "Killed publicly and cheaply — the model's feature, not failure: cheap kills are the tuition the venture path pays in years and dilution"
+        },
+        {
+          "name": "VC-funded nomad/remote plays (Teleport, Roam Research-adjacent co-living)",
+          "why": "Raised millions to attack markets Nomad List served solo at profit — burn rate as the cause of death in markets too small for venture but perfect for one person"
+        },
+        {
+          "name": "The funded wrapper cohort 2023-24",
+          "why": "Raised seed rounds to build what he shipped in weeks; CAC + burn + platform absorption killed them while his zero-cost versions decayed gracefully into the next product"
+        }
+      ],
+      "lessons": [
+        "Zero burn is a strategy, not a limitation: infinite runway converts windows too small for venture into personal fortunes",
+        "Audience-before-product inverts CAC to zero: build-in-public is distribution infrastructure, built once, reused every launch",
+        "Kill speed is the hidden variable: his portfolio expectancy comes from cheap deaths, not big wins",
+        "He published the decay data: the wrapper window's only honest revenue curves came from the guy with nothing to hide — transparency as both marketing and dataset"
+      ],
+      "body": "2014: '12 startups in 12 months' public challenge → audience compounds with each ship\nNomad List/Remote OK survive the cull → ~$3M/yr solo, the existence proof\nBuild-in-public becomes a movement: thousands copy the model — he IS the meta-leverage-shift node\nAug 2022 Stable Diffusion → PhotoAI in weeks: first profitable occupant of the wrapper window\nPublishes revenue dashboards including the DECLINE — the only honest decay data in the window\n2024→: the model he pioneered (solo + AI tools + audience) becomes the default path for a generation of builders priced out of venture",
+      "as_of": "2026-06-01",
+      "half_life_days": 90,
+      "signals": [],
+      "links": [
+        {
+          "to": "tree.wrapper-window",
+          "rel": "context"
+        },
+        {
+          "to": "tree.openw",
+          "rel": "context"
+        },
+        {
+          "to": "tree.agentic-shift",
+          "rel": "context"
+        },
+        {
+          "to": "window.meta-leverage-shift",
+          "rel": "context"
+        },
+        {
+          "to": "window.ai-wrapper-window",
+          "rel": "context"
+        }
+      ],
+      "cf": "md",
+      "review_after_months": 6
+    }
+  ]
+}

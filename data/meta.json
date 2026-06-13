@@ -1,0 +1,28 @@
+{
+  "version": "2.1.0",
+  "last_updated": "2026-06-01",
+  "counts": {
+    "atlas": 60,
+    "tree": 46,
+    "humans": 19,
+    "trends": 16,
+    "constraints": 8,
+    "scenarios": 5
+  },
+  "changelog": [
+    {
+      "date": "2026-06-01",
+      "note": "Phase 0: migrated v2 data to JSON entity registry"
+    },
+    {
+      "date": "2026-06-11",
+      "by": "claude-sonnet-4-6",
+      "summary": "Initial v2 build: tech tree, humans, trends registries; full cross-registry xrefs; data health panel; command palette"
+    },
+    {
+      "date": "2026-06-12",
+      "by": "claude-fable-5",
+      "summary": "v2.1: humans 6→19 (Chang, Son, Bezos, Thiel, Buffett, Zhang, Hassabis, Sutskever, Amodei, Su, Keller, Wang, Levels); tree 37→46 (foundry, cloud, smartphone, crypto-gpu, alphafold, reasoning, sovereign-ai, robotics-fm, stablecoin-rails); trends 10→16 (whole-earth: nuclear, defense, reshoring, sovereign-ai, GLP-1, stablecoins); features: forecast seeding from registries, trends gantt, tree rewind slider, bet anatomy scoring, hash deep-links, number-key tabs; review_after_months now mandatory on tree/humans/trends"
+    }
+  ]
+}

@@ -1,0 +1,131 @@
+{
+  "id": "method.root",
+  "type": "method",
+  "title": "Operating Method",
+  "as_of": "2026-06-01",
+  "half_life_days": 3650,
+  "signals": [],
+  "links": [],
+  "era_labels": [
+    "SUBSTRATE 1965–2007",
+    "EMPIRICAL SHOCK 2009–2013",
+    "ARCHITECTURE 2014–2018",
+    "SCALING REGIME 2019–2022",
+    "IGNITION 2022–2024",
+    "PHYSICAL LIMITS 2024–2026"
+  ],
+  "hierarchy": [
+    {
+      "label": "1. Physics & geography",
+      "body": "Straits do not move. Thermodynamics does not negotiate. Highest predictability.",
+      "level": "hi"
+    },
+    {
+      "label": "2. Demography",
+      "body": "2044's workforce is born. Fertility is the only free variable left. 20-yr forecasts work here and almost nowhere else.",
+      "level": "hi"
+    },
+    {
+      "label": "3. Installed base & lead times",
+      "body": "A fab takes 4-5 yrs, a mine 17, a transmission line 12. The near future's supply side is already determined by today's order books.",
+      "level": "hi"
+    },
+    {
+      "label": "4. Institutions & treaties",
+      "body": "Montreux, FERC, BIS rules. Slow-changing but human — can break at stress points.",
+      "level": "md"
+    },
+    {
+      "label": "5. Prices & capital flows",
+      "body": "Reflexive: observation changes them. Months of validity at best. Trade them; don't anchor worldviews to them.",
+      "level": "md"
+    },
+    {
+      "label": "6. Narratives & sentiment",
+      "body": "Days-to-weeks. The froth layer. Useful only as a contrarian sensor and timing overlay.",
+      "level": "lo"
+    }
+  ],
+  "rules": [
+    "Find the binding constraint; ignore the rest until it moves. Theory of constraints applies to civilization.",
+    "Lead time = the future's skeleton. Anything physical arriving in 2029 was ordered by 2026. Read order books, not forecasts.",
+    "Watch quantities before prices: AIS transits, fab utilization, queue lengths, backlog/book-to-bill. Prices are the lagging, reflexive shadow.",
+    "Insurance is the most honest forecaster on Earth — real money, daily marks, no narrative budget.",
+    "Every chokepoint creates its own bypass given time + incentive (Arm→RISC-V, SWIFT→CIPS, cobalt→LFP). Rents decay; date-stamp them.",
+    "Announcement ≠ steel. Count megawatts energized and wafers out, not dollars in press releases. The ratio is the hype-meter.",
+    "Constraint breeds invention (DeepSeek under export controls). Model the squeezed party's R&D response, not just their pain.",
+    "Subsidized inefficiency is strategy, not stupidity (SMIC yields, Indonesia's ore ban). States pay tuition for capability.",
+    "Second-order beats first-order: Houthis → Cape route → tanker tonne-miles → shipowner profits. The third hop is where mispricing lives.",
+    "Reflexivity caps all of this: a map good enough to trade on gets arbitraged into uselessness. Edge = update speed, not the static map."
+  ],
+  "biases": [
+    "Anchoring: did I generate my own number before reading consensus?",
+    "Confirmation: what would CHANGE my mind? Is it written down with a date?",
+    "Sunk cost: would I enter this position today at this price?",
+    "Narrative: am I holding a story or a mechanism? Can I draw the causal arrows?",
+    "Recency: is this a trend or a cycle? Where are we in the cycle?",
+    "Survivorship: am I studying winners only? Where are the dead bodies (Lucent, Nortel, WorldCom)?"
+  ],
+  "sources": [
+    {
+      "label": "TSMC monthly revenue",
+      "note": "cleanest real-time AI demand sensor",
+      "url": "investor.tsmc.com"
+    },
+    {
+      "label": "LBNL Queued Up + DC load report",
+      "note": "interconnection + datacenter power truth",
+      "url": "emp.lbl.gov"
+    },
+    {
+      "label": "EIA World Oil Transit Chokepoints",
+      "note": "flows through straits, updated",
+      "url": "eia.gov"
+    },
+    {
+      "label": "Drewry World Container Index",
+      "note": "weekly freight = trade-disruption nowcast",
+      "url": "drewry.co.uk"
+    },
+    {
+      "label": "UN World Population Prospects 2024",
+      "note": "the only reliable 20-yr forecasts in existence",
+      "url": "population.un.org"
+    },
+    {
+      "label": "IMF COFER",
+      "note": "reserve currency shares, quarterly",
+      "url": "data.imf.org"
+    },
+    {
+      "label": "BIS Triennial FX Survey",
+      "note": "currency network structure",
+      "url": "bis.org"
+    },
+    {
+      "label": "IEA Energy & AI (Apr 2025)",
+      "note": "datacenter power scenarios",
+      "url": "iea.org"
+    },
+    {
+      "label": "USGS Mineral Commodity Summaries",
+      "note": "production/reserve shares, annual",
+      "url": "usgs.gov"
+    },
+    {
+      "label": "ASML / NVDA / GEV quarterlies",
+      "note": "order books = the future's skeleton",
+      "url": "company IR"
+    },
+    {
+      "label": "BIS/MOFCOM rule trackers",
+      "note": "the export-control tit-for-tat ladder",
+      "url": "CSIS, public trackers"
+    },
+    {
+      "label": "PJM capacity auctions",
+      "note": "the bond market of the AI-power thesis",
+      "url": "pjm.com"
+    }
+  ]
+}

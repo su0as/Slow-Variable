@@ -1,0 +1,215 @@
+{
+  "scenarios": [
+    {
+      "id": "scenario.sc1",
+      "type": "scenario",
+      "title": "Hormuz closure",
+      "body": "Iran closes or contests the strait → ~20 Mb/d oil + 1/5 of LNG at risk → war-risk insurance 10-50x within days (London prices it first) → Asia refiners scramble, SPR releases, oil +$30-60 → freight + goods inflation global. Watch: Lloyd's rate cards, tanker AIS, US 5th Fleet posture. Duration is everything: a week is a spike; a quarter is a recession.",
+      "layers": [
+        "choke",
+        "nrg",
+        "fin"
+      ],
+      "trace": [
+        "atlas.hormuz",
+        "atlas.ghawar",
+        "atlas.raslaffan",
+        "atlas.malacca",
+        "atlas.london"
+      ],
+      "as_of": "2026-06-01",
+      "half_life_days": 365,
+      "signals": [],
+      "links": [
+        {
+          "to": "atlas.hormuz",
+          "rel": "context"
+        },
+        {
+          "to": "atlas.ghawar",
+          "rel": "context"
+        },
+        {
+          "to": "atlas.raslaffan",
+          "rel": "context"
+        },
+        {
+          "to": "atlas.malacca",
+          "rel": "context"
+        },
+        {
+          "to": "atlas.london",
+          "rel": "context"
+        }
+      ]
+    },
+    {
+      "id": "scenario.sc2",
+      "type": "scenario",
+      "title": "Taiwan blockade",
+      "body": "Quarantine/blockade (no invasion needed) → insurance withdrawal halts shipping → TSMC wafers + ASE packaging severed → NVIDIA pipeline stops in weeks; global electronics in months → Luzon cable risk adds data severance. No meaningful substitute capacity exists (AZ fabs: single-digit %, no packaging). This is the tail that re-prices everything; even a 5% annual probability dominates expected-loss math.",
+      "layers": [
+        "choke",
+        "chip",
+        "data"
+      ],
+      "trace": [
+        "atlas.taiwanstrait",
+        "atlas.tsmc",
+        "atlas.ase",
+        "atlas.luzon",
+        "atlas.nvda",
+        "atlas.ashburn"
+      ],
+      "as_of": "2026-06-01",
+      "half_life_days": 365,
+      "signals": [],
+      "links": [
+        {
+          "to": "atlas.taiwanstrait",
+          "rel": "context"
+        },
+        {
+          "to": "atlas.tsmc",
+          "rel": "context"
+        },
+        {
+          "to": "atlas.ase",
+          "rel": "context"
+        },
+        {
+          "to": "atlas.luzon",
+          "rel": "context"
+        },
+        {
+          "to": "atlas.nvda",
+          "rel": "context"
+        },
+        {
+          "to": "atlas.ashburn",
+          "rel": "context"
+        }
+      ]
+    },
+    {
+      "id": "scenario.sc3",
+      "type": "scenario",
+      "title": "China REE/magnet embargo",
+      "body": "Beijing converts the Apr-2025 licensing regime into denial (response to chip escalation) → NdFeB magnet flow stops → EV motors, wind turbines, defense systems (F-35 uses ~400kg REE) queue behind 3-5yr western separation buildout → MP/Lynas re-rate violently; DoD floors extend to other minerals. The most-rehearsed, most-likely-executed economic weapon in this atlas.",
+      "layers": [
+        "min"
+      ],
+      "trace": [
+        "atlas.beijingec",
+        "atlas.bayanobo",
+        "atlas.ganzhou",
+        "atlas.mountainpass",
+        "atlas.lynas"
+      ],
+      "as_of": "2026-06-01",
+      "half_life_days": 365,
+      "signals": [],
+      "links": [
+        {
+          "to": "atlas.beijingec",
+          "rel": "context"
+        },
+        {
+          "to": "atlas.bayanobo",
+          "rel": "context"
+        },
+        {
+          "to": "atlas.ganzhou",
+          "rel": "context"
+        },
+        {
+          "to": "atlas.mountainpass",
+          "rel": "context"
+        },
+        {
+          "to": "atlas.lynas",
+          "rel": "context"
+        }
+      ]
+    },
+    {
+      "id": "scenario.sc4",
+      "type": "scenario",
+      "title": "US power crunch deepens",
+      "body": "DC demand (4.4%→6.7-12% by 2028) meets sold-out turbines + 5yr queues + transformer scarcity → capacity auction prices spike (PJM already 10x) → ratepayer politics turn against DCs → behind-the-meter gas (Abilene model) + restarts (Palisades, Crane) become the only fast paths → power, not chips, sets the AI buildout's clock speed 2026-29. This is the base case, not a tail.",
+      "layers": [
+        "nrg",
+        "chip"
+      ],
+      "trace": [
+        "atlas.gevernova",
+        "atlas.pjm",
+        "atlas.ashburn",
+        "atlas.crane",
+        "atlas.abilene"
+      ],
+      "as_of": "2026-06-01",
+      "half_life_days": 365,
+      "signals": [],
+      "links": [
+        {
+          "to": "atlas.gevernova",
+          "rel": "context"
+        },
+        {
+          "to": "atlas.pjm",
+          "rel": "context"
+        },
+        {
+          "to": "atlas.ashburn",
+          "rel": "context"
+        },
+        {
+          "to": "atlas.crane",
+          "rel": "context"
+        },
+        {
+          "to": "atlas.abilene",
+          "rel": "context"
+        }
+      ]
+    },
+    {
+      "id": "scenario.sc5",
+      "type": "scenario",
+      "title": "Cable sabotage wave",
+      "body": "Gray-zone actors extend the Baltic/Matsu/Red-Sea pattern → simultaneous cuts at Egypt corridor + Luzon → EU-Asia latency/capacity crisis, cloud + trading reroute via US → repair-ship fleet (~60 aging vessels worldwide) becomes the binding constraint, repairs queue for months → cable-route diversity and repair capacity get repriced as strategic assets. Cheapest scenario to trigger; least modeled by markets.",
+      "layers": [
+        "data",
+        "choke"
+      ],
+      "trace": [
+        "atlas.egyptcorridor",
+        "atlas.luzon",
+        "atlas.sgjohor",
+        "atlas.marseille"
+      ],
+      "as_of": "2026-06-01",
+      "half_life_days": 365,
+      "signals": [],
+      "links": [
+        {
+          "to": "atlas.egyptcorridor",
+          "rel": "context"
+        },
+        {
+          "to": "atlas.luzon",
+          "rel": "context"
+        },
+        {
+          "to": "atlas.sgjohor",
+          "rel": "context"
+        },
+        {
+          "to": "atlas.marseille",
+          "rel": "context"
+        }
+      ]
+    }
+  ]
+}

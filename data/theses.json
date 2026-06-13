@@ -1,0 +1,144 @@
+{
+  "theses": [
+    {
+      "id": "thesis.power_binds",
+      "type": "thesis",
+      "statement": "AI datacenter power constraints bind through at least 2029 regardless of capital committed.",
+      "confidence": "hi",
+      "kill_condition": "Turbine/transformer lead times halve OR interconnection median < 2yr OR datacenter demand growth < 10%/yr.",
+      "supports": [
+        "constraint.heavy-gas-turbine-slot",
+        "constraint.hv-transmission-line",
+        "atlas.ashburn",
+        "window.energy-grid"
+      ],
+      "forecast_ids": [],
+      "draft": true,
+      "body": "AI datacenter power constraints bind through at least 2029 regardless of capital committed.",
+      "as_of": "2026-06-01",
+      "half_life_days": 365,
+      "signals": [],
+      "links": [
+        {
+          "to": "constraint.heavy-gas-turbine-slot",
+          "rel": "enables"
+        },
+        {
+          "to": "constraint.hv-transmission-line",
+          "rel": "enables"
+        },
+        {
+          "to": "atlas.ashburn",
+          "rel": "enables"
+        },
+        {
+          "to": "window.energy-grid",
+          "rel": "enables"
+        }
+      ]
+    },
+    {
+      "id": "thesis.chokepoint_bypass_decay",
+      "type": "thesis",
+      "statement": "Every chokepoint rent decays over 5–15 years as bypass investments arrive; date-stamp all concentration bets.",
+      "confidence": "hi",
+      "kill_condition": "A major chokepoint bypass is abandoned despite strong economic incentive (no case in 50yr record).",
+      "supports": [
+        "atlas.hormuz",
+        "atlas.malacca",
+        "atlas.suez"
+      ],
+      "forecast_ids": [],
+      "draft": true,
+      "body": "Every chokepoint rent decays over 5–15 years as bypass investments arrive; date-stamp all concentration bets.",
+      "as_of": "2026-06-01",
+      "half_life_days": 365,
+      "signals": [],
+      "links": [
+        {
+          "to": "atlas.hormuz",
+          "rel": "enables"
+        },
+        {
+          "to": "atlas.malacca",
+          "rel": "enables"
+        },
+        {
+          "to": "atlas.suez",
+          "rel": "enables"
+        }
+      ]
+    },
+    {
+      "id": "thesis.demography_determinism",
+      "type": "thesis",
+      "statement": "2044 workforce is already born; demographic forecasts (labor supply, consumption, debt capacity) have ~zero uncertainty at 20yr horizon.",
+      "confidence": "hi",
+      "kill_condition": "A country achieves a 50%+ fertility reversal within 10yr (no precedent).",
+      "supports": [
+        "constraint.demographic-cohort"
+      ],
+      "forecast_ids": [],
+      "draft": true,
+      "body": "2044 workforce is already born; demographic forecasts (labor supply, consumption, debt capacity) have ~zero uncertainty at 20yr horizon.",
+      "as_of": "2026-06-01",
+      "half_life_days": 365,
+      "signals": [],
+      "links": [
+        {
+          "to": "constraint.demographic-cohort",
+          "rel": "enables"
+        }
+      ]
+    },
+    {
+      "id": "thesis.sovereign_ai_price_insensitive",
+      "type": "thesis",
+      "statement": "Sovereign AI compute buildouts (Gulf, EU, Southeast Asia) represent price-insensitive demand that floors GPU/fab utilization regardless of US hyperscaler capex cycle.",
+      "confidence": "med",
+      "kill_condition": "Sovereign AI programs cut budgets >50% or no sovereign model reaches commercial deployment by 2028.",
+      "supports": [
+        "window.sovereign-ai",
+        "atlas.uae-ai-cluster"
+      ],
+      "forecast_ids": [],
+      "draft": true,
+      "body": "Sovereign AI compute buildouts (Gulf, EU, Southeast Asia) represent price-insensitive demand that floors GPU/fab utilization regardless of US hyperscaler capex cycle.",
+      "as_of": "2026-06-01",
+      "half_life_days": 365,
+      "signals": [],
+      "links": [
+        {
+          "to": "window.sovereign-ai",
+          "rel": "enables"
+        },
+        {
+          "to": "atlas.uae-ai-cluster",
+          "rel": "enables"
+        }
+      ]
+    },
+    {
+      "id": "thesis.capability_window_closure",
+      "type": "thesis",
+      "statement": "The AI wrapper / commodity-API window closes by 2027 as model providers capture the margin and distribution commoditizes.",
+      "confidence": "med",
+      "kill_condition": "A wrapper-layer company reaches $1B ARR without model-provider margin compression by 2027.",
+      "supports": [
+        "window.ai-wrapper-window"
+      ],
+      "forecast_ids": [],
+      "draft": true,
+      "body": "The AI wrapper / commodity-API window closes by 2027 as model providers capture the margin and distribution commoditizes.",
+      "as_of": "2026-06-01",
+      "half_life_days": 365,
+      "signals": [],
+      "links": [
+        {
+          "to": "window.ai-wrapper-window",
+          "rel": "enables"
+        }
+      ]
+    }
+  ]
+}
