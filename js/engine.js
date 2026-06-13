@@ -89,8 +89,12 @@ var TRENDS=(Store.raw.windows.windows||[]).map(function(n){
 });
 
 var CONSTRAINTS=(Store.raw.constraints.rows||[]).map(function(c){
-  return[c.title,c.lead_time,c.cost,c.bottleneck,c.signal];
+  return{title:c.title,lead_time:c.lead_time,cost:c.cost,bottleneck:c.bottleneck,signal:c.signal,
+    lead_min_yr:c.lead_min_yr||0,lead_max_yr:c.lead_max_yr||0,id:c.id||""};
 });
+
+var GRAVEYARD=(Store.raw.graveyard.graveyard||[]);
+var THESES=(Store.raw.theses.theses||[]);
 
 var SCENARIOS=(Store.raw.scenarios.scenarios||[]).map(function(s){
   return{id:s.id.replace(/^scenario\./,""),nm:s.title,d:s.body||"",
@@ -332,15 +336,35 @@ function renderCountryDossier(iso){
 function attachChipNavigation(){document.querySelectorAll(".xchip").forEach(function(el){el.onclick=function(){openDossier(el.dataset.reg,el.dataset.id,true)}})}
 
 // Keyboard nav
-var TAB_ORDER=["atlas","tree","humans","trends","constraints","forecasts","method","patrol"];
+var TAB_ORDER=["thesis","atlas","tree","humans","trends","constraints","forecasts","method","patrol","brief"];
 document.addEventListener("keydown",function(e){
-  if(e.key==="Escape"){closeDossier();closePalette();closeHealth()}
+  if(e.key==="Escape"){
+    closeDossier();closePalette();closeHealth();
+    var ko=$("kbd-overlay");if(ko&&ko.style.display!=="none")ko.style.display="none";
+    var pm=$("postmortem-modal");if(pm&&pm.style.display!=="none")pm.style.display="none";
+  }
   if((e.ctrlKey||e.metaKey)&&e.key==="k"){e.preventDefault();togglePalette()}
-  if(e.target.matches&&e.target.matches("input,textarea"))return;
+  if(e.target.matches&&e.target.matches("input,textarea,select"))return;
   if(e.key==="/"){e.preventDefault();$("nsearch").focus()}
+  if(e.key==="?"){var ko=$("kbd-overlay");if(ko)ko.style.display=(ko.style.display==="none"?"flex":"none")}
+  if(e.key==="j"||e.key==="k"){navigateEntities(e.key==="j"?1:-1)}
   var n=parseInt(e.key);
   if(n>=1&&n<=TAB_ORDER.length&&!e.ctrlKey&&!e.metaKey&&!e.altKey)switchTab(TAB_ORDER[n-1]);
 });
+
+var _entityNavIndex=-1;
+function navigateEntities(dir){
+  var current=document.querySelector(".view.on");if(!current)return;
+  var vid=current.id;
+  var items=[];
+  if(vid==="v-atlas")items=ATLAS_NODES.map(function(n){return{reg:"atlas",id:n.id}});
+  else if(vid==="v-tree")items=TREE.map(function(n){return{reg:"tree",id:n.id}});
+  else if(vid==="v-humans")items=HUMANS.map(function(h){return{reg:"human",id:h.id}});
+  else if(vid==="v-trends")items=TRENDS.map(function(t){return{reg:"trend",id:t.id}});
+  if(!items.length)return;
+  _entityNavIndex=Math.max(0,Math.min(items.length-1,_entityNavIndex+dir));
+  var item=items[_entityNavIndex];openDossier(item.reg,item.id,false);
+}
 
 // Tabs
 function switchTab(v){
@@ -350,6 +374,8 @@ function switchTab(v){
   if(v==="atlas"){resize();kick()}
   if(v==="tree")buildTreeIfNeeded();
   if(v==="patrol")buildPatrol();
+  if(v==="thesis")buildThesisRegister();
+  if(v==="brief")buildBrief();
 }
 document.querySelectorAll("#tabs .tab").forEach(function(t){t.onclick=function(){switchTab(t.dataset.v)}});
 
@@ -540,8 +566,73 @@ function runScenario(sc){
   clampView();TR={active:1,ids:sc.trace,t0:performance.now()};closeDossier();kick();
 }
 
-// Constraints table
-function buildConstraints(){$("constraints-tbody").innerHTML=CONSTRAINTS.map(function(c){return"<tr><td class='mono-em'>"+esc(c[0])+"</td><td>"+esc(c[1])+"</td><td>"+esc(c[2])+"</td><td>"+esc(c[3])+"</td><td>"+esc(c[4])+"</td></tr>"}).join("")}
+// Constraints table + order-book clock
+function buildConstraints(){
+  var tbody=$("constraints-tbody");
+  tbody.innerHTML=CONSTRAINTS.map(function(c,i){
+    return'<tr data-ci="'+i+'"><td class="mono-em">'+esc(c.title)+'</td><td>'+esc(c.lead_time)+'</td><td>'+esc(c.cost)+'</td><td>'+esc(c.bottleneck)+'</td><td>'+esc(c.signal)+'</td></tr>'
+    +'<tr class="constraint-detail" id="cd-'+i+'"><td colspan="5"><div class="cd-body">'
+    +'<div><div class="cd-sec">BINDING CONSTRAINT</div><div class="cd-val">'+esc(c.bottleneck)+'</div></div>'
+    +'<div><div class="cd-sec">SIGNAL TO WATCH</div><div class="cd-val">'+esc(c.signal)+'</div></div>'
+    +'<div><div class="cd-sec">LEAD TIME</div><div class="cd-val">'+esc(c.lead_time)+'</div></div>'
+    +'</div></td></tr>';
+  }).join("");
+  tbody.querySelectorAll("tr[data-ci]").forEach(function(row){
+    row.onclick=function(){
+      var ci=row.dataset.ci;var detail=$("cd-"+ci);
+      var isOpen=row.classList.contains("expanded");
+      tbody.querySelectorAll("tr[data-ci]").forEach(function(r){r.classList.remove("expanded")});
+      tbody.querySelectorAll(".constraint-detail").forEach(function(d){d.classList.remove("open")});
+      if(!isOpen){row.classList.add("expanded");detail.classList.add("open")}
+    };
+  });
+  buildClockRows();
+}
+
+function buildClockRows(){
+  var CY_START=2026,CY_END=2044,CY_RANGE=CY_END-CY_START;
+  function cPct(y){return Math.max(0,Math.min(100,(y-CY_START)/CY_RANGE*100))}
+  var axisEl=$("clock-axis");if(!axisEl)return;
+  var axHtml="";
+  for(var y=CY_START;y<=CY_END;y+=2)axHtml+='<div class="clock-yr" style="left:'+cPct(y)+'%">'+y+"</div>";
+  axisEl.innerHTML=axHtml;
+  var rowsEl=$("clock-rows");if(!rowsEl)return;
+  var targetY=parseInt(($("clock-target")||{value:2030}).value)||2030;
+  var html="";
+  CONSTRAINTS.forEach(function(c){
+    var minY=CY_START+c.lead_min_yr,maxY=CY_START+c.lead_max_yr;
+    var l=cPct(minY),w=Math.max(2,cPct(maxY)-l);
+    var locked=c.lead_min_yr>(targetY-CY_START);
+    html+='<div class="clock-row'+(locked?" locked":"")+'">';
+    html+='<div class="clock-nm">'+esc(c.title)+'</div>';
+    html+='<div class="clock-track">';
+    html+='<div class="clock-bar" style="left:'+l+'%;width:'+w+'%">'+esc(c.lead_time)+'</div>';
+    html+='</div></div>';
+  });
+  rowsEl.innerHTML=html;
+  // target line overlay
+  var targetPct=cPct(targetY);
+  rowsEl.style.position="relative";
+  var existing=rowsEl.querySelector(".clock-target-line");
+  if(existing)existing.remove();
+  var line=document.createElement("div");line.className="clock-target-line";
+  line.style.left=targetPct+"%";rowsEl.appendChild(line);
+  // locked message
+  var locked=CONSTRAINTS.filter(function(c){return c.lead_min_yr>(targetY-CY_START)});
+  var msg=$("clock-locked-msg");if(msg){
+    msg.textContent=locked.length?locked.length+" systems ALREADY LOCKED for "+targetY+" commitment — capacity was due by "+(targetY-Math.round(locked.reduce(function(a,c){return a+c.lead_min_yr},0)/locked.length)):"All systems committable for "+targetY+" target";
+    msg.style.color=locked.length?"var(--alert)":"var(--min)";
+  }
+}
+
+(function(){
+  var ct=$("clock-target");if(!ct)return;
+  var lb=$("clock-target-lb");
+  ct.addEventListener("input",function(){
+    if(lb)lb.textContent="Target: "+ct.value;
+    buildClockRows();
+  });
+})();
 
 // ── TECH TREE ─────────────────────────────────────────────────────────────
 var treeSel=null,treePathMode=false,treeXrefOn=false,treeBuilt=false,treeSVGEl=null;
@@ -583,6 +674,7 @@ function buildTreeSVG(){
   });
   var wrap=$("tree-svg-wrap");wrap.innerHTML="";wrap.appendChild(svg);wrap.style.width=TREE_W+"px";wrap.style.height=TREE_H+"px";
   buildTreeMinimap();
+  wireSnipEdges();
 }
 function showTreeTip(n,x,y){var tip=$("tip");tip.style.display="block";tip.querySelector(".tl").textContent="ERA "+n.era+" · "+(n.fg||"foundational");$("tip-nm").textContent=n.lb+" — "+n.mech;var wrap=$("tree-scroll").getBoundingClientRect();tip.style.left=Math.min(wrap.width-200,x+NW+8)+"px";tip.style.top=(y+20)+"px"}
 function selectTreeNode(id){if(treeSel===id&&!treePathMode){clearTreeSelection();return}treeSel=id;applyTreeLighting();openDossier("tree",id,false);if(treePathMode)applyPathToTarget();else $("path-hint").style.display="none"}
@@ -601,8 +693,107 @@ function clearPathToTarget(){if(!treeSVGEl)return;treeSVGEl.querySelectorAll(".t
 $("tt-full").onclick=function(){treePathMode=false;$("tt-full").classList.add("on");$("tt-path").classList.remove("on");clearPathToTarget();applyTreeLighting()};
 $("tt-path").onclick=function(){treePathMode=true;$("tt-path").classList.add("on");$("tt-full").classList.remove("on");if(treeSel)applyPathToTarget();else $("path-hint").style.display="block"};
 $("tt-xref").onclick=function(){treeXrefOn=!treeXrefOn;$("tt-xref").classList.toggle("on",treeXrefOn)};
-$("tt-reset").onclick=function(){treeSel=null;treePathMode=false;$("tt-full").classList.add("on");$("tt-path").classList.remove("on");clearPathToTarget();applyTreeLighting();closeDossier()};
+$("tt-reset").onclick=function(){
+  treeSel=null;treePathMode=false;snipMode=false;snippedEdges.clear();
+  $("tt-full").classList.add("on");$("tt-path").classList.remove("on");$("tt-snip").classList.remove("on");
+  clearPathToTarget();applyTreeLighting();closeDossier();
+  var sb=$("snip-banner");if(sb)sb.classList.remove("active");
+  var mc=$("mincut-info");if(mc){mc.classList.remove("active");mc.textContent=""}
+};
 $("tt-full").classList.add("on");
+
+// ── Counterfactual Snip ──────────────────────────────────────────────────
+var snipMode=false;var snippedEdges=new Set();
+$("tt-snip").onclick=function(){
+  snipMode=!snipMode;$("tt-snip").classList.toggle("on",snipMode);
+  var sb=$("snip-banner");if(sb)sb.classList.toggle("active",snipMode);
+};
+(function(){var btn=$("tt-snip-clear");if(btn)btn.onclick=function(){snippedEdges.clear();applySnip()}})();
+function applySnip(){
+  if(!treeSVGEl)return;
+  treeSVGEl.querySelectorAll(".tedge").forEach(function(el){
+    var key=el.dataset.from+"|"+el.dataset.to;
+    el.classList.toggle("snipped",snippedEdges.has(key));
+  });
+  var snipCount=$("snip-count");if(snipCount)snipCount.textContent=snippedEdges.size;
+  // reachability: find all nodes reachable from era-0 roots ignoring snipped edges
+  var roots=TREE.filter(function(n){return!n.requires||!n.requires.length||n.era===0}).map(function(n){return n.id});
+  var reachable=new Set(roots);var queue=roots.slice();
+  while(queue.length){var cur=queue.shift();(TREE_CHILDREN[cur]||[]).forEach(function(cid){if(reachable.has(cid))return;var key=cur+"|"+cid;if(snippedEdges.has(key))return;reachable.add(cid);queue.push(cid)})}
+  treeSVGEl.querySelectorAll(".tnode").forEach(function(el){el.classList.toggle("snipped-unreachable",snippedEdges.size>0&&!reachable.has(el.dataset.id))});
+  treeSVGEl.querySelectorAll(".tedge").forEach(function(el){el.classList.toggle("snipped-unreachable",snippedEdges.size>0&&!reachable.has(el.dataset.to))});
+  var severed=TREE.length-reachable.size;
+  var sb=$("snip-banner");if(sb&&snippedEdges.size>0){sb.innerHTML='SNIP MODE · '+snippedEdges.size+' edges cut → <b style="color:var(--txt)">'+severed+'</b> nodes severed &nbsp;<button class="btn" id="tt-snip-clear" style="font-size:8px;padding:2px 7px">CLEAR</button>';sb.querySelector("#tt-snip-clear").onclick=function(){snippedEdges.clear();applySnip()}}
+}
+
+// Add alt-click on edges after tree is built
+function wireSnipEdges(){
+  if(!treeSVGEl)return;
+  treeSVGEl.querySelectorAll(".tedge").forEach(function(el){
+    el.addEventListener("click",function(e){
+      if(!snipMode)return;
+      e.stopPropagation();
+      var key=el.dataset.from+"|"+el.dataset.to;
+      if(snippedEdges.has(key))snippedEdges.delete(key);else snippedEdges.add(key);
+      applySnip();
+    });
+  });
+}
+
+// ── Minimum Cut ──────────────────────────────────────────────────────────
+$("tt-mincut").onclick=function(){
+  if(!treeSel){var mc=$("mincut-info");if(mc){mc.textContent="Select a node first, then click MIN CUT";mc.classList.add("active")}return}
+  computeMinCut(treeSel);
+};
+function computeMinCut(targetId){
+  // Find min vertex cut between era-0 roots and targetId using simple BFS-based approach
+  // Node-splitting: each node v → v_in, v_out with capacity 1
+  var roots=TREE.filter(function(n){return!n.requires||!n.requires.length||n.era===0}).map(function(n){return n.id});
+  if(roots.includes(targetId)){showMinCutResult(targetId,[]);return}
+  // Build flow graph with node splitting
+  var nodes=TREE.map(function(n){return n.id});
+  var inOf=function(id){return id+"__in"};var outOf=function(id){return id+"__out"};
+  // Adjacency: out(u) → in(v) for each tree edge; in(u) → out(u) capacity 1
+  function bfsPath(source,sink,cap){
+    var parent={};parent[source]=null;var q=[source];
+    while(q.length){var u=q.shift();if(u===sink)break;
+      Object.keys(cap[u]||{}).forEach(function(v){if(!(v in parent)&&cap[u][v]>0){parent[v]=u;q.push(v)}})
+    }
+    if(!(sink in parent))return null;
+    var path=[];var v=sink;while(v!==source){path.unshift([parent[v],v]);v=parent[v]}
+    return path;
+  }
+  // Build capacity graph
+  var cap={};function addEdge(u,v,c){if(!cap[u])cap[u]={};if(!cap[v])cap[v]={};cap[u][v]=(cap[u][v]||0)+c;if(cap[v][u]===undefined)cap[v][u]=0}
+  nodes.forEach(function(id){
+    if(roots.includes(id))addEdge(inOf(id),outOf(id),999);
+    else if(id===targetId)addEdge(inOf(id),outOf(id),999);
+    else addEdge(inOf(id),outOf(id),1);
+  });
+  TREE.forEach(function(n){(n.requires||[]).forEach(function(pid){addEdge(outOf(pid),inOf(n.id),999)})});
+  // Add super-source → all roots
+  roots.forEach(function(r){addEdge("__src",outOf(r),999)});
+  // Max-flow (Ford-Fulkerson)
+  var source="__src",sink=inOf(targetId);
+  var path;while((path=bfsPath(source,sink,cap))){path.forEach(function(e){cap[e[0]][e[1]]--;cap[e[1]][e[0]]++})}
+  // Find cut: nodes reachable from source in residual
+  var reachable=new Set();var q2=[source];
+  while(q2.length){var u=q2.shift();if(reachable.has(u))continue;reachable.add(u);Object.keys(cap[u]||{}).forEach(function(v){if(!reachable.has(v)&&cap[u][v]>0)q2.push(v)})}
+  var cutNodes=nodes.filter(function(id){return reachable.has(outOf(id))&&!reachable.has(inOf(id))});
+  showMinCutResult(targetId,cutNodes);
+}
+function showMinCutResult(targetId,cutNodes){
+  if(!treeSVGEl)return;
+  treeSVGEl.querySelectorAll(".tnode").forEach(function(el){
+    el.classList.remove("mincut-member");
+    if(cutNodes.includes(el.dataset.id))el.classList.add("mincut-member");
+  });
+  var mc=$("mincut-info");if(mc){
+    var names=cutNodes.map(function(id){var n=TREE_MAP[id];return n?n.lb:id}).join(", ");
+    mc.innerHTML='MIN CUT for <b>'+esc(TREE_MAP[targetId]?TREE_MAP[targetId].lb:targetId)+'</b>: '+esc(cutNodes.length)+' nodes — '+esc(names||"already a root");
+    mc.classList.add("active");
+  }
+}
 function treeYearOf(n){var m=(n.dt||"").match(/\d{4}/);return m?parseInt(m[0]):2026}
 function applyRewind(y){if(!treeSVGEl)return;var max=+$("tt-year").max;var lb=$("tt-year-lb");if(y>=max){lb.textContent="FULL TIMELINE";lb.classList.remove("rewound")}else{lb.textContent="VISIBLE AS OF "+y;lb.classList.add("rewound")}treeSVGEl.querySelectorAll(".tnode").forEach(function(el){var n=TREE_MAP[el.dataset.id];el.classList.toggle("t-future",!!n&&treeYearOf(n)>y)});treeSVGEl.querySelectorAll(".tedge").forEach(function(el){var a=TREE_MAP[el.dataset.from],b=TREE_MAP[el.dataset.to];el.classList.toggle("t-future",(a&&treeYearOf(a)>y)||(b&&treeYearOf(b)>y))})}
 $("tt-year").addEventListener("input",function(){buildTreeIfNeeded();applyRewind(+this.value)});
@@ -622,6 +813,8 @@ function buildHumans(){
   for(var y=TL_START;y<=TL_END;y+=5){var pct=((y-TL_START)/TL_RANGE*100);yearHtml+='<div class="tl-year" style="left:'+pct+'%">'+y+"</div>"}
   yearHtml+='<div style="position:absolute;left:0;right:0;top:24px;height:1px;background:var(--line)"></div></div>';
   var rowsHtml="";
+  // YOU row (pinned)
+  rowsHtml+='<div class="tl-row" id="you-row" style="opacity:.6"><div class="tl-name" style="color:var(--dim)">YOU<span class="tier-badge" style="color:var(--faint)">ADD BET</span></div><div class="tl-bets" style="flex:1;position:relative;height:46px"><div id="you-add-btn" style="position:absolute;left:0;top:12px;font-size:9px;color:var(--faint);cursor:pointer;border:1px dashed var(--line);padding:3px 8px;letter-spacing:.08em">+ YOUR BET</div></div></div>';
   HUMANS.forEach(function(h){
     var tierColor={C:"var(--choke)",P:"var(--chip)",W:"var(--min)",M:"var(--net)"}[h.tier]||"var(--dim)";
     rowsHtml+='<div class="tl-row" data-id="'+h.id+'">';
@@ -635,7 +828,98 @@ function buildHumans(){
   });
   wrap.innerHTML=yearHtml+rowsHtml;
   wrap.querySelectorAll(".tl-name,.tl-bet").forEach(function(el){el.onclick=function(){openDossier("human",el.dataset.id||el.dataset.hid)}});
+  var youBtn=$("you-add-btn");if(youBtn)youBtn.onclick=openYouBetForm;
 }
+
+function openYouBetForm(){
+  var existing=document.getElementById("you-bet-form");if(existing){existing.remove();return}
+  var form=document.createElement("div");form.id="you-bet-form";
+  form.style.cssText="position:fixed;bottom:60px;left:50%;transform:translateX(-50%);background:var(--panel);border:1px solid var(--line2);padding:18px 20px;z-index:150;min-width:340px;font-size:11px";
+  form.innerHTML='<div style="font-size:9px;letter-spacing:.15em;color:var(--faint);margin-bottom:12px">YOUR BET (scored on 0-5 anatomy axes)</div>'
+    +'<input id="yb-thesis" type="text" placeholder="Thesis…" style="width:100%;box-sizing:border-box;background:#111;border:1px solid var(--line);color:var(--txt);padding:5px 8px;font-family:var(--mono);font-size:10px;margin-bottom:8px"><br>'
+    +'<div style="display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-bottom:10px">'
+    +ANATOMY_KEYS.map(function(k){return'<label style="font-size:9px;color:var(--dim)">'+k[1]+' <input type="number" min="0" max="5" id="yb-'+k[0]+'" placeholder="0-5" style="width:50px;background:#111;border:1px solid var(--line);color:var(--txt);padding:3px 5px;font-family:var(--mono);font-size:9px"></label>'}).join("")
+    +'</div><div style="display:flex;gap:8px"><button class="btn" id="yb-save">SAVE BET</button><button class="btn" onclick="document.getElementById(\'you-bet-form\').remove()">CANCEL</button></div>';
+  document.body.appendChild(form);
+  form.querySelector("#yb-save").onclick=function(){
+    var thesis=form.querySelector("#yb-thesis").value.trim();if(!thesis)return;
+    var anatomy={};ANATOMY_KEYS.forEach(function(k){anatomy[k[0]]=parseInt(form.querySelector("#yb-"+k[0]).value)||0});
+    var you_bets=JSON.parse(storage.getItem("sv3-you-bets")||"[]");
+    you_bets.push({thesis:thesis,anatomy:anatomy,yr:new Date().getFullYear(),added:NOW_YM});
+    storage.setItem("sv3-you-bets",JSON.stringify(you_bets));form.remove();
+  };
+}
+
+function buildHumansScatter(){
+  var svgEl=$("scatter-svg");if(!svgEl)return;
+  var W2=svgEl.clientWidth||800,H2=svgEl.clientHeight||500;
+  var PADL=60,PADR=20,PADT=20,PADB=50;
+  var plotW=W2-PADL-PADR,plotH=H2-PADT-PADB;
+  var ns="http://www.w3.org/2000/svg";
+  svgEl.innerHTML="";
+  function mkEl(tag,attrs){var e=document.createElementNS(ns,tag);Object.keys(attrs).forEach(function(k){e.setAttribute(k,attrs[k])});return e}
+  // axes
+  svgEl.appendChild(mkEl("line",{x1:PADL,y1:PADT,x2:PADL,y2:PADT+plotH,stroke:"#2c2c2c","stroke-width":"1"}));
+  svgEl.appendChild(mkEl("line",{x1:PADL,y1:PADT+plotH,x2:PADL+plotW,y2:PADT+plotH,stroke:"#2c2c2c","stroke-width":"1"}));
+  var xlbl=mkEl("text",{x:PADL+plotW/2,y:PADT+plotH+36,"text-anchor":"middle","class":"scatter-axis-label"});xlbl.textContent="CONSENSUS DELTA →";svgEl.appendChild(xlbl);
+  var ylbl=mkEl("text",{x:PADL-40,y:PADT+plotH/2,"text-anchor":"middle","class":"scatter-axis-label",transform:"rotate(-90,"+(PADL-40)+","+(PADT+plotH/2)+")"});ylbl.textContent="ASYMMETRY →";svgEl.appendChild(ylbl);
+  // grid lines
+  for(var gi=1;gi<=5;gi++){var gx=PADL+gi*plotW/5,gy=PADT+gi*plotH/5;var gl1=mkEl("line",{x1:gx,y1:PADT,x2:gx,y2:PADT+plotH,stroke:"#1a1a1a","stroke-width":"1"});svgEl.appendChild(gl1);var gl2=mkEl("line",{x1:PADL,y1:gy,x2:PADL+plotW,y2:gy,stroke:"#1a1a1a","stroke-width":"1"});svgEl.appendChild(gl2)}
+  // plot bets
+  HUMANS.forEach(function(h){
+    (h.bets||[]).forEach(function(bet){
+      if(!bet.anatomy)return;
+      var a=bet.anatomy;
+      var cx2=PADL+(a.consensus||0)/5*plotW;
+      var cy2=PADT+(1-a.asymmetry/5)*plotH;
+      var r=4+(a.stake||2);
+      var col={C:"rgba(255,59,48,.8)",P:"rgba(192,192,192,.7)",W:"rgba(127,211,148,.7)",M:"rgba(144,144,144,.5)"}[h.tier]||"#666";
+      var outcome=bet.outcome||"open";
+      var fillCol=outcome==="win"?col:outcome==="loss"?"rgba(80,80,80,.4)":col;
+      var dot=mkEl("circle",{cx:cx2,cy:cy2,r:r,fill:fillCol,stroke:"#333","stroke-width":"1","class":"scatter-dot","data-hid":h.id});
+      dot.addEventListener("mouseenter",function(){var t=mkEl("text",{x:cx2+r+4,y:cy2+4,fill:"var(--dim)",id:"sc-tip","font-size":"9",class:"scatter-label"});t.textContent=h.name+" — "+bet.yr;svgEl.appendChild(t)});
+      dot.addEventListener("mouseleave",function(){var t=svgEl.querySelector("#sc-tip");if(t)t.remove()});
+      dot.addEventListener("click",function(){openDossier("human",h.id)});
+      svgEl.appendChild(dot);
+    });
+  });
+  // graveyard (grey)
+  GRAVEYARD.forEach(function(g){
+    var cx2=PADL+Math.random()*plotW*0.4+plotW*0.1;
+    var cy2=PADT+Math.random()*plotH*0.6+plotH*0.1;
+    var dot=mkEl("circle",{cx:cx2,cy:cy2,r:5,fill:"rgba(40,40,40,.8)",stroke:"#333","stroke-width":"1","class":"scatter-dot","data-gid":g.id});
+    var lbl=mkEl("text",{x:cx2+7,y:cy2+3,fill:"#2c2c2c","font-size":"8","class":"scatter-label"});lbl.textContent=g.title;svgEl.appendChild(dot);svgEl.appendChild(lbl);
+  });
+}
+
+function buildGraveyard(){
+  var el=$("graveyard-list");if(!el)return;
+  el.innerHTML=GRAVEYARD.map(function(g){
+    return'<div class="grave-card'+(g.draft?" draft":"")+'">'
+      +'<div class="grave-tier">TIER D</div>'
+      +'<div class="grave-title">'+esc(g.title)+'</div>'
+      +'<div class="grave-cause">'+esc(g.cause_of_death||"—")+'</div>'
+      +'<div class="grave-body">'+esc(g.body||"—")+'</div>'
+      +'</div>';
+  }).join("");
+}
+
+// Sub-tab switching for HUMANS
+(function(){
+  function showHumans(v){
+    $("ht-living").classList.toggle("on",v==="living");
+    $("ht-scatter").classList.toggle("on",v==="scatter");
+    $("ht-graveyard").classList.toggle("on",v==="graveyard");
+    $("humans-living").style.display=v==="living"?"flex":"none";
+    $("humans-scatter").style.display=v==="scatter"?"block":"none";
+    $("humans-graveyard").style.display=v==="graveyard"?"block":"none";
+    if(v==="scatter")buildHumansScatter();
+    if(v==="graveyard")buildGraveyard();
+  }
+  $("ht-living").onclick=function(){showHumans("living")};
+  $("ht-scatter").onclick=function(){showHumans("scatter")};
+  $("ht-graveyard").onclick=function(){showHumans("graveyard")};
+})();
 
 // ── TRENDS ────────────────────────────────────────────────────────────────
 function buildTrends(){
@@ -665,11 +949,54 @@ function buildGantt(){
   html+="</div>";
   var order={open:0,closing:1,forming:2,closed:3};var sorted=TRENDS.slice().sort(function(a,b){return(order[a.status]-order[b.status])||((parseInt(a.opened)||0)-(parseInt(b.opened)||0))});
   var nowYr=new Date().getFullYear();
-  sorted.forEach(function(t){var o=parseInt(t.opened)||nowYr;var c=parseInt((t.expected_close||"").replace(/[±+]/g,""))||o+6;var l=gPct(o),w=Math.max(2,gPct(c)-l);html+='<div class="gantt-row"><div class="gantt-name" data-id="'+t.id+'">'+esc(t.name)+"</div><div class=\"gantt-track\"><div class=\"gantt-now\" style=\"left:"+gPct(nowYr)+"%\"></div><div class=\"gantt-bar st-"+t.status+'" data-id="'+t.id+'" style="left:'+l+"%;width:"+w+'%">'+t.status+"</div></div></div>"});
+  sorted.forEach(function(t){
+    var o=parseInt(t.opened)||nowYr;
+    var closeRaw=t.expected_close||"";
+    var fuzzy=/[±+?]/.test(closeRaw);
+    var c=parseInt(closeRaw.replace(/[±+?]/g,""))||o+6;
+    var l=gPct(o),w=Math.max(2,gPct(c)-l);
+    var fuzzyClass=fuzzy?" fuzzy-end":"";
+    html+='<div class="gantt-row"><div class="gantt-name" data-id="'+t.id+'">'+esc(t.name)+"</div>"
+      +'<div class="gantt-track"><div class="gantt-now" style="left:'+gPct(nowYr)+'%"></div>'
+      +'<div class="gantt-bar st-'+t.status+fuzzyClass+'" data-id="'+t.id+'" style="left:'+l+"%;width:"+w+'%">'+t.status+"</div></div></div>";
+  });
   el.innerHTML=html;el.querySelectorAll("[data-id]").forEach(function(b){b.onclick=function(){openDossier("trend",b.dataset.id)}});
 }
-$("tv-kanban").onclick=function(){$("tv-kanban").classList.add("on");$("tv-gantt").classList.remove("on");$("trends-kanban").style.display="flex";$("trends-gantt").style.display="none"};
-$("tv-gantt").onclick=function(){$("tv-gantt").classList.add("on");$("tv-kanban").classList.remove("on");$("trends-kanban").style.display="none";$("trends-gantt").style.display="block";buildGantt()};
+function buildWCMatrix(){
+  var el=$("trends-matrix");if(!el)return;
+  var CONS=CONSTRAINTS.filter(function(c){return c.lead_min_yr>0});
+  var openWindows=TRENDS.filter(function(t){return t.status==="open"||t.status==="forming"||t.status==="closing"});
+  var html='<table class="wc-matrix"><thead><tr><th>Window</th>';
+  CONS.forEach(function(c){html+='<th><div class="wc-con-hd" title="'+esc(c.title)+'">'+esc(c.title)+"</div></th>"});
+  html+="</tr></thead><tbody>";
+  openWindows.forEach(function(t){
+    html+='<tr><td class="wc-window-nm" data-id="'+t.id+'">'+esc(t.name)+'</td>';
+    CONS.forEach(function(c){
+      var gates=false;
+      var links=(Store.get("window."+t.id)||{}).links||[];
+      links.forEach(function(lk){if(lk.rel==="gates"&&lk.to===c.id)gates=true});
+      if(!gates&&t.xref&&t.xref.atlas){var atl=t.xref.atlas||[];atl.forEach(function(aid){var an=NMAP[aid];if(an&&an.id===c.id.replace("constraint.",""))gates=true})}
+      html+='<td class="'+(gates?"wc-cell-filled":"")+'">'+(gates?"×":"")+"</td>";
+    });
+    html+="</tr>";
+  });
+  html+="</tbody></table><div style='font-size:9px;color:var(--faint);margin-top:12px'>× = window gated by constraint · hover column headers to see constraint name · click window name to open dossier</div>";
+  el.innerHTML=html;
+  el.querySelectorAll(".wc-window-nm").forEach(function(td){td.onclick=function(){openDossier("trend",td.dataset.id)}});
+}
+function showTrendsView(v){
+  $("tv-kanban").classList.toggle("on",v==="kanban");
+  $("tv-gantt").classList.toggle("on",v==="gantt");
+  $("tv-matrix").classList.toggle("on",v==="matrix");
+  $("trends-kanban").style.display=v==="kanban"?"flex":"none";
+  $("trends-gantt").style.display=v==="gantt"?"block":"none";
+  $("trends-matrix").style.display=v==="matrix"?"block":"none";
+  if(v==="gantt")buildGantt();
+  if(v==="matrix")buildWCMatrix();
+}
+$("tv-kanban").onclick=function(){showTrendsView("kanban")};
+$("tv-gantt").onclick=function(){showTrendsView("gantt")};
+$("tv-matrix").onclick=function(){showTrendsView("matrix")};
 
 // ── METHOD ────────────────────────────────────────────────────────────────
 function buildMethod(){
@@ -683,19 +1010,136 @@ function buildMethod(){
 var forecasts=[];
 function loadForecasts(){try{var raw=storage.getItem("sv3-forecasts");if(raw)forecasts=JSON.parse(raw)}catch(e){}}
 function saveForecasts(){try{storage.setItem("sv3-forecasts",JSON.stringify(forecasts))}catch(e){}}
-function calcBrier(){var resolved=forecasts.filter(function(f){return f.outcome!==null});if(!resolved.length)return null;var sum=resolved.reduce(function(acc,f){return acc+Math.pow(f.p-(f.outcome?1:0),2)},0);return(sum/resolved.length).toFixed(3)}
+
+function calcBrier(){
+  var resolved=forecasts.filter(function(f){return f.outcome!==null&&f.outcome!=="ambiguous"});
+  if(!resolved.length)return null;
+  var sum=resolved.reduce(function(acc,f){return acc+Math.pow(f.p-(f.outcome?1:0),2)},0);
+  return(sum/resolved.length).toFixed(3);
+}
+
+function murphyDecomp(){
+  // Murphy decomposition: Brier = Reliability - Resolution + Uncertainty
+  var resolved=forecasts.filter(function(f){return f.outcome!==null&&f.outcome!=="ambiguous"});
+  if(resolved.length<3)return null;
+  var n=resolved.length;
+  var meanBase=resolved.reduce(function(a,f){return a+(f.outcome?1:0)},0)/n;
+  // bin into deciles
+  var bins={};resolved.forEach(function(f){var b=Math.floor(f.p*10)/10;if(!bins[b])bins[b]=[];bins[b].push(f)});
+  var reliability=0,resolution=0;
+  Object.keys(bins).forEach(function(b){
+    var g=bins[b],nk=g.length,ok=g.filter(function(f){return f.outcome}).length,fk=nk?ok/nk:0,pk=parseFloat(b)+0.05;
+    reliability+=nk*Math.pow(pk-fk,2);
+    resolution+=nk*Math.pow(fk-meanBase,2);
+  });
+  reliability/=n;resolution/=n;
+  var uncertainty=meanBase*(1-meanBase);
+  return{reliability:reliability.toFixed(3),resolution:resolution.toFixed(3),uncertainty:uncertainty.toFixed(3)};
+}
+
+function renderCalibrationChart(){
+  var svgEl=$("calibration-svg");var msgEl=$("calibration-msg");if(!svgEl)return;
+  var resolved=forecasts.filter(function(f){return f.outcome!==null&&f.outcome!=="ambiguous"});
+  if(resolved.length<20){if(msgEl)msgEl.textContent="Calibration unreadable below n=20. Resolved: "+resolved.length+". Resolve more.";svgEl.style.display=resolved.length===0?"none":"block";if(!resolved.length)return}
+  var W3=300,H3=200,PAD=30;var ns="http://www.w3.org/2000/svg";
+  svgEl.innerHTML="";svgEl.style.display="block";
+  function mkEl2(tag,attrs){var e=document.createElementNS(ns,tag);Object.keys(attrs).forEach(function(k){e.setAttribute(k,attrs[k])});return e}
+  // diagonal
+  svgEl.appendChild(mkEl2("line",{x1:PAD,y1:H3-PAD,x2:W3-PAD,y2:PAD,"class":"cal-diagonal"}));
+  // axis labels
+  for(var ai=0;ai<=10;ai+=2){var av=ai/10;var ax=PAD+av*(W3-PAD*2),ay=H3-PAD-av*(H3-PAD*2);var at=mkEl2("text",{x:ax,y:H3-PAD+14,"text-anchor":"middle","font-size":"8",fill:"#484848"});at.textContent=av.toFixed(1);svgEl.appendChild(at);var aty=mkEl2("text",{x:PAD-8,y:H3-PAD-av*(H3-PAD*2)+3,"text-anchor":"end","font-size":"8",fill:"#484848"});aty.textContent=av.toFixed(1);svgEl.appendChild(aty)}
+  // bins
+  var bins={};for(var bi=0;bi<10;bi++)bins[bi/10]=[];
+  resolved.forEach(function(f){var b=Math.floor(f.p*10)/10;if(!(b in bins))b=Math.round(b*10)/10;if(b in bins)bins[b].push(f)});
+  Object.keys(bins).forEach(function(b){
+    var g=bins[b];if(!g.length)return;
+    var fk=g.filter(function(f){return f.outcome}).length/g.length;var pk=parseFloat(b)+0.05;
+    var px2=PAD+pk*(W3-PAD*2),py2=H3-PAD-fk*(H3-PAD*2);
+    var barH=(H3-PAD*2)*fk,barX=PAD+parseFloat(b)*(W3-PAD*2),barW=(W3-PAD*2)/10;
+    svgEl.appendChild(mkEl2("rect",{x:barX,y:H3-PAD-barH,width:barW*.7,height:Math.max(1,barH),"class":"cal-bar"}));
+    var dot=mkEl2("circle",{cx:px2,cy:py2,r:4,"class":"cal-dot"});
+    dot.setAttribute("title","p="+b+" → realized="+fk.toFixed(2)+" (n="+g.length+")");
+    svgEl.appendChild(dot);
+  });
+  if(msgEl)msgEl.textContent="n="+resolved.length+" resolved · Diagonal = perfect calibration · Dots above diagonal = overconfident";
+}
+
+var _pmIndex=-1;
+function openPostmortem(i){
+  _pmIndex=i;var f=forecasts[i];if(!f)return;
+  var modal=$("postmortem-modal");var stmt=$("pm-stmt");
+  if(stmt)stmt.textContent=f.stmt.slice(0,120);
+  if(modal)modal.style.display="flex";
+}
+(function(){
+  var btn=$("pm-submit");if(!btn)return;
+  btn.onclick=function(){
+    if(_pmIndex<0)return;
+    var type=$("pm-type").value;var note=$("pm-note").value.trim();
+    forecasts[_pmIndex].outcome=false;
+    forecasts[_pmIndex].postmortem={type:type,note:note,date:new Date().toISOString().slice(0,10)};
+    saveForecasts();renderForecasts();
+    var modal=$("postmortem-modal");if(modal)modal.style.display="none";_pmIndex=-1;
+    $("pm-note").value="";
+  };
+})();
+
 function renderForecasts(){
   var brier=calcBrier();$("brier-val").textContent=brier!==null?brier:"—";
-  var pending=forecasts.filter(function(f){return f.outcome===null}).length;$("fc-counts").textContent=pending+" / "+(forecasts.length-pending);
+  var pending=forecasts.filter(function(f){return f.outcome===null}).length;
+  $("fc-counts").textContent=pending+" / "+(forecasts.length-pending);
+  var mu=murphyDecomp();
+  var relEl=$("brier-reliability"),resEl=$("brier-resolution");
+  if(relEl)relEl.textContent=mu?mu.reliability:"—";
+  if(resEl)resEl.textContent=mu?mu.resolution:"—";
+  // owed inbox
+  var owed=forecasts.filter(function(f){return f.outcome===null&&f.dl&&new Date(f.dl)<new Date()});
+  var owedBanner=$("fc-owed-banner");
+  if(owedBanner){
+    if(owed.length){owedBanner.style.display="block";owedBanner.innerHTML="RESOLUTIONS OWED: "+owed.length+" forecast"+(owed.length>1?"s":"")+' past deadline <button class="btn" id="fc-owed-jump" style="margin-left:8px;font-size:9px">JUMP TO FIRST</button>'}
+    else owedBanner.style.display="none";
+  }
+  setTimeout(function(){var btn=$("fc-owed-jump");if(btn)btn.onclick=function(){var el=$("fc-list").querySelector("[data-owed]");if(el)el.scrollIntoView({behavior:"smooth"})}},0);
+  renderCalibrationChart();
   $("fc-list").innerHTML=forecasts.map(function(f,i){
-    var row='<div style="display:flex;gap:8px;margin-bottom:6px;align-items:baseline;font-size:11px"><div style="color:var(--choke);min-width:22px;font-size:9px">'+(i+1)+'</div><div style="flex:1;color:var(--txt)">'+esc(f.stmt)+'</div>'+(f.seeded?'<span class="fc-seed-tag">seeded</span>':"")+'<div style="color:var(--chip);min-width:36px">'+Math.round(f.p*100)+"%</div>"+'<div style="color:var(--faint);min-width:70px;font-size:9px">'+esc(f.dl||"")+'</div>'+(f.outcome===null?'<button class="btn" data-i="'+i+'" data-o="1" style="padding:2px 6px;font-size:9px">✓</button><button class="btn danger" data-i="'+i+'" data-o="0" style="padding:2px 6px;font-size:9px">✗</button>':'<span style="color:'+(f.outcome?"var(--ok)":"var(--alert)")+';font-size:9px">'+(f.outcome?"TRUE":"FALSE")+"</span>")+'<button class="btn danger" data-del="'+i+'" style="padding:2px 5px;font-size:9px">×</button></div>';
+    var isOwed=f.outcome===null&&f.dl&&new Date(f.dl)<new Date();
+    var row='<div style="display:flex;gap:8px;margin-bottom:6px;align-items:baseline;font-size:11px"'+(isOwed?' data-owed="1" style="border-left:2px solid var(--alert);padding-left:6px"':'')+'>'+
+      '<div style="color:var(--choke);min-width:22px;font-size:9px">'+(i+1)+'</div>'+
+      '<div style="flex:1;color:var(--txt)">'+esc(f.stmt)+'</div>'+
+      (f.seeded?'<span class="fc-seed-tag">seeded</span>':"")+
+      '<div style="color:var(--chip);min-width:36px">'+Math.round(f.p*100)+"%</div>"+
+      '<div style="color:var(--faint);min-width:70px;font-size:9px">'+(isOwed?'<span style="color:var(--alert)">':'')+esc(f.dl||"")+(isOwed?'</span>':'')+' DUE</div>'+
+      (f.outcome===null?
+        '<button class="btn" data-i="'+i+'" data-o="1" style="padding:2px 6px;font-size:9px">✓</button>'+
+        '<button class="btn danger" data-i="'+i+'" data-pm="1" style="padding:2px 6px;font-size:9px">✗</button>'+
+        '<button class="btn" data-o="ambiguous" data-i="'+i+'" style="padding:2px 6px;font-size:9px;color:var(--faint)" title="Mark ambiguous — excluded from scoring">~</button>'
+      :'<span style="color:'+(f.outcome&&f.outcome!=="ambiguous"?(f.outcome?"var(--ok)":"var(--alert)"):"var(--faint)")+';font-size:9px">'+(f.outcome==="ambiguous"?"AMBIGUOUS":f.outcome?"TRUE":"FALSE")+"</span>")+
+      '<button class="btn danger" data-del="'+i+'" style="padding:2px 5px;font-size:9px">×</button></div>';
     if(f.falsifier)row+='<div class="fc-falsifier"><b>FALSIFIER</b> '+esc(f.falsifier)+"</div>";
+    if(f.resolver)row+='<div class="fc-resolver-note">Resolver: <a href="'+esc(f.resolver)+'" target="_blank" rel="noopener">'+esc(f.resolver.slice(0,60))+'</a></div>';
+    if(f.criteria)row+='<div class="fc-criteria-note">Criteria: '+esc(f.criteria)+"</div>";
+    if(f.postmortem)row+='<div class="fc-postmortem">'+esc(f.postmortem.type.toUpperCase())+" — "+esc(f.postmortem.note)+'</div>';
     return row;
   }).join("");
-  $("fc-list").querySelectorAll("[data-i]").forEach(function(btn){btn.onclick=function(){forecasts[+btn.dataset.i].outcome=+btn.dataset.o===1;saveForecasts();renderForecasts()}});
+  $("fc-list").querySelectorAll("[data-i]").forEach(function(btn){btn.onclick=function(){
+    var i=+btn.dataset.i;
+    if(btn.dataset.pm){openPostmortem(i);return}
+    var o=btn.dataset.o;
+    if(o==="ambiguous"){forecasts[i].outcome="ambiguous";saveForecasts();renderForecasts();return}
+    forecasts[i].outcome=(+o===1);saveForecasts();renderForecasts();
+  }});
   $("fc-list").querySelectorAll("[data-del]").forEach(function(btn){btn.onclick=function(){forecasts.splice(+btn.dataset.del,1);saveForecasts();renderForecasts()}});
 }
-$("fc-add-btn").onclick=function(){var stmt=$("fc-stmt").value.trim();var p=parseFloat($("fc-p").value);var dl=$("fc-dl").value;if(!stmt||isNaN(p)||p<0||p>1)return;forecasts.push({stmt:stmt,p:p,dl:dl,outcome:null,added:NOW_YM});saveForecasts();renderForecasts();$("fc-stmt").value="";$("fc-p").value="";$("fc-dl").value=""};
+$("fc-add-btn").onclick=function(){
+  var stmt=$("fc-stmt").value.trim();var p=parseFloat($("fc-p").value);var dl=$("fc-dl").value;
+  var resolver=($("fc-resolver")||{value:""}).value.trim();
+  var criteria=($("fc-criteria")||{value:""}).value.trim();
+  if(!stmt||isNaN(p)||p<0||p>1)return;
+  forecasts.push({stmt:stmt,p:p,dl:dl,resolver:resolver,criteria:criteria,outcome:null,added:NOW_YM});
+  saveForecasts();renderForecasts();
+  $("fc-stmt").value="";$("fc-p").value="";$("fc-dl").value="";
+  if($("fc-resolver"))$("fc-resolver").value="";if($("fc-criteria"))$("fc-criteria").value="";
+};
 $("fc-seed-btn").onclick=function(){
   var existing={};forecasts.forEach(function(f){if(f.key)existing[f.key]=1});var added=0;
   function harvest(nodes,reg,nameOf){nodes.forEach(function(n){(n.future_paths||[]).forEach(function(fp,i){if(!fp.falsifier||/^N\/A/.test(fp.falsifier))return;var key=reg+"/"+n.id+"/"+i;if(existing[key])return;forecasts.push({stmt:"["+reg.toUpperCase()+" · "+nameOf(n)+"] "+fp.path,p:fp.p,dl:fp.horizon+"-12-31",falsifier:fp.falsifier,outcome:null,added:NOW_YM,seeded:true,key:key});existing[key]=1;added++})})}
@@ -730,6 +1174,9 @@ function selectPaletteItem(i){
     if(r.id==="patrol")switchTab("patrol");
     else if(r.id==="trace"){var tp=$("trace-panel");if(tp)tp.classList.add("open");setTimeout(function(){var a=$("trace-a");if(a)a.focus()},60)}
     else if(r.id==="health")openHealth();
+    else if(r.id==="brief")switchTab("brief");
+    else if(r.id==="thesis")switchTab("thesis");
+    else if(r.id==="kbd"){var ko=$("kbd-overlay");if(ko)ko.style.display="flex"}
     return;
   }
   if(r.reg!=="scenario")addRecentJump(r.reg,r.id,r.name);
@@ -777,7 +1224,7 @@ $("onboard-dismiss").onclick=function(){storage.setItem("sv3-onboard-seen","1");
 window.addEventListener("resize",function(){if($("v-atlas").classList.contains("on"))resize()});
 buildLegend();buildConstraints();buildScenarios();buildMethod();buildHumans();buildTrends();
 loadForecasts();renderForecasts();checkOnboarding();
-updateFreshnessMeter();buildPatrol();
+updateFreshnessMeter();buildPatrol();buildThesisRegister();buildGraveyard();
 requestAnimationFrame(function(){resize();kick()});
 setTimeout(buildTreeIfNeeded,500);
 // Wire freshness meter click → health panel
@@ -785,9 +1232,9 @@ setTimeout(buildTreeIfNeeded,500);
 
 // ── ROUTER INTEGRATION ────────────────────────────────────────────────────
 // Override tab clicks to go through Router so the URL updates
-document.querySelectorAll("#tabs .tab").forEach(function(t){t.onclick=function(){Router.navigate(t.dataset.v,{})}});
+document.querySelectorAll("#tabs .tab").forEach(function(t){t.onclick=function(){Router.navigate(t.dataset.v,{});_entityNavIndex=-1}});
 Router.on(function(path,params){
-  var sections=["atlas","tree","humans","trends","constraints","forecasts","method","patrol"];
+  var sections=["thesis","atlas","tree","humans","trends","constraints","forecasts","method","patrol","brief"];
   if(sections.indexOf(path)!==-1)switchTab(path);
   if(params&&params.open){
     var m=params.open.match(/^(atlas|tree|human|window)\.(.+)$/);
@@ -802,6 +1249,123 @@ Router.on(function(path,params){
   var reg=m[1],id=m[2];
   switchTab({atlas:"atlas",tree:"tree",human:"humans",trend:"trends"}[reg]);
   setTimeout(function(){if(reg==="tree"){buildTreeIfNeeded();selectTreeNode(id)}else openDossier(reg,id,false)},120);
+})();
+
+// ── THESIS REGISTER ───────────────────────────────────────────────────────
+function buildThesisRegister(){
+  var el=$("thesis-list");if(!el)return;
+  el.innerHTML=THESES.map(function(th,i){
+    var conf=th.confidence||th.conf||"med";
+    var supports=(th.supports||[]).map(function(sid){
+      var info=fromStoreId(sid);
+      if(!info){
+        // Try constraint lookup
+        if(sid.startsWith("constraint.")){
+          var cid=sid.replace("constraint.","");
+          var cm=CONSTRAINTS.find(function(c){return c.id===sid||c.id===cid||c.title.toLowerCase().replace(/\s+/g,"-")===cid});
+          var cnm=cm?cm.title:sid.replace("constraint.","").replace(/-/g," ");
+          return'<span class="xchip" style="cursor:default;color:var(--faint)">'+esc(cnm)+"</span>";
+        }
+        var parts=sid.split(".");var prefix=parts[0];var rest=parts.slice(1).join(".");
+        return'<span class="xchip" data-reg="'+prefix+'" data-id="'+rest+'">'+esc(sid)+"</span>";
+      }
+      var e2=Store.get(sid);var nm=e2?(e2.title||sid):sid;
+      return'<span class="xchip" data-reg="'+info.reg+'" data-id="'+info.id+'">'+esc(nm)+"</span>";
+    }).join("");
+    var fcLinks=(th.forecast_ids||[]).map(function(fid){
+      var fc=forecasts.find(function(f){return f.key===fid||f.id===fid});
+      return fc?'<span class="fc-seed-tag">'+esc(fc.stmt.slice(0,40))+'…</span>':"";
+    }).join("");
+    return'<div class="thesis-card'+(th.draft?" draft":"")+'">'
+      +'<div class="thesis-num">'+(i+1)+'. THESIS</div>'
+      +'<div class="thesis-stmt">'+esc(th.statement)+'</div>'
+      +'<span class="thesis-conf '+conf+'">'+conf.toUpperCase()+'</span>'
+      +'<div class="thesis-kill">'+esc(th.kill_condition)+'</div>'
+      +(supports?'<div class="thesis-supports">'+supports+'</div>':"")
+      +(fcLinks?'<div style="margin-top:8px">'+fcLinks+'</div>':"")
+      +'</div>';
+  }).join("");
+  attachChipNavigation();
+}
+
+// ── BRIEF DIGEST ──────────────────────────────────────────────────────────
+var _briefThesisIdx=parseInt(storage.getItem("sv3-brief-thesis-idx")||"0");
+function buildBrief(){
+  var el=$("brief-body");if(!el)return;
+  var now=new Date();var lastSeen=storage.getItem("sv3-brief-last-seen")||"never";
+  storage.setItem("sv3-brief-last-seen",now.toISOString().slice(0,10));
+  var html="";
+  // date header
+  html+='<div style="font-size:9px;letter-spacing:.15em;color:var(--faint);margin-bottom:8px">'+now.toISOString().slice(0,10)+' · last viewed: '+lastSeen+'</div>';
+  // resolutions owed
+  var owed=forecasts.filter(function(f){return f.outcome===null&&f.dl&&new Date(f.dl)<new Date()});
+  html+='<div class="brief-section"><h4>Resolutions Owed ('+owed.length+')</h4>';
+  if(owed.length===0)html+='<div class="brief-item">All forecasts resolved or no deadlines passed ✓</div>';
+  owed.slice(0,5).forEach(function(f){html+='<div class="brief-item urgent"><b>'+esc(f.stmt.slice(0,70))+'</b> — deadline '+esc(f.dl)+'</div>'});
+  if(owed.length>5)html+='<div class="brief-item" style="color:var(--faint)">…and '+(owed.length-5)+' more</div>';
+  html+="</div>";
+  // patrol items due
+  var patrolDue=[];
+  Store.all().forEach(function(e){
+    if(!e.signals||!e.signals.length)return;
+    e.signals.forEach(function(sig){
+      var ovr=Store._overrides||{};var lc=(ovr[e.id]&&ovr[e.id].signal_overrides&&ovr[e.id].signal_overrides[sig.label]&&ovr[e.id].signal_overrides[sig.label].last_checked)||sig.last_checked;
+      var elapsed=(Date.now()-(lc?new Date(lc).getTime():0))/86400000;
+      if(elapsed>sig.cadence_days)patrolDue.push({entity:e,sig:sig,overdue:Math.round(elapsed-sig.cadence_days)});
+    });
+  });
+  patrolDue.sort(function(a,b){return b.overdue-a.overdue});
+  html+='<div class="brief-section"><h4>Patrol Items Due ('+patrolDue.length+')</h4>';
+  if(patrolDue.length===0)html+='<div class="brief-item">All signals current ✓</div>';
+  patrolDue.slice(0,5).forEach(function(r){html+='<div class="brief-item"><b>'+esc(r.sig.label)+'</b> ('+esc(r.entity.title)+') — +'+r.overdue+'d overdue</div>'});
+  if(patrolDue.length>5)html+='<div class="brief-item" style="color:var(--faint)">…and '+(patrolDue.length-5)+' more</div>';
+  html+="</div>";
+  // past half-life
+  var staleEnts=Store.all().filter(function(e){return Store.staleStatus(e.id)==="stale"&&e.title});
+  html+='<div class="brief-section"><h4>Past Half-Life ('+staleEnts.length+')</h4>';
+  if(staleEnts.length===0)html+='<div class="brief-item">All entities within half-life ✓</div>';
+  staleEnts.slice(0,5).forEach(function(e){html+='<div class="brief-item"><b>'+esc(e.title)+'</b> — '+esc(e.as_of||"unknown")+'</div>'});
+  if(staleEnts.length>5)html+='<div class="brief-item" style="color:var(--faint)">…and '+(staleEnts.length-5)+' more</div>';
+  html+="</div>";
+  // windows entering final 12 months
+  var nowYr=now.getFullYear();var urgent=TRENDS.filter(function(t){if(t.status==="closed")return false;var c=parseInt((t.expected_close||"").replace(/[±+?]/g,""));return c&&c-nowYr>=0&&c-nowYr<=1});
+  html+='<div class="brief-section"><h4>Windows Closing Within 12 Months ('+urgent.length+')</h4>';
+  if(!urgent.length)html+='<div class="brief-item">No windows in final year</div>';
+  urgent.forEach(function(t){html+='<div class="brief-item urgent"><b>'+esc(t.name)+'</b> — closes '+esc(t.expected_close||"?")+'</div>'});
+  html+="</div>";
+  // thesis spotlight (round-robin)
+  if(THESES.length){
+    var th=THESES[_briefThesisIdx%THESES.length];
+    _briefThesisIdx++;storage.setItem("sv3-brief-thesis-idx",String(_briefThesisIdx));
+    html+='<div class="brief-section"><h4>Thesis Spotlight — Still Alive?</h4>'
+      +'<div class="brief-thesis-spot">'
+      +'<div class="bts-stmt">'+esc(th.statement)+'</div>'
+      +'<div class="bts-kill">KILL: '+esc(th.kill_condition)+'</div>'
+      +'</div></div>';
+  }
+  el.innerHTML=html;
+  // COPY button
+  var cpBtn=$("brief-copy-btn");if(cpBtn)cpBtn.onclick=function(){
+    var md=["# BRIEF — "+now.toISOString().slice(0,10),"","## Resolutions Owed"];
+    owed.forEach(function(f){md.push("- "+f.stmt+" (deadline "+f.dl+")")});
+    md.push("","## Patrol Due");patrolDue.slice(0,5).forEach(function(r){md.push("- "+r.sig.label+" ("+r.entity.title+") +"+r.overdue+"d")});
+    md.push("","## Past Half-Life");staleEnts.slice(0,5).forEach(function(e){md.push("- "+e.title)});
+    if(THESES.length){var th2=THESES[(_briefThesisIdx-1)%THESES.length];md.push("","## Thesis Spotlight","",th2.statement,"","Kill: "+th2.kill_condition)}
+    try{navigator.clipboard.writeText(md.join("\n")).then(function(){cpBtn.textContent="⎘ Copied!";setTimeout(function(){cpBtn.textContent="⎘ Copy as Markdown"},1500)})}catch(e){}
+  };
+}
+
+// ── COPY LINK in dossier ──────────────────────────────────────────────────
+(function(){
+  var dbody=$("dbody");if(!dbody)return;
+  var dhead=$("dhead");if(!dhead)return;
+  var clBtn=document.createElement("button");clBtn.className="btn";clBtn.title="Copy link to this entity";
+  clBtn.textContent="⎘";clBtn.style.cssText="font-size:11px;padding:3px 7px;color:var(--faint);margin-left:auto";
+  clBtn.onclick=function(){
+    if(!dossierCurrent)return;
+    try{var url=location.origin+location.pathname+"#"+dossierCurrent.reg+":"+dossierCurrent.id;navigator.clipboard.writeText(url).then(function(){clBtn.textContent="⎘ Copied!";setTimeout(function(){clBtn.textContent="⎘"},1200)})}catch(e){}
+  };
+  dhead.insertBefore(clBtn,$("dclose"));
 })();
 
 // ── PHASE 1: STALENESS BANNERS · CONNECTIONS · PATROL · TRACE · CMD-K V2 ──
@@ -949,7 +1513,10 @@ function addRecentJump(reg,id,name){
 var ACTION_CMDS=[
   {reg:"action",id:"patrol",name:"⊕ PATROL — Signal check queue",sub:"View overdue signals"},
   {reg:"action",id:"trace",name:"⊕ TRACE — Path between two nodes",sub:"BFS path up to 6 hops"},
-  {reg:"action",id:"health",name:"⊕ DATA HEALTH — Freshness report",sub:"Stale entity list"}
+  {reg:"action",id:"health",name:"⊕ DATA HEALTH — Freshness report",sub:"Stale entity list"},
+  {reg:"action",id:"brief",name:"⊕ BRIEF — Weekly digest",sub:"Resolutions owed + patrol + thesis spotlight"},
+  {reg:"action",id:"thesis",name:"⊕ THESIS — Register of explicit claims",sub:"5 theses with kill conditions"},
+  {reg:"action",id:"kbd",name:"⊕ KEYBOARD MAP — Shortcuts",sub:"j/k navigate, ? this overlay, 1-9 tabs"}
 ];
 function searchAllv2(q){
   if(!q||!q.trim()){

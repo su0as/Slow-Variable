@@ -56,6 +56,7 @@
     <div class="s">Earth Tech Tree · v3</div>
   </div>
   <div id="tabs">
+    <button class="tab" data-v="thesis" title="Thesis Register — explicit claims">Thesis</button>
     <button class="tab on" data-v="atlas" title="Constraint Atlas">Atlas</button>
     <button class="tab" data-v="tree" title="Tech Tree — Factorio mechanics">Tree</button>
     <button class="tab" data-v="humans" title="Bet Atlas — high-agency individuals">Humans</button>
@@ -64,6 +65,7 @@
     <button class="tab" data-v="forecasts" title="Calibrated forecasts">Forecasts</button>
     <button class="tab" data-v="method" title="Methodology">Method</button>
     <button class="tab" data-v="patrol" title="Signal Patrol — check queue">Patrol</button>
+    <button class="tab" data-v="brief" title="BRIEF — weekly digest">Brief</button>
   </div>
   <div id="hdr-right">
     <div id="freshness-meter" class="freshness-meter" title="Click to open data health"></div>
@@ -76,6 +78,15 @@
 
 <!-- VIEWS -->
 <div id="views">
+
+  <!-- THESIS REGISTER (landing / home) -->
+  <div class="view scrollview" id="v-thesis">
+    <div class="inner">
+      <h2 class="sec">Thesis Register</h2>
+      <div class="prose thesis-intro"><p>Explicit claims this tool commits to. Each carries a kill condition — a falsifiable observable that would retire the thesis. The 7 sections are instruments serving these claims.</p></div>
+      <div id="thesis-list"></div>
+    </div>
+  </div>
 
   <!-- ATLAS -->
   <div class="view on" id="v-atlas">
@@ -106,6 +117,8 @@
       <button class="ttool" id="tt-full" title="Show full tree">Full Tree</button>
       <button class="ttool" id="tt-path" title="Path-to-target: show only ancestor chain of selected node">Path to Target</button>
       <button class="ttool" id="tt-xref" title="Toggle ghost cross-registry edges">Cross-links</button>
+      <button class="ttool" id="tt-snip" title="Counterfactual snip mode — alt-click an edge to cut it">Snip</button>
+      <button class="ttool" id="tt-mincut" title="Show minimum vertex cut separating selected node from roots">Min Cut</button>
       <button class="ttool" id="tt-reset" title="Clear selection">Clear</button>
       <div id="tt-year-wrap" title="Point-in-time rewind: dim everything not yet visible in year Y">
         <input type="range" id="tt-year" min="1965" max="2026" step="1" value="2026">
@@ -118,6 +131,8 @@
         <button class="tree-zbtn" id="tz-fit" title="Fit tree" style="font-size:9px">⊡</button>
       </div>
     </div>
+    <div id="snip-banner">SNIP MODE ACTIVE — Alt-click an edge to cut it · <span id="snip-count">0</span> snips · <button class="btn" id="tt-snip-clear" style="font-size:8px;padding:2px 7px;margin-left:6px">CLEAR</button></div>
+    <div id="mincut-info"></div>
     <div id="tree-scroll">
       <div id="tree-svg-wrap"></div>
     </div>
@@ -128,7 +143,12 @@
   <!-- HUMANS -->
   <div class="view" id="v-humans">
     <div id="humans-banner">Bet structures are reproducible. Outcomes are power-law. Base rate of Tier-C bets surviving: low single digits. Copy the structure, never the confidence.</div>
-    <div style="position:relative;flex:1;overflow:hidden;display:flex">
+    <div id="humans-subtabs">
+      <button class="ttool on" id="ht-living" title="Living bets — active individuals">Living</button>
+      <button class="ttool" id="ht-scatter" title="Structure scatter — consensus delta vs asymmetry">Scatter</button>
+      <button class="ttool" id="ht-graveyard" title="Graveyard — dead bets and pattern failures">Graveyard</button>
+    </div>
+    <div id="humans-living" style="position:relative;flex:1;overflow:hidden;display:flex">
       <div id="humans-scroll" style="flex:1;overflow:auto;padding:20px 240px 40px 80px">
         <div id="humans-timeline-inner"></div>
       </div>
@@ -143,6 +163,17 @@
         <div style="margin-top:12px;font-size:9px;color:var(--faint);line-height:1.6">Effects compound: each win mints capital + credibility for the next, larger bet.</div>
       </div>
     </div>
+    <!-- SCATTER sub-view -->
+    <div id="humans-scatter" style="display:none;flex:1;overflow:hidden;padding:20px 20px 40px">
+      <div id="scatter-wrap" style="position:relative;width:100%;height:100%">
+        <svg id="scatter-svg" style="width:100%;height:100%;overflow:visible"></svg>
+      </div>
+    </div>
+    <!-- GRAVEYARD sub-view -->
+    <div id="humans-graveyard" style="display:none;flex:1;overflow:auto;padding:20px 40px 40px">
+      <div class="prose" style="margin-bottom:16px;color:var(--dim);font-size:11px">Dead bets — same thesis, same structure, different outcome. Without these, the bet atlas is a survivorship machine. TIER D entries are marked DRAFT pending author verification.</div>
+      <div id="graveyard-list"></div>
+    </div>
   </div>
 
   <!-- TRENDS -->
@@ -150,9 +181,11 @@
     <div id="trends-toolbar">
       <button class="ttool on" id="tv-kanban" title="Status columns">Kanban</button>
       <button class="ttool" id="tv-gantt" title="All windows on one time axis">Timeline</button>
+      <button class="ttool" id="tv-matrix" title="Window × Constraint dependency matrix">Matrix</button>
       <span style="margin-left:auto;font-size:9px;color:var(--faint);letter-spacing:.06em">windows overlap — the timeline shows when, the kanban shows what state</span>
     </div>
     <div id="trends-gantt"></div>
+    <div id="trends-matrix" style="display:none;overflow:auto;padding:20px"></div>
     <div id="trends-kanban">
       <div class="kanban-col" id="kc-closed">
         <div class="kanban-hd col-closed"><div class="col-nm">Closed</div><div class="col-count" id="kc-closed-ct"></div></div>
@@ -176,8 +209,16 @@
   <!-- CONSTRAINTS -->
   <div class="view scrollview" id="v-constraints">
     <div class="inner">
+      <h2 class="sec">Order-Book Clock</h2>
+      <div class="prose" style="margin-bottom:12px;font-size:10px">Capacity arriving in year Y was committed ~lead-time years earlier. Drag the target-year marker to see which systems are already locked.</div>
+      <div id="clock-wrap">
+        <div id="clock-axis"></div>
+        <div id="clock-rows"></div>
+        <div id="clock-target-wrap"><input type="range" id="clock-target" min="2026" max="2044" step="1" value="2030"><span id="clock-target-lb">Target: 2030</span></div>
+        <div id="clock-locked-msg"></div>
+      </div>
       <h2 class="sec">Physical Lead Times</h2>
-      <table class="grid">
+      <table class="grid" id="constraints-grid">
         <thead><tr>
           <th>System</th><th>Lead Time</th><th>Cost Estimate</th><th>Binding Constraint</th><th>Signal to Watch</th>
         </tr></thead>
@@ -192,16 +233,28 @@
   <div class="view scrollview" id="v-forecasts">
     <div class="inner">
       <h2 class="sec">Calibrated Forecasts</h2>
+      <div id="fc-owed-banner" style="display:none"></div>
       <div class="prose"><p>Add probability-weighted claims. Resolve them. Track your Brier score. The discipline: separate the signal from the narrative before the outcome lands.</p></div>
       <div class="fc-add" style="margin-top:16px">
         <input id="fc-stmt" type="text" placeholder="Claim (falsifiable, dated)…">
         <input id="fc-p" type="number" min="0" max="1" step="0.05" placeholder="p (0-1)">
         <input id="fc-dl" type="date" placeholder="deadline">
+        <input id="fc-resolver" type="text" placeholder="Resolver source (URL or named source)…">
+        <input id="fc-criteria" type="text" placeholder="Resolution criteria (one sentence, unambiguous)…">
         <button class="btn" id="fc-add-btn" title="Add forecast">+ Add</button>
         <button class="btn" id="fc-seed-btn" title="Import every future_paths claim from Humans and Trends as scoreable forecasts">⇪ Import from registries</button>
       </div>
-      <div class="brier-box"><div class="bl">Brier Score</div><div class="bv" id="brier-val">—</div></div>
-      <div class="brier-box" style="margin-left:8px"><div class="bl">Pending / Resolved</div><div class="bv" id="fc-counts" style="font-size:14px;padding-top:4px">—</div></div>
+      <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:12px">
+        <div class="brier-box"><div class="bl">Brier Score</div><div class="bv" id="brier-val">—</div></div>
+        <div class="brier-box"><div class="bl">Pending / Resolved</div><div class="bv" id="fc-counts" style="font-size:14px;padding-top:4px">—</div></div>
+        <div class="brier-box"><div class="bl">Reliability</div><div class="bv" id="brier-reliability" style="font-size:14px;padding-top:4px">—</div></div>
+        <div class="brier-box"><div class="bl">Resolution</div><div class="bv" id="brier-resolution" style="font-size:14px;padding-top:4px">—</div></div>
+      </div>
+      <div id="calibration-chart-wrap" style="margin-top:16px">
+        <div class="sec" style="font-size:10px;margin-bottom:8px">CALIBRATION CURVE</div>
+        <svg id="calibration-svg" width="300" height="200"></svg>
+        <div id="calibration-msg" style="font-size:10px;color:var(--dim);margin-top:6px"></div>
+      </div>
       <div id="fc-list"></div>
     </div>
   </div>
@@ -243,6 +296,17 @@
     </div>
   </div>
 
+  <!-- BRIEF -->
+  <div class="view scrollview" id="v-brief">
+    <div class="inner">
+      <div id="brief-header" style="display:flex;justify-content:space-between;align-items:baseline;margin-bottom:16px">
+        <h2 class="sec" style="margin:0">BRIEF</h2>
+        <button class="btn" id="brief-copy-btn" title="Copy as Markdown">⎘ Copy as Markdown</button>
+      </div>
+      <div id="brief-body"></div>
+    </div>
+  </div>
+
 </div><!-- /views -->
 
 <!-- TRACE PANEL (fixed bottom) -->
@@ -261,6 +325,42 @@
     <button id="trace-go" class="btn">TRACE</button>
   </div>
   <div id="trace-result"></div>
+</div>
+
+<!-- KEYBOARD CHEAT SHEET -->
+<div id="kbd-overlay" style="display:none">
+  <div id="kbd-box">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px"><span style="font-size:10px;letter-spacing:.15em;color:var(--dim)">KEYBOARD SHORTCUTS</span><button onclick="document.getElementById('kbd-overlay').style.display='none'" style="background:none;border:none;color:var(--dim);cursor:pointer;font-size:14px">✕</button></div>
+    <div class="kbd-grid">
+      <div class="kbd-row"><kbd>1</kbd>–<kbd>0</kbd><span>Switch tabs</span></div>
+      <div class="kbd-row"><kbd>Cmd K</kbd><span>Command palette</span></div>
+      <div class="kbd-row"><kbd>/</kbd><span>Search atlas nodes</span></div>
+      <div class="kbd-row"><kbd>j</kbd> <kbd>k</kbd><span>Next / prev entity</span></div>
+      <div class="kbd-row"><kbd>Enter</kbd><span>Open hovered entity</span></div>
+      <div class="kbd-row"><kbd>Esc</kbd><span>Close / back</span></div>
+      <div class="kbd-row"><kbd>?</kbd><span>This overlay</span></div>
+    </div>
+  </div>
+</div>
+
+<!-- POSTMORTEM MODAL -->
+<div id="postmortem-modal" style="display:none">
+  <div id="postmortem-box">
+    <div style="font-size:10px;letter-spacing:.15em;color:var(--dim);margin-bottom:12px">POSTMORTEM — RESOLVE FALSE</div>
+    <div style="font-size:11px;color:var(--txt);margin-bottom:10px" id="pm-stmt"></div>
+    <label style="font-size:9px;color:var(--dim);letter-spacing:.1em">MISS TYPE</label>
+    <select id="pm-type" style="display:block;width:100%;margin:6px 0 12px;background:var(--bg);color:var(--txt);border:1px solid var(--line);padding:5px;font-size:10px">
+      <option value="timing">Timing — right idea, wrong window</option>
+      <option value="mechanism">Mechanism — wrong causal model</option>
+      <option value="magnitude">Magnitude — right direction, wrong size</option>
+    </select>
+    <label style="font-size:9px;color:var(--dim);letter-spacing:.1em">ONE-LINE NOTE</label>
+    <input id="pm-note" type="text" placeholder="What specifically failed…" style="display:block;width:100%;box-sizing:border-box;margin:6px 0 14px;background:var(--bg);color:var(--txt);border:1px solid var(--line);padding:5px;font-size:10px">
+    <div style="display:flex;gap:8px">
+      <button class="btn" id="pm-submit">Confirm FALSE + Save</button>
+      <button class="btn" onclick="document.getElementById('postmortem-modal').style.display='none'">Cancel</button>
+    </div>
+  </div>
 </div>
 
 <script src="js/world.js"></script>
