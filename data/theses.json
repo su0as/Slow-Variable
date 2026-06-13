@@ -6,11 +6,21 @@
       "statement": "AI datacenter power constraints bind through at least 2029 regardless of capital committed.",
       "confidence": "hi",
       "kill_condition": "Turbine/transformer lead times halve OR interconnection median < 2yr OR datacenter demand growth < 10%/yr.",
+      "crowd_awareness": 0.55,
+      "awareness_as_of": "2026-06-01",
+      "awareness_trend": "rising",
+      "consensus_delta_num": 0.6,
+      "edge_basis": "Most still read this as a turbine story; the binding constraint is interconnection queue (5yr median), which is non-obvious and infrastructure-political, not technical.",
+      "margin": {
+        "tightness": "adequate",
+        "buffer_note": "Holds even if transformer lead times improve 30% — interconnection queue still binds independently.",
+        "breaks_at": "Turbine/transformer lead times halve AND interconnection reform passes simultaneously"
+      },
       "supports": [
         "constraint.heavy-gas-turbine-slot",
         "constraint.hv-transmission-line",
         "atlas.ashburn",
-        "window.energy-grid"
+        "window.energy-grid-software"
       ],
       "forecast_ids": [],
       "draft": true,
@@ -19,22 +29,10 @@
       "half_life_days": 365,
       "signals": [],
       "links": [
-        {
-          "to": "constraint.heavy-gas-turbine-slot",
-          "rel": "enables"
-        },
-        {
-          "to": "constraint.hv-transmission-line",
-          "rel": "enables"
-        },
-        {
-          "to": "atlas.ashburn",
-          "rel": "enables"
-        },
-        {
-          "to": "window.energy-grid",
-          "rel": "enables"
-        }
+        {"to": "constraint.heavy-gas-turbine-slot", "rel": "enables"},
+        {"to": "constraint.hv-transmission-line", "rel": "enables"},
+        {"to": "atlas.ashburn", "rel": "enables"},
+        {"to": "window.energy-grid-software", "rel": "enables"}
       ]
     },
     {
@@ -43,6 +41,16 @@
       "statement": "Every chokepoint rent decays over 5–15 years as bypass investments arrive; date-stamp all concentration bets.",
       "confidence": "hi",
       "kill_condition": "A major chokepoint bypass is abandoned despite strong economic incentive (no case in 50yr record).",
+      "crowd_awareness": 0.30,
+      "awareness_as_of": "2026-06-01",
+      "awareness_trend": "flat",
+      "consensus_delta_num": 0.75,
+      "edge_basis": "The decay mechanism (bypass investment under economic pressure) is systematically underweighted; analysts model rents as static, not on a decay clock.",
+      "margin": {
+        "tightness": "wide",
+        "buffer_note": "Mechanism has zero historical counterexamples over 50yr record. Even geographic chokepoints get pipeline bypasses.",
+        "breaks_at": "First bypass abandoned despite compelling economic incentive"
+      },
       "supports": [
         "atlas.hormuz",
         "atlas.malacca",
@@ -55,18 +63,9 @@
       "half_life_days": 365,
       "signals": [],
       "links": [
-        {
-          "to": "atlas.hormuz",
-          "rel": "enables"
-        },
-        {
-          "to": "atlas.malacca",
-          "rel": "enables"
-        },
-        {
-          "to": "atlas.suez",
-          "rel": "enables"
-        }
+        {"to": "atlas.hormuz", "rel": "enables"},
+        {"to": "atlas.malacca", "rel": "enables"},
+        {"to": "atlas.suez", "rel": "enables"}
       ]
     },
     {
@@ -75,6 +74,16 @@
       "statement": "2044 workforce is already born; demographic forecasts (labor supply, consumption, debt capacity) have ~zero uncertainty at 20yr horizon.",
       "confidence": "hi",
       "kill_condition": "A country achieves a 50%+ fertility reversal within 10yr (no precedent).",
+      "crowd_awareness": 0.60,
+      "awareness_as_of": "2026-06-01",
+      "awareness_trend": "flat",
+      "consensus_delta_num": 0.55,
+      "edge_basis": "The fact is known; the actionability is still underpriced. Most don't date-stamp the 2044 labor supply implications or anchor them to specific sector demand curves.",
+      "margin": {
+        "tightness": "wide",
+        "buffer_note": "2044 workforce is literally already born. Fertility only moves the tail. Zero-uncertainty claim holds for anyone under 18 today.",
+        "breaks_at": "50%+ fertility reversal in 10yr (no modern precedent) OR major migration shock"
+      },
       "supports": [
         "constraint.demographic-cohort"
       ],
@@ -85,10 +94,7 @@
       "half_life_days": 365,
       "signals": [],
       "links": [
-        {
-          "to": "constraint.demographic-cohort",
-          "rel": "enables"
-        }
+        {"to": "constraint.demographic-cohort", "rel": "enables"}
       ]
     },
     {
@@ -97,6 +103,16 @@
       "statement": "Sovereign AI compute buildouts (Gulf, EU, Southeast Asia) represent price-insensitive demand that floors GPU/fab utilization regardless of US hyperscaler capex cycle.",
       "confidence": "med",
       "kill_condition": "Sovereign AI programs cut budgets >50% or no sovereign model reaches commercial deployment by 2028.",
+      "crowd_awareness": 0.28,
+      "awareness_as_of": "2026-06-01",
+      "awareness_trend": "rising",
+      "consensus_delta_num": 0.72,
+      "edge_basis": "Sovereign programs are analyzed as geopolitics narratives; the price-insensitivity floor effect on GPU utilization is missed by chip analysts modeling only hyperscaler capex cycles.",
+      "margin": {
+        "tightness": "thin",
+        "buffer_note": "Requires sovereign programs to persist through political cycles — fragile vs. budget pressure or electoral shifts.",
+        "breaks_at": "Budget cuts >50% across 3+ major sovereign programs, or no commercial deployment milestone by 2028"
+      },
       "supports": [
         "window.sovereign-ai",
         "atlas.uae-ai-cluster"
@@ -108,14 +124,8 @@
       "half_life_days": 365,
       "signals": [],
       "links": [
-        {
-          "to": "window.sovereign-ai",
-          "rel": "enables"
-        },
-        {
-          "to": "atlas.uae-ai-cluster",
-          "rel": "enables"
-        }
+        {"to": "window.sovereign-ai", "rel": "enables"},
+        {"to": "atlas.uae-ai-cluster", "rel": "enables"}
       ]
     },
     {
@@ -124,6 +134,16 @@
       "statement": "The AI wrapper / commodity-API window closes by 2027 as model providers capture the margin and distribution commoditizes.",
       "confidence": "med",
       "kill_condition": "A wrapper-layer company reaches $1B ARR without model-provider margin compression by 2027.",
+      "crowd_awareness": 0.45,
+      "awareness_as_of": "2026-06-01",
+      "awareness_trend": "rising",
+      "consensus_delta_num": 0.60,
+      "edge_basis": "Everyone sees model providers getting stronger; the timing and finality of the squeeze (by 2027, not 2030) and the distribution commoditization mechanism are still contested.",
+      "margin": {
+        "tightness": "adequate",
+        "buffer_note": "Model-provider pricing data and distribution metrics make the compression trajectory concrete by mid-2026 milestones.",
+        "breaks_at": "Wrapper company achieves $1B ARR at sustainable margin without model-provider competition by 2027"
+      },
       "supports": [
         "window.ai-wrapper-window"
       ],
@@ -134,10 +154,7 @@
       "half_life_days": 365,
       "signals": [],
       "links": [
-        {
-          "to": "window.ai-wrapper-window",
-          "rel": "enables"
-        }
+        {"to": "window.ai-wrapper-window", "rel": "enables"}
       ]
     }
   ]

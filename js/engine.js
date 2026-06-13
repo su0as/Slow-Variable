@@ -1566,5 +1566,460 @@ function runTrace(){
   [$("trace-a"),$("trace-b")].forEach(function(inp){if(inp)inp.addEventListener("keydown",function(e){if(e.key==="Enter"){e.preventDefault();runTrace()}})});
 })();
 
+// ── PHASE 5: MODELS AS MECHANICS ─────────────────────────────────────────
+
+var MODELS=(Store.raw.models&&Store.raw.models.models)||[];
+var MODEL_MAP={};MODELS.forEach(function(m){MODEL_MAP[m.id]=m});
+
+// ── §6 Provenance tag (superscript) ──────────────────────────────────────
+function provenanceTag(modelId){
+  var m=MODEL_MAP[modelId];if(!m)return"";
+  return'<sup class="model-tag" data-mid="'+modelId+'" title="'+esc(m.name)+' — '+esc(m.one_line)+' ('+esc(m.source)+')">⊢'+esc(m.name)+'</sup>';
+}
+function buildProvenanceFooter(){
+  var el=$("prov-chips");if(!el||!MODELS.length)return;
+  el.innerHTML=MODELS.map(function(m){
+    var feat=(m.powers||[]).join(", ");
+    return'<span class="prov-chip" data-mid="'+m.id+'" title="'+esc(m.one_line)+' — '+esc(m.source)+'">'+esc(m.name)+'</span>';
+  }).join("");
+  el.querySelectorAll(".prov-chip").forEach(function(el){
+    el.onmouseenter=function(e){
+      var m=MODEL_MAP[el.dataset.mid];if(!m)return;
+      var tip=$("model-tooltip");tip.style.display="block";
+      tip.innerHTML='<div class="mt-name">'+esc(m.name)+'</div><div class="mt-disc">'+esc(m.discipline)+'</div><div class="mt-line">'+esc(m.one_line)+'</div><div class="mt-src">'+esc(m.source)+'</div>';
+      var r=el.getBoundingClientRect();tip.style.left=r.left+"px";tip.style.bottom=(window.innerHeight-r.top+4)+"px";
+    };
+    el.onmouseleave=function(){$("model-tooltip").style.display="none"};
+  });
+}
+
+// ── §1 Second-order chains ────────────────────────────────────────────────
+function orderEffectsHTML(order_effects){
+  if(!order_effects||!order_effects.length)return"";
+  var CONF_DOT={hi:'<span class="oe-conf hi" title="High confidence">●</span>',md:'<span class="oe-conf md" title="Medium confidence">●</span>',lo:'<span class="oe-conf lo" title="Low confidence">●</span>'};
+  var html='<div class="dsec order-effects-wrap"><div class="k">SECOND-ORDER CHAIN'+provenanceTag("model.second_order")+'</div><div class="oe-cascade">';
+  var maxOrder=0;order_effects.forEach(function(e){if(e.order>maxOrder)maxOrder=e.order});
+  order_effects.forEach(function(e){
+    var indent=(e.order-1)*16;
+    var isEdge=(e.order>=3);
+    var entityChip="";
+    if(e.entity){var info=fromStoreId(e.entity);if(info)entityChip='<span class="xchip oe-chip" data-reg="'+info.reg+'" data-id="'+info.id+'">'+esc((Store.get(e.entity)||{}).title||e.entity)+"</span>"}
+    html+='<div class="oe-hop'+(isEdge&&e.order===maxOrder?" edge-hop":"")+(e.order===1?" oe-first":"")+'" style="padding-left:'+indent+'px">';
+    html+=(CONF_DOT[e.confidence]||CONF_DOT.md)+'<span class="oe-text">'+esc(e.text)+"</span>";
+    if(entityChip)html+=" "+entityChip;
+    if(isEdge&&e.order===maxOrder)html+='<span class="oe-edge-tag">← edge lives here</span>';
+    html+="</div>";
+  });
+  html+="</div></div>";
+  return html;
+}
+
+// ── §4 Red Queen decay bar ────────────────────────────────────────────────
+function rentDecayHTML(rent){
+  if(!rent)return"";
+  var pct=Math.round((rent.bypass_maturity||0)*100);
+  var dying=pct>=50;
+  var col=pct>=50?"var(--alert)":pct>=25?"var(--enr)":"var(--min)";
+  var html='<div class="dsec rent-wrap"><div class="k">RENT DECAY'+provenanceTag("model.red_queen")+'</div>';
+  html+='<div class="rent-src">'+esc(rent.source)+"</div>";
+  html+='<div class="rent-bypass-label">Bypass candidate: '+esc(rent.bypass_candidate)+"</div>";
+  html+='<div class="rent-bar-track"><div class="rent-bar-fill" style="width:'+pct+'%;background:'+col+'"></div><div class="rent-bar-pct">'+pct+"% mature</div></div>";
+  html+='<div class="rent-meta">Half-life est: '+esc(String(rent.half_life_estimate_years))+" yrs · as of "+esc(rent.maturity_as_of||"")+"</div>";
+  html+='<div class="rent-note">'+esc(rent.decay_note)+"</div>";
+  if(dying)html+='<div class="rent-dying-banner">RENT DYING — bypass approaching parity. Date-stamp and discount.</div>';
+  html+="</div>";
+  return html;
+}
+
+// ── §7 Margin of safety ───────────────────────────────────────────────────
+function marginIndicatorHTML(margin,confidence){
+  if(!margin||!margin.tightness)return"";
+  var t=margin.tightness;
+  var col={wide:"var(--min)",adequate:"var(--min)",thin:"var(--enr)",none:"var(--alert)"}[t]||"var(--faint)";
+  var label={wide:"WIDE MARGIN",adequate:"ADEQUATE MARGIN",thin:"THIN MARGIN",none:"NO MARGIN"}[t]||t.toUpperCase();
+  var html='<div class="dsec margin-wrap"><div class="k">MARGIN OF SAFETY'+provenanceTag("model.margin_of_safety")+'</div>';
+  html+='<div class="margin-badge" style="color:'+col+'">'+label+"</div>";
+  if(margin.buffer_note)html+='<div class="margin-note">'+esc(margin.buffer_note)+"</div>";
+  if(margin.breaks_at)html+='<div class="margin-breaks">Breaks at: '+esc(margin.breaks_at)+"</div>";
+  if((confidence==="hi"||confidence==="hi")&&(t==="thin"||t==="none"))
+    html+='<div class="overconfident-banner">OVERCONFIDENT-THIN — high conviction, low buffer. The dangerous quadrant.</div>';
+  html+="</div>";
+  return html;
+}
+
+// ── §3 Edge meter ─────────────────────────────────────────────────────────
+function edgeMeterHTML(entity){
+  var ca=entity.crowd_awareness;
+  if(ca===undefined||ca===null)return"";
+  var cd=entity.consensus_delta_num||(entity.confidence==="hi"?0.7:entity.confidence==="med"?0.4:0.2);
+  var s=Store.staleStatus(entity.id||"");
+  var fresh=s==="fresh"?1.0:s==="aging"?0.75:0.4;
+  var edge=cd*(1-ca)*fresh;
+  var edgePct=Math.round(edge*100);
+  var trend=entity.awareness_trend||"flat";
+  var trendArrow={rising:"↑",flat:"→",falling:"↓"}[trend]||"→";
+  var trendColor={rising:"var(--enr)",flat:"var(--dim)",falling:"var(--min)"}[trend]||"var(--dim)";
+  var col=edgePct>40?"var(--min)":edgePct>20?"var(--enr)":"var(--faint)";
+  var html='<div class="dsec edge-meter-wrap"><div class="k">EDGE METER'+provenanceTag("model.reflexivity")+'</div>';
+  html+='<div class="edge-bar-track"><div class="edge-bar-fill" style="width:'+edgePct+'%;background:'+col+'"></div>';
+  html+='<div class="edge-bar-val" style="color:'+col+'">'+edgePct+"% edge</div></div>";
+  html+='<div class="edge-meta">consensus_delta='+Math.round(cd*100)+'% × unpriced='+(100-Math.round(ca*100))+'% × freshness='+Math.round(fresh*100)+'%</div>';
+  if(entity.awareness_trend)html+='<div class="edge-trend" style="color:'+trendColor+'">Crowd awareness '+trendArrow+' (as of '+esc(entity.awareness_as_of||"?")+")</div>";
+  if(entity.edge_basis)html+='<div class="edge-basis">'+esc(entity.edge_basis)+"</div>";
+  if(ca>=0.7)html+='<div class="consensus-banner">CONSENSUS — thesis may be correct but edge is gone. Right ≠ profitable.</div>';
+  html+="</div>";
+  return html;
+}
+
+// ── §9 Critical mass tipping ──────────────────────────────────────────────
+function tippingHTML(entity){
+  if(!entity.tipping_condition)return"";
+  var dist=entity.distance_to_tip||"early";
+  var distMap={pre:5,early:25,near:70,crossed:100};
+  var pct=distMap[dist]||25;
+  var col=dist==="crossed"?"var(--min)":dist==="near"?"var(--enr)":dist==="early"?"var(--dim)":"var(--faint)";
+  var html='<div class="dsec tipping-wrap"><div class="k">TIPPING CONDITION'+provenanceTag("model.critical_mass")+'</div>';
+  html+='<div class="tipping-cond">'+esc(entity.tipping_condition)+"</div>";
+  html+='<div class="tipping-bar-track"><div class="tipping-bar-fill" style="width:'+pct+'%;background:'+col+'"></div>';
+  html+='<div class="tipping-dist" style="color:'+col+'">'+dist.toUpperCase()+"</div></div>";
+  if(dist==="crossed")html+='<div class="tipping-crossed">THRESHOLD CROSSED — promote this window from FORMING to OPEN?</div>';
+  html+="</div>";
+  return html;
+}
+
+// ── §8 Circle of competence ───────────────────────────────────────────────
+function circleStripHTML(circle){
+  if(!circle||!circle.length)return"";
+  var html='<div class="dsec circle-wrap"><div class="k">CIRCLE OF COMPETENCE'+provenanceTag("model.circle_of_competence")+'</div><div class="circle-list">';
+  circle.forEach(function(item){
+    var col={in:"var(--min)",edge:"var(--enr)",out:"var(--alert)"}[item.status]||"var(--faint)";
+    var tag={in:"IN-CIRCLE",edge:"EDGE",out:"OUT-OF-CIRCLE → delegate/verify"}[item.status]||item.status.toUpperCase();
+    html+='<div class="circle-row"><div class="circle-status" style="color:'+col+'">'+esc(tag)+"</div>";
+    html+='<div class="circle-claim">'+esc(item.claim)+"</div>";
+    if(item.note)html+='<div class="circle-note">'+esc(item.note)+"</div>";
+    html+="</div>";
+  });
+  return html+"</div></div>";
+}
+
+// ── §5 Bias check ─────────────────────────────────────────────────────────
+var BIAS_CHECKS=[
+  {id:"bias.anchoring",name:"Anchoring",prompt:"Did I generate my own number before reading consensus?",auto_trigger:null,applies_to:["human","window","thesis","atlas"]},
+  {id:"bias.confirmation",name:"Confirmation",prompt:"What would CHANGE my mind? Is it written down with a date?",auto_trigger:null,applies_to:["human","window","thesis"]},
+  {id:"bias.sunk_cost",name:"Sunk Cost",prompt:"Would I enter this position today at this price?",auto_trigger:null,applies_to:["human","window"]},
+  {id:"bias.narrative",name:"Narrative",prompt:"Am I holding a story or a mechanism? Can I draw the causal arrows?",auto_trigger:null,applies_to:["human","window","thesis"]},
+  {id:"bias.recency",name:"Recency",prompt:"Is this a trend or a cycle? Where are we in the cycle?",auto_trigger:null,applies_to:["human","window","thesis","atlas"]},
+  {id:"bias.survivorship",name:"Survivorship",prompt:"Am I studying winners only? Where are the dead bodies?",auto_trigger:"no_dead_bodies",applies_to:["human","window","thesis"]},
+  {id:"bias.goodhart",name:"Goodhart/Gresham",prompt:"Has this watched quantity become a target? A gamed signal stops measuring reality.",auto_trigger:"single_signal",applies_to:["constraint","atlas","thesis"]},
+  {id:"bias.regression",name:"Regression to Mean",prompt:"Is this an extreme? Extremes revert. Base rate says average follows.",auto_trigger:"high_anatomy_score",applies_to:["human","thesis","window"]}
+];
+
+function evaluateBiasAutoTriggers(reg,entity){
+  var triggered=[];
+  BIAS_CHECKS.forEach(function(bc){
+    if(!bc.auto_trigger)return;
+    if(bc.id==="bias.survivorship"){
+      if(reg==="human"){
+        var h=entity;
+        var hasDeadBodies=(h.dead_bodies&&h.dead_bodies.length>0);
+        if(!hasDeadBodies)triggered.push(bc.id);
+      }
+    }
+    if(bc.id==="bias.goodhart"){
+      var sigs=entity.signals||[];
+      if(sigs.length===1)triggered.push(bc.id);
+    }
+    if(bc.id==="bias.regression"){
+      if(reg==="human"){
+        var bets=entity.bets||[];
+        var scored=bets.filter(function(b){return b.anatomy});
+        scored.forEach(function(b){
+          var a=b.anatomy,comp=Object.values(a).reduce(function(s,v){return s+(v||0)},0);
+          if(comp>=25)triggered.push(bc.id);
+        });
+      }
+      if(reg==="thesis"){
+        var txt=(entity.statement||"")+(entity.body||"");
+        if(/\b(best|largest|first|record|unprecedented|only|biggest|greatest)\b/i.test(txt))triggered.push(bc.id);
+      }
+    }
+  });
+  return[...new Set(triggered)];
+}
+
+function autoFlagHTML(reg,entity){
+  var triggered=evaluateBiasAutoTriggers(reg,entity);
+  if(!triggered.length)return"";
+  var html='<div class="auto-flags">';
+  triggered.forEach(function(bid){
+    var bc=BIAS_CHECKS.find(function(b){return b.id===bid});if(!bc)return;
+    html+='<div class="auto-flag">⚠ '+esc(bc.name)+' — '+esc(bc.prompt)+"</div>";
+  });
+  return html+"</div>";
+}
+
+var _biasEntity=null,_biasReg=null;
+function openBiasCheck(reg,entity){
+  _biasReg=reg;_biasEntity=entity;
+  var modal=$("bias-modal");if(!modal)return;
+  var hdr=$("bias-header");if(hdr)hdr.textContent="BIAS CHECK — "+esc(entity.title||entity.name||entity.statement||"?").slice(0,60);
+  var triggered=evaluateBiasAutoTriggers(reg,entity);
+  var lsKey="sv3-bias-"+reg+"-"+(entity.id||"");
+  var saved=JSON.parse(storage.getItem(lsKey)||"{}");
+  var html="";
+  BIAS_CHECKS.forEach(function(bc){
+    var isAuto=triggered.includes(bc.id);
+    var checked=saved[bc.id]||false;
+    html+='<div class="bias-row'+(isAuto?" auto-triggered":"")+'">';
+    html+='<input type="checkbox" class="bias-chk" data-bid="'+bc.id+'"'+(checked?" checked":"")+'>';
+    html+='<div class="bias-row-body"><div class="bias-row-name">'+esc(bc.name)+(isAuto?' <span class="bias-auto-badge">AUTO</span>':"")+"</div>";
+    html+='<div class="bias-row-prompt">'+esc(bc.prompt)+"</div></div></div>";
+  });
+  var listEl=$("bias-checks-list");if(listEl)listEl.innerHTML=html;
+  var saveBtn=$("bias-save-btn");
+  if(saveBtn)saveBtn.onclick=function(){
+    var result={};modal.querySelectorAll(".bias-chk").forEach(function(cb){result[cb.dataset.bid]=cb.checked});
+    storage.setItem(lsKey,JSON.stringify(result));modal.style.display="none";
+  };
+  modal.style.display="flex";
+}
+
+function getBiasStatus(reg,entityId){
+  var lsKey="sv3-bias-"+reg+"-"+entityId;
+  var saved=JSON.parse(storage.getItem(lsKey)||"null");
+  if(!saved)return"not-run";
+  var total=BIAS_CHECKS.length;var checked=Object.values(saved).filter(Boolean).length;
+  return checked>=total?"complete":"partial";
+}
+
+function biasCheckBtnHTML(reg,entity){
+  var status=getBiasStatus(reg,entity.id||"");
+  var col=status==="complete"?"var(--min)":status==="partial"?"var(--enr)":"var(--faint)";
+  var label=status==="not-run"?"BIAS CHECK: not run":status==="partial"?"BIAS CHECK: partial":"BIAS CHECK: ✓";
+  return'<div class="bias-check-section"><button class="btn bias-open-btn" style="color:'+col+'" data-reg="'+esc(reg)+'" data-eid="'+esc(entity.id||"")+'">'+label+"</button></div>";
+}
+
+function attachBiasOpenBtns(){
+  document.querySelectorAll(".bias-open-btn").forEach(function(btn){
+    btn.onclick=function(){
+      var reg=btn.dataset.reg;var eid=btn.dataset.eid;
+      var entityMap={atlas:NMAP,tree:TREE_MAP,human:HUMAN_MAP,trend:TREND_MAP,thesis:null};
+      var entity;
+      if(reg==="thesis")entity=THESES.find(function(t){return t.id===eid||t.id===("thesis."+eid)});
+      else{var m=entityMap[reg];if(m)entity=m[eid];}
+      if(entity)openBiasCheck(reg,entity);
+    };
+  });
+}
+
+// ── §2 Inversion ──────────────────────────────────────────────────────────
+var _invertMode=false;
+function toggleInvert(){
+  if(!dossierCurrent)return;
+  _invertMode=!_invertMode;
+  var btn=$("invert-btn");if(btn)btn.classList.toggle("on",_invertMode);
+  if(_invertMode)renderInvertedDossier(dossierCurrent.reg,dossierCurrent.id);
+  else openDossier(dossierCurrent.reg,dossierCurrent.id,false);
+}
+$("invert-btn").onclick=toggleInvert;
+
+function renderInvertedDossier(reg,id){
+  var b="";
+  if(reg==="thesis"){
+    var th=THESES.find(function(t){return t.id===id||t.id.replace("thesis.","")===id});
+    if(!th)return;
+    setDHead("THESIS — INVERTED","var(--alert)","What makes this FALSE?","INVERSION VIEW");
+    b+='<div class="invert-header">KILL CONDITION</div>';
+    b+='<div class="invert-kill">'+esc(th.kill_condition)+"</div>";
+    b+=makeDSec("FALSIFICATION PROMPT","What would make me wrong about: "+esc(th.statement));
+    var linked=forecasts.filter(function(f){return(th.forecast_ids||[]).includes(f.key||f.id)});
+    if(linked.length){
+      b+='<div class="dsec"><div class="k">LINKED FORECASTS — INVERTED (showing 1−p)</div>';
+      linked.forEach(function(f){b+='<div style="font-size:11px;color:var(--enr);margin-bottom:4px">'+esc(f.stmt)+' <b>p='+(Math.round((1-f.p)*100))+'%</b> (inverted)</div>'});
+      b+="</div>";
+    }
+    b+=autoFlagHTML("thesis",th);
+    b+=edgeMeterHTML(th);
+    b+=marginIndicatorHTML(th.margin,th.confidence);
+  }else if(reg==="trend"){
+    var t=TREND_MAP[id];if(!t)return;
+    setDHead("TREND — INVERTED","var(--alert)","What kills this window?","INVERSION VIEW");
+    b+='<div class="invert-header">DECAY LOGIC</div><div class="invert-kill">'+esc(t.decay_logic)+"</div>";
+    b+=makeDSec("FALSIFICATION PROMPT","What would confirm this window is already dead?");
+    var dying=forecasts.filter(function(f){return f.outcome===null&&(f.stmt.toLowerCase().includes(t.name.toLowerCase()))});
+    if(dying.length){
+      b+='<div class="dsec"><div class="k">RELATED FORECASTS — INVERTED</div>';
+      dying.slice(0,3).forEach(function(f){b+='<div style="font-size:11px;color:var(--enr);margin-bottom:4px">'+esc(f.stmt)+' <b>p='+(Math.round((1-f.p)*100))+'%</b> (inverted)</div>'});
+      b+="</div>";
+    }
+    if(t.future_paths&&t.future_paths.length){
+      b+='<div class="dsec"><div class="k">PATHS THAT KILL IT</div>';
+      t.future_paths.slice(0,3).forEach(function(fp){
+        b+='<div style="font-size:11px;color:var(--enr);margin-bottom:4px">'+esc(fp.path)+' — Falsifier: '+esc(fp.falsifier)+"</div>";
+      });
+      b+="</div>";
+    }
+    b+=autoFlagHTML("trend",t);
+    b+=edgeMeterHTML(t);
+  }else if(reg==="human"){
+    var h=HUMAN_MAP[id];if(!h)return;
+    setDHead("HUMAN — INVERTED","var(--alert)",h.name,"INVERSION VIEW");
+    b+=makeDSec("WHAT WOULD MAKE THIS BET FALSE?","What assumption in "+esc(h.name)+"'s bet pattern is most likely wrong?");
+    if(h.dead_bodies&&h.dead_bodies.length){
+      b+='<div class="dsec"><div class="k">THE DEAD BODIES (same bet, wrong outcome)</div>';
+      h.dead_bodies.forEach(function(db){b+='<div class="dead-row invert-dead"><b>'+esc(db.name)+"</b> — "+esc(db.why)+"</div>"});
+      b+="</div>";
+    }
+    b+=autoFlagHTML("human",h);
+  }
+  $("dbody").innerHTML=b;
+  attachChipNavigation();attachBiasOpenBtns();
+}
+
+// Override openDossier to reset invert mode
+var _origOpenDossier=openDossier;
+openDossier=function(reg,id,pushHistory){
+  _invertMode=false;var btn=$("invert-btn");if(btn)btn.classList.remove("on");
+  _origOpenDossier(reg,id,pushHistory);
+};
+
+// `i` key to toggle invert
+document.addEventListener("keydown",function(e){
+  if(e.target.matches&&e.target.matches("input,textarea,select"))return;
+  if(e.key==="i"&&dossierCurrent)toggleInvert();
+});
+
+// ── Inject Phase 5 sections into existing dossier renderers ───────────────
+// Patch renderAtlasDossier to add rent decay bar + bias check
+var _origRenderAtlas=renderAtlasDossier;
+renderAtlasDossier=function(n){
+  _origRenderAtlas(n);
+  if(!n)return;
+  var extra="";
+  var raw=Store.raw.atlas;
+  var rawNode=(raw&&raw.nodes||[]).find(function(nd){return nd.id==="atlas."+n.id});
+  if(rawNode&&rawNode.rent)extra+=rentDecayHTML(rawNode.rent);
+  extra+=biasCheckBtnHTML("atlas",n);
+  extra+=autoFlagHTML("atlas",n);
+  if(extra){var dbody=$("dbody");if(dbody)dbody.innerHTML+=extra}
+  attachBiasOpenBtns();
+};
+
+// Patch renderTreeDossier
+var _origRenderTree=renderTreeDossier;
+renderTreeDossier=function(n){
+  _origRenderTree(n);
+};
+
+// Patch renderTrendDossier to add order_effects, tipping, edge meter, bias
+var _origRenderTrend=renderTrendDossier;
+renderTrendDossier=function(t){
+  _origRenderTrend(t);
+  if(!t)return;
+  var raw=Store.raw.windows;
+  var rawWin=(raw&&raw.windows||[]).find(function(w){return w.id==="window."+t.id});
+  var extra="";
+  if(rawWin){
+    if(rawWin.order_effects&&rawWin.order_effects.length)extra+=orderEffectsHTML(rawWin.order_effects);
+    if(rawWin.tipping_condition)extra+=tippingHTML(rawWin);
+  }
+  extra+=edgeMeterHTML(Object.assign({},t,rawWin||{}));
+  extra+=biasCheckBtnHTML("trend",t);
+  extra+=autoFlagHTML("trend",t);
+  if(extra){var dbody=$("dbody");if(dbody)dbody.innerHTML+=extra}
+  attachChipNavigation();attachBiasOpenBtns();
+};
+
+// Patch buildScenarios to show order_effects in scenario cards
+var _origBuildScenarios=buildScenarios;
+buildScenarios=function(){
+  _origBuildScenarios();
+  // Add order_effects expand to each scenario card
+  var tbody=$("scenarios-wrap");if(!tbody)return;
+  tbody.querySelectorAll(".card").forEach(function(card){
+    var btn=card.querySelector("[data-sc]");if(!btn)return;
+    var scId=btn.dataset.sc;
+    var sc=SCENARIOS.find(function(s){return s.id===scId});
+    if(!sc)return;
+    var rawSc=(Store.raw.scenarios&&Store.raw.scenarios.scenarios||[]).find(function(s){return s.id==="scenario."+scId||s.id===scId});
+    if(!rawSc||!rawSc.order_effects||!rawSc.order_effects.length)return;
+    var oeDiv=document.createElement("div");oeDiv.className="sc-oe-preview";
+    var html='<div class="sc-oe-toggle btn" style="font-size:9px;margin-top:6px;color:var(--dim)">▸ SECOND-ORDER CHAIN</div>';
+    html+='<div class="sc-oe-body" style="display:none">'+orderEffectsHTML(rawSc.order_effects)+"</div>";
+    oeDiv.innerHTML=html;
+    var tog=oeDiv.querySelector(".sc-oe-toggle"),body=oeDiv.querySelector(".sc-oe-body");
+    tog.onclick=function(){
+      var v=body.style.display==="none";body.style.display=v?"block":"none";tog.textContent=(v?"▾":"▸")+" SECOND-ORDER CHAIN";
+      if(v)setTimeout(function(){attachChipNavigation()},0);
+    };
+    card.appendChild(oeDiv);
+  });
+};
+
+// Patch buildThesisRegister to add margin, edge, invert, bias per thesis
+var _origBuildThesis=buildThesisRegister;
+buildThesisRegister=function(){
+  _origBuildThesis();
+  var el=$("thesis-list");if(!el)return;
+  el.querySelectorAll(".thesis-card").forEach(function(card,i){
+    var th=THESES[i];if(!th)return;
+    var extra="";
+    extra+=edgeMeterHTML(th);
+    extra+=marginIndicatorHTML(th.margin,th.confidence);
+    extra+=autoFlagHTML("thesis",th);
+    extra+=biasCheckBtnHTML("thesis",th);
+    // INVERT button per card
+    var invertBtn=document.createElement("button");invertBtn.className="btn thesis-invert-btn";
+    invertBtn.title="Invert — what makes this false?";invertBtn.textContent="INVERT";
+    invertBtn.onclick=function(){
+      switchTab("thesis");
+      var thId=th.id.replace("thesis.","");
+      dossierCurrent={reg:"thesis",id:thId};
+      _invertMode=true;
+      var iBtn=$("invert-btn");if(iBtn)iBtn.classList.add("on");
+      var dossier=$("dossier");if(dossier)dossier.classList.add("open");
+      renderInvertedDossier("thesis",th.id);
+    };
+    var extraDiv=document.createElement("div");extraDiv.innerHTML=extra;
+    card.appendChild(invertBtn);card.appendChild(extraDiv);
+  });
+  attachBiasOpenBtns();
+};
+
+// Patch renderHumanDossier to add circle, bias, auto-flags
+var _origRenderHuman=renderHumanDossier;
+renderHumanDossier=function(h){
+  _origRenderHuman(h);
+  if(!h)return;
+  var rawH=(Store.raw.humans&&Store.raw.humans.people||[]).find(function(p){return p.id==="human."+h.id||p.id===h.id});
+  var extra="";
+  if(rawH&&rawH.circle)extra+=circleStripHTML(rawH.circle);
+  extra+=autoFlagHTML("human",h);
+  extra+=biasCheckBtnHTML("human",h);
+  if(extra){var dbody=$("dbody");if(dbody)dbody.innerHTML+=extra}
+  attachBiasOpenBtns();
+};
+
+// ── §10 Scale check (P2) ──────────────────────────────────────────────────
+function scaleCheckHTML(entity){
+  if(!entity||!entity.scale_break)return"";
+  return'<div class="dsec scale-check-wrap"><div class="k">SCALE CHECK'+provenanceTag("model.scale")+'</div><div class="scale-q">What breaks at 10×?</div><div class="scale-note">'+esc(entity.scale_break)+"</div></div>";
+}
+
+// ── Init Phase 5 ─────────────────────────────────────────────────────────
+buildProvenanceFooter();
+
+// Wire model-tag tooltip globally
+document.addEventListener("mouseover",function(e){
+  var tag=e.target.closest(".model-tag");if(!tag)return;
+  var m=MODEL_MAP[tag.dataset.mid];if(!m)return;
+  var tip=$("model-tooltip");tip.style.display="block";
+  tip.innerHTML='<div class="mt-name">'+esc(m.name)+'</div><div class="mt-disc">'+esc(m.discipline)+'</div><div class="mt-line">'+esc(m.one_line)+'</div><div class="mt-src">— '+esc(m.source)+"</div>";
+  var r=tag.getBoundingClientRect();tip.style.left=Math.min(r.left,window.innerWidth-220)+"px";tip.style.top=(r.bottom+4)+"px";
+});
+document.addEventListener("mouseout",function(e){
+  if(e.target.closest(".model-tag"))$("model-tooltip").style.display="none";
+});
+
 })(); // end engine IIFE
 } // end initApp

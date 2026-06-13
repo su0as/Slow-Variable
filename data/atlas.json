@@ -371,7 +371,15 @@
         }
       ],
       "cf": "hi",
-      "review_after_months": 12
+      "review_after_months": 12,
+      "rent": {
+        "source": "EUV lithography monopoly (sole global supplier)",
+        "bypass_candidate": "High-NA delay / China SSA-EUV efforts (SMEE) / multi-patterning DUV workarounds at trailing edge",
+        "bypass_maturity": 0.12,
+        "maturity_as_of": "2026-06-01",
+        "half_life_estimate_years": 12,
+        "decay_note": "Single-supplier rent intact; no parity substitute this decade. Watch China SMEE milestones and whether DUV multi-patterning extends the useful window at 5nm-equivalent nodes."
+      }
     },
     {
       "id": "atlas.zeiss",
@@ -452,7 +460,15 @@
         }
       ],
       "cf": "hi",
-      "review_after_months": 12
+      "review_after_months": 12,
+      "rent": {
+        "source": "Leading-edge fab monopoly (2nm/3nm process; ~90% of world's most advanced wafers)",
+        "bypass_candidate": "Samsung GAA 2nm / Intel 18A process / TSMC Arizona eventual parity / SMIC very-long-term",
+        "bypass_maturity": 0.22,
+        "maturity_as_of": "2026-06-01",
+        "half_life_estimate_years": 10,
+        "decay_note": "Samsung and Intel closing gap; TSMC AZ at ~10% US volume by 2028. The rent is real but faster-decaying than ASML. Watch Samsung N2 yield ramp — if it hits >70% by 2027, the moat width halves."
+      }
     },
     {
       "id": "atlas.tsmcaz",
@@ -627,7 +643,15 @@
         }
       ],
       "cf": "hi",
-      "review_after_months": 12
+      "review_after_months": 12,
+      "rent": {
+        "source": "AI accelerator monopoly — ~85% share of training and inference GPU market; CUDA software lock-in",
+        "bypass_candidate": "AMD MI300X / Google TPU / AWS Trainium / custom ASICs / Groq / Cerebras / DeepSeek efficiency shock reducing per-inference compute demand",
+        "bypass_maturity": 0.28,
+        "maturity_as_of": "2026-06-01",
+        "half_life_estimate_years": 7,
+        "decay_note": "Fastest-decaying rent in this atlas. AMD gaining at inference edge; hyperscalers building custom silicon; DeepSeek R1 proved training can be done on H100-equivalent at 1/15th cost. CUDA moat is software, not physics — faster to erode. Watch AMD MI400 vs GB300 benchmarks."
+      }
     },
     {
       "id": "atlas.smic",
@@ -815,7 +839,15 @@
         }
       ],
       "cf": "hi",
-      "review_after_months": 12
+      "review_after_months": 12,
+      "rent": {
+        "source": "Chinese REE processing concentration (~85% of global separation capacity)",
+        "bypass_candidate": "MP Materials Texas / Lynas Texas / SRB Mining separation plants; Australia Lynas Malaysian plant; European processing buildout",
+        "bypass_maturity": 0.15,
+        "maturity_as_of": "2026-06-01",
+        "half_life_estimate_years": 15,
+        "decay_note": "Separation chemistry moat is real but buildable — the 2025 licensing regime will accelerate Western capital deployment. Watch MP Texas Phase 2 completion and Lynas Texas production start. The bypass takes 5–8 years, not decades."
+      }
     },
     {
       "id": "atlas.ganzhou",

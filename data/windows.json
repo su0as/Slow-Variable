@@ -201,7 +201,13 @@
         }
       ],
       "cf": "hi",
-      "review_after_months": 6
+      "review_after_months": 6,
+      "order_effects": [
+        {"order":1,"text":"Token prices deflate ~100×+; margins compress to cost floor; model providers absorb the feature layer","entity":null,"confidence":"hi"},
+        {"order":2,"text":"Incumbents acquire winners rather than build: Google $2.4B/Windsurf, Meta $14.3B/Scale — solo exits shift from organic to acqui-hire","entity":null,"confidence":"hi"},
+        {"order":3,"text":"CAC inflation in solo distribution channels; TikTok/IG organic reach commoditizes as every founder uses same playbook — window narrows to vertical distribution moats only","entity":null,"confidence":"md"},
+        {"order":4,"text":"Next capability layer (agents, multimodal) resets the window for a new cohort — but entry bar is now a team + product + distribution edge, not just API access","entity":null,"confidence":"lo"}
+      ]
     },
     {
       "id": "window.acquihire-signal",
@@ -277,7 +283,13 @@
         }
       ],
       "cf": "md",
-      "review_after_months": 6
+      "review_after_months": 6,
+      "order_effects": [
+        {"order":1,"text":"Lab race creates talent scarcity — labs outbid everyone on ML engineers; independent teams can't compete on model training","entity":null,"confidence":"hi"},
+        {"order":2,"text":"Acqui-hires become primary exit path for AI startups; VC returns concentrate in a few mega-exits rather than broad portfolio wins","entity":null,"confidence":"hi"},
+        {"order":3,"text":"Talent concentration at labs → fewer independent AI companies at founding → venture capital AI portfolio companies become commoditised by lab platform releases","entity":null,"confidence":"md"},
+        {"order":4,"text":"University AI programs and bootcamps surge to meet demand — but a 4yr lag before they produce independent founders; short-term talent gap persists","entity":null,"confidence":"lo"}
+      ]
     },
     {
       "id": "window.agentic-vertical",
@@ -518,7 +530,15 @@
       "signals": [],
       "links": [],
       "cf": "lo",
-      "review_after_months": 6
+      "review_after_months": 6,
+      "tipping_condition": "First mass-deployment of a general-purpose humanoid robot: 1,000+ units in a single production vertical with economic parity to human labor cost (not just demo performance).",
+      "distance_to_tip": "early",
+      "order_effects": [
+        {"order":1,"text":"Sim-to-real transfer crosses reliability threshold; first 1,000-unit humanoid deployment in controlled vertical (warehouse/manufacturing)","entity":null,"confidence":"hi"},
+        {"order":2,"text":"Data flywheel activates: each deployed unit generates training data, accelerating next-gen models; Optimus/Figure/1X compete on iteration speed not hardware specs","entity":null,"confidence":"md"},
+        {"order":3,"text":"Labor markets price-in humanoid substitution risk in warehouse, logistics, light manufacturing; insurance premiums for human workers in competitive roles shift","entity":null,"confidence":"md"},
+        {"order":4,"text":"White-collar knowledge work remains separate; gap between physical-AI window and cognitive-AI window creates asymmetric investment opportunity in physical-world distribution moats","entity":null,"confidence":"lo"}
+      ]
     },
     {
       "id": "window.orbital-compute",
@@ -605,7 +625,15 @@
         }
       ],
       "cf": "lo",
-      "review_after_months": 6
+      "review_after_months": 6,
+      "tipping_condition": "Starship achieves commercial full-reuse cadence with both booster and ship recovered — confirmed by 3+ consecutive commercial flights with 24hr turnaround — making $/kg to LEO collapse to <$100/kg.",
+      "distance_to_tip": "early",
+      "order_effects": [
+        {"order":1,"text":"Starship full-reuse collapses $/kg to LEO by 10–50×; orbital infrastructure crosses economic viability threshold","entity":null,"confidence":"hi"},
+        {"order":2,"text":"1M-satellite constellation becomes buildable (SpaceX/xAI FCC filing); in-orbit compute and manufacturing attract first commercial capital","entity":null,"confidence":"md"},
+        {"order":3,"text":"Starlink 2.0 with orbital compute nodes creates a latency-free global computation substrate — geography of data center location becomes less relevant","entity":null,"confidence":"lo"},
+        {"order":4,"text":"Nation-states re-assess sovereignty of critical infrastructure as it moves to orbit (outside territorial jurisdiction); orbital law regime becomes the new maritime law battleground","entity":null,"confidence":"lo"}
+      ]
     },
     {
       "id": "window.meta-leverage-shift",
@@ -1103,7 +1131,15 @@
         }
       ],
       "cf": "md",
-      "review_after_months": 3
+      "review_after_months": 3,
+      "tipping_condition": "First sovereign AI program produces a publicly-deployed model that outperforms a GPT-4-class baseline on a domain-relevant benchmark AND receives domestic commercial adoption beyond government use — demonstrating the sovereignty thesis is actually strategic, not just symbolic.",
+      "distance_to_tip": "pre",
+      "order_effects": [
+        {"order":1,"text":"Gulf/EU/Asia sovereign programs buy accelerators at price-insensitive levels — GPU demand floor extends AI capex cycle beyond hyperscaler cycles","entity":null,"confidence":"hi"},
+        {"order":2,"text":"Sovereign model capabilities reach commercial-grade threshold → domestic AI startups get access without US API dependence; ecosystem flywheel activates in each geography","entity":null,"confidence":"md"},
+        {"order":3,"text":"Compute diplomacy formalizes: chip-access becomes a treaty matter (like nuclear material); countries without sovereign AI programs face leverage asymmetry in bilateral negotiations","entity":null,"confidence":"md"},
+        {"order":4,"text":"Sovereign AI creates bloc fragmentation of internet infrastructure: EU GDPR-AI stack vs US stack vs China stack — the internet splitting into sovereign compute domains, each with its own AI capabilities","entity":null,"confidence":"lo"}
+      ]
     },
     {
       "id": "window.glp1-metabolic",
@@ -1175,7 +1211,13 @@
       "signals": [],
       "links": [],
       "cf": "hi",
-      "review_after_months": 6
+      "review_after_months": 6,
+      "order_effects": [
+        {"order":1,"text":"GLP-1 drugs cross clinical efficacy threshold (~15-20% weight loss) → largest new drug market in history; Novo/Lilly at European/near-$1T market cap","entity":null,"confidence":"hi"},
+        {"order":2,"text":"Food industry demand destruction: reduced caloric consumption, alcohol demand, snack categories — Constellation Brands / PepsiCo / Anheuser-Busch re-rate on forward revenue","entity":null,"confidence":"hi"},
+        {"order":3,"text":"Airlines re-calculate fuel burn per passenger; hospitals re-model joint replacement surgery demand; life insurers reprice mortality tables; clothing retailers face body-shape composition shift","entity":null,"confidence":"md"},
+        {"order":4,"text":"Obesity as comorbidity for cancer, heart disease, diabetes declines — the most diffuse second-order: chronic disease management is the largest single cost in US healthcare; GLP-1 is a decades-long slow decompressor of that cost","entity":null,"confidence":"lo"}
+      ]
     },
     {
       "id": "window.stablecoin-rails",
@@ -1256,7 +1298,15 @@
         }
       ],
       "cf": "md",
-      "review_after_months": 3
+      "review_after_months": 3,
+      "tipping_condition": "First major AI agent platform (OpenAI Operator, Anthropic, or equivalent) announces stablecoin as primary payment rail AND a top-5 US bank or Visa/Mastercard deploys a production stablecoin settlement layer.",
+      "distance_to_tip": "near",
+      "order_effects": [
+        {"order":1,"text":"GENIUS Act creates federal framework; Circle IPO benchmarks the category; on-chain settlement bypasses SWIFT for B2B/remittances at internet speed","entity":null,"confidence":"hi"},
+        {"order":2,"text":"Bank deposit-flight risk becomes material: checking accounts that earn no interest migrate to yield-bearing stablecoins; bank NIM compression follows — cheapest funding source contested","entity":null,"confidence":"md"},
+        {"order":3,"text":"AI agents transacting autonomously need programmable, instant, low-cost money — agent commerce demand emerges as demand shock that dwarfs human stablecoin usage","entity":null,"confidence":"md"},
+        {"order":4,"text":"Dollar stablecoin hegemony extends dollar network into jurisdictions with weak currencies; dollarisation-as-a-service bypasses the geopolitics of the SWIFT network — the non-obvious geopolitical consequence","entity":null,"confidence":"lo"}
+      ]
     }
   ]
 }

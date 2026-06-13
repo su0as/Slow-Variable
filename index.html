@@ -43,6 +43,7 @@
     <div id="d-reg"></div>
     <div id="d-nm"></div>
     <div id="d-meta"></div>
+    <button id="invert-btn" title="Invert view — what makes this false? (i)" class="btn">INVERT</button>
     <button id="d-back" title="Back">← back</button>
     <button id="dclose" title="Close dossier (Esc)">✕</button>
   </div>
@@ -362,6 +363,27 @@
     </div>
   </div>
 </div>
+
+<!-- BIAS CHECK MODAL -->
+<div id="bias-modal" style="display:none">
+  <div id="bias-box">
+    <div id="bias-header" style="font-size:10px;letter-spacing:.15em;color:var(--dim);margin-bottom:10px">BIAS CHECK</div>
+    <div id="bias-checks-list"></div>
+    <div style="display:flex;gap:8px;margin-top:14px">
+      <button class="btn" id="bias-save-btn">SAVE</button>
+      <button class="btn" onclick="document.getElementById('bias-modal').style.display='none'">CLOSE</button>
+    </div>
+  </div>
+</div>
+
+<!-- PROVENANCE FOOTER -->
+<div id="prov-footer">
+  <div id="prov-label">MODELS POWERING THIS TOOL</div>
+  <div id="prov-chips"></div>
+</div>
+
+<!-- MODEL TOOLTIP -->
+<div id="model-tooltip" style="display:none"></div>
 
 <script src="js/world.js"></script>
 <script src="js/store.js"></script>
