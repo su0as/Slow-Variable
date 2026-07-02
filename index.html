@@ -350,6 +350,7 @@
         <p><em>2. Every claim touched must be re-verified,</em> not assumed. Downgrade <code>cf</code> to <code>"md"</code> rather than guess.</p>
         <p><em>3. After any data edit:</em> run <code>node js/validate.js</code>, bump <code>meta.json</code> version, set <code>last_updated</code> to today.</p>
         <p><em>4. The Data Health panel (⊙ in the header)</em> shows which nodes are past their review window — that list is the update queue for the next session.</p>
+        <p><em>5. A weekly CI job regenerates that same queue for free,</em> with no AI and no API key — see <code>PATROL.md</code>. Turning it into actual edits happens on demand: paste this repo to a chat AI and point it at <code>AGENT_UPDATE.md</code>.</p>
       </div>
       <h2 class="sec">Survivorship Bias Rules</h2>
       <div class="prose">

@@ -4,13 +4,12 @@ This is the contract for any session — AI or human — that updates the data i
 repo. The Method tab's "Update Protocol" section links here. Read it before touching
 `/data/*.json`.
 
-**This document is also read automatically.** `.github/workflows/patrol.yml` runs a
-headless Claude session against it every Monday, working the top 5 most-overdue
-entities plus a full kill_watch scan, and opens a PR with its findings — it never
-pushes to main. If you're an AI session invoked *by* that workflow: everything below
-applies to you exactly as it would to an interactive session. If you're a human
-maintainer: expect a weekly `patrol: <date> — N entities re-verified` PR and review it
-like any other PR, not as an auto-merge.
+**This document is the contract for [`AGENT_UPDATE.md`](AGENT_UPDATE.md), too.**
+`.github/workflows/patrol.yml` runs weekly, but it's plain Node with no AI and no API
+key — it only computes which entities are overdue (`PATROL.md` / `patrol-queue.json`)
+and commits that report to main. It never touches `/data`. The actual re-verification
+happens later and separately, whenever a human pastes this repo to a chat AI and points
+it at `AGENT_UPDATE.md`, which in turn tells that AI to follow every rule below.
 
 ## The four hard rules
 
@@ -28,14 +27,16 @@ like any other PR, not as an auto-merge.
    js/validate.js` must pass with 0 errors before you commit. Then bump `meta.json`:
    increment `version`, set `last_updated` to today, update the relevant `counts`, and
    append a `changelog` entry (`date`, `by`, `summary`).
-4. **Check the Data Health panel before starting.** Click ⊙ in the header (or open
-   `#health-panel` programmatically) — it lists every node past its `review_after_months`
-   window. That list *is* the update queue for a maintenance session. Don't go looking
+4. **Check the queue before starting.** In a running browser: click ⊙ (Data Health) in
+   the header. Without a browser (a repo-only AI session): read [`PATROL.md`](PATROL.md)
+   or `patrol-queue.json`, regenerating them first with `node scripts/patrol-report.js`
+   if they look stale. Either way, that list *is* the update queue — don't go looking
    for something to update; work the queue.
 
 ## Step-by-step for a maintenance session
 
-1. Open the site, click ⊙ (Data Health). Note the stale-node list and any forecasts past
+1. Open the site and click ⊙ (Data Health), or read `PATROL.md` if you don't have a
+   browser. Note the stale-entity list, any kill_watch alerts, and any forecasts past
    deadline.
 2. For each stale node: find its source registry file, verify the claim against a real
    source (web search, filing, official announcement). If confirmed, update the value and

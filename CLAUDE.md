@@ -28,6 +28,14 @@ maintenance contract, read `UPDATE_PROTOCOL.md`. For architecture and schema, re
   with 0 errors.
 - **Bump `data/meta.json`** (`version`, `last_updated`, `counts`, `changelog`) on every
   data-content commit.
+- **No AI API keys, ever, anywhere in this repo or its CI.** Staleness detection
+  (`.github/workflows/patrol.yml`, `scripts/patrol-report.js`) is plain, dependency-free
+  Node — it only computes overdue-ness from dates already in the data. The actual
+  re-verification is deliberately *not* automated: it happens when a human pastes this
+  repo to a chat AI session per [`AGENT_UPDATE.md`](AGENT_UPDATE.md). If a task ever
+  looks like "wire up an API key so patrol can call an AI automatically," that's a
+  regression of a decision that's already been made — push back and point to this file
+  and `AGENT_UPDATE.md` instead.
 
 ## File map
 
@@ -47,8 +55,11 @@ js/engine.js                all rendering logic, wrapped in an IIFE inside initA
 js/validate.js               schema + link + probability + envelope validator (run before commit)
 data/*.json                   all content — see README.md's schema table
 UPDATE_PROTOCOL.md              the data-maintenance contract
-scripts/                        one-off node scripts (e.g. OG image generation)
-.github/workflows/validate.yml   CI: runs js/validate.js on every push/PR
+AGENT_UPDATE.md                  on-demand contract for a chat AI acting on PATROL.md — no automation runs this
+PATROL.md / patrol-queue.json     generated staleness queue — regenerate with `node scripts/patrol-report.js`, don't hand-edit
+scripts/                          one-off node scripts: generate-og.js (OG image), patrol-report.js (keyless staleness report)
+.github/workflows/validate.yml     CI: runs js/validate.js on every push/PR
+.github/workflows/patrol.yml        CI: weekly, runs patrol-report.js, commits the report to main — no AI, no secrets
 ```
 
 ## Working in `js/engine.js`

@@ -64,6 +64,7 @@ js/router.js          hash-based routing (#/atlas, #/tree?node=..., etc.)
 js/engine.js           all rendering: map canvas, tech tree SVG, dossiers, Thesis
                        Register + Spine view, Today, Forecasts, Brief, Patrol, Method
 js/validate.js         schema + cross-reference validator, run before every commit
+scripts/patrol-report.js  free, keyless staleness queue generator — see Patrol below
 data/*.json             all content — see schema reference below
 ```
 
@@ -101,12 +102,24 @@ before writing; if you can't verify, downgrade `cf` to `"md"` rather than guess.
 edits go in `/data/*.json` only. Run `node js/validate.js` before committing. Bump
 `meta.json`'s `version` and add a `changelog` entry.
 
-This also runs itself: `.github/workflows/patrol.yml` fires every Monday, runs a
-headless Claude session against exactly this contract on the five most-overdue
-entities, checks every thesis's `kill_watch` for anything within ~20% of triggering,
-and opens a PR (never pushes to main) with a report of what it found under
-`patrol/reports/`. See the workflow file for the exact prompt and required repo
-secrets/settings.
+### Patrol: free report + on-demand AI update
+
+Staleness detection and the actual fix are two separate, deliberately decoupled steps —
+**no AI API key exists anywhere in this repo or its CI.**
+
+1. **Free, keyless, automatic.** `.github/workflows/patrol.yml` runs weekly (plain
+   `node scripts/patrol-report.js`, zero dependencies, no network calls) and commits
+   two generated files straight to main: [`PATROL.md`](PATROL.md) (human-readable) and
+   `patrol-queue.json` (machine-readable). It replicates the exact staleness math the
+   live app uses (`isStale()`/`vintageAge()` in `js/engine.js`, `Store.staleStatus()` in
+   `js/store.js`) and flags any thesis `kill_watch` at or past 0.8 proximity. It reads
+   dates; it never decides what's true, and it never edits `/data`.
+2. **Paid, on-demand, human-triggered.** Re-verifying a claim requires judgment and web
+   access, which costs money and shouldn't run unattended on a schedule. Instead: a
+   human pastes the repo (or `PATROL.md` + `AGENT_UPDATE.md`) into any chat AI —
+   Claude, ChatGPT, whatever — and that AI session *is* the compute. See
+   [`AGENT_UPDATE.md`](AGENT_UPDATE.md) for the exact contract, including a copy-paste
+   kickoff line.
 
 ## What this deliberately does not do
 
@@ -116,3 +129,7 @@ secrets/settings.
   "Desktop Only" notice on those two tabs.
 - No fabricated historical forecast resolutions — `data/forecasts.json` only contains
   claims that are honestly still pending as of its vintage.
+- No AI API key anywhere in this repo or its CI, ever — the weekly patrol workflow is
+  plain, dependency-free Node. Re-verification requires judgment and web access, so it
+  only happens when a human spends an actual AI chat session on it — see
+  `AGENT_UPDATE.md`.

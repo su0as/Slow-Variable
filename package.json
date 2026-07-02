@@ -6,7 +6,8 @@
   "scripts": {
     "validate": "node js/validate.js",
     "serve": "npx serve -p 5173 --no-clipboard .",
-    "og-image": "node scripts/generate-og.js"
+    "og-image": "node scripts/generate-og.js",
+    "patrol": "node scripts/patrol-report.js"
   },
   "devDependencies": {
     "canvas": "^3.2.3"

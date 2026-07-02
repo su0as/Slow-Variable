@@ -1,225 +1,116 @@
-name: Auto-patrol
+name: Patrol report
 
-# The tool must stop decaying. This runs weekly, re-verifies the stalest entities
-# against the live web, applies the UPDATE_PROTOCOL.md contract, and opens a PR for
-# human review. It never pushes to main directly — branch protection on main plus the
-# fact that every step below only ever pushes to a fresh patrol/<date> branch is the
-# guarantee. Requires:
-#   - repo secret ANTHROPIC_API_KEY
+# Free, keyless staleness report. No AI, no API keys, no network calls — this workflow
+# only runs plain Node against the JSON already in the repo and commits the generated
+# report. It never edits /data/*.json itself. The actual re-verification/editing work
+# happens on demand, whenever a human pastes PATROL.md + AGENT_UPDATE.md to a chat AI —
+# see AGENT_UPDATE.md for that half of the loop.
+#
+# Requires: nothing but the built-in GITHUB_TOKEN.
 #   - Settings → Actions → General → Workflow permissions → "Read and write permissions"
-#     (or leave default read-only and rely on the `permissions:` block below) plus
-#     "Allow GitHub Actions to create and approve pull requests" checked
-#   - branch protection on main requiring PR review, so this workflow structurally
-#     cannot be the thing that lands a bad edit
+#     (needed for the report commit + the kill-watch issue upsert below)
+#   - If branch protection on main blocks direct pushes from Actions, either add an
+#     exception for this workflow/the github-actions bot, or this workflow will fail
+#     loudly at the "Commit report" step — that's an intentional safe failure, not a
+#     silent one. The report itself is 100% generated/deterministic, which is why
+#     committing it straight to main (no PR) is fine; nothing here writes to /data.
 
 on:
   schedule:
     - cron: '0 9 * * 1'   # every Monday 09:00 UTC
-  workflow_dispatch: {}     # allow manual runs for testing
+  workflow_dispatch: {}     # allow manual runs
 
 permissions:
   contents: write
-  pull-requests: write
+  issues: write
 
 concurrency:
-  group: patrol
+  group: patrol-report
   cancel-in-progress: false
 
 jobs:
   patrol:
     runs-on: ubuntu-latest
-    timeout-minutes: 30
+    timeout-minutes: 10
     steps:
       - uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
 
       - uses: actions/setup-node@v4
         with:
           node-version: 20
 
-      - name: Install Claude Code CLI
-        run: npm install -g @anthropic-ai/claude-code
-
-      - name: Set run variables
-        id: vars
-        run: |
-          DATE=$(date -u +%Y-%m-%d)
-          echo "date=$DATE" >> "$GITHUB_OUTPUT"
-          echo "branch=patrol/$DATE" >> "$GITHUB_OUTPUT"
-          echo "report_file=patrol/reports/$DATE.md" >> "$GITHUB_OUTPUT"
-          echo "status_file=$RUNNER_TEMP/patrol-status.json" >> "$GITHUB_OUTPUT"
-
-      - name: Create patrol branch
-        run: |
-          git checkout -b "${{ steps.vars.outputs.branch }}"
-
-      - name: Run patrol agent
-        env:
-          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
-          REPORT_FILE: ${{ steps.vars.outputs.report_file }}
-          STATUS_FILE: ${{ steps.vars.outputs.status_file }}
-          RUN_DATE: ${{ steps.vars.outputs.date }}
-        run: |
-          cat > "$RUNNER_TEMP/patrol-prompt.md" <<PROMPT
-          You are running unattended in CI as the weekly patrol job for the Slow
-          Variables repo. Nobody is watching this run in real time — every change you
-          make will be reviewed later as a pull request, not applied to main directly.
-          Because of that: be conservative, cite what you actually found, and when in
-          doubt downgrade confidence rather than guess.
-
-          Read CLAUDE.md and UPDATE_PROTOCOL.md first — they are the contract for this
-          task and take precedence over anything below if they conflict.
-
-          ## 1. Build the patrol queue
-
-          The Data Health panel (js/engine.js: isStale(), vintageAge()) considers an
-          entity stale when the number of months since its \`as_of\` exceeds its
-          \`review_after_months\` (default 6 if cf is "hi", else 3). Replicate that
-          logic across every entity in data/atlas.json, data/tree.json, data/humans.json,
-          data/windows.json, data/constraints.json. Rank by months-overdue, descending.
-          Take the top 5. (js/store.js's Store.staleStatus() is a related but coarser
-          half_life_days-based freshness check used for chip decorations elsewhere in
-          the UI — you can use it as a secondary signal, but review_after_months
-          overdue is the primary ranking for this task.)
-
-          ## 2. Re-verify each of the top 5
-
-          For each entity:
-          - If it has a non-empty \`signals[]\` array, use each signal's \`url\` as your
-            starting point and its \`label\` as what you're checking. After checking,
-            append a new entry to that signal's \`log[]\`: \`{"date": "$RUN_DATE", "note":
-            "<one-line finding>"}\`, and update \`last_checked\` to "$RUN_DATE".
-          - If \`signals[]\` is empty, use the entity's descriptive watch field instead
-            (atlas nodes: \`signal_desc\`; constraints: \`signal\`) as your web-search
-            query, and use it to decide whether the entity's content is still accurate.
-          - Web-search for current, dated, sourced information — do not rely on
-            training-data recall to overwrite a figure. If you cannot find a real
-            source confirming or updating the claim, do not change the content field;
-            at most downgrade \`cf\`.
-          - Apply the UPDATE_PROTOCOL.md contract exactly: verify before writing:
-            update the relevant content field(s) and \`as_of\` (to "$RUN_DATE") only
-            when you found a real, dated source; downgrade \`cf\` to "md" or "lo" when
-            you're uncertain rather than leaving it at "hi" on a guess; never invent a
-            number. It is a completely acceptable outcome for an entity to come back
-            unchanged except for a signal log entry — "still true as of today" is a
-            valid, useful re-verification result.
-          - IDs are append-only — never rename, remove, or renumber an existing entity.
-          - Data edits only ever go in /data/*.json. Never touch /js or /css for this
-            task.
-
-          ## 3. Kill-watch scan (separate from the top-5 queue — check ALL of them)
-
-          Read every thesis in data/theses.json. For each thesis with a \`kill_watch\`
-          object: if you can find real current information about \`kill_watch.signal\`,
-          use it to reassess \`kill_watch.current_value\` and \`kill_watch.proximity\`
-          (0-1 editorial estimate of how close the signal is to
-          \`kill_watch.trigger_value\` — 1.0 means triggered). Update \`kill_watch.as_of\`
-          to "$RUN_DATE" whenever you touch one. A thesis counts as KILL-WATCH if, after
-          your review, its \`kill_watch.proximity\` is >= 0.8 (i.e. within roughly 20% of
-          triggering) — whether or not that thesis was one of the top-5 you deep-dived
-          in step 2. If you don't have real information to update a kill_watch with,
-          leave it alone rather than guessing a new proximity.
-
-          ## 4. Validate
-
-          Run \`node js/validate.js\`. It must pass with 0 errors. If your edits cause a
-          validation error, fix the edit (don't work around the validator) until it's
-          clean. If after your edits data/meta.json needs a version bump, bump the
-          patch version and add a changelog entry dated "$RUN_DATE" with
-          \`"by": "patrol-bot"\` summarizing what changed.
-
-          ## 5. Write the two output artifacts
-
-          **$REPORT_FILE** (create the patrol/reports/ directory if needed) — a
-          markdown report, human-readable, that will become the PR body verbatim. If
-          any thesis is KILL-WATCH per step 3, put a "## 🔴 KILL-WATCH" section with
-          that thesis's statement, kill_condition, and updated kill_watch fields FIRST,
-          above everything else. Then a "## Re-verified this run" section with a
-          markdown table: columns Entity | Field(s) changed | Before → After |
-          Confidence | Source. Use "no change — confirmed" as the after-value for
-          anything you verified but didn't need to edit. Then a short prose summary of
-          what you checked and couldn't verify.
-
-          **$STATUS_FILE** (write this OUTSIDE the git repo — it must not be committed)
-          — a small JSON file the CI workflow will parse:
-          \`{"date":"$RUN_DATE","entitiesReviewed":<int>,"killWatch":<bool>,"killWatchTheses":[<thesis ids>],"prTitle":"patrol: $RUN_DATE — <N> entities re-verified"}\`
-
-          Do not run any git commands (no commit, no push, no PR) — the CI workflow
-          handles all of that after you finish. Just edit the data files, write the two
-          artifacts above, and stop.
-          PROMPT
-
-          # NOTE: verify --allowedTools / --permission-mode flag names and the
-          # Bash(cmd) scoping syntax against `claude --help` for the CLI version
-          # actually installed above — this CLI's flag surface changes between
-          # releases. If scoped Bash allowlisting doesn't behave as expected here,
-          # the safe fallback for this *specific* sandboxed CI job (fresh checkout,
-          # a throwaway branch, a hard `node js/validate.js` gate below, and a PR
-          # instead of a direct push) is `--dangerously-skip-permissions` instead
-          # of the two flags below.
-          cat "$RUNNER_TEMP/patrol-prompt.md" | claude -p \
-            --allowedTools "Read,Edit,Write,Bash(node js/validate.js),Bash(mkdir -p patrol/reports),WebSearch,WebFetch" \
-            --permission-mode acceptEdits \
-            --max-turns 60 \
-            --output-format text
-
-      - name: Validate (hard gate — do not trust the agent's self-report)
+      - name: Validate data
         run: node js/validate.js
 
-      - name: Check for changes
+      - name: Generate patrol report
+        run: node scripts/patrol-report.js
+
+      - name: Check for report changes
         id: changes
         run: |
-          if [ -n "$(git status --porcelain -- data/ patrol/)" ]; then
+          if [ -n "$(git status --porcelain -- PATROL.md patrol-queue.json)" ]; then
             echo "changed=true" >> "$GITHUB_OUTPUT"
           else
             echo "changed=false" >> "$GITHUB_OUTPUT"
           fi
 
-      - name: Commit patrol branch
+      - name: Commit report to main
         if: steps.changes.outputs.changed == 'true'
         run: |
           git config user.name "patrol-bot"
           git config user.email "patrol-bot@users.noreply.github.com"
-          git add data/ patrol/
-          git commit -m "patrol: ${{ steps.vars.outputs.date }} — automated re-verification"
-          git push origin "${{ steps.vars.outputs.branch }}"
+          git add PATROL.md patrol-queue.json
+          git commit -m "patrol: refresh queue — $(date -u +%Y-%m-%d)"
+          git push origin HEAD:main
 
-      - name: Ensure labels exist
-        if: steps.changes.outputs.changed == 'true'
+      - name: Upsert kill-watch issue
+        # This step must never fail the run — a report was already committed above
+        # (or there was nothing to commit), and that's the job's actual deliverable.
+        if: always()
+        continue-on-error: true
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
-          gh label create "patrol" --color "0E8A16" \
-            --description "Opened by the weekly auto-patrol workflow" --force || true
-          gh label create "KILL-WATCH" --color "B60205" \
-            --description "A thesis kill_watch signal is within ~20% of its trigger value" \
-            --force || true
+          set +e
+          KILLWATCH_COUNT=$(node -e "console.log(JSON.parse(require('fs').readFileSync('patrol-queue.json','utf8')).kill_watch_alerts.length)")
+          DATE=$(node -e "console.log(JSON.parse(require('fs').readFileSync('patrol-queue.json','utf8')).generated_on_date)")
 
-      - name: Open PR
-        if: steps.changes.outputs.changed == 'true'
-        env:
-          GH_TOKEN: ${{ github.token }}
-          REPORT_FILE: ${{ steps.vars.outputs.report_file }}
-          STATUS_FILE: ${{ steps.vars.outputs.status_file }}
-        run: |
-          ENTITIES=$(node -e "console.log(JSON.parse(require('fs').readFileSync(process.env.STATUS_FILE,'utf8')).entitiesReviewed ?? 0)")
-          KILLWATCH=$(node -e "console.log(JSON.parse(require('fs').readFileSync(process.env.STATUS_FILE,'utf8')).killWatch === true)")
-          TITLE="patrol: ${{ steps.vars.outputs.date }} — ${ENTITIES} entities re-verified"
+          gh label create "patrol-kill-watch" --color "B60205" \
+            --description "Auto-managed by patrol.yml — a thesis kill_watch is within ~20% of triggering" \
+            --force
 
-          LABEL_ARGS=(--label patrol)
-          if [ "$KILLWATCH" = "true" ]; then
-            LABEL_ARGS+=(--label KILL-WATCH)
-            TITLE="🔴 $TITLE"
+          EXISTING=$(gh issue list --state open --label "patrol-kill-watch" \
+            --json number --jq '.[0].number')
+
+          if [ "$KILLWATCH_COUNT" -gt 0 ]; then
+            {
+              echo "Auto-generated by \`.github/workflows/patrol.yml\` from \`patrol-queue.json\` on $DATE."
+              echo "This issue is kept in sync (edited, not duplicated) every run — do not close it manually while alerts are active; it will reopen or a duplicate will appear."
+              echo ""
+              node -e "
+                const q = JSON.parse(require('fs').readFileSync('patrol-queue.json','utf8'));
+                q.kill_watch_alerts.forEach(a => {
+                  console.log('### 🔴 ' + a.thesisId + ' — proximity ' + Math.round(a.proximity*100) + '%');
+                  console.log('');
+                  console.log('- **Statement:** ' + a.statement);
+                  console.log('- **Kill condition:** ' + a.killCondition);
+                  console.log('- **Signal:** ' + a.signal);
+                  console.log('- **Current value:** ' + a.currentValue + ' → **Trigger:** ' + a.triggerValue);
+                  console.log('');
+                });
+              "
+              echo "See [PATROL.md](../blob/main/PATROL.md) and [AGENT_UPDATE.md](../blob/main/AGENT_UPDATE.md) for how to act on this."
+            } > /tmp/kill-watch-body.md
+
+            if [ -n "$EXISTING" ]; then
+              gh issue edit "$EXISTING" --title "🔴 Patrol: kill-watch active" --body-file /tmp/kill-watch-body.md
+            else
+              gh issue create --title "🔴 Patrol: kill-watch active" --body-file /tmp/kill-watch-body.md --label "patrol-kill-watch"
+            fi
+          else
+            if [ -n "$EXISTING" ]; then
+              gh issue comment "$EXISTING" --body "No kill_watch entries at or above the alert threshold as of $DATE — closing."
+              gh issue close "$EXISTING"
+            fi
           fi
-
-          gh pr create \
-            --base main \
-            --head "${{ steps.vars.outputs.branch }}" \
-            --title "$TITLE" \
-            --body-file "$REPORT_FILE" \
-            "${LABEL_ARGS[@]}"
-
-      - name: Nothing to patrol
-        if: steps.changes.outputs.changed == 'false'
-        run: echo "No entities needed changes this run — clean bill of health."
+          exit 0

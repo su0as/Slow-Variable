@@ -1,7 +1,44 @@
-# Shipped — 2026-07-02
+# Shipped
 
-Six-phase simplification + entry-point pass, v2.1.0 → v2.2.0. Summary for whoever
-reads this next (human or AI).
+## 2026-07-02 (later same day) — patrol pipeline reconfigured: keyless, two-part
+
+Reverses a decision from earlier the same day (see the entry below). The first cut of
+the patrol pipeline called `claude -p` with `ANTHROPIC_API_KEY` in CI, running weekly
+and opening its own PRs. That put a paid API key in a public repo's CI for a job that
+runs unattended — wrong tradeoff. Replaced it with two decoupled pieces:
+
+- **`scripts/patrol-report.js`** (new) — pure Node, zero dependencies, no network, no
+  AI. Replicates the live app's exact staleness math (`js/engine.js`
+  `isStale()`/`vintageAge()`, `js/store.js` `Store.staleStatus()`/`freshnessSummary()`)
+  across every registry that has an `as_of` (atlas, tree, humans, windows, constraints,
+  scenarios, graveyard, theses, method — `models.json`/`forecasts.json` excluded, same
+  as `Store._reg()` never registers them). Also scans every thesis `kill_watch` for
+  `proximity >= 0.8`. Writes `PATROL.md` (human-readable queue) and `patrol-queue.json`
+  (machine-readable, same data). `npm run patrol` runs it. Verified against both an
+  empty queue and a synthetic stale/kill-watch entry (temporarily mutated, diffed back
+  to zero, confirmed clean) to exercise both the empty-state and populated-table
+  rendering paths.
+- **`.github/workflows/patrol.yml`** (replaced entirely) — weekly cron +
+  `workflow_dispatch`, runs `validate.js` then `patrol-report.js`, and commits the
+  regenerated report straight to `main` (no secrets required — it's a deterministic
+  report, not a data edit, so no PR gate is needed for it specifically). Separately,
+  and guarded to never fail the run, it upserts a single pinned "🔴 Patrol: kill-watch
+  active" issue when `kill_watch_alerts` is non-empty, and closes it when the queue is
+  clean.
+- **`AGENT_UPDATE.md`** (new) — the actual re-verification work moved here entirely:
+  a self-contained contract a human pastes to *any* chat AI (Claude, ChatGPT, whatever),
+  along with a copy-paste kickoff line, telling it to read `PATROL.md`, verify entries
+  with its own web access, follow `UPDATE_PROTOCOL.md`'s rules (never invent a number,
+  downgrade `cf` instead of guessing), validate, and open a PR. There is no automation
+  that invokes this — it only runs when a human spends an actual AI session on it.
+
+`README.md`, `UPDATE_PROTOCOL.md`, `CLAUDE.md`, and the Method tab's in-app "Update
+Protocol" prose (`index.html`) all updated to describe the free-report / on-demand-AI
+split and to make explicit that no AI API key exists anywhere in this repo or its CI.
+
+## 2026-07-02 — six-phase simplification + entry-point pass, v2.1.0 → v2.2.0
+
+Summary for whoever reads this next (human or AI).
 
 ## What changed
 
