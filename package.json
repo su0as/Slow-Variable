@@ -5,6 +5,10 @@
   "description": "Slow Variables — a worldview-as-code instrument tracking structural constraints, tech-tree causality, high-agency bets, and market windows, with schema-enforced falsifiability.",
   "scripts": {
     "validate": "node js/validate.js",
-    "serve": "npx serve -p 5173 --no-clipboard ."
+    "serve": "npx serve -p 5173 --no-clipboard .",
+    "og-image": "node scripts/generate-og.js"
+  },
+  "devDependencies": {
+    "canvas": "^3.2.3"
   }
 }

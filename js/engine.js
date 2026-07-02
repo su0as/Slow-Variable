@@ -1286,6 +1286,7 @@ Router.on(function(path,params){
   if(params&&params.open){
     var m=params.open.match(/^(atlas|tree|human|window)\.(.+)$/);
     if(m){var regMap={atlas:"atlas",tree:"tree",human:"human",window:"trend"};setTimeout(function(){openDossier(regMap[m[1]],m[2])},150)}
+    else if(params.open.indexOf("thesis.")===0){setTimeout(function(){todayGoToThesis(params.open)},150)}
   }
 });
 
@@ -2275,11 +2276,29 @@ buildThesisRegister=function(){
       var dossier=$("dossier");if(dossier)dossier.classList.add("open");
       renderInvertedDossier("thesis",th.id);
     };
+    // SHARE button per card
+    var shareBtn=document.createElement("button");shareBtn.className="btn thesis-share-btn";
+    shareBtn.title="Copy deep-link + shareable text";shareBtn.textContent="⎘ Share";
+    shareBtn.onclick=function(){
+      var text=shareThesisText(th);
+      var reset=function(){setTimeout(function(){shareBtn.textContent="⎘ Share"},1500)};
+      if(navigator.clipboard&&navigator.clipboard.writeText){
+        navigator.clipboard.writeText(text).then(function(){shareBtn.textContent="⎘ Copied!";reset()},function(){shareBtn.textContent="⎘ Copy failed";reset()});
+      }else{shareBtn.textContent="⎘ Copy unsupported";reset()}
+    };
     var extraDiv=document.createElement("div");extraDiv.innerHTML=extra;
-    card.appendChild(invertBtn);card.appendChild(extraDiv);
+    card.appendChild(invertBtn);card.appendChild(shareBtn);card.appendChild(extraDiv);
   });
   attachBiasOpenBtns();
 };
+
+// ── Share text + deep-link for a thesis ───────────────────────────────────
+function shareThesisText(th){
+  var score=todayEdgeScore(th);
+  var edgePct=score>=0?Math.round(score*100)+"%":"—";
+  var link=location.origin+location.pathname+"#/thesis?open="+encodeURIComponent(th.id);
+  return"[THESIS] "+th.statement+"\n\nKILL CONDITION: "+th.kill_condition+"\nEDGE: "+edgePct+" (consensus_delta × unpriced × freshness)\nAs of "+(th.as_of||"—")+" · Slow Variables\n\n"+link;
+}
 
 // Patch renderHumanDossier to add circle, bias, auto-flags
 var _origRenderHuman=renderHumanDossier;
