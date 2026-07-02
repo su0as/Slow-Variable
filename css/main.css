@@ -770,3 +770,52 @@ kbd{background:#111;border:1px solid var(--line2);border-bottom:2px solid var(--
 .model-tag{font-size:8px;color:var(--faint);border:1px solid rgba(255,255,255,.1);padding:0 3px;margin-left:4px;cursor:default;border-radius:2px;letter-spacing:.05em;vertical-align:super;line-height:1}
 .model-tag:hover{color:var(--txt);border-color:rgba(255,255,255,.4)}
 
+
+/* ── PHASE: TODAY VIEW + TAB GROUPING ──────────────────────────────────────── */
+
+/* Header tab groups */
+#tabs{align-items:stretch}
+.tab-group{display:flex;flex-direction:column;border-right:2px solid var(--line2);flex-shrink:0}
+.tab-group:last-child{border-right:none}
+.tab-group-lbl{font-size:7px;letter-spacing:.22em;color:var(--faint);padding:3px 15px 0;
+               text-transform:uppercase;flex-shrink:0;user-select:none}
+.tab-group-row{display:flex;flex:1;align-items:stretch}
+.tab-group-row .tab{padding:0 13px}
+
+/* Today cards */
+.today-cards{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:20px}
+.today-card{border:1px solid var(--line);background:var(--panel);padding:14px 15px;cursor:pointer;transition:border-color .15s,background .15s}
+.today-card:hover{border-color:var(--choke);background:var(--panel2)}
+.today-card-lbl{font-size:8px;letter-spacing:.16em;color:var(--dim);text-transform:uppercase;margin-bottom:8px}
+.today-card-main{font-size:12px;color:var(--txt);line-height:1.5;margin-bottom:8px}
+.today-card-sub{font-size:10px;color:var(--faint);line-height:1.5;margin-bottom:8px}
+.today-card-go{font-size:9px;letter-spacing:.1em;color:var(--choke);text-transform:uppercase}
+
+/* Spotlight */
+.today-spotlight-wrap{border:1px solid var(--choke);background:rgba(255,59,48,.04);padding:18px 20px;margin-bottom:24px}
+.today-spotlight-lbl{font-size:9px;letter-spacing:.2em;color:var(--choke);text-transform:uppercase;margin-bottom:10px}
+.today-spotlight-plain{font-size:15px;color:var(--txt);line-height:1.6;margin-bottom:10px}
+.today-spotlight-tech{font-size:10px;color:var(--dim);line-height:1.6;margin-bottom:10px;padding-left:10px;border-left:2px solid var(--line2)}
+.today-spotlight-sowhat{font-size:10px;color:var(--enr);line-height:1.55;margin-bottom:12px}
+.today-spotlight-sowhat::before{content:""}
+
+/* Data health mini */
+.today-health-row{display:flex;gap:20px;flex-wrap:wrap}
+.today-health-stat{font-size:10px;color:var(--dim)}
+.today-health-stat span{display:block;font-size:8px;letter-spacing:.14em;text-transform:uppercase;color:var(--faint);margin-bottom:2px}
+.today-health-stat b{color:var(--choke);font-size:14px;font-weight:400}
+
+/* Windows closing soonest */
+.today-window-row{display:flex;justify-content:space-between;align-items:baseline;padding:8px 0;border-bottom:1px solid var(--line);cursor:pointer}
+.today-window-row:hover .today-window-nm{color:var(--choke)}
+.today-window-nm{font-size:11px;color:var(--txt);transition:color .15s}
+.today-window-close{font-size:9px;color:var(--faint);letter-spacing:.05em}
+
+/* Highlight flash when deep-linking into thesis list */
+.today-highlight{animation:today-flash 2.2s ease}
+@keyframes today-flash{0%{border-color:var(--choke);background:rgba(255,59,48,.1)}100%{border-color:var(--line);background:transparent}}
+@media(prefers-reduced-motion:reduce){.today-highlight{animation:none;border-color:var(--choke)}}
+
+@media(max-width:900px){
+  .today-cards{grid-template-columns:1fr}
+}

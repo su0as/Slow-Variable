@@ -19,7 +19,7 @@ const Router = (function() {
       const v = decodeURIComponent(pair.slice(eq + 1));
       params[k] = v;
     });
-    return { path: path || 'atlas', params };
+    return { path: path || 'today', params };
   }
 
   function stringify(path, params) {

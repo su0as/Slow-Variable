@@ -6,6 +6,14 @@
       "statement": "AI datacenter power constraints bind through at least 2029 regardless of capital committed.",
       "confidence": "hi",
       "kill_condition": "Turbine/transformer lead times halve OR interconnection median < 2yr OR datacenter demand growth < 10%/yr.",
+      "plain": "Power, not chips, is what actually delays AI buildouts through 2029 — turbines and grid connections take years to arrive and no amount of capital speeds that up.",
+      "kill_watch": {
+        "signal": "Grid interconnection median queue time (US, constraint.grid-interconnection-us)",
+        "current_value": "~5 yrs median (LBNL Queued Up, last annual read)",
+        "trigger_value": "< 2 yrs median",
+        "as_of": "2026-06-01",
+        "proximity": 0.1
+      },
       "crowd_awareness": 0.55,
       "awareness_as_of": "2026-06-01",
       "awareness_trend": "rising",
@@ -41,6 +49,14 @@
       "statement": "Every chokepoint rent decays over 5–15 years as bypass investments arrive; date-stamp all concentration bets.",
       "confidence": "hi",
       "kill_condition": "A major chokepoint bypass is abandoned despite strong economic incentive (no case in 50yr record).",
+      "plain": "No monopoly or chokepoint lasts — someone always builds a workaround within 5-15 years once the payoff is big enough, so treat every concentration bet as having an expiration date.",
+      "kill_watch": {
+        "signal": "Count of major chokepoint bypasses abandoned mid-construction despite strong economic incentive",
+        "current_value": "0 observed across the 50yr record this tool tracks",
+        "trigger_value": "1",
+        "as_of": "2026-06-01",
+        "proximity": 0.05
+      },
       "crowd_awareness": 0.30,
       "awareness_as_of": "2026-06-01",
       "awareness_trend": "flat",
@@ -74,6 +90,14 @@
       "statement": "2044 workforce is already born; demographic forecasts (labor supply, consumption, debt capacity) have ~zero uncertainty at 20yr horizon.",
       "confidence": "hi",
       "kill_condition": "A country achieves a 50%+ fertility reversal within 10yr (no precedent).",
+      "plain": "We already know who's going to be of working age in 2044, because every one of them is already born — this isn't a projection, it's a headcount.",
+      "kill_watch": {
+        "signal": "Largest 10yr fertility-rate reversal, any tracked country",
+        "current_value": "unknown — not verified against UN WPP 2024 in this dataset; no modern precedent above ~15-20% is known to the author",
+        "trigger_value": "50%+ reversal within 10yr",
+        "as_of": "2026-06-01",
+        "proximity": 0.02
+      },
       "crowd_awareness": 0.60,
       "awareness_as_of": "2026-06-01",
       "awareness_trend": "flat",
@@ -103,6 +127,14 @@
       "statement": "Sovereign AI compute buildouts (Gulf, EU, Southeast Asia) represent price-insensitive demand that floors GPU/fab utilization regardless of US hyperscaler capex cycle.",
       "confidence": "med",
       "kill_condition": "Sovereign AI programs cut budgets >50% or no sovereign model reaches commercial deployment by 2028.",
+      "plain": "Governments buying AI compute don't shop on price the way companies do, so their spending keeps chip demand high even if US tech firms pull back.",
+      "kill_watch": {
+        "signal": "Sovereign AI program budget commitments (UAE/Saudi/EU) vs. prior-year commitments",
+        "current_value": "unverified — no confirmed >50% cut across 3+ programs as of this vintage; budget data not independently checked",
+        "trigger_value": ">50% cut across 3+ major programs, or no commercial deployment milestone by 2028",
+        "as_of": "2026-06-01",
+        "proximity": 0.35
+      },
       "crowd_awareness": 0.28,
       "awareness_as_of": "2026-06-01",
       "awareness_trend": "rising",
@@ -134,6 +166,14 @@
       "statement": "The AI wrapper / commodity-API window closes by 2027 as model providers capture the margin and distribution commoditizes.",
       "confidence": "med",
       "kill_condition": "A wrapper-layer company reaches $1B ARR without model-provider margin compression by 2027.",
+      "plain": "Companies that just put a nice interface on top of someone else's AI model will get squeezed out by 2027 as the model makers themselves move up the stack and capture that value.",
+      "kill_watch": {
+        "signal": "Largest pure wrapper-layer company: ARR and gross-margin trend",
+        "current_value": "unverified — no confirmed $1B ARR wrapper-only company with stable margin as of this vintage",
+        "trigger_value": "$1B ARR at sustainable/improving margin, no model-provider compression",
+        "as_of": "2026-06-01",
+        "proximity": 0.25
+      },
       "crowd_awareness": 0.45,
       "awareness_as_of": "2026-06-01",
       "awareness_trend": "rising",

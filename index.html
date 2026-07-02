@@ -11,11 +11,11 @@
 <!-- ONBOARDING -->
 <div id="onboard">
   <div id="onboard-box">
-    <h2>Slow Variables — Earth Tech Tree v3</h2>
-    <div class="ob-step"><div class="ob-n">1</div><div class="ob-text">Click any node on the map or in the tree to open its <em>dossier</em> — what it is, why it binds, what it unlocks.</div></div>
-    <div class="ob-step"><div class="ob-n">2</div><div class="ob-text">In the <em>Tree tab</em>, clicking a node lights its full cause-chain upstream and effect-chain downstream — Factorio mechanics applied to the history of AI.</div></div>
-    <div class="ob-step"><div class="ob-n">3</div><div class="ob-text">Everything connects: atlas constraints → tree nodes → humans who capitalized → trend windows that opened. Use <em>Cmd/Ctrl-K</em> to search across all registries.</div></div>
-    <button id="onboard-dismiss">Got it — start exploring</button>
+    <h2>Slow Variables</h2>
+    <div class="ob-step"><div class="ob-n">1</div><div class="ob-text">Start on <em>Today</em> — it answers one question: what does this worldview say right now? Three cards, one plain-English claim, the windows closing soonest.</div></div>
+    <div class="ob-step"><div class="ob-n">2</div><div class="ob-text">Every card is a door. Click through to a full dossier — the map, the tech tree, the people who bet on it, all cross-linked.</div></div>
+    <div class="ob-step"><div class="ob-n">3</div><div class="ob-text">The tabs are grouped: <em>Understand</em> the claims, <em>Act</em> on them, <em>Maintain</em> the data. Use <em>Cmd/Ctrl-K</em> to jump anywhere.</div></div>
+    <button id="onboard-dismiss">Got it — start on Today</button>
   </div>
 </div>
 
@@ -57,16 +57,32 @@
     <div class="s">Earth Tech Tree · v3</div>
   </div>
   <div id="tabs">
-    <button class="tab" data-v="thesis" title="Thesis Register — explicit claims">Thesis</button>
-    <button class="tab on" data-v="atlas" title="Constraint Atlas">Atlas</button>
-    <button class="tab" data-v="tree" title="Tech Tree — Factorio mechanics">Tree</button>
-    <button class="tab" data-v="humans" title="Bet Atlas — high-agency individuals">Humans</button>
-    <button class="tab" data-v="trends" title="Windows Board — trend taxonomy">Trends</button>
-    <button class="tab" data-v="constraints" title="Physical lead times">Constraints</button>
-    <button class="tab" data-v="forecasts" title="Calibrated forecasts">Forecasts</button>
-    <button class="tab" data-v="method" title="Methodology">Method</button>
-    <button class="tab" data-v="patrol" title="Signal Patrol — check queue">Patrol</button>
-    <button class="tab" data-v="brief" title="BRIEF — weekly digest">Brief</button>
+    <div class="tab-group" data-group="understand">
+      <div class="tab-group-lbl">Understand</div>
+      <div class="tab-group-row">
+        <button class="tab on" data-v="today" title="TODAY — what does this worldview say right now?">Today</button>
+        <button class="tab" data-v="thesis" title="Thesis Register — explicit claims">Thesis</button>
+        <button class="tab" data-v="atlas" title="Constraint Atlas">Atlas</button>
+        <button class="tab" data-v="tree" title="Tech Tree — Factorio mechanics">Tree</button>
+      </div>
+    </div>
+    <div class="tab-group" data-group="act">
+      <div class="tab-group-lbl">Act</div>
+      <div class="tab-group-row">
+        <button class="tab" data-v="humans" title="Bet Atlas — high-agency individuals">Humans</button>
+        <button class="tab" data-v="trends" title="Windows Board — trend taxonomy">Trends</button>
+        <button class="tab" data-v="constraints" title="Physical lead times">Constraints</button>
+        <button class="tab" data-v="forecasts" title="Calibrated forecasts">Forecasts</button>
+      </div>
+    </div>
+    <div class="tab-group" data-group="maintain">
+      <div class="tab-group-lbl">Maintain</div>
+      <div class="tab-group-row">
+        <button class="tab" data-v="method" title="Methodology">Method</button>
+        <button class="tab" data-v="patrol" title="Signal Patrol — check queue">Patrol</button>
+        <button class="tab" data-v="brief" title="BRIEF — weekly digest">Brief</button>
+      </div>
+    </div>
   </div>
   <div id="hdr-right">
     <div id="freshness-meter" class="freshness-meter" title="Click to open data health"></div>
@@ -80,7 +96,21 @@
 <!-- VIEWS -->
 <div id="views">
 
-  <!-- THESIS REGISTER (landing / home) -->
+  <!-- TODAY (landing / home) -->
+  <div class="view scrollview on" id="v-today">
+    <div class="inner">
+      <h2 class="sec">Today</h2>
+      <div class="prose" style="margin-bottom:16px"><p>What this worldview says right now. Every card below is computed live from the registries — nothing here is hand-picked.</p></div>
+      <div id="today-cards" class="today-cards"></div>
+      <div id="today-spotlight"></div>
+      <h2 class="sec">Data Health</h2>
+      <div id="today-health"></div>
+      <h2 class="sec">Windows Closing Soonest</h2>
+      <div id="today-windows"></div>
+    </div>
+  </div>
+
+  <!-- THESIS REGISTER -->
   <div class="view scrollview" id="v-thesis">
     <div class="inner">
       <h2 class="sec">Thesis Register</h2>
@@ -90,7 +120,7 @@
   </div>
 
   <!-- ATLAS -->
-  <div class="view on" id="v-atlas">
+  <div class="view" id="v-atlas">
     <div id="map-wrap">
       <canvas id="map"></canvas>
       <div id="legend">

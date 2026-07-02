@@ -336,7 +336,7 @@ function renderCountryDossier(iso){
 function attachChipNavigation(){document.querySelectorAll(".xchip").forEach(function(el){el.onclick=function(){openDossier(el.dataset.reg,el.dataset.id,true)}})}
 
 // Keyboard nav
-var TAB_ORDER=["thesis","atlas","tree","humans","trends","constraints","forecasts","method","patrol","brief"];
+var TAB_ORDER=["today","thesis","atlas","tree","humans","trends","constraints","forecasts","method","patrol","brief"];
 document.addEventListener("keydown",function(e){
   if(e.key==="Escape"){
     closeDossier();closePalette();closeHealth();
@@ -376,6 +376,7 @@ function switchTab(v){
   if(v==="patrol")buildPatrol();
   if(v==="thesis")buildThesisRegister();
   if(v==="brief")buildBrief();
+  if(v==="today")buildToday();
 }
 document.querySelectorAll("#tabs .tab").forEach(function(t){t.onclick=function(){switchTab(t.dataset.v)}});
 
@@ -1224,7 +1225,7 @@ $("onboard-dismiss").onclick=function(){storage.setItem("sv3-onboard-seen","1");
 window.addEventListener("resize",function(){if($("v-atlas").classList.contains("on"))resize()});
 buildLegend();buildConstraints();buildScenarios();buildMethod();buildHumans();buildTrends();
 loadForecasts();renderForecasts();checkOnboarding();
-updateFreshnessMeter();buildPatrol();buildThesisRegister();buildGraveyard();
+updateFreshnessMeter();buildPatrol();buildThesisRegister();buildGraveyard();buildToday();
 requestAnimationFrame(function(){resize();kick()});
 setTimeout(buildTreeIfNeeded,500);
 // Wire freshness meter click → health panel
@@ -1234,7 +1235,7 @@ setTimeout(buildTreeIfNeeded,500);
 // Override tab clicks to go through Router so the URL updates
 document.querySelectorAll("#tabs .tab").forEach(function(t){t.onclick=function(){Router.navigate(t.dataset.v,{});_entityNavIndex=-1}});
 Router.on(function(path,params){
-  var sections=["thesis","atlas","tree","humans","trends","constraints","forecasts","method","patrol","brief"];
+  var sections=["today","thesis","atlas","tree","humans","trends","constraints","forecasts","method","patrol","brief"];
   if(sections.indexOf(path)!==-1)switchTab(path);
   if(params&&params.open){
     var m=params.open.match(/^(atlas|tree|human|window)\.(.+)$/);
@@ -1252,6 +1253,122 @@ Router.on(function(path,params){
 })();
 
 // ── THESIS REGISTER ───────────────────────────────────────────────────────
+// ── TODAY (landing view) ──────────────────────────────────────────────────
+function todayEdgeScore(th){
+  var ca=th.crowd_awareness;
+  if(ca===undefined||ca===null)return -1;
+  var cd=th.consensus_delta_num!=null?th.consensus_delta_num:(th.confidence==="hi"?0.7:th.confidence==="med"?0.4:0.2);
+  var s=Store.staleStatus(th.id||"");
+  var fresh=s==="fresh"?1.0:s==="aging"?0.75:0.4;
+  return cd*(1-ca)*fresh;
+}
+function todayGoToConstraint(cid){
+  Router.navigate("constraints",{});switchTab("constraints");
+  setTimeout(function(){
+    var idx=CONSTRAINTS.findIndex(function(c){return c.id===cid});if(idx<0)return;
+    var row=document.querySelector('#constraints-tbody tr[data-ci="'+idx+'"]');
+    if(row){row.click();row.scrollIntoView({behavior:"smooth",block:"center"})}
+  },80);
+}
+function todayGoToThesis(tid){
+  Router.navigate("thesis",{});switchTab("thesis");
+  setTimeout(function(){
+    var idx=THESES.findIndex(function(t){return t.id===tid});if(idx<0)return;
+    var card=document.querySelectorAll("#thesis-list .thesis-card")[idx];
+    if(card){card.scrollIntoView({behavior:"smooth",block:"center"});card.classList.add("today-highlight");setTimeout(function(){card.classList.remove("today-highlight")},2200)}
+  },80);
+}
+function buildToday(){
+  var cardsEl=$("today-cards");if(!cardsEl)return;
+
+  // Card 1 — tightest binding constraint (largest excess of lead time over runway to default clock target)
+  var CY_START=2026,todayTargetY=2030,runway=todayTargetY-CY_START;
+  var tightest=null,tightestExcess=-999;
+  CONSTRAINTS.forEach(function(c){var excess=c.lead_min_yr-runway;if(excess>tightestExcess){tightestExcess=excess;tightest=c}});
+  var c1="";
+  if(tightest)c1='<div class="today-card" data-act="constraint" data-cid="'+esc(tightest.id)+'">'
+    +'<div class="today-card-lbl">TIGHTEST BINDING CONSTRAINT</div>'
+    +'<div class="today-card-main">'+esc(tightest.title)+'</div>'
+    +'<div class="today-card-sub">Lead time '+esc(tightest.lead_time)+' — '+(tightestExcess>0?tightestExcess.toFixed(1)+"yr past what a "+todayTargetY+" target allows":"within the "+todayTargetY+" target runway")+'.</div>'
+    +'<div class="today-card-go">→ Constraints</div></div>';
+
+  // Card 2 — thesis with highest edge score
+  var bestTh=null,bestScore=-1;
+  THESES.forEach(function(th){var sc=todayEdgeScore(th);if(sc>bestScore){bestScore=sc;bestTh=th}});
+  var c2="";
+  if(bestTh)c2='<div class="today-card" data-act="thesis" data-tid="'+esc(bestTh.id)+'">'
+    +'<div class="today-card-lbl">HIGHEST-EDGE THESIS</div>'
+    +'<div class="today-card-main">'+esc(bestTh.statement)+'</div>'
+    +'<div class="today-card-sub">Edge score '+Math.round(bestScore*100)+'% — consensus_delta × unpriced × freshness.</div>'
+    +'<div class="today-card-go">→ Thesis Register</div></div>';
+
+  // Card 3 — kill condition closest to triggering
+  var closestTh=null,closestProx=-1;
+  THESES.forEach(function(th){var kw=th.kill_watch;if(!kw||kw.proximity==null)return;if(kw.proximity>closestProx){closestProx=kw.proximity;closestTh=th}});
+  var c3="";
+  if(closestTh){
+    var kw=closestTh.kill_watch;
+    c3='<div class="today-card" data-act="thesis" data-tid="'+esc(closestTh.id)+'">'
+      +'<div class="today-card-lbl">CLOSEST TO A KILL CONDITION</div>'
+      +'<div class="today-card-main">'+esc(closestTh.kill_condition)+'</div>'
+      +'<div class="today-card-sub">'+esc(kw.signal)+' — now: '+esc(kw.current_value)+'</div>'
+      +'<div class="today-card-go">→ '+esc(closestTh.statement.slice(0,54))+'…</div></div>';
+  }else{
+    c3='<div class="today-card"><div class="today-card-lbl">CLOSEST TO A KILL CONDITION</div><div class="today-card-sub">No kill_watch data yet.</div></div>';
+  }
+
+  cardsEl.innerHTML=c1+c2+c3;
+  cardsEl.querySelectorAll(".today-card[data-act]").forEach(function(card){
+    card.onclick=function(){
+      if(card.dataset.act==="constraint")todayGoToConstraint(card.dataset.cid);
+      else if(card.dataset.act==="thesis")todayGoToThesis(card.dataset.tid);
+    };
+  });
+
+  // Spotlight — "if you only read one thing"
+  var spotEl=$("today-spotlight");
+  if(spotEl){
+    if(bestTh){
+      var soWhat=(bestTh.margin&&bestTh.margin.buffer_note)||bestTh.edge_basis||"";
+      spotEl.innerHTML='<div class="today-spotlight-wrap">'
+        +'<div class="today-spotlight-lbl">IF YOU ONLY READ ONE THING</div>'
+        +'<div class="today-spotlight-plain">'+esc(bestTh.plain||bestTh.statement)+'</div>'
+        +'<div class="today-spotlight-tech">'+esc(bestTh.statement)+'</div>'
+        +(soWhat?'<div class="today-spotlight-sowhat">SO WHAT — '+esc(soWhat)+'</div>':"")
+        +'<button class="btn" id="today-spotlight-go">→ FULL THESIS</button></div>';
+      var goBtn=$("today-spotlight-go");if(goBtn)goBtn.onclick=function(){todayGoToThesis(bestTh.id)};
+    }else spotEl.innerHTML="";
+  }
+
+  // Data health summary
+  var healthEl=$("today-health");
+  if(healthEl){
+    var staleCt=0;
+    [ATLAS_NODES,TREE,HUMANS,TRENDS].forEach(function(arr){arr.forEach(function(n){if(isStale(n))staleCt++})});
+    healthEl.innerHTML='<div class="today-health-row">'
+      +'<div class="today-health-stat"><span>Version</span><b>'+esc(MANIFEST.version)+'</b></div>'
+      +'<div class="today-health-stat"><span>Data vintage</span><b>'+esc(MANIFEST.data_vintage)+'</b></div>'
+      +'<div class="today-health-stat"><span>Stale nodes</span><b style="color:'+(staleCt?"var(--enr)":"var(--min)")+'">'+staleCt+'</b></div>'
+      +'</div><button class="btn" id="today-health-open" style="margin-top:8px">OPEN DATA HEALTH →</button>';
+    var hBtn=$("today-health-open");if(hBtn)hBtn.onclick=openHealth;
+  }
+
+  // Windows closing soonest
+  var winEl=$("today-windows");
+  if(winEl){
+    var upcoming=TRENDS.filter(function(t){return t.status!=="closed"}).map(function(t){
+      var yr=parseInt((t.expected_close||"").replace(/[^0-9]/g,"").slice(0,4))||9999;
+      return{t:t,yr:yr};
+    }).sort(function(a,b){return a.yr-b.yr}).slice(0,3);
+    winEl.innerHTML=upcoming.map(function(u){
+      return'<div class="today-window-row" data-tid="'+esc(u.t.id)+'">'
+        +'<div class="today-window-nm">'+esc(u.t.name)+'</div>'
+        +'<div class="today-window-close">closes '+esc(u.t.expected_close||"?")+' · '+esc(u.t.status.toUpperCase())+'</div></div>';
+    }).join("");
+    winEl.querySelectorAll(".today-window-row").forEach(function(row){row.onclick=function(){openDossier("trend",row.dataset.tid)}});
+  }
+}
+
 function buildThesisRegister(){
   var el=$("thesis-list");if(!el)return;
   el.innerHTML=THESES.map(function(th,i){
