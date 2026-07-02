@@ -1717,6 +1717,31 @@
       "links": [],
       "cf": "hi",
       "review_after_months": 12
+    },
+    {
+      "id": "atlas.uae-ai-cluster",
+      "type": "nrg",
+      "title": "Stargate UAE — Abu Dhabi AI Campus",
+      "aliases": ["G42 Khazna cluster", "UAE-US AI Campus"],
+      "lat": 24.47,
+      "lon": 54.37,
+      "body": "5GW UAE-US AI Campus in Abu Dhabi, anchored by G42's Khazna Data Centers with OpenAI, Oracle, Nvidia, Cisco and SoftBank (announced May 2025). First 1GW phase (\"Stargate UAE\") delivers 200MW by Q3 2026; G42 licensed to import the equivalent of ~35,000 Nvidia GB300-class chips.\n\nThe first Gulf cluster of this scale requires a US export license most administrations wouldn't grant — G42 had to divest its Huawei/China ties as the precondition. It's a test of whether chip diplomacy, not just capital, can build a sovereign AI node outside the US.\n\nUS Commerce Dept (BIS) export licensing + UAE state capital (G42, backed by Mubadala/ADQ) building via Khazna Data Centers.\n\nPhase 1 (200MW) on track for Q3 2026 per Khazna; full 5GW campus buildout runs through the decade.\n\nIf the license holds through a change of US administration, UAE becomes the first non-US sovereign 1GW+ AI cluster — proof of the price-insensitive sovereign-demand floor, and a template Saudi Arabia and other Gulf programs are already copying.\n\nApply the Abilene test here too: count megawatts energized, not gigawatts announced. The export license is the single point of political failure — one administration or one national-security review away from reversal.",
+      "weight": "5GW UAE-US AI Campus in Abu Dhabi, anchored by G42's Khazna Data Centers with OpenAI, Oracle, Nvidia, Cisco and SoftBank (announced May 2025). First 1GW phase (\"Stargate UAE\") delivers 200MW by Q3 2026; G42 licensed to import the equivalent of ~35,000 Nvidia GB300-class chips.",
+      "why_hard": "The first Gulf cluster of this scale requires a US export license most administrations wouldn't grant — G42 had to divest its Huawei/China ties as the precondition. It's a test of whether chip diplomacy, not just capital, can build a sovereign AI node outside the US.",
+      "control": "US Commerce Dept (BIS) export licensing + UAE state capital (G42, backed by Mubadala/ADQ) building via Khazna Data Centers.",
+      "lead": "Phase 1 (200MW) on track for Q3 2026 per Khazna; full 5GW campus buildout runs through the decade.",
+      "consequence": "If the license holds through a change of US administration, UAE becomes the first non-US sovereign 1GW+ AI cluster — proof of the price-insensitive sovereign-demand floor, and a template Saudi Arabia and other Gulf programs are already copying.",
+      "signal_desc": "US BIS export-license status/revocations, Khazna construction milestones (MW energized vs. announced), Nvidia GB300 shipment confirmations, G42 divestment audits.",
+      "analyst_note": "Apply the Abilene test here too: count megawatts energized, not gigawatts announced. The export license is the single point of political failure — one administration or one national-security review away from reversal.",
+      "as_of": "2026-06-01",
+      "half_life_days": 730,
+      "signals": [],
+      "links": [
+        {"to": "tree.export", "rel": "gates"},
+        {"to": "tree.sovereign-ai", "rel": "context"}
+      ],
+      "cf": "md",
+      "review_after_months": 6
     }
   ],
   "arcs": [

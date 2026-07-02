@@ -63,8 +63,10 @@ function checkLinks(entities, label) {
       if (!link.rel) { err(`${e.id}: link missing 'rel'`); return; }
       if (!VALID_RELS.has(link.rel))
         err(`${e.id}: unknown rel '${link.rel}' — must be one of: ${[...VALID_RELS].join(', ')}`);
-      if (!allIds.has(link.to) && !e.draft)
-        warn(`${e.id}: link.to '${link.to}' not in entity registry (may be a draft)`);
+      if (!allIds.has(link.to)) {
+        if (e.draft) warn(`${e.id}: link.to '${link.to}' not in entity registry (draft — ok for now)`);
+        else err(`${e.id}: link.to '${link.to}' not in entity registry`);
+      }
     });
   });
 }
@@ -76,6 +78,19 @@ checkLinks(constraints?.rows,      'constraints');
 checkLinks(scenarios?.scenarios,   'scenarios');
 checkLinks(graveyard?.graveyard,   'graveyard');
 checkLinks(theses?.theses,         'theses');
+
+// ── check thesis 'supports' refs ────────────────────────────────────────────
+function checkSupports(entities) {
+  if (!entities) return;
+  entities.forEach(e => {
+    (e.supports || []).forEach(sid => {
+      if (allIds.has(sid)) return;
+      if (e.draft) warn(`${e.id}: supports '${sid}' not in entity registry (draft — ok for now)`);
+      else err(`${e.id}: supports '${sid}' not in entity registry`);
+    });
+  });
+}
+checkSupports(theses?.theses);
 
 // ── check probabilities ──────────────────────────────────────────────────────
 function checkProbs(entities, label) {
