@@ -101,6 +101,13 @@ before writing; if you can't verify, downgrade `cf` to `"md"` rather than guess.
 edits go in `/data/*.json` only. Run `node js/validate.js` before committing. Bump
 `meta.json`'s `version` and add a `changelog` entry.
 
+This also runs itself: `.github/workflows/patrol.yml` fires every Monday, runs a
+headless Claude session against exactly this contract on the five most-overdue
+entities, checks every thesis's `kill_watch` for anything within ~20% of triggering,
+and opens a PR (never pushes to main) with a report of what it found under
+`patrol/reports/`. See the workflow file for the exact prompt and required repo
+secrets/settings.
+
 ## What this deliberately does not do
 
 - No backend, no database, no user accounts — the private layer (forecasts you add,

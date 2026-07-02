@@ -4,6 +4,14 @@ This is the contract for any session — AI or human — that updates the data i
 repo. The Method tab's "Update Protocol" section links here. Read it before touching
 `/data/*.json`.
 
+**This document is also read automatically.** `.github/workflows/patrol.yml` runs a
+headless Claude session against it every Monday, working the top 5 most-overdue
+entities plus a full kill_watch scan, and opens a PR with its findings — it never
+pushes to main. If you're an AI session invoked *by* that workflow: everything below
+applies to you exactly as it would to an interactive session. If you're a human
+maintainer: expect a weekly `patrol: <date> — N entities re-verified` PR and review it
+like any other PR, not as an auto-merge.
+
 ## The four hard rules
 
 1. **Data updates never touch `/js` or `/css`.** All content lives in `/data/*.json`.
