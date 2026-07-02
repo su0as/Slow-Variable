@@ -150,13 +150,13 @@ const Store = (function() {
 
     const files = [
       'atlas','tree','humans','windows','constraints',
-      'scenarios','method','graveyard','theses','meta','models'
+      'scenarios','method','graveyard','theses','meta','models','forecasts'
     ];
     const results = await Promise.all(
       files.map(f => fetch(`data/${f}.json`).then(r => r.json()).catch(() => ({})))
     );
     const [atlas, tree, humans, windows, constraints,
-           scenarios, method, graveyard, theses, meta, models] = results;
+           scenarios, method, graveyard, theses, meta, models, forecasts] = results;
 
     (atlas.nodes          || []).forEach(_reg);
     (tree.nodes           || []).forEach(_reg);
@@ -168,7 +168,7 @@ const Store = (function() {
     (theses.theses        || []).forEach(_reg);
     if (method && method.id) _reg(method);
 
-    _raw = { atlas, tree, humans, windows, constraints, scenarios, method, graveyard, theses, meta, models };
+    _raw = { atlas, tree, humans, windows, constraints, scenarios, method, graveyard, theses, meta, models, forecasts };
 
     _fire();
   }

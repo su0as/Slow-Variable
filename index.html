@@ -272,6 +272,7 @@
   <div class="view scrollview" id="v-forecasts">
     <div class="inner">
       <h2 class="sec">Calibrated Forecasts</h2>
+      <div id="fc-public-banner" class="fc-public-banner"></div>
       <div id="fc-owed-banner" style="display:none"></div>
       <div class="prose"><p>Add probability-weighted claims. Resolve them. Track your Brier score. The discipline: separate the signal from the narrative before the outcome lands.</p></div>
       <div class="fc-add" style="margin-top:16px">
@@ -282,6 +283,7 @@
         <input id="fc-criteria" type="text" placeholder="Resolution criteria (one sentence, unambiguous)…">
         <button class="btn" id="fc-add-btn" title="Add forecast">+ Add</button>
         <button class="btn" id="fc-seed-btn" title="Import every future_paths claim from Humans and Trends as scoreable forecasts">⇪ Import from registries</button>
+        <button class="btn" id="fc-export-btn" title="Download your private forecasts as JSON, ready to merge into data/forecasts.json">⇪ Export my forecasts as JSON</button>
       </div>
       <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:12px">
         <div class="brier-box"><div class="bl">Brier Score</div><div class="bv" id="brier-val">—</div></div>

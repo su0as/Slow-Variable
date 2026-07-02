@@ -1008,12 +1008,19 @@ function buildMethod(){
 }
 
 // ── FORECASTS ─────────────────────────────────────────────────────────────
+// forecasts = public (repo, data/forecasts.json — canonical, read-only) + private (localStorage, editable)
 var forecasts=[];
-function loadForecasts(){try{var raw=storage.getItem("sv3-forecasts");if(raw)forecasts=JSON.parse(raw)}catch(e){}}
-function saveForecasts(){try{storage.setItem("sv3-forecasts",JSON.stringify(forecasts))}catch(e){}}
+function loadForecasts(){
+  var priv=[];
+  try{var raw=storage.getItem("sv3-forecasts");if(raw)priv=JSON.parse(raw)}catch(e){}
+  var pub=((Store.raw.forecasts&&Store.raw.forecasts.forecasts)||[]).map(function(f){var c=Object.assign({},f);c.public=true;return c});
+  var pubKeys={};pub.forEach(function(f){if(f.key)pubKeys[f.key]=1});
+  forecasts=pub.concat(priv.filter(function(f){return !(f.key&&pubKeys[f.key])}));
+}
+function saveForecasts(){try{storage.setItem("sv3-forecasts",JSON.stringify(forecasts.filter(function(f){return !f.public})))}catch(e){}}
 
-function calcBrier(){
-  var resolved=forecasts.filter(function(f){return f.outcome!==null&&f.outcome!=="ambiguous"});
+function calcBrier(fset){
+  var resolved=(fset||forecasts).filter(function(f){return f.outcome!==null&&f.outcome!=="ambiguous"});
   if(!resolved.length)return null;
   var sum=resolved.reduce(function(acc,f){return acc+Math.pow(f.p-(f.outcome?1:0),2)},0);
   return(sum/resolved.length).toFixed(3);
@@ -1093,6 +1100,16 @@ function renderForecasts(){
   var relEl=$("brier-reliability"),resEl=$("brier-resolution");
   if(relEl)relEl.textContent=mu?mu.reliability:"—";
   if(resEl)resEl.textContent=mu?mu.resolution:"—";
+  // public track record — canonical, committed to the repo
+  var pubBanner=$("fc-public-banner");
+  if(pubBanner){
+    var pubSet=forecasts.filter(function(f){return f.public});
+    var pubResolved=pubSet.filter(function(f){return f.outcome!==null&&f.outcome!=="ambiguous"});
+    var pubBrier=calcBrier(pubSet);
+    pubBanner.innerHTML='<div class="fc-public-lbl">PUBLIC TRACK RECORD</div>'
+      +'<div class="fc-public-stats">'+pubSet.length+' public forecast'+(pubSet.length===1?"":"s")+' · '+pubResolved.length+' resolved · Brier '+(pubBrier!==null?pubBrier:"—")+'</div>'
+      +'<div class="fc-public-note">Committed to <code>data/forecasts.json</code> — canonical, read-only here. Everything else on this page is your private, local scratchpad; use Export to promote it.</div>';
+  }
   // owed inbox
   var owed=forecasts.filter(function(f){return f.outcome===null&&f.dl&&new Date(f.dl)<new Date()});
   var owedBanner=$("fc-owed-banner");
@@ -1107,15 +1124,18 @@ function renderForecasts(){
     var row='<div style="display:flex;gap:8px;margin-bottom:6px;align-items:baseline;font-size:11px"'+(isOwed?' data-owed="1" style="border-left:2px solid var(--alert);padding-left:6px"':'')+'>'+
       '<div style="color:var(--choke);min-width:22px;font-size:9px">'+(i+1)+'</div>'+
       '<div style="flex:1;color:var(--txt)">'+esc(f.stmt)+'</div>'+
+      (f.public?'<span class="fc-public-tag">PUBLIC</span>':"")+
       (f.seeded?'<span class="fc-seed-tag">seeded</span>':"")+
       '<div style="color:var(--chip);min-width:36px">'+Math.round(f.p*100)+"%</div>"+
       '<div style="color:var(--faint);min-width:70px;font-size:9px">'+(isOwed?'<span style="color:var(--alert)">':'')+esc(f.dl||"")+(isOwed?'</span>':'')+' DUE</div>'+
-      (f.outcome===null?
+      (f.public?
+        '<span style="color:'+(f.outcome===null?"var(--faint)":f.outcome&&f.outcome!=="ambiguous"?"var(--ok)":f.outcome==="ambiguous"?"var(--faint)":"var(--alert)")+';font-size:9px">'+(f.outcome===null?"PENDING":f.outcome==="ambiguous"?"AMBIGUOUS":f.outcome?"TRUE":"FALSE")+"</span>"
+      :f.outcome===null?
         '<button class="btn" data-i="'+i+'" data-o="1" style="padding:2px 6px;font-size:9px">✓</button>'+
         '<button class="btn danger" data-i="'+i+'" data-pm="1" style="padding:2px 6px;font-size:9px">✗</button>'+
         '<button class="btn" data-o="ambiguous" data-i="'+i+'" style="padding:2px 6px;font-size:9px;color:var(--faint)" title="Mark ambiguous — excluded from scoring">~</button>'
       :'<span style="color:'+(f.outcome&&f.outcome!=="ambiguous"?(f.outcome?"var(--ok)":"var(--alert)"):"var(--faint)")+';font-size:9px">'+(f.outcome==="ambiguous"?"AMBIGUOUS":f.outcome?"TRUE":"FALSE")+"</span>")+
-      '<button class="btn danger" data-del="'+i+'" style="padding:2px 5px;font-size:9px">×</button></div>';
+      (f.public?"":'<button class="btn danger" data-del="'+i+'" style="padding:2px 5px;font-size:9px">×</button>')+'</div>';
     if(f.falsifier)row+='<div class="fc-falsifier"><b>FALSIFIER</b> '+esc(f.falsifier)+"</div>";
     if(f.resolver)row+='<div class="fc-resolver-note">Resolver: <a href="'+esc(f.resolver)+'" target="_blank" rel="noopener">'+esc(f.resolver.slice(0,60))+'</a></div>';
     if(f.criteria)row+='<div class="fc-criteria-note">Criteria: '+esc(f.criteria)+"</div>";
@@ -1147,6 +1167,18 @@ $("fc-seed-btn").onclick=function(){
   harvest(HUMANS,"human",function(n){return n.name});harvest(TRENDS,"trend",function(n){return n.name});
   saveForecasts();renderForecasts();$("fc-seed-btn").textContent=added?("⇪ Imported "+added):"⇪ Up to date";setTimeout(function(){$("fc-seed-btn").textContent="⇪ Import from registries"},2500);
 };
+(function(){
+  var btn=$("fc-export-btn");if(!btn)return;
+  btn.onclick=function(){
+    var mine=forecasts.filter(function(f){return !f.public});
+    var blob=new Blob([JSON.stringify({forecasts:mine},null,2)],{type:"application/json"});
+    var url=URL.createObjectURL(blob);
+    var a=document.createElement("a");a.href=url;a.download="forecasts-export-"+NOW_YM+".json";
+    document.body.appendChild(a);a.click();document.body.removeChild(a);
+    setTimeout(function(){URL.revokeObjectURL(url)},1000);
+    btn.textContent="⇪ Exported "+mine.length;setTimeout(function(){btn.textContent="⇪ Export my forecasts as JSON"},2000);
+  };
+})();
 
 // ── COMMAND PALETTE ───────────────────────────────────────────────────────
 var paletteOpen=false,paletteSel=0,paletteResults=[];

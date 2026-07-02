@@ -846,3 +846,13 @@ kbd{background:#111;border:1px solid var(--line2);border-bottom:2px solid var(--
 .spine-empty rect.bg{stroke-dasharray:3 3}
 .spine-node-text{font-size:9px}
 .spine-edge-far{opacity:.4;stroke-dasharray:4 3}
+
+/* ── PHASE 3: PUBLIC FORECAST TRACK RECORD ─────────────────────────────── */
+.fc-public-banner{border:1px solid var(--choke);background:rgba(255,59,48,.05);
+  padding:12px 16px;margin-bottom:16px}
+.fc-public-lbl{font-size:9px;letter-spacing:.2em;color:var(--choke);text-transform:uppercase;margin-bottom:6px}
+.fc-public-stats{font-size:15px;color:var(--txt);margin-bottom:6px}
+.fc-public-note{font-size:10px;color:var(--dim);line-height:1.5}
+.fc-public-note code{color:var(--chip);font-size:10px}
+.fc-public-tag{font-size:8px;letter-spacing:.1em;color:var(--choke);border:1px solid var(--choke);
+  padding:1px 5px;text-transform:uppercase;flex-shrink:0}

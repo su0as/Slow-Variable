@@ -1,0 +1,76 @@
+{
+  "forecasts": [
+    {
+      "key": "public/window/acquihire-signal/1",
+      "stmt": "[WINDOW · Acqui-hire Wave 2024-25] Acqui-hire wave continues as new capability gaps emerge",
+      "p": 0.3,
+      "dl": "2027-12-31",
+      "falsifier": "3+ major acqui-hires in 2026-27",
+      "resolver": "",
+      "criteria": "",
+      "outcome": null,
+      "added": "2026-06",
+      "public": true
+    },
+    {
+      "key": "public/window/memory-supercycle/1",
+      "stmt": "[WINDOW · AI Memory Supercycle] Memory cycle peaks 2026 H2 as capacity expansion arrives",
+      "p": 0.3,
+      "dl": "2026-12-31",
+      "falsifier": "SK Hynix HBM ASP stable or rising into 2027",
+      "resolver": "",
+      "criteria": "",
+      "outcome": null,
+      "added": "2026-06",
+      "public": true
+    },
+    {
+      "key": "public/window/orbital-compute/0",
+      "stmt": "[WINDOW · Post-Starship Orbital Economics] Starship full reuse achieved → orbital economics viable → window opens",
+      "p": 0.5,
+      "dl": "2029-12-31",
+      "falsifier": "No reflown Starship at commercial cadence by end 2028",
+      "resolver": "",
+      "criteria": "",
+      "outcome": null,
+      "added": "2026-06",
+      "public": true
+    },
+    {
+      "key": "public/window/nuclear-restart/0",
+      "stmt": "[WINDOW · Nuclear Restart / Firm Power] Every viable US restart executed + first SMR fleet orders by hyperscalers",
+      "p": 0.5,
+      "dl": "2029-12-31",
+      "falsifier": "No SMR order book >2GW with anchor customers by end 2028",
+      "resolver": "",
+      "criteria": "",
+      "outcome": null,
+      "added": "2026-06",
+      "public": true
+    },
+    {
+      "key": "public/window/sovereign-ai/0",
+      "stmt": "[WINDOW · Sovereign AI Buildouts] Sovereign demand becomes a durable 15-20% of global AI capex — the cycle extender",
+      "p": 0.45,
+      "dl": "2028-12-31",
+      "falsifier": "Sovereign share of accelerator purchases <8% in 2027 tracking",
+      "resolver": "",
+      "criteria": "",
+      "outcome": null,
+      "added": "2026-06",
+      "public": true
+    },
+    {
+      "key": "public/window/reshoring-chips/0",
+      "stmt": "[WINDOW · Chip Reshoring / Friendshoring] US/Japan reach ~20% of leading-edge capacity by 2030 — insurance achieved at premium cost",
+      "p": 0.45,
+      "dl": "2030-12-31",
+      "falsifier": "Leading-edge ex-Taiwan share still <12% in 2029",
+      "resolver": "",
+      "criteria": "",
+      "outcome": null,
+      "added": "2026-06",
+      "public": true
+    }
+  ]
+}
