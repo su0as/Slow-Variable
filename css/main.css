@@ -490,15 +490,48 @@ td.mono-em{color:var(--txt);white-space:nowrap}
 .trace-hop-plain{color:var(--dim);font-size:11px;padding:2px 5px;border:1px solid var(--line)}
 
 /* ── MOBILE ── */
-@media(max-width:640px){
-  #dossier{width:100%;top:auto;right:0;bottom:0;height:65vh;transform:translateY(110%);
+@media(max-width:700px){
+  /* Header: stack into rows instead of horizontal-scrolling a single line */
+  #hdr{flex-direction:column;align-items:stretch;height:auto;flex-shrink:0}
+  #mast{min-width:0;width:100%;border-right:none;padding:10px 14px 6px}
+  #mast .t{font-size:12px;letter-spacing:.24em}
+  #tabs{flex:0 0 auto;width:100%;flex-direction:column;overflow-x:visible}
+  .tab-group{border-right:none;border-bottom:1px solid var(--line2)}
+  .tab-group-lbl{padding:6px 14px 2px}
+  .tab-group-row{overflow-x:auto;flex-wrap:nowrap}
+  .tab-group-row .tab{flex:0 0 auto;min-height:40px;font-size:11px;padding:0 14px;white-space:nowrap}
+  #hdr-right{flex:0 0 auto;width:100%;border-left:none;border-top:1px solid var(--line);justify-content:flex-end}
+  #coords{display:none!important}
+  #search-btn,#health-btn{width:44px;height:40px}
+
+  /* Views sit below the (now taller) header — #views already flex:1, no change needed */
+  .inner{padding:20px 16px 100px}
+
+  /* Tap targets + readable text */
+  .btn,.ttool{min-height:38px;padding:8px 12px;font-size:11px}
+  .thesis-stmt{font-size:14px}
+  .today-card-main{font-size:13px}
+  .today-spotlight-plain{font-size:14px}
+  .brief-item{font-size:12px}
+  input[type=text],input[type=number],input[type=date]{min-height:38px;font-size:13px}
+
+  /* Trends: kanban becomes a single stacked column, page-scrolls */
+  #trends-kanban{flex-direction:column;overflow-x:hidden;overflow-y:visible}
+  .kanban-col{flex:0 0 auto;border-right:none;border-bottom:1px solid var(--line)}
+  .kanban-cards{overflow-y:visible}
+
+  /* Spine ribbon still works via horizontal scroll */
+  .spine-svg-scroll{-webkit-overflow-scrolling:touch}
+
+  /* Provenance footer overlaps content on narrow screens — drop it, it's a footnote, not core UI.
+     (body-qualified selector to out-specificity the later #prov-footer{display:flex} base rule) */
+  body #prov-footer{display:none}
+
+  #dossier{width:100%;top:auto;right:0;bottom:0;height:70vh;transform:translateY(110%);
            border-left:none;border-top:1px solid var(--line2)}
   #dossier.open{transform:translateY(0)}
   #vintage{display:none!important}
   #bet-anatomy{display:none}
-  .kanban-col{flex:0 0 240px}
-  #mast{min-width:140px}
-  #mast .t{font-size:11px;letter-spacing:.24em}
 }
 
 /* ── PHASE 2: SECTION UPGRADES ── */

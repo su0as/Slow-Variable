@@ -367,7 +367,20 @@ function navigateEntities(dir){
 }
 
 // Tabs
+var MOBILE_BREAKPOINT=700;
+function isMobile(){return window.innerWidth<MOBILE_BREAKPOINT}
+function showMobileDesktopOnly(v){
+  document.querySelectorAll("#tabs .tab").forEach(function(t){t.classList.toggle("on",t.dataset.v===v)});
+  document.querySelectorAll(".view").forEach(function(vw){vw.classList.toggle("on",vw.id==="v-mobile-blocked")});
+  var isAtlas=v==="atlas";
+  $("mb-title").textContent=isAtlas?"Atlas — Desktop Only":"Tech Tree — Desktop Only";
+  $("mb-body").innerHTML="<p>"+(isAtlas
+    ?"The constraint map is a pan-and-zoom canvas built for a mouse and a wide screen. Open this page on a laptop or desktop to explore it."
+    :"The tech tree is a wide horizontal graph meant to be read node by node on a large screen. Open this page on a laptop or desktop to explore causal chains.")
+    +"</p><p>Everything else — Today, Thesis, Humans, Trends, Constraints, Forecasts, Method, Patrol, Brief — works on mobile.</p>";
+}
 function switchTab(v){
+  if(isMobile()&&(v==="atlas"||v==="tree")){showMobileDesktopOnly(v);return}
   document.querySelectorAll("#tabs .tab").forEach(function(t){t.classList.toggle("on",t.dataset.v===v)});
   document.querySelectorAll(".view").forEach(function(vw){vw.classList.toggle("on",vw.id==="v-"+v)});
   $("coords").style.display=v==="atlas"?"flex":"none";
@@ -378,6 +391,7 @@ function switchTab(v){
   if(v==="brief")buildBrief();
   if(v==="today")buildToday();
 }
+(function(){var b=$("mb-back-btn");if(b)b.onclick=function(){Router.navigate("today",{})}})();
 document.querySelectorAll("#tabs .tab").forEach(function(t){t.onclick=function(){switchTab(t.dataset.v)}});
 
 // ── MAP ENGINE ────────────────────────────────────────────────────────────
