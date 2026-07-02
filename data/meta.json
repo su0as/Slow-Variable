@@ -1,13 +1,16 @@
 {
-  "version": "2.1.0",
-  "last_updated": "2026-06-01",
+  "version": "2.2.0",
+  "last_updated": "2026-07-02",
   "counts": {
     "atlas": 60,
     "tree": 46,
     "humans": 19,
     "trends": 16,
     "constraints": 8,
-    "scenarios": 5
+    "scenarios": 5,
+    "theses": 5,
+    "models": 12,
+    "forecasts_public": 6
   },
   "changelog": [
     {
@@ -23,6 +26,16 @@
       "date": "2026-06-12",
       "by": "claude-fable-5",
       "summary": "v2.1: humans 6→19 (Chang, Son, Bezos, Thiel, Buffett, Zhang, Hassabis, Sutskever, Amodei, Su, Keller, Wang, Levels); tree 37→46 (foundry, cloud, smartphone, crypto-gpu, alphafold, reasoning, sovereign-ai, robotics-fm, stablecoin-rails); trends 10→16 (whole-earth: nuclear, defense, reshoring, sovereign-ai, GLP-1, stablecoins); features: forecast seeding from registries, trends gantt, tree rewind slider, bet anatomy scoring, hash deep-links, number-key tabs; review_after_months now mandatory on tree/humans/trends"
+    },
+    {
+      "date": "2026-06-13",
+      "by": "claude-sonnet-4-6",
+      "summary": "Phase 5 (Models as Mechanics): 12-model registry with provenance tags, inversion toggle, bias auto-checker, margin-of-safety indicator, circle-of-competence strip, edge meter, second-order chains, Red Queen rent-decay bars, tipping-condition meter, scale check — every model manifests as a field/overlay/action, no Models tab"
+    },
+    {
+      "date": "2026-07-02",
+      "by": "claude-sonnet-4-6",
+      "summary": "v2.2: simplification + entry-point pass across 6 phases. (1) New Today landing tab — 3 auto-computed cards, plain-English spotlight, data health + closing windows; theses gained kill_watch + plain fields; header regrouped into Understand/Act/Maintain. (2) Spine view in Thesis tab — SVG causal ribbon (thesis→constraints→atlas→tree→humans→windows) built purely from Store.neighbors()/links, THIN EVIDENCE badge for theses with <3 links. (3) Public forecast track record — data/forecasts.json (6 seeded, unresolved, honest) merged with private localStorage forecasts; public entries read-only in UI; Export button. (4) Mobile read-mode below 700px — stacked header, Atlas/Tree gated behind a Desktop Only notice, single-column Trends kanban, 38-40px tap targets. (5) README/UPDATE_PROTOCOL/CLAUDE.md + package.json + CI validator workflow. (6) Share button on thesis cards (deep-link + plain-text block) + OG image (scripts/generate-og.js, canvas) + meta tags."
     }
   ]
 }
