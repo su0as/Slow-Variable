@@ -819,3 +819,30 @@ kbd{background:#111;border:1px solid var(--line2);border-bottom:2px solid var(--
 @media(max-width:900px){
   .today-cards{grid-template-columns:1fr}
 }
+
+/* ── PHASE 2: SPINE VIEW ────────────────────────────────────────────────── */
+.ttool-row{display:flex;gap:6px;margin-bottom:16px}
+
+.thin-badge{position:absolute;top:10px;right:65px;font-size:7px;letter-spacing:.12em;
+  color:var(--enr);border:1px solid var(--enr);padding:2px 5px;text-transform:uppercase}
+.thin-badge-sm{position:static;display:inline-block;margin-left:6px;padding:1px 4px}
+
+#thesis-spine-picker{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:16px}
+.spine-pick-btn{background:#0e0e0e;border:1px solid var(--line);color:var(--dim);
+  font-family:var(--mono);font-size:9px;padding:5px 9px;cursor:pointer;text-align:left;max-width:280px}
+.spine-pick-btn:hover{border-color:var(--line2);color:var(--txt)}
+.spine-pick-btn.on{border-color:var(--choke);color:var(--choke)}
+
+.thin-evidence-banner{border:1px solid var(--enr);background:rgba(255,107,85,.06);color:var(--enr);
+  font-size:10px;letter-spacing:.04em;padding:8px 12px;margin-bottom:14px;line-height:1.5}
+
+.spine-svg-scroll{overflow-x:auto;padding-bottom:12px}
+.spine-svg{display:block}
+.spine-col-lbl{fill:var(--faint);font-size:8px;letter-spacing:.14em;text-transform:uppercase}
+.spine-node{cursor:pointer}
+.spine-node:hover rect.bg{stroke:var(--choke)}
+.spine-root rect.bg{stroke:var(--choke)!important;stroke-width:1.5;fill:rgba(255,59,48,.06)!important}
+.spine-empty{cursor:default;opacity:.4}
+.spine-empty rect.bg{stroke-dasharray:3 3}
+.spine-node-text{font-size:9px}
+.spine-edge-far{opacity:.4;stroke-dasharray:4 3}

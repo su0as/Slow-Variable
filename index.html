@@ -115,7 +115,15 @@
     <div class="inner">
       <h2 class="sec">Thesis Register</h2>
       <div class="prose thesis-intro"><p>Explicit claims this tool commits to. Each carries a kill condition — a falsifiable observable that would retire the thesis. The 7 sections are instruments serving these claims.</p></div>
+      <div class="ttool-row">
+        <button class="ttool on" id="th-view-list" title="List view">List</button>
+        <button class="ttool" id="th-view-spine" title="Spine view — causal ribbon from thesis to constraints, atlas, tree, humans, windows">Spine</button>
+      </div>
       <div id="thesis-list"></div>
+      <div id="thesis-spine-wrap" style="display:none">
+        <div id="thesis-spine-picker"></div>
+        <div id="thesis-spine-svg-wrap"></div>
+      </div>
     </div>
   </div>
 

@@ -1393,7 +1393,10 @@ function buildThesisRegister(){
       var fc=forecasts.find(function(f){return f.key===fid||f.id===fid});
       return fc?'<span class="fc-seed-tag">'+esc(fc.stmt.slice(0,40))+'…</span>':"";
     }).join("");
+    var directCount=(th.links||[]).length;
+    var thin=directCount<3;
     return'<div class="thesis-card'+(th.draft?" draft":"")+'">'
+      +(thin?'<span class="thin-badge" title="'+directCount+' direct cross-registry link'+(directCount===1?"":"s")+' — strengthen before trusting the edge meter">THIN EVIDENCE</span>':"")
       +'<div class="thesis-num">'+(i+1)+'. THESIS</div>'
       +'<div class="thesis-stmt">'+esc(th.statement)+'</div>'
       +'<span class="thesis-conf '+conf+'">'+conf.toUpperCase()+'</span>'
@@ -1403,6 +1406,135 @@ function buildThesisRegister(){
       +'</div>';
   }).join("");
   attachChipNavigation();
+}
+
+// ── SPINE VIEW ─────────────────────────────────────────────────────────────
+function showThesisView(v){
+  var lb=$("th-view-list"),sb=$("th-view-spine");
+  if(lb)lb.classList.toggle("on",v==="list");
+  if(sb)sb.classList.toggle("on",v==="spine");
+  var listEl=$("thesis-list"),spineEl=$("thesis-spine-wrap");
+  if(listEl)listEl.style.display=v==="list"?"block":"none";
+  if(spineEl)spineEl.style.display=v==="spine"?"block":"none";
+  if(v==="spine")buildThesisSpinePicker();
+}
+(function(){var lb=$("th-view-list"),sb=$("th-view-spine");if(lb)lb.onclick=function(){showThesisView("list")};if(sb)sb.onclick=function(){showThesisView("spine")}})();
+
+function spineNeighborIds(id){
+  var nb=Store.neighbors(id);
+  return nb.out.map(function(e){return e.to}).concat(nb.in.map(function(e){return e.from}));
+}
+function spineLinked(aId,bId){
+  var nb=Store.neighbors(aId);
+  return nb.out.some(function(e){return e.to===bId})||nb.in.some(function(e){return e.from===bId});
+}
+function spineTypeOf(sid){
+  if(sid.indexOf("constraint.")===0)return"constraint";
+  if(sid.indexOf("atlas.")===0)return"atlas";
+  if(sid.indexOf("tree.")===0)return"tree";
+  if(sid.indexOf("human.")===0)return"human";
+  if(sid.indexOf("window.")===0)return"window";
+  return null;
+}
+function buildSpineData(th){
+  var buckets={constraint:{},atlas:{},tree:{},human:{},window:{}};
+  function add(sid){
+    var t=spineTypeOf(sid);if(!t||sid===th.id||buckets[t][sid])return;
+    var e=Store.get(sid);
+    buckets[t][sid]={id:sid,title:e?(e.title||sid):sid};
+  }
+  var hop1=spineNeighborIds(th.id);
+  hop1.forEach(add);
+  var hop2=[];
+  hop1.forEach(function(sid){spineNeighborIds(sid).forEach(function(x){hop2.push(x)})});
+  hop2.forEach(add);
+  var hop3=[];
+  Object.keys(buckets.tree).forEach(function(sid){spineNeighborIds(sid).forEach(function(x){hop3.push(x)})});
+  hop3.forEach(add);
+  function toArr(bucket){return Object.keys(bucket).map(function(k){return bucket[k]}).slice(0,6)}
+  return{constraint:toArr(buckets.constraint),atlas:toArr(buckets.atlas),tree:toArr(buckets.tree),human:toArr(buckets.human),window:toArr(buckets.window)};
+}
+
+var _spineSelTid=null;
+function buildThesisSpinePicker(){
+  var el=$("thesis-spine-picker");if(!el)return;
+  if(!_spineSelTid&&THESES.length)_spineSelTid=THESES[0].id;
+  el.innerHTML=THESES.map(function(th,i){
+    var thin=(th.links||[]).length<3;
+    return'<button class="spine-pick-btn'+(th.id===_spineSelTid?" on":"")+'" data-tid="'+esc(th.id)+'">'+(i+1)+". "+esc(th.statement.slice(0,44))+'…'+(thin?' <span class="thin-badge thin-badge-sm">THIN</span>':"")+'</button>';
+  }).join("");
+  el.querySelectorAll(".spine-pick-btn").forEach(function(btn){
+    btn.onclick=function(){_spineSelTid=btn.dataset.tid;buildThesisSpinePicker();renderThesisSpineSVG(_spineSelTid)};
+  });
+  renderThesisSpineSVG(_spineSelTid);
+}
+
+var SPINE_COLS=[
+  {key:"constraint",label:"CONSTRAINTS"},
+  {key:"atlas",label:"ATLAS"},
+  {key:"tree",label:"TREE"},
+  {key:"human",label:"HUMANS"},
+  {key:"window",label:"WINDOWS"}
+];
+function spineWrapText(text,x,y,maxW){
+  var maxChars=Math.max(6,Math.floor(maxW/5.6));
+  var t=text.length>maxChars?text.slice(0,maxChars-1)+"…":text;
+  return'<text x="'+x+'" y="'+(y+4)+'" class="lb spine-node-text">'+esc(t)+"</text>";
+}
+function renderThesisSpineSVG(tid){
+  var wrap=$("thesis-spine-svg-wrap");if(!wrap)return;
+  var th=THESES.find(function(t){return t.id===tid});
+  if(!th){wrap.innerHTML="";return}
+  var data=buildSpineData(th);
+  var directCount=(th.links||[]).length,thin=directCount<3;
+  var cols=[{key:"root",label:"THESIS",items:[{id:th.id,title:th.statement.slice(0,58)+(th.statement.length>58?"…":""),root:true}]}]
+    .concat(SPINE_COLS.map(function(c){return{key:c.key,label:c.label,items:data[c.key]||[]}}));
+
+  var colW=190,nodeH=40,nodeGapY=12,padTop=42,padX=16;
+  var maxRows=1;cols.forEach(function(c){maxRows=Math.max(maxRows,c.items.length||1)});
+  var svgH=padTop+maxRows*(nodeH+nodeGapY)+16;
+  var svgW=padX*2+cols.length*colW;
+
+  var posMap={};
+  var svg='<svg viewBox="0 0 '+svgW+' '+svgH+'" width="'+svgW+'" height="'+svgH+'" class="spine-svg">';
+  cols.forEach(function(col,ci){
+    var x=padX+ci*colW;
+    svg+='<text x="'+(x+(colW-30)/2)+'" y="20" class="spine-col-lbl" text-anchor="middle">'+esc(col.label)+(col.items.length?" ("+col.items.length+")":"")+"</text>";
+    var items=col.items.length?col.items:[{id:null,title:"— none via current links —",empty:true}];
+    var totalH=items.length*(nodeH+nodeGapY)-nodeGapY;
+    var startY=padTop+Math.max(0,(svgH-padTop-totalH)/2-8);
+    var w=colW-30;
+    items.forEach(function(item,ii){
+      var y=startY+ii*(nodeH+nodeGapY);
+      if(item.id)posMap[item.id]={x:x,y:y,w:w,h:nodeH,cx:x+w,cy:y+nodeH/2,cxL:x,cxR:x+w};
+      var cls="tnode spine-node"+(item.root?" spine-root":"")+(item.empty?" spine-empty":"");
+      svg+='<g class="'+cls+'"'+(item.id?' data-sid="'+esc(item.id)+'"':"")+'>';
+      svg+='<rect class="bg" x="'+x+'" y="'+y+'" width="'+w+'" height="'+nodeH+'" rx="2"></rect>';
+      svg+=spineWrapText(item.title,x+8,y+nodeH/2,w-16);
+      svg+="</g>";
+    });
+  });
+  // connectors — drawn for any real link between any two columns (not just adjacent), using Store.neighbors
+  for(var ci=0;ci<cols.length;ci++){
+    for(var cj=ci+1;cj<cols.length;cj++){
+      var far=(cj-ci)>1;
+      cols[ci].items.forEach(function(a){
+        if(!a.id)return;
+        cols[cj].items.forEach(function(b){
+          if(!b.id||!spineLinked(a.id,b.id))return;
+          var p1=posMap[a.id],p2=posMap[b.id];if(!p1||!p2)return;
+          svg+='<path class="tedge spine-edge'+(far?" spine-edge-far":"")+'" d="M'+p1.cxR+','+p1.cy+" C"+(p1.cxR+30)+","+p1.cy+" "+(p2.cxL-30)+","+p2.cy+" "+p2.cxL+","+p2.cy+'"></path>';
+        });
+      });
+    }
+  }
+  svg+="</svg>";
+  wrap.innerHTML=(thin?'<div class="thin-evidence-banner">THIN EVIDENCE — this thesis has only '+directCount+" direct cross-registry link"+(directCount===1?"":"s")+". Strengthen before trusting the edge meter.</div>":"")+'<div class="spine-svg-scroll">'+svg+"</div>";
+  wrap.querySelectorAll(".spine-node[data-sid]").forEach(function(g){
+    g.addEventListener("click",function(){
+      var sid=g.dataset.sid;var info=fromStoreId(sid);if(info)openDossier(info.reg,info.id);
+    });
+  });
 }
 
 // ── BRIEF DIGEST ──────────────────────────────────────────────────────────
