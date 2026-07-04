@@ -1,0 +1,242 @@
+{
+  "domains": [
+    {
+      "id": "domain.ai-compute",
+      "title": "AI Compute Stack",
+      "as_of": "2026-07-04",
+      "cf": "md",
+      "review_after_months": 6,
+      "thesis": "Value created is heaviest at the top of the stack (foundation models, then applications) but value captured concentrates at the physical infra floor (chips, memory, power) where real moats exist. Foundation models is the biggest value>capture leak in the stack — training-run economics and open-weight competition (see tree.openw) keep margins thin even as the capability created is enormous. The floor captures disproportionately because it's gated by physical chokepoints (EUV lithography, HBM qualification, turbine/transformer lead times) that this tool already tracks as atlas nodes and constraints — not because the floor is doing more of the valuable work.",
+      "migration_forecast": {
+        "statement": "Power's share of the profit pool keeps rising through 2030 as grid interconnection and turbine/transformer lead times (constraint.heavy-gas-turbine-slot, constraint.grid-interconnection-us) become the binding constraint on new AI capacity, at chips' expense as fab capacity catches up to demand.",
+        "kill_condition": "Heavy gas turbine lead time compresses below 3 years (from ~4-7yr today) or >10GW of nuclear restart capacity (constraint.nuclear-restart) comes online before 2028 — either would loosen the power constraint faster than this forecast assumes."
+      },
+      "layers": [
+        {
+          "id": "power",
+          "name": "Power & Grid",
+          "order": 1,
+          "value_created": {
+            "score_0_100": 85,
+            "mechanism": "Every downstream layer is gated by available, interconnected power — without it, no training run or inference fleet ships. The value created here is binding-constraint value: it's not that electrons are special, it's that the grid can't expand fast enough to keep up with hyperscaler capex (tree.capex).",
+            "basis": "window.nuclear-restart and window.energy-grid-software (already in data/windows.json) both cite AI datacenter load as the forcing function; constraint.grid-interconnection-us documents multi-year queue times."
+          },
+          "value_captured": {
+            "score_0_100": 38,
+            "metric": "Regulated utility ROE is typically high-single-digit to low-double-digit percent; turbine/transformer OEMs (GE Vernova) are the exception — real pricing power from backlog scarcity, not regulation",
+            "basis": "Most of this layer is rate-regulated utilities with capped returns; the captured value is bimodal — thin for utilities, thicker for the handful of equipment makers who are the actual chokepoint (atlas.gevernova).",
+            "confidence": "asserted"
+          },
+          "moat": {
+            "type": "cornered resource",
+            "strength_0_100": 60,
+            "decay_note": "Turbine/transformer manufacturing capacity is the actual scarce resource (GE Vernova, Siemens Energy, Mitsubishi — an oligopoly with years-long order backlogs). Decays as manufacturers add capacity through the late 2020s and as nuclear restarts (constraint.nuclear-restart) add non-turbine supply."
+          },
+          "solo_accessible": {
+            "value": false,
+            "note": "Turbine/transformer manufacturing and utility-scale grid interconnection require billions in capital and regulatory approval — not buildable by a solo operator or small team."
+          },
+          "migration": [
+            {"year": 2020, "pool_share_0_100": 5},
+            {"year": 2023, "pool_share_0_100": 5},
+            {"year": 2026, "pool_share_0_100": 10},
+            {"year": 2030, "pool_share_0_100": 18}
+          ],
+          "links": ["atlas.pjm", "atlas.crane", "atlas.palisades", "atlas.gevernova", "constraint.heavy-gas-turbine-slot", "constraint.grid-interconnection-us", "constraint.nuclear-restart", "tree.capex"]
+        },
+        {
+          "id": "chips",
+          "name": "Leading-Edge Chips (Fabs + EUV)",
+          "order": 2,
+          "value_created": {
+            "score_0_100": 88,
+            "mechanism": "The compute substrate itself — every FLOP downstream runs on silicon that only a handful of fabs can print at the leading edge. This is the layer this tool already flags as the highest-tier atlas chokepoint (asml, zeiss, tsmc are all TIER1).",
+            "basis": "atlas.tsmc, atlas.asml, atlas.zeiss are tagged TIER1 chokepoints in data/atlas.json; tree.tsmc-foundry documents the pure-play foundry model that made this concentration possible."
+          },
+          "value_captured": {
+            "score_0_100": 82,
+            "metric": "TSMC and ASML both run structurally high gross margins (TSMC's has historically run in the 50s%; ASML's EUV franchise has near-zero qualified competition) — order of magnitude, not a verified current figure",
+            "basis": "Neither company's exact current-quarter margin is verified in this session — treat the qualitative direction (very high, structurally defended) as the claim, not the specific percentage.",
+            "confidence": "md"
+          },
+          "moat": {
+            "type": "cornered resource",
+            "strength_0_100": 90,
+            "decay_note": "ASML/Zeiss have no qualified EUV competitor today; TSMC's process-node lead compounds via yield learning. Decays only if High-NA EUV alternatives or a second qualified leading-edge fab (Samsung, Intel Foundry) close the yield gap — multi-year, not imminent."
+          },
+          "solo_accessible": {
+            "value": false,
+            "note": "Leading-edge fab capacity requires tens of billions in capex and years of process R&D — not buildable by a solo operator or small team."
+          },
+          "migration": [
+            {"year": 2020, "pool_share_0_100": 40},
+            {"year": 2023, "pool_share_0_100": 55},
+            {"year": 2026, "pool_share_0_100": 50},
+            {"year": 2030, "pool_share_0_100": 42}
+          ],
+          "links": ["atlas.tsmc", "atlas.asml", "atlas.zeiss", "tree.tsmc-foundry", "constraint.leading-edge-fab", "constraint.euv-tool-order-run", "human.chang", "human.huang", "human.su"]
+        },
+        {
+          "id": "memory-hbm",
+          "name": "High-Bandwidth Memory",
+          "order": 3,
+          "value_created": {
+            "score_0_100": 70,
+            "mechanism": "HBM is what actually feeds a GPU at the bandwidth modern models need — this tool's own window.memory-supercycle already documents HBM demand structurally breaking the consumer-driven DRAM cycle.",
+            "basis": "window.memory-supercycle mechanism field, already in data/windows.json, cites the AI capex → GPU demand → HBM demand → pricing power chain directly."
+          },
+          "value_captured": {
+            "score_0_100": 55,
+            "metric": "SK Hynix / Samsung / Micron oligopoly pricing power on HBM specifically (not commodity DRAM), constrained by qualification cycles per constraint.hbm-qualification",
+            "basis": "constraint.hbm-qualification documents the qualification lead time as the actual bottleneck, not raw manufacturing capacity.",
+            "confidence": "asserted"
+          },
+          "moat": {
+            "type": "switching costs",
+            "strength_0_100": 55,
+            "decay_note": "Once a GPU generation qualifies a supplier's HBM stack, re-qualifying mid-cycle is slow and costly. Decays as more suppliers get qualified per generation — already three credible suppliers (SK Hynix, Samsung, Micron), so this is a weaker moat than chips."
+          },
+          "solo_accessible": {
+            "value": false,
+            "note": "HBM fabrication is the same capital-intensive semiconductor manufacturing as leading-edge chips — not buildable by a solo operator or small team."
+          },
+          "migration": [
+            {"year": 2020, "pool_share_0_100": 5},
+            {"year": 2023, "pool_share_0_100": 8},
+            {"year": 2026, "pool_share_0_100": 12},
+            {"year": 2030, "pool_share_0_100": 14}
+          ],
+          "links": ["atlas.skhynix", "constraint.hbm-qualification"]
+        },
+        {
+          "id": "hyperscalers",
+          "name": "Hyperscaler Cloud",
+          "order": 4,
+          "value_created": {
+            "score_0_100": 75,
+            "mechanism": "Compute-as-utility (tree.cloud) turned capex into opex for every downstream buyer — the value created is removing the fixed-cost barrier to entry for training and serving models.",
+            "basis": "tree.cloud documents this precondition directly; atlas.ashburn (Data Center Alley) is the physical concentration point."
+          },
+          "value_captured": {
+            "score_0_100": 68,
+            "metric": "Cloud infrastructure segments have historically disclosed operating margins in the 30s%, an order-of-magnitude figure, not a verified current one",
+            "basis": "Margins here are real and disclosed in hyperscaler 10-Ks, but this session hasn't re-verified the latest figures — treat as directionally high, not precise.",
+            "confidence": "md"
+          },
+          "moat": {
+            "type": "switching costs",
+            "strength_0_100": 70,
+            "decay_note": "Data gravity, egress fees, and managed-service lock-in. Decays as multi-cloud tooling (Kubernetes, Terraform, model-portability standards) lowers re-platforming cost — already a visible trend, not fully priced in yet."
+          },
+          "solo_accessible": {
+            "value": false,
+            "note": "Hyperscale data center buildout requires massive capex — a solo operator can rent this layer's compute, not own its moat."
+          },
+          "migration": [
+            {"year": 2020, "pool_share_0_100": 35},
+            {"year": 2023, "pool_share_0_100": 20},
+            {"year": 2026, "pool_share_0_100": 16},
+            {"year": 2030, "pool_share_0_100": 14}
+          ],
+          "links": ["atlas.ashburn", "tree.cloud", "tree.capex", "human.bezos", "human.ellison"]
+        },
+        {
+          "id": "foundation-models",
+          "name": "Foundation Model Labs",
+          "order": 5,
+          "value_created": {
+            "score_0_100": 95,
+            "mechanism": "The single largest value-creation event in the stack — general-purpose reasoning and generation capability that didn't exist before. This is the layer the house thesis identifies as the biggest value>capture leak.",
+            "basis": "tree.transformer, tree.selfsup, tree.reasoning document the mechanism; tree.openw (the DeepSeek shock) is direct evidence of how fast that value gets commoditized rather than captured by the lab that created it."
+          },
+          "value_captured": {
+            "score_0_100": 20,
+            "metric": "No stable metric — the layer is characterized by heavy training-run cash burn and API pricing racing toward marginal cost as open-weight models (tree.openw) commoditize capability within months of frontier release",
+            "basis": "tree.openw documents a -$590B NVDA single-day move on the R1 release specifically because it repriced how defensible frontier-lab capability actually is.",
+            "confidence": "asserted"
+          },
+          "moat": {
+            "type": "none",
+            "strength_0_100": 15,
+            "decay_note": "This is the house thesis, not a caveat: no durable 7 Powers moat has held up yet at this layer. The nearest candidate is branding/trust at the top 2-3 labs, but it hasn't stopped rapid price compression stack-wide."
+          },
+          "solo_accessible": {
+            "value": false,
+            "note": "Frontier training runs cost tens to hundreds of millions in compute — a solo operator can fine-tune or wrap a model, but can't hold this layer's (already thin) moat."
+          },
+          "migration": [
+            {"year": 2020, "pool_share_0_100": 3},
+            {"year": 2023, "pool_share_0_100": 4},
+            {"year": 2026, "pool_share_0_100": 5},
+            {"year": 2030, "pool_share_0_100": 4}
+          ],
+          "links": ["tree.transformer", "tree.selfsup", "tree.reasoning", "tree.openw", "human.hassabis", "human.sutskever", "human.amodei"]
+        },
+        {
+          "id": "applications",
+          "name": "AI Applications",
+          "order": 6,
+          "value_created": {
+            "score_0_100": 60,
+            "mechanism": "Vertical wrappers turn raw model capability into a workflow a buyer will actually pay for — real value, but built on a foundation the application layer doesn't own.",
+            "basis": "window.agentic-vertical (already in data/windows.json) documents the SMB-vertical version of this mechanism directly."
+          },
+          "value_captured": {
+            "score_0_100": 28,
+            "metric": "No stable metric — thin wrappers commoditize fast; the minority with real workflow/data lock-in capture more, most don't",
+            "basis": "window.agentic-vertical's own decay_logic field (\"platform bundling... per-seat price collapse as models commoditize\") is the mechanism working against this layer's capture.",
+            "confidence": "asserted"
+          },
+          "moat": {
+            "type": "switching costs",
+            "strength_0_100": 30,
+            "decay_note": "Only holds where the application owns a real workflow or proprietary data loop; generalist wrapper apps have near-zero moat and platform bundling erodes them fastest — see window.agentic-vertical decay_logic."
+          },
+          "solo_accessible": {
+            "value": true,
+            "note": "Vertical workflow/data lock-in is buildable by a small team — the one layer in this stack where a solo technical operator can plausibly hold a real moat, provided it goes deep on one workflow rather than wrapping generically."
+          },
+          "migration": [
+            {"year": 2020, "pool_share_0_100": 10},
+            {"year": 2023, "pool_share_0_100": 6},
+            {"year": 2026, "pool_share_0_100": 5},
+            {"year": 2030, "pool_share_0_100": 6}
+          ],
+          "links": ["tree.reasoning"]
+        },
+        {
+          "id": "end-users",
+          "name": "End Users / SMBs",
+          "order": 7,
+          "value_created": {
+            "score_0_100": 100,
+            "mechanism": "End users are where the created value ultimately lands as surplus — cheaper, faster, or newly-possible outcomes they didn't have to build or fully pay for.",
+            "basis": "This is a structural claim about value chains generally (consumer/enterprise surplus), not specific to any node in this dataset — no atlas/tree/human/constraint id fits, so none is cited below rather than forcing one."
+          },
+          "value_captured": {
+            "score_0_100": 2,
+            "metric": "Not applicable — end users are the surplus sink in a value chain analysis, not a business layer competing for profit-pool share",
+            "basis": "Included for completeness of the stack, not because this layer has a moat or a P&L to defend.",
+            "confidence": "asserted"
+          },
+          "moat": {
+            "type": "none",
+            "strength_0_100": 0,
+            "decay_note": "Not applicable."
+          },
+          "solo_accessible": {
+            "value": false,
+            "note": "Not a business layer with a moat to hold."
+          },
+          "migration": [
+            {"year": 2020, "pool_share_0_100": 2},
+            {"year": 2023, "pool_share_0_100": 2},
+            {"year": 2026, "pool_share_0_100": 2},
+            {"year": 2030, "pool_share_0_100": 2}
+          ],
+          "links": []
+        }
+      ]
+    }
+  ]
+}

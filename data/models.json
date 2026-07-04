@@ -95,6 +95,76 @@
       "one_line": "What works at 1× breaks at 10×; ask the question before you need the answer.",
       "source": "West / general engineering",
       "powers": ["feature.scale_check"]
+    },
+    {
+      "id": "model.leverage_points",
+      "name": "12 Leverage Points",
+      "discipline": "systems dynamics",
+      "one_line": "Places to intervene in a system, ranked weakest to strongest — most people push on the weakest ones (parameters) because they're the easiest to see.",
+      "source": "Donella Meadows, \"Leverage Points: Places to Intervene in a System\" (1999)",
+      "powers": ["feature.simulate_leverage_rank"],
+      "ranked_list": [
+        {"rank": 12, "point": "Constants, parameters, numbers (subsidies, taxes, standards)"},
+        {"rank": 11, "point": "Buffer sizes relative to the flows they must absorb"},
+        {"rank": 10, "point": "Structure of material stocks and flows (transport networks, population age structures)"},
+        {"rank": 9, "point": "Length of delays relative to the rate of system change"},
+        {"rank": 8, "point": "Strength of negative (balancing) feedback loops relative to what they're correcting"},
+        {"rank": 7, "point": "Gain around driving positive (reinforcing) feedback loops"},
+        {"rank": 6, "point": "Structure of information flows — who does and doesn't have access to what"},
+        {"rank": 5, "point": "Rules of the system — incentives, punishments, constraints"},
+        {"rank": 4, "point": "Power to add, change, evolve, or self-organize system structure"},
+        {"rank": 3, "point": "Goals of the system"},
+        {"rank": 2, "point": "Mindset or paradigm the system arises out of"},
+        {"rank": 1, "point": "Power to transcend paradigms entirely"}
+      ]
+    },
+    {
+      "id": "model.value_created_captured",
+      "name": "Value Created vs Value Captured",
+      "discipline": "strategy",
+      "one_line": "Creating value and keeping value are different games — a layer can do enormous good and still capture almost none of it.",
+      "source": "general value-chain strategy, in the lineage of Porter's value chain",
+      "powers": ["feature.ledger_diverging_bars"]
+    },
+    {
+      "id": "model.seven_powers",
+      "name": "7 Powers",
+      "discipline": "strategy",
+      "one_line": "Durable differential returns come from exactly seven structural barriers — scale/network economies, counter-positioning, switching costs, branding, cornered resource, process power — everything else decays to competitive parity.",
+      "source": "Hamilton Helmer, \"7 Powers\" (2016)",
+      "powers": ["feature.ledger_moat_taxonomy"]
+    },
+    {
+      "id": "model.value_migration",
+      "name": "Value Migration",
+      "discipline": "strategy",
+      "one_line": "Profit pools relocate between industries and layers over time, usually away from wherever the crowd is still counting on it staying put.",
+      "source": "Adrian Slywotzky, \"Value Migration\" (1996)",
+      "powers": ["feature.ledger_migration_scrubber"]
+    },
+    {
+      "id": "model.smiling_curve",
+      "name": "Smiling Curve",
+      "discipline": "strategy / manufacturing",
+      "one_line": "Plot margin against position in a value chain and it smiles — highest at the two ends (R&D/IP and brand/service), lowest in the assembly middle.",
+      "source": "Stan Shih, Acer (1992)",
+      "powers": ["feature.ledger_diverging_bars"]
+    },
+    {
+      "id": "model.picks_and_shovels",
+      "name": "Picks and Shovels",
+      "discipline": "investing",
+      "one_line": "In a gold rush, sell the tool everyone needs regardless of who strikes gold — capture sits upstream of who wins the contest.",
+      "source": "Gold Rush aphorism, standard in venture/investing strategy",
+      "powers": ["feature.ledger_moat_taxonomy"]
+    },
+    {
+      "id": "model.aggregation_theory",
+      "name": "Aggregation Theory",
+      "discipline": "strategy / internet economics",
+      "one_line": "Whoever owns the user or demand relationship captures the value, because they can commoditize their suppliers at will — the aggregator's switching-cost moat is the tell.",
+      "source": "Ben Thompson, Stratechery (2015)",
+      "powers": ["feature.ledger_moat_taxonomy"]
     }
   ]
 }

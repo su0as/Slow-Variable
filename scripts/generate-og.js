@@ -12,6 +12,7 @@ const canvas = createCanvas(W, H);
 const ctx = canvas.getContext('2d');
 
 const RED   = '#ff3b30';
+const RUST  = '#c1440e';
 const TXT   = '#f0f0f0';
 const DIM   = '#888888';
 const FAINT = '#484848';
@@ -36,16 +37,16 @@ ctx.lineWidth = 2;
 ctx.strokeRect(1, 1, W - 2, H - 2);
 
 // kicker
-ctx.fillStyle = RED;
+ctx.fillStyle = RUST;
 ctx.font = `600 20px ${MONO}`;
-ctx.fillText('S L O W   V A R I A B L E S', 80, 130);
+ctx.fillText('M A G N I T U D E', 80, 130);
 
 // title
 ctx.fillStyle = TXT;
-ctx.font = `600 56px ${MONO}`;
-ctx.fillText('A worldview as code —', 80, 230);
-ctx.fillText('falsifiable, cross-linked,', 80, 296);
-ctx.fillText('AI-maintained.', 80, 362);
+ctx.font = `600 52px ${MONO}`;
+ctx.fillText('Finds the order-of-', 80, 230);
+ctx.fillText('magnitude gaps — value', 80, 296);
+ctx.fillText('vs. capture, price vs. truth.', 80, 362);
 
 // divider
 ctx.strokeStyle = LINE;
@@ -71,7 +72,7 @@ chips.forEach((c) => {
 
 ctx.fillStyle = DIM;
 ctx.font = `13px ${MONO}`;
-ctx.fillText('Every claim carries a kill condition. Every model does visible work.', 80, 540);
+ctx.fillText('Value vs. capture. Consensus vs. reality. Every claim carries a kill condition.', 80, 540);
 
 const out = path.join(__dirname, '..', 'assets', 'og.png');
 fs.writeFileSync(out, canvas.toBuffer('image/png'));

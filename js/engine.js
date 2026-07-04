@@ -104,6 +104,8 @@ var SCENARIOS=(Store.raw.scenarios.scenarios||[]).map(function(s){
 
 var DEMO=Store.raw.constraints.demography||{};
 
+var LEDGER_DOMAINS=(Store.raw.ledger&&Store.raw.ledger.domains)||[];
+
 var method=Store.raw.method||{};
 var HIER=(method.hierarchy||[]).map(function(h){return[h.label,h.body,h.level];});
 var RULES=method.rules||[];
@@ -127,6 +129,51 @@ var NOW_YM=(function(){var d=new Date();return d.getFullYear()+"-"+String(d.getM
 
 function esc(s){return String(s).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;")}
 function confPill(cf){var t=cf==="hi"?"HIGH":cf==="md"?"MED":"LOW";return'<span class="conf '+cf+'">'+t+"</span>"}
+
+// ── ORRERY: procedural starfield, parallax on atlas pan ──────────────────
+var starfieldPan=function(){}; // reassigned below once the canvas is set up
+(function(){
+  var cv=$("starfield");if(!cv)return;
+  var sctx=cv.getContext("2d");
+  var sW=0,sH=0,sDPR=1,stars=[];
+  function sResize(){
+    sW=window.innerWidth;sH=window.innerHeight;sDPR=Math.min(2,window.devicePixelRatio||1);
+    cv.width=sW*sDPR;cv.height=sH*sDPR;cv.style.width=sW+"px";cv.style.height=sH+"px";
+    sctx.setTransform(sDPR,0,0,sDPR,0,0);
+    seedStars();
+  }
+  function seedStars(){
+    var n=Math.min(420,Math.round((sW*sH)/9000));
+    stars=[];
+    for(var i=0;i<n;i++){
+      var layer=Math.random()<0.65?1:(Math.random()<0.85?2:3);
+      stars.push({x:Math.random()*sW,y:Math.random()*sH,r:Math.random()*1.15+.2,
+        a:Math.random()*.45+.12,tw:Math.random()*Math.PI*2,layer:layer});
+    }
+  }
+  var parX=0,parY=0;
+  function sDraw(now){
+    sctx.clearRect(0,0,sW,sH);
+    for(var i=0;i<stars.length;i++){
+      var s=stars[i];
+      var shift=s.layer===1?.12:s.layer===2?.3:.55;
+      var x=(s.x+parX*shift)%sW;if(x<0)x+=sW;
+      var y=(s.y+parY*shift)%sH;if(y<0)y+=sH;
+      var flick=motionOK?(Math.sin(now*.0006+s.tw)*.25+.75):1;
+      sctx.beginPath();sctx.arc(x,y,s.r,0,7);
+      sctx.fillStyle="rgba(240,240,245,"+(s.a*flick).toFixed(3)+")";
+      sctx.fill();
+    }
+  }
+  var sRaf=0;
+  function sLoop(t){sDraw(t);if(motionOK)sRaf=requestAnimationFrame(sLoop)}
+  // resizing a <canvas> (via .width/.height) always clears its bitmap — repaint
+  // immediately after, or a reduced-motion session (no rAF loop) is left blank.
+  window.addEventListener("resize",function(){sResize();sDraw(performance.now())});
+  sResize();sDraw(0);
+  if(motionOK)sRaf=requestAnimationFrame(sLoop);
+  starfieldPan=function(dx,dy){parX-=dx*.02;parY-=dy*.02;if(!motionOK)sDraw(performance.now())};
+})();
 function vintageAge(v){if(!v)return 999;var p=v.split("-"),yr=+p[0],mo=+p[1];var nd=new Date();return(nd.getFullYear()-yr)*12+(nd.getMonth()+1-mo)}
 function isStale(node){var ram=node.review_after_months||(node.cf==="hi"?6:3);return vintageAge(node.vintage)>ram}
 
@@ -168,7 +215,9 @@ function openDossier(reg,id,pushHistory){
   else if(reg==="tree")renderTreeDossier(TREE_MAP[id]);
   else if(reg==="human"){renderHumanDossier(HUMAN_MAP[id]);renderAnatomy(HUMAN_MAP[id])}
   else if(reg==="trend")renderTrendDossier(TREND_MAP[id]);
+  else if(reg==="ledger")renderLedgerDossier(id);
   else if(reg==="country")renderCountryDossier(id);
+  var invertBtn=$("invert-btn");if(invertBtn)invertBtn.style.display=(reg==="country")?"none":"";
   if(reg!=="country")try{history.replaceState(null,"","#"+reg+":"+id)}catch(e){}
 }
 
@@ -336,7 +385,7 @@ function renderCountryDossier(iso){
 function attachChipNavigation(){document.querySelectorAll(".xchip").forEach(function(el){el.onclick=function(){openDossier(el.dataset.reg,el.dataset.id,true)}})}
 
 // Keyboard nav
-var TAB_ORDER=["today","thesis","atlas","tree","humans","trends","constraints","forecasts","method","patrol","brief"];
+var TAB_ORDER=["today","thesis","atlas","tree","trajectory","ledger","humans","trends","constraints","forecasts","simulate","helm","method","patrol","brief"];
 document.addEventListener("keydown",function(e){
   if(e.key==="Escape"){
     closeDossier();closePalette();closeHealth();
@@ -361,6 +410,7 @@ function navigateEntities(dir){
   else if(vid==="v-tree")items=TREE.map(function(n){return{reg:"tree",id:n.id}});
   else if(vid==="v-humans")items=HUMANS.map(function(h){return{reg:"human",id:h.id}});
   else if(vid==="v-trends")items=TRENDS.map(function(t){return{reg:"trend",id:t.id}});
+  else if(vid==="v-ledger")items=ledgerCurrentLayerKeys();
   if(!items.length)return;
   _entityNavIndex=Math.max(0,Math.min(items.length-1,_entityNavIndex+dir));
   var item=items[_entityNavIndex];openDossier(item.reg,item.id,false);
@@ -377,14 +427,18 @@ function showMobileDesktopOnly(v){
   $("mb-body").innerHTML="<p>"+(isAtlas
     ?"The constraint map is a pan-and-zoom canvas built for a mouse and a wide screen. Open this page on a laptop or desktop to explore it."
     :"The tech tree is a wide horizontal graph meant to be read node by node on a large screen. Open this page on a laptop or desktop to explore causal chains.")
-    +"</p><p>Everything else — Today, Thesis, Humans, Trends, Constraints, Forecasts, Method, Patrol, Brief — works on mobile.</p>";
+    +"</p><p>Everything else — Today, Thesis, Trajectory, Humans, Trends, Constraints, Forecasts, Simulate, Method, Patrol, Brief — works on mobile.</p>";
 }
 function switchTab(v){
+  if(v==="helm"&&!HELM_PILOT){switchTab("today");return} // no pilot.json loaded — route stays dead, not just hidden
   if(isMobile()&&(v==="atlas"||v==="tree")){showMobileDesktopOnly(v);return}
   document.querySelectorAll("#tabs .tab").forEach(function(t){t.classList.toggle("on",t.dataset.v===v)});
   document.querySelectorAll(".view").forEach(function(vw){vw.classList.toggle("on",vw.id==="v-"+v)});
   $("coords").style.display=v==="atlas"?"flex":"none";
-  if(v==="atlas"){resize();kick()}
+  if(v==="atlas"){if(atlasMode==="orbital"){resizeOrbital();if(motionOK&&!orbRaf)orbRaf=requestAnimationFrame(orbTick)}else{resize();kick()}}
+  if(v==="trajectory")buildTrajectory();
+  if(v==="ledger")buildLedger();
+  if(v==="simulate")buildSimulate();
   if(v==="tree")buildTreeIfNeeded();
   if(v==="patrol")buildPatrol();
   if(v==="thesis")buildThesisRegister();
@@ -498,7 +552,7 @@ function kick(){if(!animReq)animReq=requestAnimationFrame(tick)}
 
 var drag=null;
 cv.addEventListener("mousedown",function(e){drag={x:e.clientX,y:e.clientY,moved:0};cv.classList.add("dragging")});
-window.addEventListener("mousemove",function(e){if(drag){var dx=e.clientX-drag.x,dy=e.clientY-drag.y;if(Math.abs(dx)+Math.abs(dy)>2)drag.moved=1;cx-=dx/z;cy+=dy/z;drag.x=e.clientX;drag.y=e.clientY;clampView();render();return}});
+window.addEventListener("mousemove",function(e){if(drag){var dx=e.clientX-drag.x,dy=e.clientY-drag.y;if(Math.abs(dx)+Math.abs(dy)>2)drag.moved=1;cx-=dx/z;cy+=dy/z;drag.x=e.clientX;drag.y=e.clientY;clampView();render();starfieldPan(dx,dy);return}});
 window.addEventListener("mouseup",function(){if(drag){cv.classList.remove("dragging");setTimeout(function(){drag=null},0)}});
 cv.addEventListener("mousemove",function(e){
   var r=cv.getBoundingClientRect(),mx=e.clientX-r.left,my=e.clientY-r.top;
@@ -543,6 +597,143 @@ function hitCountry(lon,lat){
 $("mz-in").onclick=function(){z=Math.min(ZMAX,z*1.3);clampView();render();kick()};
 $("mz-out").onclick=function(){z=Math.max(ZMIN,z/1.3);clampView();render();kick()};
 $("mz-fit").onclick=function(){cx=18;cy=24;z=3.6;clampView();render();kick()};
+
+// ── ORBITAL ATLAS (Phase B) — radial schematic: NOW at center, time-to-lock
+// as radius, domain (atlas layer) as angle. A different lens on the same
+// ATLAS_NODES data, not a new dataset.
+var atlasMode="mercator";
+var orbCv=$("orbital"),orbCtx=orbCv&&orbCv.getContext("2d");
+var orbW=0,orbH=0,orbDPR=1,orbRotation=0,orbHits=[],orbHover=null,orbRaf=0,orbPositions=null;
+var RING_YEARS=[2030,2035,2044,2050];
+function nowYear(){return new Date().getFullYear()}
+var ATLAS_RAW_MAP={};(Store.raw.atlas.nodes||[]).forEach(function(n){ATLAS_RAW_MAP[n.id]=n});
+function orbTimeToLock(n){
+  var raw=ATLAS_RAW_MAP["atlas."+n.id];
+  if(raw&&raw.rent&&raw.rent.half_life_estimate_years)return nowYear()+raw.rent.half_life_estimate_years;
+  var hl=raw?raw.half_life_days:365;
+  var yrs=hl<=365?3:hl<=730?7:hl<=1825?16:26; // faster-changing entities → sooner lock; permanent geography (3650d) → far out
+  return nowYear()+yrs;
+}
+function orbRadiusFor(year){
+  var rMax=Math.min(orbW,orbH)/2-44,ny=nowYear();
+  if(year<=ny)return 18;
+  for(var i=0;i<RING_YEARS.length;i++){
+    if(year<=RING_YEARS[i]){
+      var prevYear=i===0?ny:RING_YEARS[i-1];
+      var prevR=18+(rMax-18)*(i/RING_YEARS.length);
+      var thisR=18+(rMax-18)*((i+1)/RING_YEARS.length);
+      var span=RING_YEARS[i]-prevYear;
+      var frac=span>0?(year-prevYear)/span:1;
+      return prevR+(thisR-prevR)*frac;
+    }
+  }
+  return rMax;
+}
+var LAYER_ANGLE={choke:0,chip:60,min:120,nrg:180,data:240,fin:300};
+function buildOrbitalPositions(){
+  var positions={};
+  ATLAS_NODES.forEach(function(n){
+    var lockYear=orbTimeToLock(n);
+    var r=orbRadiusFor(lockYear);
+    var baseAngle=(LAYER_ANGLE[n.ly]||0);
+    var hash=0;for(var i=0;i<n.id.length;i++)hash=(hash*31+n.id.charCodeAt(i))>>>0;
+    var jitter=(hash%50)/50*46-23;
+    positions[n.id]={r:r,angle:(baseAngle+jitter)*Math.PI/180,lockYear:lockYear};
+  });
+  return positions;
+}
+function resizeOrbital(){
+  if(!orbCv)return;
+  var r=$("map-wrap").getBoundingClientRect();
+  orbW=Math.max(200,r.width);orbH=Math.max(200,r.height);orbDPR=Math.min(2,window.devicePixelRatio||1);
+  orbCv.width=orbW*orbDPR;orbCv.height=orbH*orbDPR;orbCv.style.width=orbW+"px";orbCv.style.height=orbH+"px";
+  orbCtx.setTransform(orbDPR,0,0,orbDPR,0,0);
+  orbPositions=buildOrbitalPositions();
+  renderOrbital();
+}
+function renderOrbital(){
+  if(!orbCv||!orbPositions)return;
+  var cx=orbW/2,cy=orbH/2,rMax=Math.min(orbW,orbH)/2-44,ny=nowYear();
+  orbCtx.fillStyle="#000000";orbCtx.fillRect(0,0,orbW,orbH);
+  orbCtx.font="9px ui-monospace,Menlo,Consolas,monospace";
+  RING_YEARS.forEach(function(yr,i){
+    var rr=18+(rMax-18)*((i+1)/RING_YEARS.length);
+    orbCtx.strokeStyle="rgba(193,68,14,.3)";orbCtx.lineWidth=1;
+    orbCtx.beginPath();orbCtx.arc(cx,cy,rr,0,Math.PI*2);orbCtx.stroke();
+    orbCtx.fillStyle="rgba(193,68,14,.8)";orbCtx.fillText(String(yr),cx+4,cy-rr-3);
+  });
+  Object.keys(LAYER_ANGLE).forEach(function(k){
+    var a=(LAYER_ANGLE[k]-30)*Math.PI/180;
+    orbCtx.strokeStyle="rgba(255,255,255,.05)";orbCtx.lineWidth=1;
+    orbCtx.beginPath();orbCtx.moveTo(cx,cy);orbCtx.lineTo(cx+rMax*Math.cos(a),cy+rMax*Math.sin(a));orbCtx.stroke();
+    var lblA=LAYER_ANGLE[k]*Math.PI/180;
+    orbCtx.fillStyle="rgba(136,136,136,.6)";orbCtx.font="8px ui-monospace,Menlo,Consolas,monospace";
+    orbCtx.fillText((LAYERS[k]?LAYERS[k].nm:k).toUpperCase(),cx+(rMax+8)*Math.cos(lblA)-((Math.cos(lblA)<0)?70:0),cy+(rMax+8)*Math.sin(lblA));
+  });
+  orbCtx.beginPath();orbCtx.arc(cx,cy,3,0,Math.PI*2);orbCtx.fillStyle="#ff3b30";orbCtx.fill();
+  orbCtx.fillStyle="#ff3b30";orbCtx.font="9px ui-monospace,Menlo,Consolas,monospace";orbCtx.fillText("NOW · "+ny,cx+8,cy-8);
+  orbHits=[];
+  ATLAS_NODES.forEach(function(n){
+    var p=orbPositions[n.id];if(!p)return;
+    var a=p.angle+orbRotation;
+    var x=cx+p.r*Math.cos(a),y=cy+p.r*Math.sin(a);
+    var col=LCOLOR(n.ly);
+    var lx=cx+(p.r+14)*Math.cos(a),ly=cy+(p.r+14)*Math.sin(a);
+    orbCtx.strokeStyle="rgba(255,255,255,.14)";orbCtx.lineWidth=.6;
+    orbCtx.beginPath();orbCtx.moveTo(x,y);orbCtx.lineTo(lx,ly);orbCtx.stroke();
+    var rr2=n.t===1?4:2.6;
+    orbCtx.beginPath();orbCtx.arc(x,y,rr2,0,Math.PI*2);orbCtx.fillStyle=col;orbCtx.fill();
+    if(orbHover&&orbHover.id===n.id){orbCtx.beginPath();orbCtx.arc(x,y,rr2+3.5,0,Math.PI*2);orbCtx.strokeStyle=col;orbCtx.lineWidth=1;orbCtx.stroke()}
+    if(n.t===1){
+      var rightSide=Math.cos(a)<0;
+      orbCtx.font="8px ui-monospace,Menlo,Consolas,monospace";orbCtx.fillStyle="rgba(230,230,230,.7)";
+      orbCtx.textAlign=rightSide?"right":"left";
+      orbCtx.fillText(n.nm.split(" — ")[0].toUpperCase(),lx+(rightSide?-4:4),ly+3);
+      orbCtx.textAlign="left";
+    }
+    orbHits.push({x:x,y:y,r:9,n:n});
+  });
+}
+function orbTick(){
+  if(atlasMode!=="orbital"){orbRaf=0;return}
+  orbRotation+=0.0006;
+  renderOrbital();
+  orbRaf=requestAnimationFrame(orbTick);
+}
+if(orbCv){
+  orbCv.addEventListener("mousemove",function(e){
+    var r=orbCv.getBoundingClientRect(),mx=e.clientX-r.left,my=e.clientY-r.top;
+    var best=null,bd=1e9;
+    for(var i=0;i<orbHits.length;i++){var h=orbHits[i],d=(h.x-mx)*(h.x-mx)+(h.y-my)*(h.y-my);if(d<h.r*h.r&&d<bd){bd=d;best=h}}
+    orbHover=best?best.n:null;orbCv.style.cursor=best?"pointer":"default";
+    var tip=$("orbital-tip");
+    if(best){
+      var p=orbPositions[best.n.id];
+      tip.style.display="block";tip.querySelector(".tl").textContent=(LAYERS[best.n.ly]?LAYERS[best.n.ly].nm:best.n.ly)+" · locks ~"+p.lockYear;
+      tip.lastChild.textContent=best.n.nm;
+      var tx=mx+16,ty=my+14;if(tx+180>orbW)tx=mx-190;
+      tip.style.left=tx+"px";tip.style.top=ty+"px";
+    }else tip.style.display="none";
+    if(!motionOK)renderOrbital();
+  });
+  orbCv.addEventListener("click",function(){if(orbHover)openDossier("atlas",orbHover.id)});
+  $("orbital-tip").innerHTML='<div class="tl"></div><div></div>';
+}
+function setAtlasMode(mode){
+  atlasMode=mode;
+  $("am-mercator").classList.toggle("on",mode==="mercator");
+  $("am-orbital").classList.toggle("on",mode==="orbital");
+  $("map").style.display=mode==="mercator"?"block":"none";
+  if(orbCv)orbCv.style.display=mode==="orbital"?"block":"none";
+  if(mode==="orbital"){
+    resizeOrbital();
+    if(orbRaf)cancelAnimationFrame(orbRaf);
+    if(motionOK)orbRaf=requestAnimationFrame(orbTick);else renderOrbital();
+  }else{
+    resize();kick();
+  }
+}
+(function(){var mb=$("am-mercator"),ob=$("am-orbital");if(mb)mb.onclick=function(){setAtlasMode("mercator")};if(ob)ob.onclick=function(){setAtlasMode("orbital")}})();
 
 function buildLegend(){
   var h="";
@@ -1268,7 +1459,7 @@ function checkOnboarding(){var seen=storage.getItem("sv3-onboard-seen");if(!seen
 $("onboard-dismiss").onclick=function(){storage.setItem("sv3-onboard-seen","1");$("onboard").style.display="none"};
 
 // ── INIT ──────────────────────────────────────────────────────────────────
-window.addEventListener("resize",function(){if($("v-atlas").classList.contains("on"))resize()});
+window.addEventListener("resize",function(){if($("v-atlas").classList.contains("on")){if(atlasMode==="orbital")resizeOrbital();else resize()}});
 buildLegend();buildConstraints();buildScenarios();buildMethod();buildHumans();buildTrends();
 loadForecasts();renderForecasts();checkOnboarding();
 updateFreshnessMeter();buildPatrol();buildThesisRegister();buildGraveyard();buildToday();
@@ -1281,7 +1472,7 @@ setTimeout(buildTreeIfNeeded,500);
 // Override tab clicks to go through Router so the URL updates
 document.querySelectorAll("#tabs .tab").forEach(function(t){t.onclick=function(){Router.navigate(t.dataset.v,{});_entityNavIndex=-1}});
 Router.on(function(path,params){
-  var sections=["today","thesis","atlas","tree","humans","trends","constraints","forecasts","method","patrol","brief"];
+  var sections=["today","thesis","atlas","tree","trajectory","ledger","humans","trends","constraints","forecasts","simulate","helm","method","patrol","brief"];
   if(sections.indexOf(path)!==-1)switchTab(path);
   if(params&&params.open){
     var m=params.open.match(/^(atlas|tree|human|window)\.(.+)$/);
@@ -1415,6 +1606,121 @@ function buildToday(){
     winEl.querySelectorAll(".today-window-row").forEach(function(row){row.onclick=function(){openDossier("trend",row.dataset.tid)}});
   }
 }
+
+// ── TRAJECTORY (Phase B) ──────────────────────────────────────────────────
+// NOW→2050 per thesis. Only theses carrying an explicit `trajectory` field
+// are charted — everything else is listed honestly as "not charted" rather
+// than faked. Derived from real fields already in theses.json (kill_threshold
+// draws straight from kill_watch-scale numbers where the author supplied one).
+var trajScrubYear=nowYear();
+function trajSmootherstep(t){return t*t*t*(t*(t*6-15)+10)}
+function trajInterp(p0,p1,t,useTipping){var tt=useTipping?trajSmootherstep(t):t;return p0.value+(p1.value-p0.value)*tt}
+function buildTrajectorySVG(th){
+  var traj=th.trajectory,pts=traj.points;
+  var W3=900,H3=170,PADL=40,PADR=20,PADT=16,PADB=26;
+  var minYear=Math.min(pts[0].year,nowYear()),maxYear=Math.max(2050,pts[pts.length-1].year);
+  var vals=pts.map(function(p){return p.value});
+  if(traj.kill_threshold!=null)vals.push(traj.kill_threshold);
+  var vMin=Math.min.apply(0,vals),vMax=Math.max.apply(0,vals);
+  var vPad=(vMax-vMin)*.18||Math.abs(vMax)*.2||1;vMin-=vPad;vMax+=vPad;
+  function xOf(yr){return PADL+(yr-minYear)/(maxYear-minYear)*(W3-PADL-PADR)}
+  function yOf(v){return PADT+(1-(v-vMin)/(vMax-vMin))*(H3-PADT-PADB)}
+
+  var lastLockedIdx=0;pts.forEach(function(p,i){if(p.locked)lastLockedIdx=i});
+  var svg='<svg class="traj-svg" viewBox="0 0 '+W3+' '+H3+'" preserveAspectRatio="xMidYMid meet">';
+
+  // ring-year gridlines
+  RING_YEARS.forEach(function(yr){
+    if(yr<minYear||yr>maxYear)return;
+    var x=xOf(yr);
+    svg+='<line x1="'+x+'" y1="'+PADT+'" x2="'+x+'" y2="'+(H3-PADB)+'" stroke="rgba(193,68,14,.15)" stroke-width="1"></line>';
+  });
+
+  // uncertainty cone over the projected region
+  var crosses=false;
+  if(lastLockedIdx<pts.length-1){
+    var upperPts=[],lowerPts=[];
+    for(var i=lastLockedIdx;i<pts.length;i++){
+      var p=pts[i],yrsOut=p.year-pts[lastLockedIdx].year,unc=Math.min(.4,yrsOut*.035);
+      var hi=p.value*(1+unc),lo=p.value*(1-unc);
+      upperPts.push([xOf(p.year),yOf(hi)]);lowerPts.push([xOf(p.year),yOf(lo)]);
+      if(traj.kill_threshold!=null&&traj.kill_threshold>=Math.min(lo,hi)&&traj.kill_threshold<=Math.max(lo,hi))crosses=true;
+    }
+    var coneD="M"+upperPts.map(function(pp){return pp[0]+","+pp[1]}).join(" L");
+    coneD+=" L"+lowerPts.slice().reverse().map(function(pp){return pp[0]+","+pp[1]}).join(" L")+" Z";
+    svg+='<path class="traj-cone" d="'+coneD+'"></path>';
+  }
+
+  // kill_threshold line
+  if(traj.kill_threshold!=null){
+    var ty=yOf(traj.kill_threshold);
+    svg+='<line class="traj-threshold-line" x1="'+PADL+'" y1="'+ty+'" x2="'+(W3-PADR)+'" y2="'+ty+'"></line>';
+    svg+='<text class="traj-threshold-label" x="'+(W3-PADR-2)+'" y="'+(ty-3)+'" text-anchor="end">KILL THRESHOLD '+esc(traj.kill_threshold+" "+traj.unit)+'</text>';
+    if(crosses)svg+='<text class="traj-cross-alert" x="'+PADL+'" y="'+(PADT+8)+'">⚠ CONE CROSSES KILL THRESHOLD</text>';
+  }
+
+  // line segments — solid between two locked points, dotted (tipping-curved if tagged) otherwise
+  for(var si=0;si<pts.length-1;si++){
+    var a=pts[si],b=pts[si+1],solid=a.locked&&b.locked,steps=solid?1:10;
+    var d="M"+xOf(a.year)+","+yOf(a.value);
+    for(var s=1;s<=steps;s++){
+      var t=s/steps,yr=a.year+(b.year-a.year)*t,val=trajInterp(a,b,t,traj.tipping&&!solid);
+      d+=" L"+xOf(yr)+","+yOf(val);
+    }
+    svg+='<path class="'+(solid?"traj-locked-line":"traj-proj-line")+'" d="'+d+'"></path>';
+  }
+  pts.forEach(function(p){
+    svg+='<circle class="traj-dot'+(p.locked?"":" proj")+'" cx="'+xOf(p.year)+'" cy="'+yOf(p.value)+'" r="2.6"></circle>';
+    svg+='<text class="traj-axis-label" x="'+xOf(p.year)+'" y="'+(H3-PADB+14)+'" text-anchor="middle">'+p.year+"</text>";
+  });
+
+  // milestone pins — dated tree events within this chart's forward window
+  TREE.filter(function(n){var y=treeYearOf(n);return y>=nowYear()&&y<=maxYear}).slice(0,6).forEach(function(n){
+    var x=xOf(treeYearOf(n));
+    svg+='<path class="traj-pin" d="M'+x+','+(H3-PADB)+" l4,7 l-8,0 z\"><title>"+esc(n.lb)+'</title></path>';
+  });
+
+  // scrubber NOW line
+  var scrubX=xOf(Math.max(minYear,Math.min(maxYear,trajScrubYear)));
+  svg+='<line class="traj-now-line" x1="'+scrubX+'" y1="'+PADT+'" x2="'+scrubX+'" y2="'+(H3-PADB)+'"></line>';
+  svg+='<text class="traj-now-label" x="'+scrubX+'" y="'+(PADT-3)+'" text-anchor="middle">'+(trajScrubYear<=nowYear()?"NOW":trajScrubYear)+'</text>';
+
+  svg+="</svg>";
+  return svg;
+}
+function buildTrajectory(){
+  var el=$("traj-charts");if(!el)return;
+  var withTraj=THESES.filter(function(t){return t.trajectory&&t.trajectory.points&&t.trajectory.points.length});
+  var withoutTraj=THESES.filter(function(t){return!(t.trajectory&&t.trajectory.points&&t.trajectory.points.length)});
+  el.innerHTML=withTraj.map(function(th){
+    var traj=th.trajectory;
+    return'<div class="traj-card" data-tid="'+th.id+'">'
+      +'<div class="traj-card-hd"><div class="traj-card-title">'+esc(th.statement)+'</div>'
+      +(traj.tipping?'<span class="traj-tipping-badge">TIPPING</span>':"")+"</div>"
+      +'<div class="traj-card-metric">'+esc(traj.metric)+" · "+esc(traj.unit)+(traj.source?" · "+esc(traj.source):"")+"</div>"
+      +buildTrajectorySVG(th)
+      +"</div>";
+  }).join("");
+  el.querySelectorAll(".traj-card").forEach(function(card){
+    card.style.cursor="pointer";
+    card.addEventListener("click",function(){todayGoToThesis(card.dataset.tid)});
+  });
+  var noteEl=$("traj-empty-note");
+  if(noteEl)noteEl.innerHTML=withoutTraj.length?("<b>Not charted (no trajectory field yet — left out honestly rather than faked):</b> "+withoutTraj.map(function(t){return esc(t.statement.slice(0,64))+"…"}).join(" · ")):"";
+  var forksEl=$("traj-forks");
+  if(forksEl){
+    forksEl.innerHTML=SCENARIOS.map(function(sc){return'<div class="traj-fork" data-sc="'+sc.id+'"><b>'+esc(sc.nm)+"</b><br>"+esc((sc.d||"").slice(0,90))+"…</div>"}).join("");
+    forksEl.querySelectorAll(".traj-fork").forEach(function(elx){elx.onclick=function(){var sc=SCENARIOS.find(function(s){return s.id===elx.dataset.sc});if(sc)runScenario(sc)}});
+  }
+}
+(function(){
+  var yrEl=$("traj-year");if(!yrEl)return;
+  yrEl.addEventListener("input",function(){
+    trajScrubYear=+yrEl.value;
+    $("traj-year-lb").textContent=(trajScrubYear<=nowYear()?"NOW · ":"")+trajScrubYear;
+    buildTrajectory();
+  });
+})();
 
 function buildThesisRegister(){
   var el=$("thesis-list");if(!el)return;
@@ -2112,6 +2418,7 @@ function attachBiasOpenBtns(){
 var _invertMode=false;
 function toggleInvert(){
   if(!dossierCurrent)return;
+  if(dossierCurrent.reg==="country")return;
   _invertMode=!_invertMode;
   var btn=$("invert-btn");if(btn)btn.classList.toggle("on",_invertMode);
   if(_invertMode)renderInvertedDossier(dossierCurrent.reg,dossierCurrent.id);
@@ -2167,6 +2474,34 @@ function renderInvertedDossier(reg,id){
       b+="</div>";
     }
     b+=autoFlagHTML("human",h);
+  }else if(reg==="ledger"){
+    var info=LEDGER_LAYER_MAP[id];if(!info)return;
+    var layer=info.layer;
+    setDHead("LEDGER — INVERTED","var(--alert)","What breaks this moat?","INVERSION VIEW");
+    b+='<div class="invert-header">DECAY NOTE</div><div class="invert-kill">'+esc(layer.moat.decay_note)+"</div>";
+    b+=makeDSec("FALSIFICATION PROMPT","What would have to be true for "+esc(layer.name)+"'s "+esc(layer.moat.type==="none"?"lack of a moat":layer.moat.type)+" to flip — i.e. for capture to stop tracking (or start tracking) the value created here?");
+    if(layer.migration&&layer.migration.length){
+      var first=layer.migration[0],last=layer.migration[layer.migration.length-1];
+      var dir=last.pool_share_0_100>=first.pool_share_0_100?"gaining":"losing";
+      b+=makeDSec("MIGRATION CHECK",esc(layer.name)+" has been "+dir+" profit-pool share ("+first.year+": "+first.pool_share_0_100+"% → "+last.year+": "+last.pool_share_0_100+"%) — the inversion question is what specifically reverses that direction.");
+    }
+  }else if(reg==="atlas"){
+    var n=NMAP[id];if(!n)return;
+    setDHead("CHOKEPOINT — INVERTED","var(--alert)","What makes this stop binding?","INVERSION VIEW");
+    b+='<div class="invert-header">CASCADE IF DISRUPTED</div><div class="invert-kill">'+esc(n.cs||"—")+"</div>";
+    b+=makeDSec("FALSIFICATION PROMPT","What would have to happen for "+esc(n.nm)+" to stop binding — i.e. for a substitute to close the lead time to replace ("+esc(n.ld||"—")+") faster than expected?");
+    var treeLinks=(TREE||[]).filter(function(t){return(t.xref&&t.xref.atlas||[]).includes(n.id)}).map(function(t){return t.id});
+    if(treeLinks.length)b+=chipList(treeLinks,"tree","TREE PATHS THAT COULD BYPASS THIS");
+    b+=autoFlagHTML("atlas",n);
+  }else if(reg==="tree"){
+    var tn=TREE_MAP[id];if(!tn)return;
+    setDHead("TECH TREE — INVERTED","var(--alert)","What breaks this dependency?","INVERSION VIEW");
+    b+='<div class="invert-header">MECHANISM</div><div class="invert-kill">'+esc(tn.mech)+"</div>";
+    b+=makeDSec("FALSIFICATION PROMPT","What would have to fail for "+esc(tn.lb)+" to no longer hold — i.e. for one of its prerequisites to be removed, substituted, or delayed?");
+    if(tn.requires&&tn.requires.length)b+=chipList(tn.requires,"tree","PREREQUISITES THAT COULD BE PULLED");
+    var children=(TREE_CHILDREN[tn.id]||[]);
+    if(children.length)b+=chipList(children,"tree","DOWNSTREAM NODES THAT WOULD BREAK");
+    b+=autoFlagHTML("tree",tn);
   }
   $("dbody").innerHTML=b;
   attachChipNavigation();attachBiasOpenBtns();
@@ -2320,6 +2655,759 @@ function scaleCheckHTML(entity){
   return'<div class="dsec scale-check-wrap"><div class="k">SCALE CHECK'+provenanceTag("model.scale")+'</div><div class="scale-q">What breaks at 10×?</div><div class="scale-note">'+esc(entity.scale_break)+"</div></div>";
 }
 
+// ── SIMULATE (Phase C) — causal loop diagram + perturb ──────────────────────
+// The graph is induced from signed links only: any tree/atlas node that is
+// either end of a link carrying `sign` gets pulled in, then every link (signed
+// or not) between two nodes already in that set is drawn — signed edges solid
+// (colored by sign), unsigned edges dashed "unverified". No full 176-node dump.
+var SIM_RAW_MAP={};
+(Store.raw.tree.nodes||[]).forEach(function(n){SIM_RAW_MAP[n.id]=n});
+(Store.raw.atlas.nodes||[]).forEach(function(n){SIM_RAW_MAP[n.id]=n});
+function simTitleOf(id){var n=SIM_RAW_MAP[id];return n?n.title:id}
+function simRegOf(id){return id.indexOf("tree.")===0?"tree":id.indexOf("atlas.")===0?"atlas":"other"}
+
+var simNodeIds=[],simEdges=[];
+function buildSimGraph(){
+  var nodeSet={};
+  Object.keys(SIM_RAW_MAP).forEach(function(id){
+    var n=SIM_RAW_MAP[id];
+    (n.links||[]).forEach(function(l){if(l.sign!=null){nodeSet[id]=1;nodeSet[l.to]=1}});
+  });
+  simNodeIds=Object.keys(nodeSet);
+  simEdges=[];
+  simNodeIds.forEach(function(id){
+    var n=SIM_RAW_MAP[id];if(!n)return;
+    (n.links||[]).forEach(function(l){
+      if(!nodeSet[l.to])return;
+      simEdges.push({from:id,to:l.to,sign:l.sign!=null?l.sign:null,lag:l.lag_years||0,basis:l.sign_basis||""});
+    });
+  });
+}
+buildSimGraph();
+
+// DFS cycle detection over the signed-edge subgraph only — small curated
+// graph, so brute-force is fine (capped at 5 hops, dedup by node-set key).
+function findSimLoops(){
+  var signedAdj={};
+  simEdges.forEach(function(e){if(e.sign!=null)(signedAdj[e.from]=signedAdj[e.from]||[]).push(e)});
+  var loops=[],seen={};
+  simNodeIds.forEach(function(start){
+    (function dfs(node,path,signProduct){
+      (signedAdj[node]||[]).forEach(function(e){
+        if(e.to===start&&path.length>=2){
+          var key=path.slice().sort().join("|");
+          if(!seen[key]){seen[key]=1;loops.push({path:path.concat([start]),sign:signProduct*e.sign})}
+          return;
+        }
+        if(path.indexOf(e.to)!==-1)return;
+        if(path.length>=5)return;
+        dfs(e.to,path.concat([e.to]),signProduct*e.sign);
+      });
+    })(start,[start],1);
+  });
+  return loops;
+}
+var simLoops=findSimLoops();
+
+var simPos={};
+function layoutSim(w,h){
+  var cx=w/2,cy=h/2,r=Math.min(w,h)/2-70;
+  simNodeIds.forEach(function(id,i){
+    var a=(i/simNodeIds.length)*Math.PI*2-Math.PI/2;
+    simPos[id]={x:cx+r*Math.cos(a),y:cy+r*Math.sin(a)};
+  });
+}
+
+var simSelected=null,simValues={};
+var SIM_NW=150,SIM_NH=34;
+function renderSim(){
+  var wrap=$("sim-graph-wrap"),svg=$("sim-svg");if(!wrap||!svg)return;
+  var w=Math.max(600,wrap.clientWidth),h=Math.max(500,wrap.clientHeight);
+  layoutSim(w,h);
+  var ns="http://www.w3.org/2000/svg";
+  svg.setAttribute("width",w);svg.setAttribute("height",h);svg.setAttribute("viewBox","0 0 "+w+" "+h);
+  svg.innerHTML="";
+  var defs=document.createElementNS(ns,"defs");
+  function marker(id,color){var m=document.createElementNS(ns,"marker");m.setAttribute("id",id);m.setAttribute("viewBox","0 0 8 8");m.setAttribute("refX","7");m.setAttribute("refY","4");m.setAttribute("markerWidth","5");m.setAttribute("markerHeight","5");m.setAttribute("orient","auto");var p=document.createElementNS(ns,"path");p.setAttribute("d","M0 0 L8 4 L0 8 z");p.setAttribute("fill",color);m.appendChild(p);return m}
+  defs.appendChild(marker("sim-arr-pos","#ff6b55"));defs.appendChild(marker("sim-arr-neg","#c0c0c0"));defs.appendChild(marker("sim-arr-un","#484848"));
+  svg.appendChild(defs);
+
+  simEdges.forEach(function(e){
+    var a=simPos[e.from],b=simPos[e.to];if(!a||!b)return;
+    var dx=b.x-a.x,dy=b.y-a.y,dist=Math.sqrt(dx*dx+dy*dy)||1,ux=dx/dist,uy=dy/dist;
+    var x1=a.x+ux*(SIM_NW/2+4),y1=a.y+uy*(SIM_NH/2+4);
+    var x2=b.x-ux*(SIM_NW/2+10),y2=b.y-uy*(SIM_NH/2+10);
+    var mx=(x1+x2)/2,my=(y1+y2)/2,nx=-uy*22,ny=ux*22;
+    var cls=e.sign==null?"unsigned":e.sign>0?"sign-pos":"sign-neg";
+    var mk=e.sign==null?"sim-arr-un":e.sign>0?"sim-arr-pos":"sim-arr-neg";
+    var p=document.createElementNS(ns,"path");
+    p.setAttribute("d","M"+x1+","+y1+" Q"+(mx+nx)+","+(my+ny)+" "+x2+","+y2);
+    p.setAttribute("class","sim-edge "+cls);p.setAttribute("marker-end","url(#"+mk+")");
+    svg.appendChild(p);
+    if(e.sign!=null){
+      var lt=document.createElementNS(ns,"text");lt.setAttribute("x",mx+nx);lt.setAttribute("y",my+ny-4);
+      lt.setAttribute("class","sim-edge-label");lt.setAttribute("text-anchor","middle");
+      lt.textContent=(e.sign>0?"+":"−")+(e.lag?" ·"+e.lag+"y":"");
+      svg.appendChild(lt);
+    }
+  });
+
+  simNodeIds.forEach(function(id){
+    var p=simPos[id];if(!p)return;
+    var g=document.createElementNS(ns,"g");
+    g.setAttribute("class","sim-node"+(simSelected===id?" selected":""));
+    g.setAttribute("transform","translate("+(p.x-SIM_NW/2)+","+(p.y-SIM_NH/2)+")");
+    var bg=document.createElementNS(ns,"rect");bg.setAttribute("class","bg");bg.setAttribute("width",SIM_NW);bg.setAttribute("height",SIM_NH);bg.setAttribute("rx","2");g.appendChild(bg);
+    var reg=document.createElementNS(ns,"text");reg.setAttribute("class","reg");reg.setAttribute("x",6);reg.setAttribute("y",11);reg.textContent=simRegOf(id).toUpperCase();g.appendChild(reg);
+    var lbl=document.createElementNS(ns,"text");lbl.setAttribute("class","lb");lbl.setAttribute("x",6);lbl.setAttribute("y",25);
+    var title=simTitleOf(id);lbl.textContent=title.length>20?title.slice(0,19)+"…":title;g.appendChild(lbl);
+    var val=simValues[id]||0;
+    if(Math.abs(val)>0.02){
+      var pr=Math.min(18,4+Math.abs(val)*10);
+      var pulse=document.createElementNS(ns,"circle");pulse.setAttribute("class","sim-pulse");
+      pulse.setAttribute("cx",SIM_NW-10);pulse.setAttribute("cy",SIM_NH/2);pulse.setAttribute("r",pr);
+      pulse.setAttribute("opacity",Math.min(.9,Math.abs(val)*.6+.2));
+      pulse.setAttribute("fill",val>0?"#ff6b55":"#c0c0c0");
+      g.insertBefore(pulse,bg.nextSibling);
+    }
+    g.addEventListener("click",function(){selectSimNode(id)});
+    svg.appendChild(g);
+  });
+}
+function selectSimNode(id){
+  simSelected=id;
+  $("sim-perturb-plus").disabled=false;$("sim-perturb-minus").disabled=false;
+  renderSim();renderSimLeverage(id);
+}
+function renderSimLoopsList(){
+  var el=$("sim-loops-list");if(!el)return;
+  if(!simLoops.length){el.innerHTML="No closed signed loops in the curated set yet.";return}
+  el.innerHTML=simLoops.map(function(lp,i){
+    var tag=lp.sign>0?"R":"B";
+    var names=lp.path.map(function(id){return simTitleOf(id).split(" — ")[0]}).join(" → ");
+    return'<div class="sim-loop-row"><span class="sim-loop-tag '+tag+'">'+tag+(i+1)+'</span><span class="sim-loop-nodes">'+esc(names)+"</span></div>";
+  }).join("");
+}
+
+// Discrete time-step propagation — not an ODE solver. Each tick, in-flight
+// signals arrive (delayed by their edge's lag_years), then every node
+// carrying signal re-emits along its own signed edges, damped 0.65× per hop
+// so a reinforcing loop still settles instead of diverging.
+var DAMPING=0.65,MAX_TICKS=10;
+function cloneVals(v){var c={};Object.keys(v).forEach(function(k){c[k]=v[k]});return c}
+function runPerturb(dir){
+  if(!simSelected)return;
+  simValues={};simValues[simSelected]=dir;
+  var signedAdj={};simEdges.forEach(function(e){if(e.sign!=null)(signedAdj[e.from]=signedAdj[e.from]||[]).push(e)});
+  var pending=[],history=[cloneVals(simValues)];
+  Object.keys(simValues).forEach(function(nid){
+    (signedAdj[nid]||[]).forEach(function(e){pending.push({node:e.to,val:simValues[nid]*e.sign*DAMPING,tick:Math.max(1,e.lag)})});
+  });
+  for(var t=1;t<=MAX_TICKS;t++){
+    var arriving=pending.filter(function(p){return p.tick===t});
+    pending=pending.filter(function(p){return p.tick!==t});
+    var next=cloneVals(simValues);
+    arriving.forEach(function(p){next[p.node]=(next[p.node]||0)+p.val});
+    simValues=next;
+    Object.keys(simValues).forEach(function(nid){
+      var v=simValues[nid];if(Math.abs(v)<0.03)return;
+      (signedAdj[nid]||[]).forEach(function(e){pending.push({node:e.to,val:v*e.sign*DAMPING,tick:t+Math.max(1,e.lag)})});
+    });
+    history.push(cloneVals(simValues));
+  }
+  var loopPeak={};
+  simLoops.forEach(function(lp,i){
+    var peak=0;history.forEach(function(snap){lp.path.forEach(function(nid){peak=Math.max(peak,Math.abs(snap[nid]||0))})});
+    loopPeak[i]=peak;
+  });
+  renderSimDominant(loopPeak);
+  renderSim();
+}
+function renderSimDominant(loopPeak){
+  var el=$("sim-dominant");if(!el)return;
+  if(!simLoops.length){el.textContent="No closed signed loops to compare.";return}
+  var ranked=simLoops.map(function(lp,i){return{lp:lp,i:i,peak:loopPeak[i]||0}}).sort(function(a,b){return b.peak-a.peak});
+  el.innerHTML=ranked.map(function(r){
+    var tag=r.lp.sign>0?"R":"B";
+    return'<div class="sim-dominant-row"><span class="sim-loop-tag '+tag+'">'+tag+(r.i+1)+"</span>peak |signal| "+r.peak.toFixed(2)+"</div>";
+  }).join("");
+}
+function renderSimLeverage(id){
+  var hd=$("sim-leverage-hd"),el=$("sim-leverage");if(!hd||!el)return;
+  var model=MODEL_MAP["model.leverage_points"];
+  if(!model||!model.ranked_list){hd.style.display="none";el.innerHTML="";return}
+  hd.style.display="block";
+  // Meadows distinguishes #7 (gain around a REINFORCING loop) from #8
+  // (strength of a BALANCING loop) — don't collapse the two.
+  var memberLoops=simLoops.filter(function(lp){return lp.path.indexOf(id)!==-1});
+  var inReinforcing=memberLoops.some(function(lp){return lp.sign>0});
+  var inBalancing=memberLoops.some(function(lp){return lp.sign<0});
+  var rankNum=inReinforcing?7:inBalancing?8:12;
+  var rank=model.ranked_list.filter(function(r){return r.rank===rankNum})[0];
+  var note=inReinforcing
+    ?"This node sits inside a detected reinforcing (R) loop — Meadows ranks reinforcing-loop gain above tweaking a parameter, but a strong balancing loop elsewhere can still cap it."
+    :inBalancing
+    ?"This node sits inside a detected balancing (B) loop — Meadows ranks the strength of a correcting loop above tweaking a parameter."
+    :"This node has no detected signed loop through it yet — treat any nudge here as parameter-level (weak) leverage until a loop is authored.";
+  el.innerHTML='<div class="sim-leverage-row"><span class="sim-leverage-rank">#'+rank.rank+'</span><span>'+esc(rank.point)+"</span></div>"
+    +'<div style="margin-top:6px;color:var(--faint);font-size:9px">'+note+"</div>";
+}
+(function(){
+  var pp=$("sim-perturb-plus"),pm=$("sim-perturb-minus"),rs=$("sim-reset");
+  if(pp)pp.onclick=function(){runPerturb(1)};
+  if(pm)pm.onclick=function(){runPerturb(-1)};
+  if(rs)rs.onclick=function(){
+    simValues={};simSelected=null;
+    if(pp)pp.disabled=true;if(pm)pm.disabled=true;
+    var hd=$("sim-leverage-hd");if(hd)hd.style.display="none";
+    var lv=$("sim-leverage");if(lv)lv.innerHTML="";
+    var dm=$("sim-dominant");if(dm)dm.innerHTML="Run a perturbation to see which loop currently dominates.";
+    renderSim();
+  };
+})();
+var simBuilt=false;
+function buildSimulate(){renderSim();renderSimLoopsList();simBuilt=true}
+window.addEventListener("resize",function(){if($("v-simulate").classList.contains("on"))renderSim()});
+
+// ── LEDGER — value created vs. value captured ────────────────────────────
+var LEDGER_LAYER_MAP={};
+LEDGER_DOMAINS.forEach(function(dom){
+  var did=dom.id.replace(/^domain\./,"");
+  (dom.layers||[]).forEach(function(layer){
+    LEDGER_LAYER_MAP[did+"::"+layer.id]={domain:dom,did:did,layer:layer};
+  });
+});
+var ledgerYears=(function(){
+  var ys={};LEDGER_DOMAINS.forEach(function(dom){(dom.layers||[]).forEach(function(l){(l.migration||[]).forEach(function(m){ys[m.year]=1})})});
+  var arr=Object.keys(ys).map(Number).sort(function(a,b){return a-b});
+  return arr.length?arr:[2026];
+})();
+var ledgerState={did:LEDGER_DOMAINS.length?LEDGER_DOMAINS[0].id.replace(/^domain\./,""):null,year:ledgerYears[Math.floor(ledgerYears.length/2)]||2026};
+var ledgerBuilt=false,ledgerRaf=0;
+function ledgerCurrentDomain(){var d=LEDGER_DOMAINS.filter(function(d){return d.id.replace(/^domain\./,"")===ledgerState.did})[0];return d||LEDGER_DOMAINS[0]}
+function ledgerCurrentLayerKeys(){var dom=ledgerCurrentDomain();if(!dom)return[];var did=dom.id.replace(/^domain\./,"");return(dom.layers||[]).map(function(l){return{reg:"ledger",id:did+"::"+l.id}})}
+function ledgerGap(layer){return(layer.value_captured.score_0_100||0)-(layer.value_created.score_0_100||0)}
+function ledgerGapClass(layer){var g=ledgerGap(layer);return g>8?"rent":g<-8?"leak":"moat"}
+function ledgerGapLabel(cls){return cls==="rent"?"RENT":cls==="leak"?"LEAK":"MOAT"}
+// migration[] only has a handful of authored years — interpolate linearly between
+// the two nearest instead of snapping, so the scrubber reads as continuous. Never
+// extrapolate past the authored range; clamp to the first/last point instead.
+function ledgerPoolShareAt(layer,year){
+  var pts=(layer.migration||[]).slice().sort(function(a,b){return a.year-b.year});
+  if(!pts.length)return 0;
+  if(year<=pts[0].year)return pts[0].pool_share_0_100;
+  if(year>=pts[pts.length-1].year)return pts[pts.length-1].pool_share_0_100;
+  for(var i=0;i<pts.length-1;i++){
+    var a=pts[i],b=pts[i+1];
+    if(year>=a.year&&year<=b.year){
+      var t=(year-a.year)/(b.year-a.year);
+      return a.pool_share_0_100+(b.pool_share_0_100-a.pool_share_0_100)*t;
+    }
+  }
+  return pts[pts.length-1].pool_share_0_100;
+}
+function ledgerLinkChipsHTML(links){
+  if(!links||!links.length)return"";
+  var groups={atlas:[],tree:[],human:[],other:[]};
+  links.forEach(function(id){
+    var info=fromStoreId(id);
+    if(info)groups[info.reg].push(info.id);
+    else groups.other.push(id.replace(/^constraint\./,""));
+  });
+  var html="";
+  if(groups.atlas.length)html+=chipList(groups.atlas,"atlas","ATLAS CHOKEPOINTS");
+  if(groups.tree.length)html+=chipList(groups.tree,"tree","TREE NODES");
+  if(groups.human.length)html+=chipList(groups.human,"human","PEOPLE");
+  if(groups.other.length){
+    var c=CONSTRAINTS.filter(function(c){return groups.other.indexOf((c.id||"").replace(/^constraint\./,""))!==-1});
+    html+='<div class="dsec"><div class="k">CONSTRAINTS</div><div class="chip-list">'
+      +c.map(function(c){return'<span class="ledger-constraint-badge" title="'+esc(c.lead_time||"")+'">'+esc(c.title)+"</span>"}).join("")
+      +"</div></div>";
+  }
+  return html;
+}
+function buildLedgerDomainPicker(){
+  var el=$("ledger-domain-picker");if(!el)return;
+  if(LEDGER_DOMAINS.length<2){el.innerHTML="";return}
+  el.innerHTML=LEDGER_DOMAINS.map(function(dom){
+    var did=dom.id.replace(/^domain\./,"");
+    return'<button class="ttool'+(did===ledgerState.did?" on":"")+'" data-did="'+did+'">'+esc(dom.title)+"</button>";
+  }).join("");
+  el.querySelectorAll("button").forEach(function(btn){
+    btn.onclick=function(){ledgerState.did=btn.dataset.did;buildLedgerAll()};
+  });
+}
+function buildLedgerThesis(dom){
+  var el=$("ledger-thesis");if(!el||!dom)return;
+  el.innerHTML="<p>"+esc(dom.thesis||"")+provenanceTag("model.value_created_captured")+"</p>";
+}
+function buildLedgerForecast(dom){
+  var el=$("ledger-forecast");if(!el)return;
+  var f=dom&&dom.migration_forecast;
+  if(!f){el.innerHTML="";return}
+  el.innerHTML="<b>Next migration:</b> "+esc(f.statement)+' <span class="lf-kill"><b>Kill condition:</b> '+esc(f.kill_condition)+"</span>"+provenanceTag("model.value_migration");
+}
+function buildLedgerStack(dom){
+  var el=$("ledger-stack");if(!el||!dom)return;
+  var did=dom.id.replace(/^domain\./,"");
+  var layers=(dom.layers||[]).slice().sort(function(a,b){return a.order-b.order});
+  el.innerHTML=layers.map(function(layer){
+    var cls=ledgerGapClass(layer);
+    var cScore=layer.value_created.score_0_100,kScore=layer.value_captured.score_0_100;
+    var fillCls=cls; // "rent" | "leak" | "moat" — drives the bar's gap color
+    var moatTag=layer.moat.type==="none"?"NO MOAT":esc(layer.moat.type.toUpperCase());
+    return'<div class="ledger-layer-row" data-key="'+did+"::"+layer.id+'">'
+      +'<div class="ledger-layer-hd"><div class="ledger-layer-name">'+esc(layer.name)+'</div>'
+      +'<div class="ledger-layer-gap-badge '+cls+'">'+ledgerGapLabel(cls)+"</div></div>"
+      +'<div class="ledger-bar-track">'
+        +'<div class="ledger-bar-half created"><div class="ledger-bar-fill created-fill '+fillCls+'" style="width:'+cScore+'%"></div></div>'
+        +'<div class="ledger-spine"><div class="ledger-spine-chips"><span class="ledger-moat-chip">'+moatTag+"</span></div></div>"
+        +'<div class="ledger-bar-half captured"><div class="ledger-bar-fill captured-fill '+fillCls+'" style="width:'+kScore+'%"></div></div>'
+      +"</div>"
+      +'<div class="ledger-layer-scores"><span>CREATED '+cScore+'</span><span>CAPTURED '+kScore+"</span></div>"
+      +'<div class="ledger-layer-pool">pool share '+ledgerState.year+": "+Math.round(ledgerPoolShareAt(layer,ledgerState.year))+"%</div>"
+    +"</div>";
+  }).join("");
+  el.querySelectorAll(".ledger-layer-row").forEach(function(row){
+    row.onclick=function(){openDossier("ledger",row.dataset.key)};
+  });
+}
+function needLedgerAnim(){return $("v-ledger").classList.contains("on")&&motionOK}
+var ledgerParticles=null;
+function ledgerFlowResize(){
+  var svg=$("ledger-flow-svg"),wrap=$("ledger-stack-wrap");if(!svg||!wrap)return;
+  var r=wrap.getBoundingClientRect();
+  svg.setAttribute("width",r.width);svg.setAttribute("height",r.height);
+  svg.setAttribute("viewBox","0 0 "+r.width+" "+r.height);
+}
+function ledgerFlowTick(now){
+  ledgerRaf=0;
+  var svg=$("ledger-flow-svg");if(!svg||!needLedgerAnim()){return}
+  var wrap=$("ledger-stack-wrap"),wrapR=wrap.getBoundingClientRect();
+  var rows=$("ledger-stack").querySelectorAll(".ledger-layer-row");
+  if(!rows.length){ledgerRaf=requestAnimationFrame(ledgerFlowTick);return}
+  var top=rows[0].getBoundingClientRect().top-wrapR.top;
+  var bottom=rows[rows.length-1].getBoundingClientRect().bottom-wrapR.top;
+  var height=Math.max(1,bottom-top);
+  if(!ledgerParticles){
+    ledgerParticles=[];
+    for(var i=0;i<16;i++)ledgerParticles.push({x:20+Math.random()*(wrapR.width-40),t0:Math.random()*4000,speed:2600+Math.random()*1400});
+  }
+  var svgHtml="";
+  ledgerParticles.forEach(function(p){
+    var el=(now-p.t0)%p.speed/p.speed; // 0..1 progress top→bottom
+    var y=top+el*height;
+    // thin proportionally to how much value has been "captured" (retained) by
+    // layers already passed — a particle that has crossed high-capture layers
+    // has less left to give downstream, visualizing pooling vs. thinning.
+    var passedFrac=0,rowCount=rows.length;
+    for(var i=0;i<rowCount;i++){
+      var rr=rows[i].getBoundingClientRect();
+      var rowTop=rr.top-wrapR.top,rowBottom=rr.bottom-wrapR.top;
+      if(y>rowBottom){
+        var key=rows[i].dataset.key,info=LEDGER_LAYER_MAP[key];
+        if(info)passedFrac+=(info.layer.value_captured.score_0_100||0)/100/rowCount;
+      }
+    }
+    var remaining=Math.max(0.15,1-passedFrac);
+    var r2=1.6*remaining+0.4;
+    svgHtml+='<circle class="ledger-flow-particle" cx="'+p.x.toFixed(1)+'" cy="'+y.toFixed(1)+'" r="'+r2.toFixed(2)+'" opacity="'+(0.6*remaining+0.1).toFixed(2)+'"></circle>';
+  });
+  svg.innerHTML=svgHtml;
+  ledgerRaf=requestAnimationFrame(ledgerFlowTick);
+}
+function ledgerFlowStaticFrame(){
+  // prefers-reduced-motion: one static paint instead of a running rAF loop,
+  // same pattern as the starfield canvas and the atlas flow-arcs.
+  var svg=$("ledger-flow-svg");if(!svg)return;
+  ledgerFlowResize();
+  svg.innerHTML='<rect x="0" y="0" width="100%" height="100%" fill="none"></rect>';
+}
+function ledgerKickFlow(){
+  ledgerFlowResize();ledgerParticles=null;
+  if(motionOK){if(!ledgerRaf)ledgerRaf=requestAnimationFrame(ledgerFlowTick)}
+  else ledgerFlowStaticFrame();
+}
+(function(){var yr=$("ledger-year");if(!yr)return;
+  yr.min=ledgerYears[0];yr.max=ledgerYears[ledgerYears.length-1];yr.value=ledgerState.year;
+  var lb=$("ledger-year-lb");if(lb)lb.textContent=ledgerState.year;
+  yr.addEventListener("input",function(){
+    ledgerState.year=+yr.value;if(lb)lb.textContent=ledgerState.year;
+    var dom=ledgerCurrentDomain();if(dom)buildLedgerStack(dom);
+  });
+})();
+window.addEventListener("resize",function(){if($("v-ledger").classList.contains("on"))ledgerFlowResize()});
+function buildLedgerAll(){
+  var dom=ledgerCurrentDomain();
+  buildLedgerDomainPicker();
+  buildLedgerThesis(dom);
+  buildLedgerForecast(dom);
+  buildLedgerStack(dom);
+  ledgerKickFlow();
+}
+function buildLedger(){
+  if(!LEDGER_DOMAINS.length){var el=$("ledger-stack");if(el)el.innerHTML='<div class="helm-empty">No ledger domains seeded yet.</div>';return}
+  buildLedgerAll();
+  ledgerBuilt=true;
+}
+function ledgerScoreBarHTML(label,score,note){
+  return'<div class="ledger-dsec-scorebar-wrap"><div style="display:flex;justify-content:space-between;font-size:9px;color:var(--dim)"><span>'+esc(label)+'</span><span>'+score+'/100</span></div>'
+    +'<div class="ledger-dsec-scorebar"><div class="ledger-dsec-scorefill" style="width:'+score+'%;background:var(--rust)"></div></div>'
+    +(note?'<div class="v" style="margin-top:2px">'+esc(note)+"</div>":"")+"</div>";
+}
+function renderLedgerDossier(key){
+  var info=LEDGER_LAYER_MAP[key];if(!info)return;
+  var layer=info.layer,dom=info.domain;
+  var cls=ledgerGapClass(layer);
+  setDHead("LEDGER — "+esc(dom.title),cls==="rent"?"var(--choke)":cls==="leak"?"var(--leak)":"var(--min)",
+    layer.name,ledgerGapLabel(cls)+" &nbsp;"+confPill(dom.cf||"md"));
+  var b="";
+  b+='<div class="dsec"><div class="k">VALUE CREATED'+provenanceTag("model.value_created_captured")+'</div>'
+    +ledgerScoreBarHTML("value created",layer.value_created.score_0_100,layer.value_created.mechanism)
+    +'<div class="v" style="color:var(--dim);font-size:10px">'+esc(layer.value_created.basis)+"</div></div>";
+  // Smiling Curve: margin sits highest at the two ends of a chain and lowest in
+  // the middle — tag only applies to layers that are neither the first nor the
+  // last in their domain, i.e. it's a real positional claim, not decoration.
+  var orders=(dom.layers||[]).map(function(l){return l.order});
+  var isMiddle=layer.order>Math.min.apply(null,orders)&&layer.order<Math.max.apply(null,orders);
+  var vcConf=layer.value_captured.confidence;
+  var vcConfBadge=vcConf==="asserted"?'<span class="conf lo" title="No disclosed metric backs this score — an editorial judgment call, not a measurement">ASSERTED</span>':confPill(vcConf);
+  b+='<div class="dsec"><div class="k">VALUE CAPTURED'+(isMiddle?provenanceTag("model.smiling_curve"):"")+'</div>'
+    +ledgerScoreBarHTML("value captured",layer.value_captured.score_0_100,layer.value_captured.metric||"")
+    +'<div class="v" style="color:var(--dim);font-size:10px">'+esc(layer.value_captured.basis)+" "+vcConfBadge+"</div></div>";
+  // Picks and Shovels / Aggregation Theory are moat-mechanism-specific, not
+  // generic decoration: cornered resource = selling the tool everyone needs
+  // regardless of who wins downstream; switching costs = owning a relationship
+  // (a qualification, a platform) that's costly for the other side to leave.
+  var moatTagExtra=layer.moat.type==="cornered resource"?provenanceTag("model.picks_and_shovels")
+    :layer.moat.type==="switching costs"?provenanceTag("model.aggregation_theory"):"";
+  b+='<div class="dsec"><div class="k">MOAT'+provenanceTag("model.seven_powers")+moatTagExtra+'</div>'
+    +'<div class="v"><b style="color:var(--txt)">'+esc(layer.moat.type==="none"?"None":layer.moat.type)+'</b> · strength '+layer.moat.strength_0_100+"/100</div>"
+    +'<div class="ledger-dsec-scorebar"><div class="ledger-dsec-scorefill" style="width:'+layer.moat.strength_0_100+'%;background:var(--min)"></div></div>'
+    +'<div class="v" style="color:var(--dim);font-size:10px">'+esc(layer.moat.decay_note)+provenanceTag("model.red_queen")+"</div></div>";
+  if(layer.migration&&layer.migration.length){
+    b+='<div class="dsec"><div class="k">PROFIT-POOL MIGRATION'+provenanceTag("model.value_migration")+'</div><div class="v">'
+      +layer.migration.map(function(m){return m.year+": "+m.pool_share_0_100+"%"}).join(" → ")
+      +"</div></div>";
+  }
+  b+=ledgerLinkChipsHTML(layer.links);
+  $("dbody").innerHTML=b;
+  attachChipNavigation();
+}
+
+// ── HELM (Phase D) — private personal lens ───────────────────────────────
+// Renders only if pilot.json fetches successfully. It is gitignored and
+// never deployed, so on the public site this fetch always 404s and every
+// function below simply never runs — no tab, no DOM content, no data.
+// Every derivation is an explicit, labeled heuristic over pilot.json +
+// data already public elsewhere in the app; nothing here is invented.
+var HELM_PILOT=null;
+// pilot.skills[] entries range from terse tags ("robotics") to annotated,
+// parenthetical phrases ("robotics (incoming — NTU MSc, Aug 2026)"). A raw
+// substring match against short window mechanism text defeats the latter
+// even when the underlying skill is a real, relevant match — so break each
+// skill into its component tokens (base phrase + parenthetical parts, split
+// on / , & "and") before matching. Only used for match detection; the
+// original skill string is still what's shown to the user.
+function helmSkillTokens(skill){
+  var paren=[];
+  var base=String(skill).replace(/\(([^)]*)\)/g,function(_,inner){paren.push(inner);return " "});
+  var tokens=[];
+  [base].concat(paren).forEach(function(part){
+    part.split(/[\/,&]|\band\b/i).forEach(function(t){
+      t=t.replace(/^[\s—-]+|[\s—-]+$/g,"").toLowerCase();
+      if(t.length>=4)tokens.push(t);
+    });
+  });
+  return tokens;
+}
+function helmSkillMatchesText(skill,text){
+  // word-boundary, not indexOf: a plain substring check matches "rest" inside
+  // "interest"/"restart" — false positives that would misrepresent the match
+  // as a real skill hit when it's an accident of spelling.
+  return helmSkillTokens(skill).some(function(tok){
+    return new RegExp("\\b"+tok.replace(/[.*+?^${}()|[\]\\]/g,"\\$&")+"\\b").test(text);
+  });
+}
+function helmWindowMatches(pilot){
+  var skills=pilot.skills||[];
+  var candidates=TRENDS.filter(function(t){return t.status==="open"||t.status==="forming"});
+  var matches=[];
+  candidates.forEach(function(t){
+    var text=(t.name+" "+t.mechanism+" "+t.class).toLowerCase();
+    var hitSkills=skills.filter(function(s){return helmSkillMatchesText(s,text)});
+    if(hitSkills.length)matches.push({window:t,skills:hitSkills});
+  });
+  return matches;
+}
+function helmDeriveAnatomy(pilot){
+  var riskText=(pilot.risk||"").toLowerCase();
+  var asymmetry=riskText.indexOf("high")!==-1?4.5:riskText.indexOf("moderate")!==-1?3:riskText.indexOf("low")!==-1?1.5:2.5;
+  if((pilot.capital_band||"").toLowerCase().indexOf("small")!==-1)asymmetry=Math.min(5,asymmetry+0.5);
+  var forming=TRENDS.filter(function(t){return t.status==="forming"});
+  var skills=pilot.skills||[];
+  var hits=0;
+  forming.forEach(function(t){var text=(t.name+" "+t.mechanism).toLowerCase();skills.forEach(function(s){if(helmSkillMatchesText(s,text))hits++})});
+  var consensus=Math.min(5,1+hits*1.2);
+  var stake=(pilot.mobility||"").toLowerCase().indexOf("high")!==-1?4:2.5;
+  return{asymmetry:asymmetry,consensus:consensus,stake:stake};
+}
+function buildHelmAnatomy(pilot){
+  var el=$("helm-anatomy");if(!el)return;
+  var a=helmDeriveAnatomy(pilot);
+  var W2=560,H2=320,PADL=50,PADR=20,PADT=16,PADB=40,plotW=W2-PADL-PADR,plotH=H2-PADT-PADB;
+  var svg='<svg viewBox="0 0 '+W2+' '+H2+'" style="width:100%;height:auto;max-width:560px">';
+  svg+='<line x1="'+PADL+'" y1="'+PADT+'" x2="'+PADL+'" y2="'+(PADT+plotH)+'" stroke="#2c2c2c"></line>';
+  svg+='<line x1="'+PADL+'" y1="'+(PADT+plotH)+'" x2="'+(PADL+plotW)+'" y2="'+(PADT+plotH)+'" stroke="#2c2c2c"></line>';
+  svg+='<text x="'+(PADL+plotW/2)+'" y="'+(PADT+plotH+30)+'" text-anchor="middle" class="scatter-axis-label">CONSENSUS DELTA →</text>';
+  svg+='<text x="12" y="'+(PADT+plotH/2)+'" text-anchor="middle" class="scatter-axis-label" transform="rotate(-90,12,'+(PADT+plotH/2)+')">ASYMMETRY →</text>';
+  HUMANS.forEach(function(h){
+    (h.bets||[]).forEach(function(bet){
+      if(!bet.anatomy)return;
+      var cx=PADL+(bet.anatomy.consensus||0)/5*plotW,cy=PADT+(1-(bet.anatomy.asymmetry||0)/5)*plotH;
+      svg+='<circle cx="'+cx+'" cy="'+cy+'" r="3" fill="rgba(120,120,120,.28)"></circle>';
+    });
+  });
+  var px=PADL+a.consensus/5*plotW,py=PADT+(1-a.asymmetry/5)*plotH;
+  svg+='<circle cx="'+px+'" cy="'+py+'" r="'+(4+a.stake)+'" fill="var(--rust)" stroke="#fff" stroke-width="1"></circle>';
+  svg+='<text x="'+(px+12)+'" y="'+(py+4)+'" fill="var(--rust)" font-size="9">YOU</text>';
+  svg+="</svg>";
+  el.innerHTML=svg+'<div class="helm-scatter-note">Editorial estimate derived from pilot.json (risk tolerance, capital_band, skill overlap with forming windows) — not a measurement, same status as every human bet-anatomy score in this tool. Gray dots are the 19 tracked humans\' real scored bets, for calibration.</div>';
+}
+function buildHelmWindows(pilot){
+  var el=$("helm-windows");if(!el)return;
+  var matches=helmWindowMatches(pilot);
+  if(!matches.length){el.innerHTML='<div class="helm-empty">No skill-to-window text match against open/forming windows. Add more specific skills[] to pilot.json — or this is honestly a fallow moment, not every pass has to surface one.</div>';return}
+  el.innerHTML=matches.map(function(m){
+    var t=m.window;
+    return'<div class="helm-window-card" data-id="'+t.id+'"><div class="helm-window-hd"><div class="helm-window-title">'+esc(t.name)+'</div><div class="helm-window-status">'+esc(t.status.toUpperCase())+' · closes '+esc(t.expected_close||"?")+'</div></div>'
+      +'<div class="helm-window-reason"><b>Why it matches:</b> your skill'+(m.skills.length>1?"s":"")+' ('+esc(m.skills.join(", "))+') appear'+(m.skills.length>1?"":"s")+' directly in this window\'s mechanism. <b>Source:</b> window.'+esc(t.id)+"</div></div>";
+  }).join("");
+  el.querySelectorAll(".helm-window-card").forEach(function(card){card.onclick=function(){openDossier("trend",card.dataset.id)}});
+}
+function buildHelmLeverage(pilot){
+  var el=$("helm-leverage");if(!el)return;
+  var model=MODEL_MAP["model.leverage_points"];
+  if(!model||!model.ranked_list){el.innerHTML='<div class="helm-empty">model.leverage_points not found.</div>';return}
+  var skillCounts={};
+  TRENDS.filter(function(t){return t.status==="open"||t.status==="forming"}).forEach(function(t){
+    var text=(t.name+" "+t.mechanism).toLowerCase();
+    (pilot.skills||[]).forEach(function(s){if(helmSkillMatchesText(s,text))skillCounts[s]=(skillCounts[s]||0)+1});
+  });
+  var rows=(pilot.skills||[]).map(function(s){
+    var count=skillCounts[s]||0;
+    var rankNum=count===0?null:count===1?5:count<=2?9:12;
+    return{skill:s,count:count,rankNum:rankNum};
+  }).filter(function(r){return r.rankNum});
+  if(!rows.length){el.innerHTML='<div class="helm-empty">No skills map to any open/forming window yet — nothing to rank.</div>';return}
+  rows.sort(function(a,b){return a.rankNum-b.rankNum});
+  el.innerHTML=rows.map(function(r){
+    var pt=model.ranked_list.filter(function(x){return x.rank===r.rankNum})[0];
+    return'<div class="helm-leverage-row"><span class="helm-leverage-rank">#'+r.rankNum+'</span><span><b style="color:var(--txt)">'+esc(r.skill)+'</b> — '+esc(pt.point)+" ("+r.count+" window match"+(r.count===1?"":"es")+")</span></div>";
+  }).join("");
+}
+function buildHelmBets(pilot){
+  var el=$("helm-bets");if(!el)return;
+  var matches=helmWindowMatches(pilot).slice(0,4);
+  if(!matches.length){el.innerHTML='<div class="helm-empty">No concrete bet surfaced this pass — an honest null result, not a bug.</div>';return}
+  el.innerHTML=matches.map(function(m){
+    var t=m.window;
+    var asym=t.status==="forming"?"high (early, thin — most of the payoff is still unpriced)":"moderate (window open, some payoff already priced in)";
+    return'<div class="helm-bet-card"><div class="helm-bet-title">'+esc(t.name)+'</div>'
+      +'<div class="helm-bet-row"><b>Asymmetry:</b> '+asym+"</div>"
+      +'<div class="helm-bet-row helm-bet-why"><b style="color:inherit">Why you specifically:</b> '+esc(m.skills.join(", "))+" from your skills[] is exactly the mechanism this window runs on, and location_next ("+esc(pilot.location_next||"unspecified")+") doesn't rule it out.</div>"
+      +'<div class="helm-bet-row helm-bet-kill"><b style="color:inherit">Falsifier:</b> '+esc(t.decay_logic||"no decay_logic authored yet — treat as unverified until it is")+"</div>"
+      +'<div class="helm-bet-row"><b>Source:</b> window.'+esc(t.id)+"</div></div>";
+  }).join("");
+}
+function buildHelmInversion(pilot){
+  var el=$("helm-inversion");if(!el)return;
+  var bets=(pilot.active_bets||[]).map(function(b){return b.toLowerCase()});
+  var closing=TRENDS.filter(function(t){return t.status==="closing"||t.status==="closed"});
+  var conflicts=[];
+  bets.forEach(function(bet){
+    var betWords=bet.split(/\W+/).filter(function(w){return w.length>=5});
+    closing.forEach(function(t){
+      var text=(t.name+" "+t.mechanism+" "+t.decay_logic).toLowerCase();
+      var hit=betWords.filter(function(w){return text.indexOf(w)!==-1})[0];
+      if(hit)conflicts.push({bet:bet,window:t,word:hit});
+    });
+  });
+  if(!conflicts.length){el.innerHTML='<div class="helm-empty">No detected overlap between active_bets[] and a closing/closed window — either genuinely clean, or your bets are described too vaguely to cross-reference. Both are worth knowing.</div>';return}
+  el.innerHTML=conflicts.map(function(c){
+    return'<div class="helm-inversion-row"><b>'+esc(c.bet)+'</b> shares language ("'+esc(c.word)+'") with <b>'+esc(c.window.name)+"</b>, which is "+c.window.status.toUpperCase()+". "+esc(c.window.decay_logic||"")+" — if this bet depends on that window staying open, that's the thing to re-underwrite first.</div>";
+  }).join("");
+}
+function buildHelmClock(pilot){
+  var el=$("helm-clock");if(!el)return;
+  var matches=helmWindowMatches(pilot);
+  var ny=nowYear(),endY=ny+(pilot.horizon_years||10);
+  var W3=900,H3=90,PADL=30,PADR=20,PADT=16,PADB=26;
+  function xOf(yr){return PADL+(yr-ny)/(endY-ny)*(W3-PADL-PADR)}
+  if(!matches.length){el.innerHTML='<div class="helm-empty">No window matches to plot on your personal clock yet.</div>';return}
+  var svg='<svg id="helm-clock-svg" viewBox="0 0 '+W3+' '+H3+'">';
+  svg+='<line x1="'+PADL+'" y1="'+(H3-PADB)+'" x2="'+(W3-PADR)+'" y2="'+(H3-PADB)+'" stroke="#2c2c2c"></line>';
+  svg+='<text x="'+xOf(ny)+'" y="'+(H3-PADB+14)+'" font-size="8" fill="var(--faint)" text-anchor="middle">NOW·'+ny+"</text>";
+  svg+='<text x="'+xOf(endY)+'" y="'+(H3-PADB+14)+'" font-size="8" fill="var(--faint)" text-anchor="middle">'+endY+" (horizon)</text>";
+  matches.forEach(function(m,i){
+    var closeY=parseInt((m.window.expected_close||"").replace(/[^0-9]/g,"").slice(0,4))||endY;
+    if(closeY>endY)closeY=endY;
+    var x=xOf(closeY);
+    svg+='<circle cx="'+x+'" cy="'+(H3-PADB)+'" r="4" fill="var(--rust)"></circle>';
+    svg+='<text x="'+x+'" y="'+(H3-PADB-8-(i%3)*11)+'" font-size="8" fill="var(--rust)" text-anchor="middle">'+esc(m.window.name.slice(0,22))+"</text>";
+  });
+  svg+="</svg>";
+  el.innerHTML=svg;
+}
+// pilot.json isn't a registry with a validator behind it — it's one person's file,
+// hand-written or agent-generated, and schemas drift (flat strings vs. nested
+// objects, risk vs. risk_tolerance, capital_band vs. capital.financial). Normalize
+// defensively rather than crash or silently misread; never invent a value that
+// wasn't there.
+function helmNormalize(raw){
+  var p=Object.assign({},raw);
+  if(p.risk==null&&raw.risk_tolerance!=null)p.risk=raw.risk_tolerance;
+  if(p.capital_band==null&&raw.capital){
+    var c=raw.capital;
+    p.capital_band=[c.financial,c.human?("human capital "+c.human):null].filter(Boolean).join(", ");
+  }
+  if(p.location_now&&typeof p.location_now==="object"){
+    var lnow=p.location_now;p.location_now=[lnow.city,lnow.country].filter(Boolean).join(", ");
+  }
+  if(p.location_next&&typeof p.location_next==="object"){
+    var lnext=p.location_next;
+    p.location_next=[lnext.city,lnext.anchor].filter(Boolean).join(" — ")+(lnext.starts?(" (starts "+lnext.starts+")"):"");
+  }
+  // active_bets: keep the rich objects (they carry an authored kill_condition,
+  // better than any heuristic) but also produce flat strings for the inversion
+  // text-overlap check, which only understands strings.
+  p._activeBetObjs=(raw.active_bets||[]).filter(function(b){return b&&typeof b==="object"});
+  p.active_bets=(raw.active_bets||[]).map(function(b){
+    if(typeof b==="string")return b;
+    return[b.name,b.thesis,b.kill_condition].filter(Boolean).join(" — ");
+  });
+  p.hard_constraints=(raw.hard_constraints||[]).map(function(hc){
+    if(typeof hc==="string")return hc;
+    return[hc.constraint,hc.note].filter(Boolean).join(" — ");
+  });
+  p.skills=(raw.skills||[]).map(function(s){return typeof s==="string"?s:String(s)});
+  return p;
+}
+function helmAllLedgerLayers(){
+  var out=[];
+  LEDGER_DOMAINS.forEach(function(dom){
+    var did=dom.id.replace(/^domain\./,"");
+    (dom.layers||[]).forEach(function(layer){out.push({dom:dom,did:did,layer:layer})});
+  });
+  return out;
+}
+function helmLedgerLayerText(layer){
+  return(layer.name+" "+(layer.value_created.mechanism||"")+" "+(layer.value_captured.metric||"")
+    +" "+(layer.moat.type||"")+" "+(layer.moat.decay_note||"")).toLowerCase();
+}
+var HELM_STOPWORDS=["that","with","from","this","have","been","were","into","doesn","the","and","for",
+  "real","most","more","than","when","what","where","which","while","your","their","them","then","also",
+  "just","only","some","such","even","much","many","less","near","over","under","upon","being","would",
+  "could","should","about","after","before","between","through","without","within","still","does",
+  // generic AI-domain words: nearly every bet and every layer mentions these,
+  // so on their own they're noise, not a real thematic match.
+  "model","models","data","system","systems","using","based","technology"];
+// crude suffix-stripping, not real stemming — enough to unify "switching cost"
+// (bet) with "switching costs" (a layer's moat.type) without needing a stemmer
+// dependency; wrong on some words, but only used for match detection, never display.
+function helmStem(w){
+  if(w.length>5&&w.slice(-3)==="ies")return w.slice(0,-3)+"y";
+  if(w.length>5&&w.slice(-2)==="es")return w.slice(0,-2);
+  if(w.length>4&&w.slice(-1)==="s")return w.slice(0,-1);
+  return w;
+}
+function helmWordTokens(text){
+  return String(text).toLowerCase().split(/[^a-z0-9]+/)
+    .filter(function(w){return w.length>=4&&HELM_STOPWORDS.indexOf(w)===-1})
+    .map(helmStem);
+}
+// Bet text is full sentences, not short skill tags, so this needs a different
+// match than helmSkillMatchesText's phrase-substring approach (which correctly
+// requires whole-token matches for tag-like skills, but a 100-char sentence
+// almost never appears verbatim elsewhere). Word-overlap instead — and require
+// 2+ shared significant words so a single generic word doesn't fire a false match.
+function helmBetMatchesLayer(betText,layerText){
+  var betTokens={};helmWordTokens(betText).forEach(function(t){betTokens[t]=1});
+  var shared=[],seen={};
+  helmWordTokens(layerText).forEach(function(t){if(betTokens[t]&&!seen[t]){seen[t]=1;shared.push(t)}});
+  return shared.length>=2?shared:null;
+}
+// Cross pilot.active_bets against ledger.json: (1) flag bets whose text overlaps
+// a LEAK layer — a value-creation play sitting where this tool already shows
+// capture structurally lagging creation; (2) surface layers marked
+// solo_accessible with a moat type a solo/small team could plausibly hold
+// (switching costs / cornered resource / process power — never "none", and
+// never a layer that needs fab-scale capital regardless of its moat type).
+function buildHelmCapture(pilot){
+  var el=$("helm-capture");if(!el)return;
+  var allLayers=helmAllLedgerLayers();
+  if(!allLayers.length){el.innerHTML='<div class="helm-empty">No ledger domains seeded yet — nothing to cross-reference.</div>';return}
+  var betTexts=(pilot._activeBetObjs&&pilot._activeBetObjs.length)
+    ?pilot._activeBetObjs.map(function(b){return{name:b.name||b.id||"bet",text:[b.name,b.thesis,b.kill_condition].filter(Boolean).join(" — ")}})
+    :(pilot.active_bets||[]).map(function(s){return{name:(s.split(" — ")[0])||s,text:s}});
+  var leakHits=[];
+  betTexts.forEach(function(bet){
+    allLayers.forEach(function(rec){
+      if(ledgerGapClass(rec.layer)!=="leak")return;
+      var overlap=helmBetMatchesLayer(bet.text,helmLedgerLayerText(rec.layer));
+      if(overlap)leakHits.push({bet:bet,rec:rec,overlap:overlap});
+    });
+  });
+  var soloMoatTypes=["switching costs","cornered resource","process power"];
+  var soloLayers=allLayers.filter(function(rec){
+    return rec.layer.solo_accessible&&rec.layer.solo_accessible.value&&soloMoatTypes.indexOf(rec.layer.moat.type)!==-1;
+  });
+  var html='<div class="helm-capture-sub">Your bets sitting in leaking layers'+provenanceTag("model.value_created_captured")+'</div>';
+  if(!leakHits.length){
+    html+='<div class="helm-empty">No text overlap between active_bets[] and any leaking ledger layer this pass — an honest null result, not a bug.</div>';
+  }else{
+    html+=leakHits.map(function(h){
+      var l=h.rec.layer;
+      return'<div class="helm-bet-card"><div class="helm-bet-title">'+esc(h.bet.name)+" → "+esc(l.name)+'</div>'
+        +'<div class="helm-bet-row"><b>Gap:</b> value created '+l.value_created.score_0_100+'/100 vs. captured '+l.value_captured.score_0_100+"/100 — LEAK</div>"
+        +'<div class="helm-bet-row helm-bet-why"><b style="color:inherit">Why this is a blindspot:</b> shares language ('+esc(h.overlap.join(", "))+") with "+esc(l.name)+", a layer where this tool already tracks value creation outrunning capture."+"</div>"
+        +'<div class="helm-bet-row helm-bet-kill"><b style="color:inherit">Kill condition:</b> '+esc(l.moat.decay_note)+"</div>"
+        +'<div class="helm-bet-row"><b>Source:</b> ledger.'+esc(h.rec.did)+"."+esc(l.id)+"</div></div>";
+    }).join("");
+  }
+  html+='<div class="helm-capture-sub" style="margin-top:16px">Layers where a solo technical operator can actually hold a moat'+provenanceTag("model.seven_powers")+'</div>';
+  if(!soloLayers.length){
+    html+='<div class="helm-empty">No layer in the tracked ledger domains is both solo-accessible and moat-bearing this pass.</div>';
+  }else{
+    html+=soloLayers.map(function(rec){
+      var l=rec.layer;
+      return'<div class="helm-window-card" data-key="'+esc(rec.did)+"::"+esc(l.id)+'"><div class="helm-window-hd"><div class="helm-window-title">'+esc(l.name)+'</div><div class="helm-window-status">'+esc(l.moat.type.toUpperCase())+" · strength "+l.moat.strength_0_100+"/100</div></div>"
+        +'<div class="helm-window-reason">'+esc(l.solo_accessible.note)+"</div>"
+        +'<div class="helm-window-reason"><b>Kill condition:</b> '+esc(l.moat.decay_note)+"</div>"
+        +'<div class="helm-window-reason"><b>Source:</b> ledger.'+esc(rec.did)+"."+esc(l.id)+"</div></div>";
+    }).join("");
+  }
+  el.innerHTML=html;
+  el.querySelectorAll(".helm-window-card[data-key]").forEach(function(card){
+    card.onclick=function(){switchTab("ledger");setTimeout(function(){openDossier("ledger",card.dataset.key)},60)};
+  });
+}
+function buildHelm(rawPilot){
+  var pilot=helmNormalize(rawPilot);
+  var hd=document.querySelector("#v-helm h2.sec");
+  if(hd&&(rawPilot.callsign||rawPilot.name))hd.textContent="Helm — "+(rawPilot.callsign||rawPilot.name);
+  buildHelmAnatomy(pilot);buildHelmWindows(pilot);buildHelmLeverage(pilot);
+  buildHelmBets(pilot);buildHelmInversion(pilot);buildHelmClock(pilot);buildHelmCapture(pilot);
+}
+fetch("pilot.json").then(function(r){
+  if(!r.ok)throw new Error("no pilot.json");
+  return r.json();
+}).then(function(data){
+  HELM_PILOT=data;
+  var btn=$("helm-tab-btn");if(btn)btn.style.display="";
+  buildHelm(HELM_PILOT);
+}).catch(function(){/* no pilot.json — HELM stays hidden, by design */});
+
 // ── Init Phase 5 ─────────────────────────────────────────────────────────
 buildProvenanceFooter();
 
@@ -2334,6 +3422,62 @@ document.addEventListener("mouseover",function(e){
 document.addEventListener("mouseout",function(e){
   if(e.target.closest(".model-tag"))$("model-tooltip").style.display="none";
 });
+
+// ── ORRERY: mission-status glyphs ────────────────────────────────────────
+// ◉ live · ✕ killed · ⊙ watching · ◈ confirmed — derived from real fields, never fabricated.
+function missionGlyph(kind,entity){
+  if(kind==="thesis"){
+    var kw=entity.kill_watch;
+    if(kw&&kw.proximity!=null&&kw.proximity>=0.8)return{g:"✕",label:"KILLED — kill_watch near trigger",cls:"mg-killed"};
+    if(entity.confidence==="hi"&&entity.margin&&(entity.margin.tightness==="wide"||entity.margin.tightness==="adequate"))return{g:"◈",label:"CONFIRMED — high confidence, adequate margin",cls:"mg-confirmed"};
+    if(kw)return{g:"⊙",label:"WATCHING — kill_watch active",cls:"mg-watching"};
+    return{g:"◉",label:"LIVE",cls:"mg-live"};
+  }
+  if(kind==="window"){
+    if(entity.status==="closed")return{g:"✕",label:"CLOSED",cls:"mg-killed"};
+    if(entity.status==="open")return{g:"◉",label:"OPEN",cls:"mg-live"};
+    if(entity.status==="closing"||entity.status==="forming")return{g:"⊙",label:"WATCHING — "+entity.status.toUpperCase(),cls:"mg-watching"};
+    return{g:"◈",label:"—",cls:"mg-confirmed"};
+  }
+  return{g:"⊙",label:"",cls:"mg-watching"};
+}
+function missionGlyphHTML(kind,entity){
+  var m=missionGlyph(kind,entity);
+  return'<span class="mg '+m.cls+' mg-inline" title="'+esc(m.label)+'">'+m.g+"</span>";
+}
+
+// Title block GEN stamp
+(function(){var el=$("tb-gen");if(el)el.textContent="GEN "+(meta.last_updated||"—")})();
+
+// Thesis cards: prepend a mission glyph to each card
+(function(){
+  var _origBuildThesisGlyph=buildThesisRegister;
+  buildThesisRegister=function(){
+    _origBuildThesisGlyph();
+    var el=$("thesis-list");if(!el)return;
+    el.querySelectorAll(".thesis-card").forEach(function(card,i){
+      var th=THESES[i];if(!th||card.querySelector(".mg-inline"))return;
+      var numEl=card.querySelector(".thesis-num");
+      if(numEl)numEl.insertAdjacentHTML("afterbegin",missionGlyphHTML("thesis",th));
+    });
+  };
+})();
+
+// Trend/window kanban cards: prepend a mission glyph to each card.
+// buildTrends() only runs once, eagerly, at init — before this patch exists —
+// so re-render immediately after patching or the glyphs never appear.
+(function(){
+  var _origBuildTrendsGlyph=buildTrends;
+  buildTrends=function(){
+    _origBuildTrendsGlyph();
+    document.querySelectorAll(".trend-card[data-id]").forEach(function(card){
+      var t=TREND_MAP[card.dataset.id];if(!t)return;
+      var nameEl=card.querySelector(".tc-name");
+      if(nameEl&&!nameEl.querySelector(".mg-inline"))nameEl.insertAdjacentHTML("afterbegin",missionGlyphHTML("window",t));
+    });
+  };
+  buildTrends();
+})();
 
 })(); // end engine IIFE
 } // end initApp

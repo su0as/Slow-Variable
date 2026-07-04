@@ -3,28 +3,32 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>SLOW VARIABLES — Earth Tech Tree v3</title>
-<meta name="description" content="A worldview as code — chokepoints, tech-tree causality, high-agency bets, and market windows, cross-linked with schema-enforced falsifiability. Every thesis carries a kill condition.">
+<title>MAGNITUDE — Slow Variables · rev 3</title>
+<meta name="description" content="MAGNITUDE — finds the order-of-magnitude gaps: value vs. capture, consensus vs. reality, price vs. truth. Chokepoints, tech-tree causality, high-agency bets, and market windows, cross-linked with schema-enforced falsifiability. Every thesis carries a kill condition.">
 <!-- og:url / og:image use a best-guess production domain — update after first Vercel deploy confirms the real one -->
 <meta property="og:type" content="website">
-<meta property="og:title" content="Slow Variables">
-<meta property="og:description" content="A worldview as code — chokepoints, tech-tree causality, high-agency bets, and market windows, cross-linked with schema-enforced falsifiability.">
+<meta property="og:title" content="MAGNITUDE — Slow Variables">
+<meta property="og:description" content="Finds the order-of-magnitude gaps — value vs. capture, consensus vs. reality, price vs. truth.">
 <meta property="og:url" content="https://slow-variable.vercel.app/">
 <meta property="og:image" content="https://slow-variable.vercel.app/assets/og.png">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="Slow Variables">
-<meta name="twitter:description" content="A worldview as code — falsifiable, cross-linked, AI-maintained.">
+<meta name="twitter:title" content="MAGNITUDE — Slow Variables">
+<meta name="twitter:description" content="Finds the order-of-magnitude gaps — value vs. capture, consensus vs. reality, price vs. truth.">
 <meta name="twitter:image" content="https://slow-variable.vercel.app/assets/og.png">
+<link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
 <link rel="stylesheet" href="css/main.css">
 </head>
 <body>
 
+<!-- STARFIELD (behind everything, non-interactive) -->
+<canvas id="starfield"></canvas>
+
 <!-- ONBOARDING -->
 <div id="onboard">
   <div id="onboard-box">
-    <h2>Slow Variables</h2>
+    <h2>MAGNITUDE — Slow Variables</h2>
     <div class="ob-step"><div class="ob-n">1</div><div class="ob-text">Start on <em>Today</em> — it answers one question: what does this worldview say right now? Three cards, one plain-English claim, the windows closing soonest.</div></div>
     <div class="ob-step"><div class="ob-n">2</div><div class="ob-text">Every card is a door. Click through to a full dossier — the map, the tech tree, the people who bet on it, all cross-linked.</div></div>
     <div class="ob-step"><div class="ob-n">3</div><div class="ob-text">The tabs are grouped: <em>Understand</em> the claims, <em>Act</em> on them, <em>Maintain</em> the data. Use <em>Cmd/Ctrl-K</em> to jump anywhere.</div></div>
@@ -66,8 +70,8 @@
 <!-- HEADER -->
 <div id="hdr">
   <div id="mast">
-    <div class="t">SLOW VARIABLES</div>
-    <div class="s">Earth Tech Tree · v3</div>
+    <div class="mast-row"><span class="om-mark" title="MAGNITUDE">OM</span><div class="t">MAGNITUDE</div></div>
+    <div class="s">Orders of Magnitude · Slow Variables</div>
   </div>
   <div id="tabs">
     <div class="tab-group" data-group="understand">
@@ -77,6 +81,8 @@
         <button class="tab" data-v="thesis" title="Thesis Register — explicit claims">Thesis</button>
         <button class="tab" data-v="atlas" title="Constraint Atlas">Atlas</button>
         <button class="tab" data-v="tree" title="Tech Tree — Factorio mechanics">Tree</button>
+        <button class="tab" data-v="trajectory" title="TRAJECTORY — NOW→2050 axis, cones of uncertainty, kill-watch thresholds">Trajectory</button>
+        <button class="tab" data-v="ledger" title="LEDGER — value created vs. value captured, per value-chain layer">Ledger</button>
       </div>
     </div>
     <div class="tab-group" data-group="act">
@@ -86,6 +92,8 @@
         <button class="tab" data-v="trends" title="Windows Board — trend taxonomy">Trends</button>
         <button class="tab" data-v="constraints" title="Physical lead times">Constraints</button>
         <button class="tab" data-v="forecasts" title="Calibrated forecasts">Forecasts</button>
+        <button class="tab" data-v="simulate" title="SIMULATE — causal loop diagram, perturb a node and watch it propagate">Simulate</button>
+        <button class="tab" data-v="helm" id="helm-tab-btn" title="HELM — your private personal lens" style="display:none">Helm</button>
       </div>
     </div>
     <div class="tab-group" data-group="maintain">
@@ -153,6 +161,7 @@
   <div class="view" id="v-atlas">
     <div id="map-wrap">
       <canvas id="map"></canvas>
+      <canvas id="orbital" style="display:none"></canvas>
       <div id="legend">
         <div class="hd"><span>LAYERS</span><button id="lgmin" title="Collapse legend">−</button></div>
         <div id="lgbody">
@@ -164,6 +173,11 @@
       </div>
       <div id="mapstatus">—</div>
       <div id="tip"><div class="tl"></div><div id="tip-nm"></div></div>
+      <div id="atlas-mode-toggle">
+        <button class="ttool on" id="am-mercator" title="Standard world map">MERCATOR</button>
+        <button class="ttool" id="am-orbital" title="Radial schematic — NOW at center, time-to-lock as radius, domain as angle">ORBITAL</button>
+      </div>
+      <div id="orbital-tip" style="display:none"></div>
       <div id="map-zoom">
         <button class="map-zbtn" id="mz-in" title="Zoom in">+</button>
         <button class="map-zbtn" id="mz-out" title="Zoom out">−</button>
@@ -199,6 +213,51 @@
     </div>
     <div id="path-hint">Path-to-target: showing only the ancestor chain of the selected node. Click again or press Clear to return to full tree.</div>
     <canvas id="tree-minimap"></canvas>
+  </div>
+
+  <!-- TRAJECTORY -->
+  <div class="view scrollview" id="v-trajectory">
+    <div class="inner">
+      <h2 class="sec">Trajectory</h2>
+      <div class="prose" style="margin-bottom:12px"><p>Each thesis's key variable, NOW→2050. Solid = locked (lead-times, demography — already determined). Dotted = projected, inside a widening cone of uncertainty. Dashed horizontal lines are <code>kill_watch</code> trigger thresholds — the thesis dies where the cone crosses one. Only theses carrying an explicit <code>trajectory</code> field appear; the rest are honestly left out below rather than faked.</p></div>
+      <div id="traj-toolbar">
+        <div id="traj-year-wrap" title="Scrub NOW forward along every trajectory">
+          <input type="range" id="traj-year" min="2026" max="2050" step="1" value="2026">
+          <span id="traj-year-lb">NOW · 2026</span>
+        </div>
+        <span id="traj-hint">— threshold = kill_watch trigger · shaded = uncertainty cone · pins = dated tree milestones</span>
+      </div>
+      <div id="traj-charts"></div>
+      <div id="traj-forks-wrap">
+        <h2 class="sec" style="margin-top:28px">Scenario Forks From Now</h2>
+        <div id="traj-forks"></div>
+      </div>
+      <div id="traj-empty-note"></div>
+    </div>
+  </div>
+
+  <!-- LEDGER -->
+  <div class="view scrollview" id="v-ledger">
+    <div class="inner">
+      <h2 class="sec">Ledger</h2>
+      <div class="prose" style="margin-bottom:12px"><p>Value created vs. value captured, layer by layer, for a value chain. Where capture exceeds creation, the layer is extracting rent. Where creation exceeds capture, value is leaking to a layer that isn't the one doing the work — usually because it lacks a real moat. Every layer cites the mechanism, the capture metric (or an honest "asserted" flag if none is disclosed), and a moat from the 7 Powers taxonomy or "none".</p></div>
+      <div id="ledger-domain-picker" class="ttool-row"></div>
+      <div id="ledger-thesis" class="prose" style="margin-bottom:14px"></div>
+      <div id="ledger-year-wrap" title="Migration scrubber — drag to watch the profit pool migrate between layers over time">
+        <input type="range" id="ledger-year" min="2020" max="2030" step="1" value="2026">
+        <span id="ledger-year-lb">2026</span>
+      </div>
+      <div id="ledger-forecast"></div>
+      <div id="ledger-legend">
+        <span class="ledger-legend-item"><span class="ledger-legend-dot rent"></span>RENT — capture &gt; created</span>
+        <span class="ledger-legend-item"><span class="ledger-legend-dot leak"></span>LEAK — created &gt; capture</span>
+        <span class="ledger-legend-item"><span class="ledger-legend-dot moat"></span>MOAT — aligned</span>
+      </div>
+      <div id="ledger-stack-wrap">
+        <svg id="ledger-flow-svg"></svg>
+        <div id="ledger-stack"></div>
+      </div>
+    </div>
   </div>
 
   <!-- HUMANS -->
@@ -319,6 +378,61 @@
         <div id="calibration-msg" style="font-size:10px;color:var(--dim);margin-top:6px"></div>
       </div>
       <div id="fc-list"></div>
+    </div>
+  </div>
+
+  <!-- SIMULATE -->
+  <div class="view" id="v-simulate">
+    <div id="sim-toolbar">
+      <span id="sim-hint">Click a node to select it, then PERTURB. Reinforcing loops (R) amplify the nudge; balancing loops (B) damp it. Dashed edges have no authored sign yet — unverified.</span>
+      <div id="sim-controls">
+        <button class="btn" id="sim-perturb-plus" disabled>PERTURB +</button>
+        <button class="btn" id="sim-perturb-minus" disabled>PERTURB −</button>
+        <button class="btn" id="sim-reset">RESET</button>
+      </div>
+    </div>
+    <div id="sim-body">
+      <div id="sim-graph-wrap">
+        <svg id="sim-svg"></svg>
+      </div>
+      <div id="sim-side">
+        <h4>Detected Loops</h4>
+        <div id="sim-loops-list"></div>
+        <h4>Dominant Now</h4>
+        <div id="sim-dominant">Run a perturbation to see which loop currently dominates.</div>
+        <h4 id="sim-leverage-hd" style="display:none">Leverage Rank — Selected Node</h4>
+        <div id="sim-leverage"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- HELM (private personal lens — only populated if pilot.json loads) -->
+  <div class="view scrollview" id="v-helm">
+    <div class="inner">
+      <h2 class="sec">Helm</h2>
+      <div class="prose" style="margin-bottom:16px"><p>Your private lens on the public data. Loaded from a local <code>pilot.json</code> that is never committed and never deployed — this whole tab doesn't exist unless that file loads. Every recommendation below cites the node/window/constraint it derives from and carries a kill condition; nothing here is advice you can't trace back to data.</p></div>
+
+      <h2 class="sec">1 · Your Position — Bet Anatomy</h2>
+      <div id="helm-anatomy"></div>
+
+      <h2 class="sec">2 · Window Matches</h2>
+      <div id="helm-windows"></div>
+
+      <h2 class="sec">3 · Leverage Points — Ranked</h2>
+      <div id="helm-leverage"></div>
+
+      <h2 class="sec">4 · Asymmetric Bets Available Now</h2>
+      <div id="helm-bets"></div>
+
+      <h2 class="sec">5 · Inversion — Where Your Bets Fight the Trajectory</h2>
+      <div id="helm-inversion"></div>
+
+      <h2 class="sec">6 · Personal Clock</h2>
+      <div id="helm-clock"></div>
+
+      <h2 class="sec">7 · Capture Blindspot</h2>
+      <div class="prose" style="margin-bottom:12px;font-size:11px;color:var(--dim)"><p>Cross-references your <code>active_bets[]</code> against <code>data/ledger.json</code>: which of your value-creation plays sit in a layer that structurally leaks value to someone else, and which ledger layers a solo technical operator could actually hold a moat in. Every line cites the layer and a kill condition.</p></div>
+      <div id="helm-capture"></div>
     </div>
   </div>
 
@@ -447,6 +561,22 @@
 
 <!-- MODEL TOOLTIP -->
 <div id="model-tooltip" style="display:none"></div>
+
+<!-- MISSION-STATUS GLYPH LEGEND -->
+<div id="mission-legend">
+  <div class="mg-item"><span class="mg mg-live">◉</span>LIVE</div>
+  <div class="mg-item"><span class="mg mg-killed">✕</span>KILLED</div>
+  <div class="mg-item"><span class="mg mg-watching">⊙</span>WATCHING</div>
+  <div class="mg-item"><span class="mg mg-confirmed">◈</span>CONFIRMED</div>
+</div>
+
+<!-- ENGINEERING TITLE BLOCK -->
+<div id="title-block">
+  <span class="tb-c2"></span><span class="tb-c3"></span>
+  <div class="tb-row tb-name">MAGNITUDE</div>
+  <div class="tb-row">SLOW VARIABLES</div>
+  <div class="tb-row">REV 3<span class="tb-tick"></span><span id="tb-gen">GEN —</span></div>
+</div>
 
 <script src="js/world.js"></script>
 <script src="js/store.js"></script>

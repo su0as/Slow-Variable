@@ -1,2 +1,6 @@
 node_modules/
 .DS_Store
+
+# HELM personal lens — private, never committed, never deployed.
+# Copy pilot.example.json to pilot.json and fill in your own coordinates.
+pilot.json

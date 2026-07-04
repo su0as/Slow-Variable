@@ -639,7 +639,17 @@
         {
           "to": "atlas.ashburn",
           "rel": "gates",
-          "layer": "chip"
+          "layer": "chip",
+          "sign": 1,
+          "lag_years": 0,
+          "sign_basis": "GPU supply concentration directly gates how fast Ashburn-class datacenter capacity can be energized and filled."
+        },
+        {
+          "to": "tree.export",
+          "rel": "context",
+          "sign": 1,
+          "lag_years": 2,
+          "sign_basis": "Sustained NVDA revenue/share concentration is the political trigger for tighter export-control tiers — the more dominant, the more scrutiny."
         }
       ],
       "cf": "hi",
@@ -1509,7 +1519,15 @@
       "as_of": "2026-06-01",
       "half_life_days": 1825,
       "signals": [],
-      "links": [],
+      "links": [
+        {
+          "to": "tree.nuke",
+          "rel": "enables",
+          "sign": 1,
+          "lag_years": 2,
+          "sign_basis": "A queue this saturated is the forcing function behind nuclear-restart economics — PPA deals (TMI, Palisades) got signed specifically to jump the interconnection line."
+        }
+      ],
       "cf": "hi",
       "review_after_months": 12
     },

@@ -14,6 +14,20 @@
         "as_of": "2026-06-01",
         "proximity": 0.1
       },
+      "trajectory": {
+        "metric": "Grid interconnection median queue",
+        "unit": "years",
+        "source": "LBNL Queued Up annual series, projected flat-to-declining under current reform pace",
+        "points": [
+          {"year": 2020, "value": 2.1, "locked": true},
+          {"year": 2023, "value": 3.5, "locked": true},
+          {"year": 2026, "value": 5.0, "locked": true},
+          {"year": 2029, "value": 4.2, "locked": false},
+          {"year": 2035, "value": 3.0, "locked": false}
+        ],
+        "kill_threshold": 2,
+        "tipping": false
+      },
       "crowd_awareness": 0.55,
       "awareness_as_of": "2026-06-01",
       "awareness_trend": "rising",
@@ -56,6 +70,18 @@
         "trigger_value": "1",
         "as_of": "2026-06-01",
         "proximity": 0.05
+      },
+      "trajectory": {
+        "metric": "NVDA rent bypass maturity (fastest-decaying chokepoint in the atlas — atlas.nvda)",
+        "unit": "% bypass mature",
+        "source": "atlas.nvda.rent — bypass_maturity 0.28 as of 2026-06-01, half_life_estimate_years 7",
+        "points": [
+          {"year": 2026, "value": 28, "locked": true},
+          {"year": 2030, "value": 38, "locked": false},
+          {"year": 2033, "value": 50, "locked": false},
+          {"year": 2040, "value": 70, "locked": false}
+        ],
+        "tipping": false
       },
       "crowd_awareness": 0.30,
       "awareness_as_of": "2026-06-01",
@@ -134,6 +160,19 @@
         "trigger_value": ">50% cut across 3+ major programs, or no commercial deployment milestone by 2028",
         "as_of": "2026-06-01",
         "proximity": 0.35
+      },
+      "trajectory": {
+        "metric": "Sovereign AI share of global accelerator capex",
+        "unit": "% of global AI capex",
+        "source": "Editorial estimate — an S-curve is the honest shape for a capability that goes from novel to standard-issue for sovereign programs, not a projection anyone has published; treat this curve's exact values as illustrative, not measured",
+        "points": [
+          {"year": 2024, "value": 5, "locked": true},
+          {"year": 2026, "value": 15, "locked": true},
+          {"year": 2028, "value": 25, "locked": false},
+          {"year": 2030, "value": 35, "locked": false},
+          {"year": 2035, "value": 45, "locked": false}
+        ],
+        "tipping": true
       },
       "crowd_awareness": 0.28,
       "awareness_as_of": "2026-06-01",

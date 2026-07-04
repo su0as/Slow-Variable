@@ -1,8 +1,8 @@
 {
-  "name": "slow-variables",
-  "version": "2.2.0",
+  "name": "magnitude",
+  "version": "3.1.0",
   "private": true,
-  "description": "Slow Variables — a worldview-as-code instrument tracking structural constraints, tech-tree causality, high-agency bets, and market windows, with schema-enforced falsifiability.",
+  "description": "MAGNITUDE (Slow Variables) — finds the order-of-magnitude gaps: value vs. capture, consensus vs. reality, price vs. truth. Structural constraints, tech-tree causality, high-agency bets, and market windows, with schema-enforced falsifiability.",
   "scripts": {
     "validate": "node js/validate.js",
     "serve": "npx serve -p 5173 --no-clipboard .",

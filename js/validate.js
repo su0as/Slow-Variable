@@ -32,6 +32,7 @@ const graveyard   = loadJSON('graveyard.json');
 const theses      = loadJSON('theses.json');
 const method      = loadJSON('method.json');
 const meta        = loadJSON('meta.json');
+const ledger      = loadJSON('ledger.json');
 
 // ── collect all entity ids ──────────────────────────────────────────────────
 const allIds = new Set();
@@ -145,6 +146,78 @@ if (tree?.nodes) {
         err(`tree.${n.id.replace('tree.','')}: requires ${l.to} not found`);
     });
   });
+}
+
+// ── check ledger (value created vs. value captured) ────────────────────────
+const MOAT_TYPES = new Set([
+  'scale economies','network economies','counter-positioning',
+  'switching costs','branding','cornered resource','process power','none'
+]);
+if (ledger?.domains) {
+  const seenDomainIds = new Set();
+  ledger.domains.forEach(dom => {
+    if (!dom.id) { err(`ledger: domain missing id: ${JSON.stringify(dom).slice(0,60)}`); return; }
+    if (seenDomainIds.has(dom.id)) err(`ledger: duplicate domain id ${dom.id}`);
+    seenDomainIds.add(dom.id);
+    if (!dom.layers || !dom.layers.length) { err(`${dom.id}: no layers`); return; }
+    const seenLayerIds = new Set();
+    dom.layers.forEach(layer => {
+      const lid = `${dom.id}.${layer.id || '?'}`;
+      if (!layer.id) { err(`${lid}: layer missing id`); return; }
+      if (seenLayerIds.has(layer.id)) err(`${lid}: duplicate layer id within domain`);
+      seenLayerIds.add(layer.id);
+      if (layer.order == null) err(`${lid}: missing order`);
+
+      ['value_created','value_captured'].forEach(k => {
+        const v = layer[k];
+        if (!v) { err(`${lid}: missing ${k}`); return; }
+        if (v.score_0_100 == null || v.score_0_100 < 0 || v.score_0_100 > 100)
+          err(`${lid}: ${k}.score_0_100=${v.score_0_100} must be 0-100`);
+        if (!v.basis) err(`${lid}: ${k} missing basis`);
+      });
+      if (layer.value_created && !layer.value_created.mechanism) err(`${lid}: value_created missing mechanism`);
+      if (layer.value_captured) {
+        const vc = layer.value_captured;
+        if (!vc.confidence) err(`${lid}: value_captured missing confidence`);
+        else if (!vc.metric && vc.confidence !== 'asserted')
+          err(`${lid}: value_captured has no metric but confidence is '${vc.confidence}', not 'asserted'`);
+      }
+
+      if (!layer.moat) { err(`${lid}: missing moat`); }
+      else {
+        if (!MOAT_TYPES.has(layer.moat.type))
+          err(`${lid}: moat.type '${layer.moat.type}' must be one of the 7 Powers or 'none'`);
+        if (layer.moat.strength_0_100 == null || layer.moat.strength_0_100 < 0 || layer.moat.strength_0_100 > 100)
+          err(`${lid}: moat.strength_0_100=${layer.moat.strength_0_100} must be 0-100`);
+        if (!layer.moat.decay_note) err(`${lid}: moat missing decay_note`);
+      }
+
+      // solo_accessible feeds HELM's Capture Blindspot section (which layers a
+      // solo operator could actually hold a moat in) — it's a real judgment call
+      // about the layer, so it belongs here as authored data, not inferred at
+      // render time from moat type alone (e.g. "cornered resource" covers both
+      // a garage-buildable niche and a $20B fab — the schema can't tell those
+      // apart, only a human judgment call can).
+      if (!layer.solo_accessible) err(`${lid}: missing solo_accessible`);
+      else {
+        if (typeof layer.solo_accessible.value !== 'boolean') err(`${lid}: solo_accessible.value must be true/false`);
+        if (!layer.solo_accessible.note) err(`${lid}: solo_accessible missing note`);
+      }
+
+      if (!layer.migration || !layer.migration.length) err(`${lid}: missing migration[]`);
+      else layer.migration.forEach((m,i) => {
+        if (m.year == null) err(`${lid}: migration[${i}] missing year`);
+        if (m.pool_share_0_100 == null || m.pool_share_0_100 < 0 || m.pool_share_0_100 > 100)
+          err(`${lid}: migration[${i}].pool_share_0_100=${m.pool_share_0_100} must be 0-100`);
+      });
+
+      (layer.links || []).forEach(linkId => {
+        if (!allIds.has(linkId)) err(`${lid}: links references '${linkId}' not in entity registry`);
+      });
+    });
+  });
+} else {
+  warn('ledger.json missing or empty — LEDGER tab will render no domains (ok if not yet seeded)');
 }
 
 // ── summary ──────────────────────────────────────────────────────────────────

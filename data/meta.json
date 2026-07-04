@@ -1,6 +1,6 @@
 {
-  "version": "2.2.0",
-  "last_updated": "2026-07-02",
+  "version": "3.4.0",
+  "last_updated": "2026-07-04",
   "counts": {
     "atlas": 60,
     "tree": 46,
@@ -9,10 +9,38 @@
     "constraints": 8,
     "scenarios": 5,
     "theses": 5,
-    "models": 12,
-    "forecasts_public": 6
+    "models": 19,
+    "forecasts_public": 6,
+    "signed_links": 9,
+    "ledger_domains": 1,
+    "ledger_layers": 7
   },
   "changelog": [
+    {
+      "date": "2026-07-04",
+      "by": "claude-sonnet-5",
+      "summary": "v3.4 Phase D: 6 new models.json entries (Value Created vs Value Captured, 7 Powers, Value Migration, Smiling Curve, Picks and Shovels, Aggregation Theory), each wired into a real Ledger UI overlay per the no-Models-tab rule. New HELM section 7, Capture Blindspot: cross-references pilot.active_bets against every ledger.json layer via word-overlap matching (2+ shared significant words, with a stoplist for generic AI-domain words and light suffix-stripping so 'switching cost' matches a layer's moat.type 'switching costs') to flag bets sitting in LEAK layers, and separately surfaces layers marked solo_accessible (new required ledger.json field per layer) with a moat type a solo/small team could plausibly hold. Every rec cites the layer id and moat.decay_note as its kill condition. js/validate.js extended to require solo_accessible on every layer."
+    },
+    {
+      "date": "2026-07-04",
+      "by": "claude-sonnet-5",
+      "summary": "v3.3 Phase C: new Ledger tab (works on mobile). Domain picker + house thesis + a migration scrubber (2020-2030, linear interpolation between authored years) reusing the tree-rewind/constraints-clock slider pattern. Each layer renders as a diverging value_created/value_captured bar around a center spine carrying the moat-type chip, colored by gap (rent=red, leak=blue, moat=white, aligned within +/-8). Money-flow SVG overlay: particles animate top-to-bottom, thinning past higher-capture layers, gated by prefers-reduced-motion same as the starfield/atlas-arcs. Layer dossier: mechanism, capture metric with a distinct ASSERTED badge (not a misleading LOW) when no metric is disclosed, moat strength bar, migration trend, and grouped cross-links (atlas/tree as clickable chips, constraints as inert badges). Extended the INVERT button to handle ledger dossiers (previously only thesis/trend/human — a matching gap for atlas/tree dossiers was noticed but left alone, out of scope). Fixed a second hardcoded tab list inside the Router dispatch handler that had drifted out of sync with TAB_ORDER and was silently missing every tab shipped after the original v2 build."
+    },
+    {
+      "date": "2026-07-04",
+      "by": "claude-sonnet-5",
+      "summary": "v3.2 Phase B: new data/ledger.json — value created vs. value captured across a value chain, per domain→layers. Schema: value_created{score_0_100,mechanism,basis}, value_captured{score_0_100,metric,basis,confidence}, moat{type (7 Powers taxonomy or 'none'),strength_0_100,decay_note}, migration[{year,pool_share_0_100}], links[] to existing atlas/tree/human/constraint ids. Seeded one domain fully: ai-compute (power, chips, memory-hbm, hyperscalers, foundation-models, applications, end-users) — house thesis: value creation peaks at foundation-models but capture concentrates at the physical infra floor (chips/memory/power), all cross-linked to real existing chokepoints (atlas.tsmc, atlas.asml, atlas.skhynix, atlas.pjm), tree nodes (tree.openw, tree.reasoning, tree.cloud), constraints (constraint.hbm-qualification, constraint.heavy-gas-turbine-slot), and humans (human.chang, human.huang, human.su, human.hassabis, human.sutskever, human.amodei, human.bezos, human.ellison). No precise unverified margins asserted — value_captured entries without a real disclosed metric are flagged confidence:\"asserted\". js/validate.js extended to check the ledger schema (score ranges, moat taxonomy, link resolution)."
+    },
+    {
+      "date": "2026-07-04",
+      "by": "claude-sonnet-5",
+      "summary": "v3.1 Phase A: rebrand ORRERY → MAGNITUDE. Wordmark \"MAGNITUDE\" + monogram \"OM\", subtitle \"Orders of Magnitude · Slow Variables\", tagline \"finds the order-of-magnitude gaps — value vs. capture, consensus vs. reality, price vs. truth.\" Masthead, title, OG/Twitter meta + regenerated OG card, new favicon.svg, README, package.json updated. No data or tab-logic changes."
+    },
+    {
+      "date": "2026-07-02",
+      "by": "claude-sonnet-4-6",
+      "summary": "v3.0: rebrand to ORRERY (\"a runnable instrument, not a static reference\") across four phases. (A) NASA design layer — rust accent, procedural starfield, engineering title block, mission-status glyphs (◉✕⊙◈) on thesis/window cards, no data changes. (B) Orbital Atlas (radial schematic toggle on the map — time-to-lock as radius, domain as angle) + new Trajectory tab (NOW→2050 per-thesis charts with uncertainty cones and kill_watch threshold lines; added the optional theses.json `trajectory` field to 3/5 theses, honestly left the other 2 uncharted). (C) New Simulate tab — causal loop diagram over a curated set of tree/atlas links now carrying sign/lag_years/sign_basis (3 real feedback loops closed: capex↔reasoning reinforcing, nvda↔export-controls balancing, pjm↔nuclear-restart balancing); Perturb mode runs deterministic discrete propagation; added model.leverage_points (Meadows' 12 Leverage Points) to models.json. (D) New Helm tab — private personal lens, renders only if a local gitignored pilot.json loads (schema documented in committed pilot.example.json), six sections each citing a data source and a falsifier."
+    },
     {
       "date": "2026-06-01",
       "note": "Phase 0: migrated v2 data to JSON entity registry"

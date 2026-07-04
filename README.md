@@ -1,13 +1,16 @@
-# Slow Variables
+# MAGNITUDE — Slow Variables · rev 3
 
-Slow Variables is a worldview-as-code instrument: it maps the slow-moving structural
-variables — chokepoints, lead times, demography, chip supply chains, energy buildouts —
-that determine what's *actually* possible over the next 5–20 years, cross-links them to
-the tech tree that grew out of them, the high-agency people who bet on them early, and
-the market windows they opened, and forces every claim in the system to carry a kill
-condition. It is a single static HTML/CSS/JS site with no build step and no backend; all
-content lives in versioned JSON and is meant to be read, verified, and edited by a future
-AI session as much as by a human.
+MAGNITUDE finds the order-of-magnitude gaps: value vs. capture, consensus vs. reality,
+price vs. truth. It maps the slow-moving structural variables — chokepoints, lead times,
+demography, chip supply chains, energy buildouts — that determine what's *actually*
+possible over the next 5–20 years, cross-links them to the tech tree that grew out of
+them, the high-agency people who bet on them early, the market windows they opened, and
+the value chains where the money created diverges from the money captured, and forces
+every claim in the system to carry a kill condition. It is a single static HTML/CSS/JS
+site with no build step and no backend; all content lives in versioned JSON and is
+meant to be read, verified, and edited by a future AI session as much as by a human.
+The name: most mispricings aren't small — they're off by an order of magnitude, and the
+tool exists to find *which* order and *where*.
 
 <!-- screenshot: assets/screenshots/today.png -->
 <!-- screenshot: assets/screenshots/thesis-spine.png -->
@@ -61,11 +64,15 @@ js/world.js          raw world-map polygon data (do not hand-edit)
 js/store.js           fetches every data/*.json, builds the entity graph (Store.get,
                        Store.neighbors, Store.trace, Store.search, Store.staleStatus)
 js/router.js          hash-based routing (#/atlas, #/tree?node=..., etc.)
-js/engine.js           all rendering: map canvas, tech tree SVG, dossiers, Thesis
-                       Register + Spine view, Today, Forecasts, Brief, Patrol, Method
+js/engine.js           all rendering: map canvas + orbital schematic, tech tree SVG,
+                       trajectory charts, causal-loop simulator, dossiers, Thesis
+                       Register + Spine view, Today, Forecasts, Brief, Patrol, Method,
+                       Helm (only if pilot.json loads)
 js/validate.js         schema + cross-reference validator, run before every commit
 scripts/patrol-report.js  free, keyless staleness queue generator — see Patrol below
 data/*.json             all content — see schema reference below
+data/ledger.json          value created vs. value captured, per domain→layers (Ledger tab)
+pilot.example.json       HELM's schema reference — copy to pilot.json (gitignored) to use it
 ```
 
 Every entity (atlas node, tree node, human, window, constraint, scenario, graveyard
@@ -76,6 +83,23 @@ pairs with `rel` drawn from a fixed vocabulary (`enables`, `requires`, `threaten
 `gates`, `capitalized_on`, `killed`, `bypasses`, `watches`, `context`). Everything the UI
 draws as a connection — chip lists, the Thesis Spine ribbon, cause/effect chains in the
 Tech Tree — comes from this graph, not from hand-written HTML.
+
+A `links[]` entry can optionally carry `sign` (`1` or `-1`) and `lag_years` (number),
+each requiring a one-line `sign_basis`. These power the Simulate tab's causal loop
+diagram — an unsigned link renders dashed ("unverified") there; only sign the edges you
+can actually justify. A thesis can optionally carry a `trajectory` field
+(`{metric, unit, points:[{year,value,locked}], tipping, kill_threshold?, source?}`) that
+the Trajectory tab charts NOW→2050 — theses without one are honestly left off that
+chart instead of backfilled with an invented curve.
+
+### The views
+
+Today · Thesis (with a Spine causal-ribbon toggle) · Atlas (with an Orbital radial-
+schematic toggle) · Tree · Trajectory · Ledger (value created vs. value captured, with
+a migration scrubber) · Humans · Trends · Constraints · Forecasts · Simulate · Method ·
+Patrol · Brief — plus Helm, which only exists if you have a local `pilot.json`. Atlas
+and Tree are desktop-only (canvas pan/zoom); everything else, including Ledger, works
+on mobile.
 
 ## Data schema reference
 
@@ -91,6 +115,7 @@ Tech Tree — comes from this graph, not from hand-written HTML.
 | `theses.json` | `theses[]` | The explicit, falsifiable claims the whole tool commits to | `statement`,`confidence`,`kill_condition`,`plain`(one-sentence, no jargon),`supports[]`,`crowd_awareness`,`consensus_delta_num`,`edge_basis`,`margin{tightness,buffer_note,breaks_at}`,`kill_watch{signal,current_value,trigger_value,as_of,proximity}` |
 | `method.json` | single object | Predictability hierarchy, operating rules, bias checklist, primary sources | `hierarchy[]`,`rules[]`,`biases[]`,`sources[]` |
 | `models.json` | `models[]` | The mental-model registry powering provenance tags (`⊢ModelName`) | `discipline`,`one_line`,`source`,`powers[]` (which UI features cite this model) |
+| `ledger.json` | `domains[]` | Value created vs. value captured across a value chain, per domain→`layers[]` | `value_created{score_0_100,mechanism,basis}`,`value_captured{score_0_100,metric,basis,confidence}`,`moat{type (7 Powers or "none"),strength_0_100,decay_note}`,`solo_accessible{value,note}` (fed to HELM's Capture Blindspot),`migration[{year,pool_share_0_100}]`,`links[]` (atlas/tree/human/constraint ids) |
 | `forecasts.json` | `forecasts[]` | The **public, committed** forecast track record | `stmt`,`p`,`dl`,`falsifier`,`resolver`,`criteria`,`outcome`,`key`; merged in-app with a private localStorage set (see Forecasts tab) |
 | `meta.json` | single object | Version, data vintage, per-registry counts, changelog | bump on every data change |
 
@@ -133,3 +158,7 @@ Staleness detection and the actual fix are two separate, deliberately decoupled 
   plain, dependency-free Node. Re-verification requires judgment and web access, so it
   only happens when a human spends an actual AI chat session on it — see
   `AGENT_UPDATE.md`.
+- No personal data in this repo, ever — `pilot.json` (HELM's input) is gitignored and
+  never deployed. The public site literally cannot render HELM; the fetch 404s and the
+  tab never appears. `pilot.example.json` is a fictional worked example, not anyone's
+  real coordinates.

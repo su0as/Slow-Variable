@@ -1,6 +1,6 @@
 # Patrol Queue
 
-Generated 2026-07-02 by `node scripts/patrol-report.js` — pure Node, no network, no AI. This file is a read-only report; nothing here edits the data. See [AGENT_UPDATE.md](AGENT_UPDATE.md) for how to act on it.
+Generated 2026-07-04 by `node scripts/patrol-report.js` — pure Node, no network, no AI. This file is a read-only report; nothing here edits the data. See [AGENT_UPDATE.md](AGENT_UPDATE.md) for how to act on it.
 
 ## Kill-watch alerts
 
@@ -14,4 +14,4 @@ Nothing is past its review window. Clean bill of health.
 
 Fresh: 176 · Aging: 0 · Stale: 0 · Unknown vintage: 0 (176 total tracked entities, half_life_days-based — see js/store.js Store.staleStatus)
 
-_Generated on 2026-07-02._
+_Generated on 2026-07-04._

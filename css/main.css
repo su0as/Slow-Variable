@@ -5,6 +5,8 @@
   --choke:#ff3b30;--signal:#ff3b30;--signal-soft:rgba(255,59,48,.12);
   --chip:#c0c0c0;--min:#e8e8e8;--enr:#ff6b55;--net:#909090;--fin:#b0b0b0;
   --alert:#ff3b30;--ok:#d8d8d8;
+  --rust:#c1440e;--rust-soft:rgba(193,68,14,.14);--rust-line:rgba(193,68,14,.4);
+  --leak:#4a90d9;--leak-soft:rgba(74,144,217,.14);--leak-line:rgba(74,144,217,.4);
   --mono:ui-monospace,"SF Mono","Cascadia Mono","JetBrains Mono",Menlo,Consolas,monospace;
   --card-w:210px;--card-h:68px;--era-w:270px;--row-h:96px;
 }
@@ -28,8 +30,12 @@ svg text{user-select:none}
      background:#000000;position:relative;z-index:50;flex-shrink:0}
 #mast{display:flex;flex-direction:column;justify-content:center;padding:0 18px;
       border-right:1px solid var(--line);min-width:200px}
+#mast .mast-row{display:flex;align-items:center;gap:8px}
 #mast .t{font-size:12px;letter-spacing:.38em;color:var(--txt);font-weight:600;white-space:nowrap}
 #mast .s{font-size:9px;letter-spacing:.16em;color:var(--dim);text-transform:uppercase;margin-top:1px}
+.om-mark{display:flex;align-items:center;justify-content:center;width:22px;height:22px;
+         border:1px solid var(--rust-line);color:var(--rust);font-size:9px;font-weight:600;
+         letter-spacing:.02em;flex-shrink:0}
 #tabs{display:flex;align-items:stretch;overflow-x:auto;flex:1;min-width:0}
 #tabs::-webkit-scrollbar{height:0}
 .tab{background:none;border:none;border-right:1px solid var(--line);color:var(--dim);
@@ -894,3 +900,243 @@ kbd{background:#111;border:1px solid var(--line2);border-bottom:2px solid var(--
 .thesis-share-btn{font-size:9px;padding:2px 7px;color:var(--dim);border-color:var(--line2);
   margin-top:8px;margin-left:6px}
 .thesis-share-btn:hover{color:var(--txt);border-color:var(--line2)}
+
+/* ── ORRERY: NASA design layer (Phase A) ──────────────────────────────── */
+
+/* Starfield — fixed behind everything, non-interactive. body/header go
+   transparent so it shows through gutters and chrome; individual panels keep
+   their existing opaque backgrounds untouched, so this stays "subtle". */
+html{background:#000000}
+body{background:transparent}
+#starfield{position:fixed;inset:0;z-index:0;pointer-events:none;display:block}
+#hdr{background:rgba(0,0,0,.86)}
+
+/* Title block — engineering registration frame, bottom-right.
+   Sits above #prov-footer (which is a full-width bar pinned to bottom:0 at
+   z-index:50) so the two don't overlap. */
+#title-block{position:fixed;right:14px;bottom:38px;z-index:40;pointer-events:none;
+  font-size:8px;letter-spacing:.14em;color:var(--faint);text-align:right;
+  padding:8px 12px;border:1px solid var(--line2);background:rgba(0,0,0,.72);
+  backdrop-filter:blur(3px)}
+#title-block::before,#title-block::after,#title-block .tb-c2,#title-block .tb-c3{
+  content:"";position:absolute;width:6px;height:6px;border-color:var(--rust);opacity:.8}
+#title-block::before{top:-1px;left:-1px;border-top:1px solid var(--rust);border-left:1px solid var(--rust)}
+#title-block::after{top:-1px;right:-1px;border-top:1px solid var(--rust);border-right:1px solid var(--rust)}
+#title-block .tb-c2{bottom:-1px;left:-1px;border-bottom:1px solid var(--rust);border-left:1px solid var(--rust)}
+#title-block .tb-c3{bottom:-1px;right:-1px;border-bottom:1px solid var(--rust);border-right:1px solid var(--rust)}
+#title-block .tb-row{white-space:nowrap;line-height:1.7}
+#title-block .tb-row.tb-name{color:var(--rust);font-weight:600;letter-spacing:.2em}
+#title-block .tb-tick{display:inline-block;width:1px;height:6px;background:var(--line2);margin:0 4px;vertical-align:middle}
+@media(max-width:700px){#title-block{display:none}}
+
+/* Mission-status glyph legend — bottom-left, same reasoning as #title-block above */
+#mission-legend{position:fixed;left:14px;bottom:38px;z-index:40;
+  font-size:8px;letter-spacing:.08em;color:var(--faint);
+  padding:6px 10px;border:1px solid var(--line);background:rgba(0,0,0,.72);
+  backdrop-filter:blur(3px);display:flex;gap:10px}
+#mission-legend .mg-item{display:flex;align-items:center;gap:4px}
+@media(max-width:700px){#mission-legend{display:none}}
+
+/* Mission-status glyphs (used inline on thesis/window cards too) */
+.mg{font-size:11px;line-height:1;display:inline-block}
+.mg-live{color:var(--min)}
+.mg-killed{color:var(--rust)}
+.mg-watching{color:var(--dim)}
+.mg-confirmed{color:var(--choke)}
+.mg-inline{margin-right:6px;vertical-align:-1px}
+
+/* Rust accent usage: secondary emphasis alongside the existing red */
+.rust-accent{color:var(--rust)}
+.rust-border{border-color:var(--rust-line)!important}
+
+/* Reduced motion: the JS gates the twinkle/parallax animation itself (a single
+   static paint, no rAF loop) — consistent with how .tnode.live's dot is handled
+   elsewhere (animation:none, not display:none). The starfield stays visible. */
+
+/* ── PHASE B: ORBITAL ATLAS + TRAJECTORY ──────────────────────────────── */
+
+/* Atlas mode toggle */
+#atlas-mode-toggle{position:absolute;top:12px;right:12px;z-index:11;display:flex;gap:0;
+  border:1px solid var(--line2);background:rgba(0,0,0,.85)}
+#atlas-mode-toggle .ttool{border:none;border-right:1px solid var(--line2);font-size:9px;padding:6px 10px}
+#atlas-mode-toggle .ttool:last-child{border-right:none}
+#atlas-mode-toggle .ttool.on{color:var(--rust);background:var(--rust-soft)}
+#orbital{position:absolute;inset:0;cursor:pointer}
+#orbital-tip{position:absolute;pointer-events:none;background:#0d0d0d;border:1px solid var(--line2);
+  padding:5px 9px;font-size:10px;letter-spacing:.06em;color:var(--txt);z-index:30;white-space:nowrap}
+#orbital-tip .tl{color:var(--faint);font-size:9px;letter-spacing:.14em;text-transform:uppercase}
+
+/* Trajectory toolbar */
+#traj-toolbar{display:flex;align-items:center;gap:16px;margin-bottom:18px;flex-wrap:wrap}
+#traj-year-wrap{display:flex;align-items:center;gap:8px;border:1px solid var(--line);padding:6px 10px}
+#traj-year-wrap input[type=range]{width:220px;accent-color:var(--rust)}
+#traj-year-lb{font-size:10px;letter-spacing:.08em;color:var(--rust);min-width:90px}
+#traj-hint{font-size:9px;color:var(--faint);letter-spacing:.03em}
+
+/* Per-thesis trajectory chart card */
+.traj-card{border:1px solid var(--line);margin-bottom:16px;padding:14px 16px}
+.traj-card-hd{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:4px;flex-wrap:wrap;gap:8px}
+.traj-card-title{font-size:12px;color:var(--txt)}
+.traj-card-metric{font-size:9px;color:var(--faint);letter-spacing:.06em;text-transform:uppercase}
+.traj-tipping-badge{font-size:8px;letter-spacing:.1em;color:var(--rust);border:1px solid var(--rust-line);padding:1px 6px;text-transform:uppercase}
+.traj-svg{display:block;width:100%;height:auto}
+.traj-locked-line{fill:none;stroke:var(--min);stroke-width:1.6}
+.traj-proj-line{fill:none;stroke:var(--min);stroke-width:1.4;stroke-dasharray:4 3}
+.traj-cone{fill:var(--rust);opacity:.1}
+.traj-threshold-line{stroke:var(--choke);stroke-width:1;stroke-dasharray:2 3;opacity:.75}
+.traj-threshold-label{fill:var(--choke);font-size:8px;letter-spacing:.05em}
+.traj-now-line{stroke:var(--rust);stroke-width:1;opacity:.55}
+.traj-now-label{fill:var(--rust);font-size:8px;letter-spacing:.08em;text-transform:uppercase}
+.traj-axis-label{fill:var(--faint);font-size:8px}
+.traj-pin{fill:var(--chip)}
+.traj-pin-label{fill:var(--dim);font-size:7px}
+.traj-dot{fill:var(--min)}
+.traj-dot.proj{fill:var(--rust)}
+.traj-cross-alert{fill:var(--choke);font-size:9px;letter-spacing:.04em}
+
+#traj-empty-note{font-size:10px;color:var(--faint);line-height:1.6;border-top:1px solid var(--line);padding-top:12px;margin-top:8px}
+
+/* Scenario forks strip */
+#traj-forks{display:flex;flex-wrap:wrap;gap:10px}
+.traj-fork{border:1px solid var(--line);padding:8px 12px;font-size:10px;color:var(--dim);
+  position:relative;padding-left:20px}
+.traj-fork::before{content:"┄▶";position:absolute;left:6px;top:8px;color:var(--rust);font-size:9px}
+.traj-fork b{color:var(--txt);font-weight:400}
+
+@media(max-width:700px){
+  #atlas-mode-toggle{display:none}
+  #traj-year-wrap input[type=range]{width:140px}
+}
+
+/* ── PHASE C: SIMULATE LOOP ENGINE ────────────────────────────────────── */
+#sim-toolbar{display:flex;justify-content:space-between;align-items:center;gap:16px;
+  height:38px;border-bottom:1px solid var(--line);padding:0 14px;flex-shrink:0;flex-wrap:wrap}
+#sim-hint{font-size:9px;color:var(--faint);letter-spacing:.03em;max-width:640px}
+#sim-controls{display:flex;gap:6px;flex-shrink:0}
+#sim-controls .btn{font-size:9px;padding:4px 10px}
+#sim-controls .btn:disabled{opacity:.35;cursor:default}
+#sim-controls .btn:disabled:hover{border-color:var(--line2);color:var(--txt)}
+#sim-body{flex:1;display:flex;overflow:hidden;min-height:0}
+#sim-graph-wrap{flex:1;overflow:auto;background:var(--bg)}
+#sim-svg{display:block}
+#sim-side{width:300px;flex-shrink:0;border-left:1px solid var(--line);overflow-y:auto;padding:14px 16px}
+#sim-side h4{font-size:9px;letter-spacing:.18em;color:var(--rust);text-transform:uppercase;
+  margin:18px 0 8px;border-bottom:1px solid var(--line);padding-bottom:5px}
+#sim-side h4:first-child{margin-top:0}
+#sim-loops-list,#sim-dominant,#sim-leverage{font-size:10px;color:var(--dim);line-height:1.6}
+.sim-loop-row{display:flex;gap:8px;align-items:baseline;padding:5px 0;border-bottom:1px solid rgba(255,255,255,.05)}
+.sim-loop-tag{font-size:9px;font-weight:600;letter-spacing:.08em;flex-shrink:0;width:16px}
+.sim-loop-tag.R{color:var(--enr)}
+.sim-loop-tag.B{color:var(--chip)}
+.sim-loop-nodes{color:var(--txt);font-size:9px}
+.sim-dominant-row{padding:4px 0;color:var(--txt)}
+.sim-dominant-row .sim-loop-tag{display:inline;width:auto;margin-right:4px}
+.sim-leverage-row{display:flex;gap:8px;padding:3px 0}
+.sim-leverage-rank{color:var(--rust);font-weight:600;min-width:16px}
+
+/* Graph nodes/edges — reuse tnode/tedge visual language */
+.sim-node{cursor:pointer}
+.sim-node rect.bg{fill:#080808;stroke:var(--line2);stroke-width:1}
+.sim-node:hover rect.bg{stroke:var(--rust)}
+.sim-node.selected rect.bg{stroke:var(--rust);stroke-width:1.5;filter:drop-shadow(0 0 6px rgba(193,68,14,.4))}
+.sim-node text.lb{fill:var(--txt);font-family:var(--mono);font-size:10px;font-weight:600}
+.sim-node text.reg{fill:var(--faint);font-family:var(--mono);font-size:7px;letter-spacing:.1em}
+.sim-edge{fill:none;stroke-width:1.4}
+.sim-edge.sign-pos{stroke:var(--enr)}
+.sim-edge.sign-neg{stroke:var(--chip)}
+.sim-edge.unsigned{stroke:var(--faint);stroke-dasharray:3 3;opacity:.5}
+.sim-edge-label{font-size:8px;fill:var(--faint)}
+.sim-loop-arc{fill:none;stroke-width:1;stroke-dasharray:2 2;opacity:.5}
+.sim-loop-arc.R{stroke:var(--enr)}
+.sim-loop-arc.B{stroke:var(--chip)}
+.sim-pulse{fill:var(--rust);opacity:.85}
+
+@media(max-width:700px){
+  #sim-body{flex-direction:column}
+  #sim-side{width:100%;border-left:none;border-top:1px solid var(--line)}
+  #sim-hint{display:none}
+}
+
+/* ── PHASE D: HELM (private personal lens) ────────────────────────────── */
+#v-helm .sec{color:var(--rust)}
+#helm-anatomy{border:1px solid var(--line);padding:14px 16px;margin-bottom:8px}
+.helm-scatter-note{font-size:9px;color:var(--faint);margin-top:8px;line-height:1.6}
+.helm-window-card{border:1px solid var(--line);padding:12px 14px;margin-bottom:8px;cursor:pointer}
+.helm-window-card:hover{border-color:var(--rust-line)}
+.helm-window-hd{display:flex;justify-content:space-between;align-items:baseline;gap:8px;flex-wrap:wrap}
+.helm-window-title{font-size:11px;color:var(--txt)}
+.helm-window-status{font-size:8px;letter-spacing:.1em;text-transform:uppercase;color:var(--dim)}
+.helm-window-reason{font-size:10px;color:var(--dim);margin-top:5px;line-height:1.55}
+.helm-window-reason b{color:var(--rust);font-weight:400}
+.helm-leverage-row{display:flex;gap:10px;padding:6px 0;border-bottom:1px solid rgba(255,255,255,.05);font-size:10px}
+.helm-leverage-rank{color:var(--rust);font-weight:600;min-width:20px;flex-shrink:0}
+.helm-bet-card{border:1px solid var(--rust-line);background:rgba(193,68,14,.04);padding:14px 16px;margin-bottom:10px}
+.helm-bet-title{font-size:12px;color:var(--txt);margin-bottom:6px}
+.helm-bet-row{font-size:10px;color:var(--dim);line-height:1.6;margin-bottom:3px}
+.helm-bet-row b{color:var(--txt);font-weight:400}
+.helm-bet-why{color:var(--rust);font-style:italic}
+.helm-bet-kill{color:var(--choke)}
+.helm-inversion-row{border-left:2px solid var(--choke);padding:8px 12px;margin-bottom:8px;font-size:10px;color:var(--dim);line-height:1.6}
+.helm-inversion-row b{color:var(--txt);font-weight:400}
+#helm-clock-svg{display:block;width:100%;height:auto}
+.helm-empty{font-size:10px;color:var(--faint);line-height:1.6;border:1px dashed var(--line);padding:12px 14px}
+
+/* ── LEDGER (value created vs. value captured) ──────────────────────────── */
+#ledger-domain-picker{margin-bottom:10px}
+#ledger-thesis{color:var(--dim)}
+#ledger-year-wrap{display:flex;align-items:center;gap:10px;margin:4px 0 8px;padding:8px 10px;
+                   border:1px solid var(--line)}
+#ledger-year-wrap input[type=range]{flex:1;accent-color:var(--rust)}
+#ledger-year-lb{font-size:10px;letter-spacing:.08em;color:var(--rust);min-width:38px;text-align:right}
+#ledger-forecast{font-size:10px;color:var(--dim);line-height:1.6;margin-bottom:14px;
+                  border-left:2px solid var(--rust-line);padding:6px 10px}
+#ledger-forecast b{color:var(--txt);font-weight:400}
+#ledger-forecast .lf-kill{color:var(--choke)}
+#ledger-legend{display:flex;gap:16px;flex-wrap:wrap;margin-bottom:14px;font-size:9px;
+               letter-spacing:.06em;color:var(--dim);text-transform:uppercase}
+.ledger-legend-item{display:flex;align-items:center;gap:5px}
+.ledger-legend-dot{width:8px;height:8px;border-radius:50%;display:inline-block}
+.ledger-legend-dot.rent{background:var(--choke)}
+.ledger-legend-dot.leak{background:var(--leak)}
+.ledger-legend-dot.moat{background:var(--min)}
+#ledger-stack-wrap{position:relative}
+#ledger-flow-svg{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;z-index:0}
+#ledger-stack{position:relative;z-index:1;display:flex;flex-direction:column;gap:10px}
+.ledger-layer-row{border:1px solid var(--line);padding:12px 14px;cursor:pointer;background:rgba(0,0,0,.55)}
+.ledger-layer-row:hover{border-color:var(--line2)}
+.ledger-layer-hd{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:8px;gap:8px}
+.ledger-layer-name{font-size:11.5px;color:var(--txt);letter-spacing:.02em}
+.ledger-layer-gap-badge{font-size:8px;letter-spacing:.14em;padding:2px 7px;border:1px solid;white-space:nowrap}
+.ledger-layer-gap-badge.rent{color:var(--choke);border-color:var(--choke)}
+.ledger-layer-gap-badge.leak{color:var(--leak);border-color:var(--leak-line)}
+.ledger-layer-gap-badge.moat{color:var(--min);border-color:var(--line2)}
+.ledger-bar-track{display:flex;align-items:center;height:24px}
+.ledger-bar-half{flex:1;height:100%;position:relative}
+.ledger-bar-half.created{display:flex;justify-content:flex-end}
+.ledger-bar-half.captured{display:flex;justify-content:flex-start}
+.ledger-bar-fill{align-self:center;height:65%;max-width:100%}
+.ledger-bar-fill.created-fill{background:rgba(255,255,255,.1)}
+.ledger-bar-fill.captured-fill{background:rgba(255,255,255,.1)}
+.ledger-bar-fill.rent{background:rgba(255,59,48,.4)!important}
+.ledger-bar-fill.leak{background:rgba(74,144,217,.4)!important}
+.ledger-bar-fill.moat{background:rgba(232,232,232,.4)!important}
+.ledger-spine{width:2px;background:var(--line2);height:28px;position:relative;flex-shrink:0;
+              display:flex;align-items:center;justify-content:center}
+.ledger-spine-chips{position:absolute;top:-9px;left:50%;transform:translateX(-50%);
+                     display:flex;gap:4px;white-space:nowrap;background:var(--bg);padding:0 4px}
+.ledger-moat-chip{font-size:8px;letter-spacing:.08em;color:var(--dim);text-transform:uppercase;
+                   border:1px solid var(--line2);padding:1px 6px}
+.ledger-layer-scores{display:flex;justify-content:space-between;font-size:8px;color:var(--faint);
+                      margin-top:3px;letter-spacing:.06em}
+.ledger-layer-pool{font-size:9px;color:var(--faint);margin-top:6px}
+.ledger-pool-glow{position:absolute;top:0;bottom:0;background:radial-gradient(ellipse at center,rgba(240,240,240,.14),transparent 70%);
+                   pointer-events:none}
+.ledger-flow-particle{fill:var(--rust);opacity:.55}
+@media(prefers-reduced-motion:reduce){.ledger-flow-particle{display:none}}
+.ledger-dsec-scorebar{height:5px;background:var(--line);position:relative;margin:4px 0 8px;max-width:280px}
+.ledger-dsec-scorefill{position:absolute;left:0;top:0;height:100%}
+.ledger-constraint-badge{font-size:9px;letter-spacing:.05em;padding:2px 7px;border:1px dashed var(--line2);
+                          color:var(--faint);display:inline-block;margin:2px 4px 2px 0}
+
+/* ── HELM §7 Capture Blindspot ───────────────────────────────────────────── */
+.helm-capture-sub{font-size:9px;letter-spacing:.14em;text-transform:uppercase;color:var(--rust);margin-bottom:8px}

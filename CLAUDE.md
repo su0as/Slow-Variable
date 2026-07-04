@@ -36,6 +36,10 @@ maintenance contract, read `UPDATE_PROTOCOL.md`. For architecture and schema, re
   looks like "wire up an API key so patrol can call an AI automatically," that's a
   regression of a decision that's already been made — push back and point to this file
   and `AGENT_UPDATE.md` instead.
+- **`pilot.json` never gets committed, ever.** It's the input to HELM (the private
+  personal-lens tab) and it's gitignored on purpose. Never write real personal data into
+  a file that isn't `pilot.json`, never suggest committing it, and never echo its
+  contents into a commit message, a PR body, or any file under version control.
 
 ## File map
 
@@ -54,6 +58,8 @@ js/engine.js                all rendering logic, wrapped in an IIFE inside initA
                              rewriting them — follow the same pattern for new additions.
 js/validate.js               schema + link + probability + envelope validator (run before commit)
 data/*.json                   all content — see README.md's schema table
+pilot.example.json             HELM's schema reference (committed); pilot.json is the
+                                real, gitignored, never-deployed file HELM actually reads
 UPDATE_PROTOCOL.md              the data-maintenance contract
 AGENT_UPDATE.md                  on-demand contract for a chat AI acting on PATROL.md — no automation runs this
 PATROL.md / patrol-queue.json     generated staleness queue — regenerate with `node scripts/patrol-report.js`, don't hand-edit

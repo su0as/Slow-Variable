@@ -81,6 +81,31 @@ read it now if you haven't. In short:**
    There is no bot identity for this path; use your own judgment about commit authorship
    the same way you would for any other task a human asked you to do directly.
 
+## 4. If a human also asks you to refresh HELM
+
+HELM (the private personal lens, see `pilot.example.json` for its schema) is a
+separate, optional pass — only do this if the human explicitly asks, and only if they
+have a local `pilot.json` (never ask them to paste its contents into a shared/public
+context; treat it as sensitive). It is not part of the default patrol/kickoff flow
+above.
+
+If asked:
+1. Read the human's `pilot.json` (they'll need to share it with you directly, e.g. by
+   opening it in this session — it's gitignored, so it won't be in the repo checkout).
+2. Re-run the same kind of derivation `js/engine.js`'s `buildHelm*` functions do —
+   `helmWindowMatches()` (skill-to-window text matches against open/forming windows),
+   the leverage-point ranking, the asymmetric-bet cards, and the inversion check against
+   closing/closed windows — but with real judgment instead of the app's crude substring
+   matching. You have the context to catch matches the simple keyword overlap misses,
+   and to reject matches it wrongly surfaces.
+3. Every HELM recommendation must still cite the exact node/window/constraint id it
+   comes from and state a falsifier — that rule doesn't relax just because a human is
+   asking directly instead of the in-app heuristic doing it. If you can't trace a
+   recommendation to a specific entity in `/data/*.json`, don't make it.
+4. HELM output is for the human, not for a commit — there's nothing to check in here.
+   `pilot.json` stays local and gitignored; don't suggest committing it or any file
+   derived from it.
+
 ## What this is not
 
 This is not a background job. Nothing in this repo calls out to any AI API, ever — grep

@@ -531,7 +531,10 @@
         },
         {
           "to": "atlas.nvda",
-          "rel": "context"
+          "rel": "context",
+          "sign": -1,
+          "lag_years": 3,
+          "sign_basis": "Export-control tiers push excluded customers toward AMD/custom silicon faster than they otherwise would — the policy response erodes the concentration that triggered it (see atlas.nvda.rent.bypass_maturity)."
         },
         {
           "to": "atlas.huawei",
@@ -630,7 +633,10 @@
         },
         {
           "to": "atlas.nvda",
-          "rel": "context"
+          "rel": "context",
+          "sign": 1,
+          "lag_years": 0,
+          "sign_basis": "More hyperscaler capex directly buys more accelerator capacity — same-year, no lag."
         },
         {
           "to": "atlas.ashburn",
@@ -643,6 +649,13 @@
         {
           "to": "window.memory-supercycle",
           "rel": "context"
+        },
+        {
+          "to": "tree.reasoning",
+          "rel": "enables",
+          "sign": 1,
+          "lag_years": 1,
+          "sign_basis": "Capex-funded compute is the direct input to larger training/inference runs — reasoning gains lag the capex cycle by about a year."
         }
       ],
       "cf": "hi",
@@ -712,7 +725,10 @@
         },
         {
           "to": "atlas.pjm",
-          "rel": "context"
+          "rel": "context",
+          "sign": 1,
+          "lag_years": 0,
+          "sign_basis": "AI datacenter load is a direct, same-year addition to the interconnection queue."
         },
         {
           "to": "atlas.abilene",
@@ -751,7 +767,10 @@
         },
         {
           "to": "atlas.pjm",
-          "rel": "context"
+          "rel": "context",
+          "sign": -1,
+          "lag_years": 3,
+          "sign_basis": "Restarted reactors add firm capacity to the grid, relieving the queue pressure that motivated the restart deals in the first place — self-correcting once plants actually come online."
         }
       ],
       "cf": "hi",
@@ -1407,6 +1426,13 @@
         {
           "to": "window.memory-supercycle",
           "rel": "context"
+        },
+        {
+          "to": "tree.capex",
+          "rel": "enables",
+          "sign": 1,
+          "lag_years": 1,
+          "sign_basis": "Visible reasoning-model capability gains are the evidence hyperscalers cite to justify the next capex cycle — the scaling-laws bet renewing itself."
         }
       ],
       "cf": "hi",
