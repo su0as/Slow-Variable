@@ -1,0 +1,1312 @@
+{
+  "windows": [
+    {
+      "id": "window.app-store-gold-rush",
+      "type": "window",
+      "title": "App Store Gold Rush",
+      "class": "platform",
+      "status": "closed",
+      "opened": "2008",
+      "expected_close": "2012",
+      "mechanism": "iPhone + App Store created a new distribution channel with zero incumbents and willing consumer payers. First-mover discovery advantage; App Store search worked. CAC was organic.",
+      "effects": [
+        "Early utility/game developers extracted years of zero-CAC distribution",
+        "Created the template for every subsequent 'new channel' window",
+        "Discovery centralization (the App Store algorithm) was both the open and the close signal"
+      ],
+      "decay_logic": "Discovery centralization made it pay-to-play by 2012-13; CAC inflation; categories crowded",
+      "entry_checklist": [
+        {
+          "text": "Was it pre-2013?",
+          "status": "unknown",
+          "evidence": ""
+        },
+        {
+          "text": "Did you have organic discovery before the algorithm required paid?",
+          "status": "unknown",
+          "evidence": ""
+        }
+      ],
+      "who_won": [
+        "early Angry Birds/Instagram/WhatsApp generation — pre-institutional"
+      ],
+      "who_died": [
+        "Every category entrant after 2013 with no distribution edge"
+      ],
+      "exemplars": [],
+      "open_signal": "CLOSED. Historical reference only.",
+      "future_paths": [
+        {
+          "path": "No future paths — closed window",
+          "p": 1,
+          "horizon": "2012",
+          "falsifier": "N/A — already closed"
+        }
+      ],
+      "body": "iPhone + App Store created a new distribution channel with zero incumbents and willing consumer payers. First-mover discovery advantage; App Store search worked. CAC was organic.",
+      "as_of": "2026-06-01",
+      "half_life_days": 3650,
+      "signals": [],
+      "links": [
+        {
+          "to": "tree.chatgpt",
+          "rel": "context"
+        }
+      ],
+      "cf": "hi",
+      "review_after_months": 6
+    },
+    {
+      "id": "window.zirp-saas",
+      "type": "window",
+      "title": "ZIRP SaaS Cycle",
+      "class": "platform",
+      "status": "closed",
+      "opened": "2012",
+      "expected_close": "2021",
+      "mechanism": "Zero interest rates + cloud infrastructure made SaaS unit economics look better than they were. 10× ARR multiples rewarded growth at any cost. Capital was free; sales + marketing was the only constraint.",
+      "effects": [
+        "Cohort of 100× ARR companies built during ZIRP that can't survive rate normalization",
+        "SaaS playbook (land-and-expand, net revenue retention focus) institutionalized",
+        "Rate shock 2022 repriced the 2021 vintage violently"
+      ],
+      "decay_logic": "Rate shock (Fed 2022+) repriced duration; growth-at-any-cost became burn-rate scrutiny",
+      "entry_checklist": [
+        {
+          "text": "Did you have negative churn (NRR >100%)?",
+          "status": "unknown",
+          "evidence": ""
+        },
+        {
+          "text": "Could you raise at 20× ARR to fund growth that was negative FCF?",
+          "status": "unknown",
+          "evidence": ""
+        }
+      ],
+      "who_won": [
+        "2015-2019 vintage SaaS companies that grew into their multiples; Snowflake/Datadog/Crowdstrike"
+      ],
+      "who_died": [
+        "2021 vintage at 100× ARR that never grew into valuation; most SPACs"
+      ],
+      "exemplars": [],
+      "open_signal": "CLOSED. 2021 peak was the close.",
+      "future_paths": [
+        {
+          "path": "No future paths — closed window",
+          "p": 1,
+          "horizon": "2022",
+          "falsifier": "N/A — rate normalization confirmed close"
+        }
+      ],
+      "body": "Zero interest rates + cloud infrastructure made SaaS unit economics look better than they were. 10× ARR multiples rewarded growth at any cost. Capital was free; sales + marketing was the only constraint.",
+      "as_of": "2026-06-01",
+      "half_life_days": 3650,
+      "signals": [],
+      "links": [
+        {
+          "to": "tree.capex",
+          "rel": "context"
+        }
+      ],
+      "cf": "hi",
+      "review_after_months": 6
+    },
+    {
+      "id": "window.ai-wrapper-window",
+      "type": "window",
+      "title": "AI Wrapper / Capability Diffusion Window",
+      "class": "capability-window",
+      "status": "closing",
+      "opened": "2023",
+      "expected_close": "2027±",
+      "mechanism": "GPT-4-class APIs commoditized → solo developers could build consumer-grade AI products → short-video organic distribution (TikTok/IG/FB creators) gave zero-CAC reach → existing willingness-to-pay (diet, productivity, education) already proven.",
+      "effects": [
+        "Cal AI: $2k marketing test → $30M ARR → MyFitnessPal acquisition (8-9 figures)",
+        "Base44: solo, zero funding → $1M ARR in 3 weeks → Wix $80M acquisition → $150M ARR post-acquisition",
+        "Acqui-hire wave: incumbents buying winners rather than building (Windsurf→Google $2.4B, Scale→Meta $14.3B 49%)"
+      ],
+      "decay_logic": "Token price deflation ~100x+ compresses margins toward cost floor; platform absorption (labs ship the feature); incumbents acquire the winners; CAC inflation as the channel matures; distribution advantage erodes as every competitor uses same playbook",
+      "entry_checklist": [
+        {
+          "text": "Is there a new capability API that incumbents haven't yet absorbed into their products?",
+          "status": "unknown",
+          "evidence": ""
+        },
+        {
+          "text": "Is there a distribution channel (TikTok/IG/Discord/LinkedIn) where organic reach is still free in your category?",
+          "status": "unknown",
+          "evidence": ""
+        },
+        {
+          "text": "Does existing willingness-to-pay exist (people already pay for this without AI)?",
+          "status": "unknown",
+          "evidence": ""
+        },
+        {
+          "text": "Can you get to first revenue in <2 weeks with <$10k?",
+          "status": "unknown",
+          "evidence": ""
+        }
+      ],
+      "who_won": [
+        "yadegari",
+        "shlomo"
+      ],
+      "who_died": [
+        "Thousands of 2023-24 thin wrappers erased by platform feature releases; CAC inflation; model-price deflation"
+      ],
+      "exemplars": [],
+      "open_signal": "Solo apps still hitting $1M+ ARR in weeks (Base44 did in Feb 2025). When that stops — when first-month revenue requires VC and a team — the column flips to CLOSED.",
+      "future_paths": [
+        {
+          "path": "Window stays open through 2026 as new capability layers (multimodal, agents) create new wedges",
+          "p": 0.45,
+          "horizon": "2027",
+          "falsifier": "No solo-founder app reaches $1M ARR in <30 days after 2026"
+        },
+        {
+          "path": "Window closes by end 2026 as platform absorption accelerates",
+          "p": 0.35,
+          "horizon": "2026",
+          "falsifier": "New solo-founder $30M ARR app documented in H1 2027"
+        },
+        {
+          "path": "Window fully closed by 2027; all remaining alpha is institutional",
+          "p": 0.2,
+          "horizon": "2028",
+          "falsifier": "Sustained solo-founder exits >$50M after 2027"
+        }
+      ],
+      "body": "GPT-4-class APIs commoditized → solo developers could build consumer-grade AI products → short-video organic distribution (TikTok/IG/FB creators) gave zero-CAC reach → existing willingness-to-pay (diet, productivity, education) already proven.",
+      "as_of": "2026-06-01",
+      "half_life_days": 90,
+      "signals": [],
+      "links": [
+        {
+          "to": "tree.wrapper-window",
+          "rel": "context"
+        },
+        {
+          "to": "tree.deflate",
+          "rel": "context"
+        },
+        {
+          "to": "tree.chatgpt",
+          "rel": "context"
+        },
+        {
+          "to": "tree.acquihire-wave",
+          "rel": "context"
+        }
+      ],
+      "cf": "hi",
+      "review_after_months": 6,
+      "order_effects": [
+        {"order":1,"text":"Token prices deflate ~100×+; margins compress to cost floor; model providers absorb the feature layer","entity":null,"confidence":"hi"},
+        {"order":2,"text":"Incumbents acquire winners rather than build: Google $2.4B/Windsurf, Meta $14.3B/Scale — solo exits shift from organic to acqui-hire","entity":null,"confidence":"hi"},
+        {"order":3,"text":"CAC inflation in solo distribution channels; TikTok/IG organic reach commoditizes as every founder uses same playbook — window narrows to vertical distribution moats only","entity":null,"confidence":"md"},
+        {"order":4,"text":"Next capability layer (agents, multimodal) resets the window for a new cohort — but entry bar is now a team + product + distribution edge, not just API access","entity":null,"confidence":"lo"}
+      ]
+    },
+    {
+      "id": "window.acquihire-signal",
+      "type": "window",
+      "title": "Acqui-hire Wave 2024-25",
+      "class": "capability-window",
+      "status": "closing",
+      "opened": "2024",
+      "expected_close": "2026",
+      "mechanism": "As the capability window closes for independents, incumbents buy talent and time rather than building. The clearest evidence: valuation disconnected from revenue (Windsurf ~$2.4B on modest ARR). Mechanism is defensive: the talent/product would have competed with them.",
+      "effects": [
+        "Inflection → MSFT ~$650M (Mar 2024)",
+        "Character.AI → Google ~$2.7B license (Aug 2024)",
+        "Adept → Amazon",
+        "Windsurf → Google ~$2.4B (Jul 2025, after OpenAI's $3B fell through)",
+        "Scale AI → Meta $14.3B for 49% (Jun 2025) [cf:md — verify]"
+      ],
+      "decay_logic": "Window closes when: (1) incumbents have absorbed enough talent, (2) regulatory scrutiny makes acquisitions prohibitive, or (3) no remaining independent targets worth the price",
+      "entry_checklist": [
+        {
+          "text": "Does your product/team address a capability gap an incumbent needs in <18mo?",
+          "status": "unknown",
+          "evidence": ""
+        },
+        {
+          "text": "Are you building in a space where MSFT/Google/Meta/Amazon would face antitrust risk building internally?",
+          "status": "unknown",
+          "evidence": ""
+        },
+        {
+          "text": "Is your team irreplaceable enough to justify acquisition vs hiring away?",
+          "status": "unknown",
+          "evidence": ""
+        }
+      ],
+      "who_won": [
+        "Windsurf team",
+        "Character AI founders",
+        "Scale AI founders",
+        "Inflection founders"
+      ],
+      "who_died": [
+        "Every well-funded AI startup that raised at peak and failed to become an acqui-hire target"
+      ],
+      "exemplars": [],
+      "open_signal": "CLOSING. The wave of major acqui-hires may be ending as regulatory scrutiny increases (FTC/DOJ watching Microsoft-OpenAI structure).",
+      "future_paths": [
+        {
+          "path": "Regulatory pressure closes acqui-hire arbitrage; talent consolidates at incumbents",
+          "p": 0.5,
+          "horizon": "2027",
+          "falsifier": "Major acqui-hire ($500M+) after 2026 without regulatory challenge"
+        },
+        {
+          "path": "Acqui-hire wave continues as new capability gaps emerge",
+          "p": 0.3,
+          "horizon": "2027",
+          "falsifier": "3+ major acqui-hires in 2026-27"
+        }
+      ],
+      "body": "As the capability window closes for independents, incumbents buy talent and time rather than building. The clearest evidence: valuation disconnected from revenue (Windsurf ~$2.4B on modest ARR). Mechanism is defensive: the talent/product would have competed with them.",
+      "as_of": "2026-06-01",
+      "half_life_days": 90,
+      "signals": [],
+      "links": [
+        {
+          "to": "tree.acquihire-wave",
+          "rel": "context"
+        },
+        {
+          "to": "tree.race",
+          "rel": "context"
+        }
+      ],
+      "cf": "md",
+      "review_after_months": 6,
+      "order_effects": [
+        {"order":1,"text":"Lab race creates talent scarcity — labs outbid everyone on ML engineers; independent teams can't compete on model training","entity":null,"confidence":"hi"},
+        {"order":2,"text":"Acqui-hires become primary exit path for AI startups; VC returns concentrate in a few mega-exits rather than broad portfolio wins","entity":null,"confidence":"hi"},
+        {"order":3,"text":"Talent concentration at labs → fewer independent AI companies at founding → venture capital AI portfolio companies become commoditised by lab platform releases","entity":null,"confidence":"md"},
+        {"order":4,"text":"University AI programs and bootcamps surge to meet demand — but a 4yr lag before they produce independent founders; short-term talent gap persists","entity":null,"confidence":"lo"}
+      ]
+    },
+    {
+      "id": "window.agentic-vertical",
+      "type": "window",
+      "title": "Agentic Vertical Services (SMB Ops)",
+      "class": "capability-window",
+      "status": "open",
+      "opened": "2025",
+      "expected_close": "2028±",
+      "mechanism": "Tool-use reliability crossed service-quality thresholds in 2025. Unsexy SMB verticals — voice receptionists, AI bookkeeping, compliance automation, intake systems — have existing willingness-to-pay (they already pay humans for this) and distribution wedges that don't require paid ads (referral networks, vertical software partnerships).",
+      "effects": [
+        "Dental/medical practice management: replacing receptionist + scheduling",
+        "Restaurant/service business: order taking + reservations",
+        "Bookkeeping/accounting: small business compliance automation",
+        "Legal intake: initial client screening and document collection"
+      ],
+      "decay_logic": "Platform bundling (Quickbooks/ServiceTitan add the feature); per-seat price collapse as models commoditize; CAC inflation as category gets competitive",
+      "entry_checklist": [
+        {
+          "text": "Is there a regulated/painful phone-and-paper workflow in this vertical?",
+          "status": "unknown",
+          "evidence": ""
+        },
+        {
+          "text": "Does existing human-service spend prove willingness-to-pay (not speculative)?",
+          "status": "unknown",
+          "evidence": ""
+        },
+        {
+          "text": "Is there a distribution wedge that doesn't require paid ads (referral network, vertical software integration)?",
+          "status": "unknown",
+          "evidence": ""
+        },
+        {
+          "text": "Can you serve 80% of the workflow without 100% reliability (the last 20% still goes to human)?",
+          "status": "unknown",
+          "evidence": ""
+        }
+      ],
+      "who_won": [
+        "Fieldwork (HVAC service), Dentistry.AI, early vertical agents"
+      ],
+      "who_died": [
+        "Generalist AI receptionists without vertical depth; companies that tried to build horizontal and hit CAC walls"
+      ],
+      "exemplars": [],
+      "open_signal": "Agent-powered SMB services still growing 3x+ YoY in unsexy verticals. When growth requires VC-scale CAC to acquire the next SMB, the window is closing.",
+      "future_paths": [
+        {
+          "path": "Window stays open 2025-2028; vertical depth wins over horizontal reach",
+          "p": 0.55,
+          "horizon": "2028",
+          "falsifier": "No new vertical agent company reaches $10M ARR without VC-scale spend by end 2027"
+        },
+        {
+          "path": "Platform bundling closes window by 2027",
+          "p": 0.3,
+          "horizon": "2027",
+          "falsifier": "Quickbooks/ServiceTitan/HubSpot fail to add native agent features by 2027"
+        }
+      ],
+      "body": "Tool-use reliability crossed service-quality thresholds in 2025. Unsexy SMB verticals — voice receptionists, AI bookkeeping, compliance automation, intake systems — have existing willingness-to-pay (they already pay humans for this) and distribution wedges that don't require paid ads (referral networks, vertical software partnerships).",
+      "as_of": "2026-06-01",
+      "half_life_days": 365,
+      "signals": [],
+      "links": [
+        {
+          "to": "tree.agentic-shift",
+          "rel": "context"
+        },
+        {
+          "to": "tree.labor",
+          "rel": "context"
+        }
+      ],
+      "cf": "md",
+      "review_after_months": 6
+    },
+    {
+      "id": "window.energy-grid-software",
+      "type": "window",
+      "title": "Energy / Grid Software + Behind-the-Meter",
+      "class": "capability-window",
+      "status": "open",
+      "opened": "2024",
+      "expected_close": "2030±",
+      "mechanism": "The AI power constraint IS the market. Interconnection queues (5yr median), sold-out turbines, 2-4yr transformer lead times create demand for: (1) optimization software that extracts more value from existing capacity, (2) behind-the-meter solutions that bypass the queue entirely, (3) demand-response automation at DC scale. The constraint is the moat.",
+      "effects": [
+        "Behind-the-meter gas generation (Abilene model) becomes standard for hyperscaler DC builds",
+        "Virtual power plants (VPPs) and demand-response software become critical infrastructure",
+        "Interconnection queue optimization becomes a multi-hundred-million dollar market",
+        "Transformer supply optimization: 2-4yr lead times create premium for software that reduces transformer count"
+      ],
+      "decay_logic": "Window closes when: interconnection queues clear (unlikely before 2030), or when hardware shortage resolves, or when AI capex growth plateaus",
+      "entry_checklist": [
+        {
+          "text": "Does your software attack a constraint node (queue, transformer, turbine) rather than a nice-to-have?",
+          "status": "unknown",
+          "evidence": ""
+        },
+        {
+          "text": "Can you demonstrate ROI in weeks vs the 5-year queue alternative?",
+          "status": "unknown",
+          "evidence": ""
+        },
+        {
+          "text": "Do you have a relationship with a utility or hyperscaler as anchor customer?",
+          "status": "unknown",
+          "evidence": ""
+        }
+      ],
+      "who_won": [
+        "GE Vernova (infrastructure + software stack)",
+        "Fluence, AutoGrid (grid software)",
+        "Early behind-the-meter project developers"
+      ],
+      "who_died": [
+        "Pure-play software companies without hardware integration in a market that requires both"
+      ],
+      "exemplars": [],
+      "open_signal": "PJM capacity auction prices still elevated (was 10× recent norms). When prices normalize AND queues clear, the premium shrinks.",
+      "future_paths": [
+        {
+          "path": "Energy software + BTM stays as major category through 2030",
+          "p": 0.65,
+          "horizon": "2030",
+          "falsifier": "US grid interconnection queue median drops below 2yr by 2028"
+        },
+        {
+          "path": "Nuclear restarts + new transmission resolves the constraint by 2028",
+          "p": 0.2,
+          "horizon": "2028",
+          "falsifier": "Palisades + 3 new SMR sites operational by 2028"
+        }
+      ],
+      "body": "The AI power constraint IS the market. Interconnection queues (5yr median), sold-out turbines, 2-4yr transformer lead times create demand for: (1) optimization software that extracts more value from existing capacity, (2) behind-the-meter solutions that bypass the queue entirely, (3) demand-response automation at DC scale. The constraint is the moat.",
+      "as_of": "2026-06-01",
+      "half_life_days": 365,
+      "signals": [],
+      "links": [
+        {
+          "to": "tree.power",
+          "rel": "context"
+        },
+        {
+          "to": "tree.nuke",
+          "rel": "context"
+        },
+        {
+          "to": "atlas.gevernova",
+          "rel": "context"
+        },
+        {
+          "to": "atlas.pjm",
+          "rel": "context"
+        },
+        {
+          "to": "atlas.abilene",
+          "rel": "context"
+        },
+        {
+          "to": "atlas.crane",
+          "rel": "context"
+        }
+      ],
+      "cf": "hi",
+      "review_after_months": 6
+    },
+    {
+      "id": "window.robotics-embodiment",
+      "type": "window",
+      "title": "Robotics Embodiment / Physical AI",
+      "class": "capability-window",
+      "status": "forming",
+      "opened": "forming",
+      "expected_close": "2032±",
+      "mechanism": "LLM-powered reasoning is now available; the bottleneck has moved to physical actuation + sim-to-real transfer. When cheap actuators (Boston Dynamics, 1X, Figure) cross the reliability threshold AND sim-to-real data generation solves the training problem, the window opens. Pre-ChatGPT-moment for physical AI.",
+      "effects": [
+        "Warehouse + fulfillment automation (Amazon, Foxconn deployment)",
+        "Last-mile delivery automation",
+        "Construction + manufacturing automation in structured environments",
+        "Elder care + service robotics (demographic tailwind: Japan/Korea aging)"
+      ],
+      "decay_logic": "Window may never fully open if sim-to-real gap proves too hard; OR opens and closes quickly as incumbents (Amazon Robotics, Fanuc) absorb the capability",
+      "entry_checklist": [
+        {
+          "text": "Is actuator reliability above 99.9% for the specific motion required?",
+          "status": "unknown",
+          "evidence": ""
+        },
+        {
+          "text": "Does sim-to-real transfer work for your target environment (structured > unstructured)?",
+          "status": "unknown",
+          "evidence": ""
+        },
+        {
+          "text": "Is there a data flywheel (each deployment generates training data for the next)?",
+          "status": "unknown",
+          "evidence": ""
+        },
+        {
+          "text": "Does the unit economics work WITHOUT robotic uptime improving (i.e., human-comparable today)?",
+          "status": "unknown",
+          "evidence": ""
+        }
+      ],
+      "who_won": [
+        "TBD — pre-window"
+      ],
+      "who_died": [
+        "Rethink Robotics (Rodney Brooks, too early 2012-18); early warehouse robot companies without software moats"
+      ],
+      "exemplars": [],
+      "open_signal": "FORMING. Signal to watch: first mass-deployment (1000+ units) of a general-purpose humanoid in a single vertical.",
+      "future_paths": [
+        {
+          "path": "General-purpose humanoid reaches 1000-unit deployment in one vertical by 2028",
+          "p": 0.35,
+          "horizon": "2028",
+          "falsifier": "No mass humanoid deployment in single vertical by end 2028"
+        },
+        {
+          "path": "Physical AI remains specialized/narrow; no general-purpose window opens",
+          "p": 0.4,
+          "horizon": "2030",
+          "falsifier": "General humanoid economic parity with human labor by 2030"
+        },
+        {
+          "path": "China leads embodied AI due to manufacturing proximity + data advantage",
+          "p": 0.25,
+          "horizon": "2030",
+          "falsifier": "Western humanoid company leads on deployment metrics by 2028"
+        }
+      ],
+      "body": "LLM-powered reasoning is now available; the bottleneck has moved to physical actuation + sim-to-real transfer. When cheap actuators (Boston Dynamics, 1X, Figure) cross the reliability threshold AND sim-to-real data generation solves the training problem, the window opens. Pre-ChatGPT-moment for physical AI.",
+      "as_of": "2026-06-01",
+      "half_life_days": 180,
+      "signals": [],
+      "links": [],
+      "cf": "lo",
+      "review_after_months": 6,
+      "tipping_condition": "First mass-deployment of a general-purpose humanoid robot: 1,000+ units in a single production vertical with economic parity to human labor cost (not just demo performance).",
+      "distance_to_tip": "early",
+      "order_effects": [
+        {"order":1,"text":"Sim-to-real transfer crosses reliability threshold; first 1,000-unit humanoid deployment in controlled vertical (warehouse/manufacturing)","entity":null,"confidence":"hi"},
+        {"order":2,"text":"Data flywheel activates: each deployed unit generates training data, accelerating next-gen models; Optimus/Figure/1X compete on iteration speed not hardware specs","entity":null,"confidence":"md"},
+        {"order":3,"text":"Labor markets price-in humanoid substitution risk in warehouse, logistics, light manufacturing; insurance premiums for human workers in competitive roles shift","entity":null,"confidence":"md"},
+        {"order":4,"text":"White-collar knowledge work remains separate; gap between physical-AI window and cognitive-AI window creates asymmetric investment opportunity in physical-world distribution moats","entity":null,"confidence":"lo"}
+      ]
+    },
+    {
+      "id": "window.orbital-compute",
+      "type": "window",
+      "title": "Post-Starship Orbital Economics",
+      "class": "platform",
+      "status": "forming",
+      "opened": "forming",
+      "expected_close": "2035±",
+      "mechanism": "Full Starship reuse (both booster + ship) would collapse $/kg to LEO by ~10-50×, making orbital infrastructure economically viable for compute, manufacturing, and potentially point-to-point transport. Gated entirely on Starship achieving commercial full-reuse cadence.",
+      "effects": [
+        "1M-satellite constellation becomes economically buildable (SpaceX/xAI FCC filing)",
+        "In-orbit manufacturing of materials impossible on Earth (perfect crystals, alloys)",
+        "Point-to-point hypersonic transport (SpaceX original thesis)",
+        "Orbital solar power (long-horizon, energy constraint response)"
+      ],
+      "decay_logic": "Window may not open at all if Starship full reuse proves technically infeasible at the required cadence. Or opens and is dominated by SpaceX exclusively (single-player market).",
+      "entry_checklist": [
+        {
+          "text": "Has Starship achieved >5 consecutive full-reuse flights at commercial cadence?",
+          "status": "unknown",
+          "evidence": ""
+        },
+        {
+          "text": "Is $/kg to LEO below $200 sustainably (from current ~$1,500-2,000)?",
+          "status": "unknown",
+          "evidence": ""
+        },
+        {
+          "text": "Does your compute/manufacturing use case have thermal management solutions for orbit?",
+          "status": "unknown",
+          "evidence": ""
+        },
+        {
+          "text": "Is your business model independent of a single launch provider (SpaceX monopoly risk)?",
+          "status": "unknown",
+          "evidence": ""
+        }
+      ],
+      "who_won": [
+        "TBD — pre-window; SpaceX is both gate-keeper and likely first beneficiary"
+      ],
+      "who_died": [
+        "Every orbital compute startup before full Starship reuse — capital consumed before the window opened"
+      ],
+      "exemplars": [],
+      "open_signal": "FORMING. Signal: Starship full-reuse reflown at commercial cadence (target: 5+ consecutive reflight successes).",
+      "future_paths": [
+        {
+          "path": "Starship full reuse achieved → orbital economics viable → window opens",
+          "p": 0.5,
+          "horizon": "2029",
+          "falsifier": "No reflown Starship at commercial cadence by end 2028"
+        },
+        {
+          "path": "Thermal/launch-cost math fails; orbital compute remains economically infeasible",
+          "p": 0.35,
+          "horizon": "2032",
+          "falsifier": "Third-party analysis confirms orbital compute economics by 2030"
+        },
+        {
+          "path": "Window opens but SpaceX captures it exclusively; no independent entry possible",
+          "p": 0.15,
+          "horizon": "2032",
+          "falsifier": "Non-SpaceX orbital infrastructure company raises $1B+ in 2028-30"
+        }
+      ],
+      "body": "Full Starship reuse (both booster + ship) would collapse $/kg to LEO by ~10-50×, making orbital infrastructure economically viable for compute, manufacturing, and potentially point-to-point transport. Gated entirely on Starship achieving commercial full-reuse cadence.",
+      "as_of": "2026-06-01",
+      "half_life_days": 180,
+      "signals": [],
+      "links": [
+        {
+          "to": "tree.spacex-ipo",
+          "rel": "context"
+        },
+        {
+          "to": "tree.orbital-compute",
+          "rel": "context"
+        },
+        {
+          "to": "tree.spacex-xai-merger",
+          "rel": "context"
+        }
+      ],
+      "cf": "lo",
+      "review_after_months": 6,
+      "tipping_condition": "Starship achieves commercial full-reuse cadence with both booster and ship recovered — confirmed by 3+ consecutive commercial flights with 24hr turnaround — making $/kg to LEO collapse to <$100/kg.",
+      "distance_to_tip": "early",
+      "order_effects": [
+        {"order":1,"text":"Starship full-reuse collapses $/kg to LEO by 10–50×; orbital infrastructure crosses economic viability threshold","entity":null,"confidence":"hi"},
+        {"order":2,"text":"1M-satellite constellation becomes buildable (SpaceX/xAI FCC filing); in-orbit compute and manufacturing attract first commercial capital","entity":null,"confidence":"md"},
+        {"order":3,"text":"Starlink 2.0 with orbital compute nodes creates a latency-free global computation substrate — geography of data center location becomes less relevant","entity":null,"confidence":"lo"},
+        {"order":4,"text":"Nation-states re-assess sovereignty of critical infrastructure as it moves to orbit (outside territorial jurisdiction); orbital law regime becomes the new maritime law battleground","entity":null,"confidence":"lo"}
+      ]
+    },
+    {
+      "id": "window.meta-leverage-shift",
+      "type": "window",
+      "title": "Individual Leverage Inflection",
+      "class": "platform",
+      "status": "open",
+      "opened": "2023",
+      "expected_close": "2030±",
+      "mechanism": "As AI compresses execution cost, scarcity migrates to distribution + judgment + speed. Windows get shorter and more frequent. Individual leverage rises — solo $1M-ARR-in-weeks now exists (Base44 documented). The 'one-person $1B company' is the stated frontier claim.",
+      "effects": [
+        "Solo-founder $30M ARR (Cal AI) and $150M ARR (Base44 post-acq) now documented",
+        "Windows get shorter — Base44 was 3 weeks from launch to $1M ARR",
+        "Distribution + taste become scarcer than engineering",
+        "VC-backed teams compete against zero-overhead solos in capability windows"
+      ],
+      "decay_logic": "Weakens if the next window's winner-list is dominated by incumbents only — that would signal individual-leverage thesis has broken down. Alternatively: platform absorption makes first-mover distribution irrelevant.",
+      "entry_checklist": [
+        {
+          "text": "Can you build and ship a working product alone in <2 weeks?",
+          "status": "unknown",
+          "evidence": ""
+        },
+        {
+          "text": "Do you have an existing audience (LinkedIn/X/YouTube/Discord) before building?",
+          "status": "unknown",
+          "evidence": ""
+        },
+        {
+          "text": "Is your distribution edge replicable by a 10-person team with VC money (if yes, you lose)?",
+          "status": "unknown",
+          "evidence": ""
+        }
+      ],
+      "who_won": [
+        "yadegari",
+        "shlomo"
+      ],
+      "who_died": [
+        "VC-backed 20-person teams competing in the same window as solos; lost on speed"
+      ],
+      "exemplars": [],
+      "open_signal": "OPEN. Still winning: new solo-founder documented exits >$50M in 2025-2026. When this stops, column flips.",
+      "future_paths": [
+        {
+          "path": "Individual leverage thesis holds; solo $1B ARR company documented by 2030",
+          "p": 0.25,
+          "horizon": "2030",
+          "falsifier": "No solo-founder $100M+ ARR company documented by 2028"
+        },
+        {
+          "path": "Platform absorption makes individual speed advantage irrelevant by 2028",
+          "p": 0.4,
+          "horizon": "2028",
+          "falsifier": "Solo-founder $100M ARR company documented after 2027"
+        },
+        {
+          "path": "Thesis holds but window narrowing; last solo-founder exit >$100M is in 2026",
+          "p": 0.35,
+          "horizon": "2027",
+          "falsifier": "Major solo-founder exit documented in 2028+"
+        }
+      ],
+      "body": "As AI compresses execution cost, scarcity migrates to distribution + judgment + speed. Windows get shorter and more frequent. Individual leverage rises — solo $1M-ARR-in-weeks now exists (Base44 documented). The 'one-person $1B company' is the stated frontier claim.",
+      "as_of": "2026-06-01",
+      "half_life_days": 365,
+      "signals": [],
+      "links": [
+        {
+          "to": "tree.wrapper-window",
+          "rel": "context"
+        },
+        {
+          "to": "tree.deflate",
+          "rel": "context"
+        }
+      ],
+      "cf": "md",
+      "review_after_months": 6
+    },
+    {
+      "id": "window.memory-supercycle",
+      "type": "window",
+      "title": "AI Memory Supercycle",
+      "class": "capability-window",
+      "status": "open",
+      "opened": "2024",
+      "expected_close": "2027±",
+      "mechanism": "HBM demand from AI accelerators has structurally broken the consumer-driven DRAM cycle. AI capex → GPU demand → HBM demand → SK Hynix/Micron pricing power. The constraint cleared GPUs only to reveal advanced memory as the next binding node. Hyperscaler capex floors the demand.",
+      "effects": [
+        "SK Hynix HBM sold out through 2026; ASP inflecting",
+        "Micron HBM volume ramping; new structural demand floor",
+        "DRAM pricing no longer dominated by consumer electronics cycle",
+        "New memory architectures (Processing-in-Memory, CXL) becoming relevant"
+      ],
+      "decay_logic": "Closes when: (1) HBM capacity expansion catches demand (2027+), (2) compute architecture shifts away from memory-bandwidth-bound models, (3) AI capex growth plateaus",
+      "entry_checklist": [
+        {
+          "text": "Is SK Hynix HBM still on allocation (sold out)?",
+          "status": "unknown",
+          "evidence": ""
+        },
+        {
+          "text": "Is hyperscaler capex guidance still growing (>$500B/yr total)?",
+          "status": "unknown",
+          "evidence": ""
+        },
+        {
+          "text": "Are new memory architectures (CXL, PIM) still 18+ months from commercial deployment?",
+          "status": "unknown",
+          "evidence": ""
+        }
+      ],
+      "who_won": [
+        "SK Hynix (HBM dominant)",
+        "Micron (ramping)",
+        "NVIDIA (passes through to customers)"
+      ],
+      "who_died": [
+        "DRAM spot traders who didn't model the AI-capex floor; memory startups building for consumer cycle"
+      ],
+      "exemplars": [],
+      "open_signal": "OPEN. SK Hynix HBM on allocation. When allocation ends + spot price declines — window closing.",
+      "future_paths": [
+        {
+          "path": "Memory supercycle extends through 2027 as AI capex stays elevated",
+          "p": 0.55,
+          "horizon": "2027",
+          "falsifier": "HBM no longer on allocation by end 2026"
+        },
+        {
+          "path": "Memory cycle peaks 2026 H2 as capacity expansion arrives",
+          "p": 0.3,
+          "horizon": "2026",
+          "falsifier": "SK Hynix HBM ASP stable or rising into 2027"
+        },
+        {
+          "path": "New architecture (PIM/CXL) displaces HBM premium before 2028",
+          "p": 0.15,
+          "horizon": "2028",
+          "falsifier": "HBM remains >50% of AI memory spending in 2028"
+        }
+      ],
+      "body": "HBM demand from AI accelerators has structurally broken the consumer-driven DRAM cycle. AI capex → GPU demand → HBM demand → SK Hynix/Micron pricing power. The constraint cleared GPUs only to reveal advanced memory as the next binding node. Hyperscaler capex floors the demand.",
+      "as_of": "2026-06-01",
+      "half_life_days": 365,
+      "signals": [],
+      "links": [
+        {
+          "to": "tree.memory-supercycle",
+          "rel": "context"
+        },
+        {
+          "to": "tree.bottleneck",
+          "rel": "context"
+        },
+        {
+          "to": "atlas.skhynix",
+          "rel": "context"
+        }
+      ],
+      "cf": "hi",
+      "review_after_months": 6
+    },
+    {
+      "id": "window.nuclear-restart",
+      "type": "window",
+      "title": "Nuclear Restart / Firm Power",
+      "class": "capability-window",
+      "status": "open",
+      "opened": "2023",
+      "expected_close": "2032",
+      "mechanism": "AI datacenter load (4.4% of US electricity heading to 7-12% by 2028) collides with a grid that takes 5+ years to interconnect anything. Gas turbines sold out to ~2029. The only dispatchable, carbon-acceptable, large-block answer at hyperscaler scale is nuclear — so the buyers with infinite money (Microsoft, Google, Amazon, Meta) started signing 20-year PPAs and the politics flipped in one cycle.",
+      "effects": [
+        "Three Mile Island restart (Microsoft 20yr PPA); Palisades first-ever US recommissioning (fuel loaded Oct 2025)",
+        "Constellation rerated from utility to AI-infrastructure stock",
+        "SMR pipeline (Oklo, X-energy, TerraPower) funded by hyperscaler offtakes rather than government grants — demand-pull at last",
+        "Uranium supply chain (enrichment esp.) re-emerging as a chokepoint; Russia still ~40%+ of global enrichment"
+      ],
+      "decay_logic": "Closes via saturation (every restartable reactor restarted, ~6-8 units in the US) and SMR delivery reality-check ~2030; if AI capex cracks first, power demand growth re-rates down and the PPAs become stranded-buyer problems",
+      "entry_checklist": [
+        {
+          "text": "Does the play own dispatchable megawatts, restart-adjacent assets, or enrichment capacity (not just nuclear narrative)?",
+          "status": "unknown",
+          "evidence": ""
+        },
+        {
+          "text": "Is there a signed hyperscaler offtake or is it spec?",
+          "status": "unknown",
+          "evidence": ""
+        },
+        {
+          "text": "Does the timeline survive a 2-year permitting slip?",
+          "status": "unknown",
+          "evidence": ""
+        }
+      ],
+      "who_won": [
+        "Constellation (TMI PPA rerating)",
+        "Cameco/enrichment plays",
+        "Early Oklo/SMR backers (paper gains, delivery pending)"
+      ],
+      "who_died": [
+        "NuScale's first SMR project (UAMPS, cancelled 2023 on cost — too early, wrong customer: municipalities not hyperscalers)"
+      ],
+      "exemplars": [],
+      "open_signal": "Hyperscalers still signing nuclear PPAs at premium $/MWh; interconnection queues still 5yr; gas turbines still sold out. Watch: first SMR concrete pour with a hyperscaler anchor.",
+      "future_paths": [
+        {
+          "path": "Every viable US restart executed + first SMR fleet orders by hyperscalers",
+          "p": 0.5,
+          "horizon": "2029",
+          "falsifier": "No SMR order book >2GW with anchor customers by end 2028"
+        },
+        {
+          "path": "AI capex shakeout strands the power build-out; PPAs renegotiated down",
+          "p": 0.3,
+          "horizon": "2028",
+          "falsifier": "Datacenter load growth sustains >15%/yr through 2027"
+        },
+        {
+          "path": "Enrichment becomes the binding chokepoint and re-prices violently",
+          "p": 0.35,
+          "horizon": "2028",
+          "falsifier": "Western enrichment capacity additions announced >10M SWU by 2027"
+        }
+      ],
+      "body": "AI datacenter load (4.4% of US electricity heading to 7-12% by 2028) collides with a grid that takes 5+ years to interconnect anything. Gas turbines sold out to ~2029. The only dispatchable, carbon-acceptable, large-block answer at hyperscaler scale is nuclear — so the buyers with infinite money (Microsoft, Google, Amazon, Meta) started signing 20-year PPAs and the politics flipped in one cycle.",
+      "as_of": "2026-06-01",
+      "half_life_days": 365,
+      "signals": [],
+      "links": [
+        {
+          "to": "tree.power",
+          "rel": "context"
+        },
+        {
+          "to": "tree.nuke",
+          "rel": "context"
+        },
+        {
+          "to": "tree.capex",
+          "rel": "context"
+        }
+      ],
+      "cf": "hi",
+      "review_after_months": 6
+    },
+    {
+      "id": "window.defense-tech",
+      "type": "window",
+      "title": "Defense Tech Rearmament",
+      "class": "platform",
+      "status": "open",
+      "opened": "2022",
+      "expected_close": "2030",
+      "mechanism": "Ukraine (2022) broke two consensuses at once: that interstate war was obsolete, and that $10M missiles beat $500 drones. Cost-curve inversion (cheap autonomous systems beating exquisite platforms) + NATO rearmament budgets + Silicon Valley's post-Maven allergy wearing off = a procurement regime shift that happens once in 40 years. The primes' cost-plus model cannot ship software-speed iterations; the gap is the window.",
+      "effects": [
+        "Anduril ~$30B+ valuation; from CFIUS-pariah category to program-of-record wins in under a decade",
+        "Palantir rerated into a top-tier US company on defense-AI demand",
+        "European rearmament (Germany's Zeitenwende, ~2-3.5% GDP targets) opening the first new prime-scale market since the Cold War",
+        "Drone/counter-drone as the highest-velocity category: Ukraine iterates weekly; procurement systems built for decades cannot keep up"
+      ],
+      "decay_logic": "Windows close via incumbency: today's insurgents (Anduril, Palantir) become tomorrow's primes and recreate the moats they attacked. Peace dividend reversal would slow it but the demographic-fiscal politics of NATO+Asia make budget reversal unlikely before 2030",
+      "entry_checklist": [
+        {
+          "text": "Does the product ship in months and iterate against live conflict feedback?",
+          "status": "unknown",
+          "evidence": ""
+        },
+        {
+          "text": "Is the cost-exchange ratio favorable (your unit cost vs what it destroys/defends)?",
+          "status": "unknown",
+          "evidence": ""
+        },
+        {
+          "text": "Program-of-record path identified, or selling to the valley-of-death between SBIR and production?",
+          "status": "unknown",
+          "evidence": ""
+        }
+      ],
+      "who_won": [
+        "Anduril",
+        "Palantir",
+        "Ukrainian drone manufacturers (the live R&D lab)",
+        "Thiel's Founders Fund thesis, a decade early"
+      ],
+      "who_died": [
+        "Defense startups 2015-2020 that died in the procurement valley before the regime shift (the timing graveyard)",
+        "Primes' software ventures (organizationally unable)"
+      ],
+      "exemplars": [],
+      "open_signal": "Procurement reform bills still passing; insurgents still winning programs-of-record against primes; European budgets still rising. Watch: first $10B+ program won outright by a non-prime.",
+      "future_paths": [
+        {
+          "path": "Anduril IPOs as the first new prime in 60 years",
+          "p": 0.55,
+          "horizon": "2027",
+          "falsifier": "No IPO filing and no program-of-record >$1B by end 2027"
+        },
+        {
+          "path": "Autonomous systems doctrine formalized; manned-platform budgets structurally decline",
+          "p": 0.5,
+          "horizon": "2030",
+          "falsifier": "Next-gen manned fighter/carrier budgets grow in real terms through 2029"
+        },
+        {
+          "path": "The window closes by insurgent-becomes-incumbent consolidation",
+          "p": 0.4,
+          "horizon": "2030",
+          "falsifier": "New defense startups still winning first contracts at 2024-25 rates in 2029"
+        }
+      ],
+      "body": "Ukraine (2022) broke two consensuses at once: that interstate war was obsolete, and that $10M missiles beat $500 drones. Cost-curve inversion (cheap autonomous systems beating exquisite platforms) + NATO rearmament budgets + Silicon Valley's post-Maven allergy wearing off = a procurement regime shift that happens once in 40 years. The primes' cost-plus model cannot ship software-speed iterations; the gap is the window.",
+      "as_of": "2026-06-01",
+      "half_life_days": 365,
+      "signals": [],
+      "links": [
+        {
+          "to": "tree.export",
+          "rel": "context"
+        },
+        {
+          "to": "tree.sovereign-ai",
+          "rel": "context"
+        }
+      ],
+      "cf": "hi",
+      "review_after_months": 6
+    },
+    {
+      "id": "window.reshoring-chips",
+      "type": "window",
+      "title": "Chip Reshoring / Friendshoring",
+      "class": "platform",
+      "status": "open",
+      "opened": "2022",
+      "expected_close": "2032",
+      "mechanism": "CHIPS Act ($52B) + EU Chips Act + Japan's Rapidus + export-control regime = the first state-directed reorganization of semiconductor geography since the industry left the US in the 1980s. The driver is the atlas's most concentrated chokepoint: >90% of leading-edge logic within 110 miles of the Taiwan Strait. States are paying a structural inefficiency premium (~20-50% higher fab costs) as insurance — GDP-negative, resilience-positive, and a decade-long flow of capital to whoever builds, equips, and staffs fabs.",
+      "effects": [
+        "TSMC Arizona: N4 yields at Taiwan parity (2025), $165B+ committed — the existence proof",
+        "Equipment makers (ASML, AMAT, TEL) selling into duplicated capacity — the certain winners regardless of which fabs succeed",
+        "Japan's Rapidus partnership with IBM/imec targeting 2nm — the boldest leapfrog attempt",
+        "Skilled-labor shortage revealed as the real constraint: fabs can be built faster than workforces"
+      ],
+      "decay_logic": "Closes when duplicated capacity meets demand reality ~2030+: if AI demand disappoints, the subsidized fabs become stranded assets and the premium becomes politically indefensible. Also closes on success: once geographic risk is priced out, the insurance stops being bought",
+      "entry_checklist": [
+        {
+          "text": "Is the play in the certain layer (equipment, materials, construction, workforce) or the speculative layer (which fab wins)?",
+          "status": "unknown",
+          "evidence": ""
+        },
+        {
+          "text": "Does it survive a 30% demand disappointment?",
+          "status": "unknown",
+          "evidence": ""
+        },
+        {
+          "text": "Is the subsidy already committed or still political?",
+          "status": "unknown",
+          "evidence": ""
+        }
+      ],
+      "who_won": [
+        "ASML/equipment makers (sell to every side)",
+        "TSMC (subsidized diversification it would never have self-funded)",
+        "Fab construction/cleanroom specialists"
+      ],
+      "who_died": [
+        "Intel as originally planned beneficiary (foundry stumbles consumed the thesis; rescue structure still unfolding, cf:md)",
+        "Wolfspeed and second-tier names that over-built into the subsidy narrative"
+      ],
+      "exemplars": [],
+      "open_signal": "Subsidies still being legislated; TSMC/Samsung still announcing US/EU/Japan expansions; export controls still tightening. Watch: Intel 18A external customer wins as the second-source reality test.",
+      "future_paths": [
+        {
+          "path": "US/Japan reach ~20% of leading-edge capacity by 2030 — insurance achieved at premium cost",
+          "p": 0.45,
+          "horizon": "2030",
+          "falsifier": "Leading-edge ex-Taiwan share still <12% in 2029"
+        },
+        {
+          "path": "Intel foundry fails as second source; the duplication is all TSMC-owned and Taiwan leverage persists",
+          "p": 0.4,
+          "horizon": "2028",
+          "falsifier": "Intel lands 2+ top-10 fabless customers on 18A/14A by 2027"
+        },
+        {
+          "path": "Demand disappointment strands subsidized capacity; political backlash against chips industrial policy",
+          "p": 0.25,
+          "horizon": "2030",
+          "falsifier": "Fab utilization at new western sites >80% through 2029"
+        }
+      ],
+      "body": "CHIPS Act ($52B) + EU Chips Act + Japan's Rapidus + export-control regime = the first state-directed reorganization of semiconductor geography since the industry left the US in the 1980s. The driver is the atlas's most concentrated chokepoint: >90% of leading-edge logic within 110 miles of the Taiwan Strait. States are paying a structural inefficiency premium (~20-50% higher fab costs) as insurance — GDP-negative, resilience-positive, and a decade-long flow of capital to whoever builds, equips, and staffs fabs.",
+      "as_of": "2026-06-01",
+      "half_life_days": 365,
+      "signals": [],
+      "links": [
+        {
+          "to": "tree.tsmc-foundry",
+          "rel": "context"
+        },
+        {
+          "to": "tree.export",
+          "rel": "context"
+        },
+        {
+          "to": "tree.bottleneck",
+          "rel": "context"
+        }
+      ],
+      "cf": "hi",
+      "review_after_months": 6
+    },
+    {
+      "id": "window.sovereign-ai",
+      "type": "window",
+      "title": "Sovereign AI Buildouts",
+      "class": "platform",
+      "status": "forming",
+      "opened": "2024",
+      "expected_close": "2031",
+      "mechanism": "States conclude frontier AI is a strategic capability they cannot rent from another jurisdiction. Gulf states recycle petrodollars into compute (MGX/Stargate, G42); the EU funds AI factories; Japan/India/Korea fund national champions. The structural feature: strategic buyers are price-insensitive — they don't mark compute to commercial returns, which extends the capex cycle beyond what market demand alone supports and creates a buyer-of-last-resort under GPU prices.",
+      "effects": [
+        "Gulf gigawatt datacenter deals with US chip-access strings attached — compute diplomacy as the new arms sales",
+        "NVIDIA/AMD demand base diversifies beyond hyperscalers — the cycle-extension nobody models",
+        "Talent and model-weights residency requirements emerging — the regulatory fragmentation trade",
+        "Middle powers (UAE, Saudi, Singapore) buying relevance they could never build organically"
+      ],
+      "decay_logic": "Forming → open as deals convert to energized datacenters 2026-27. Closes via either commoditization (open-weights models good enough that sovereignty is cheap) or disillusionment (national champions produce white elephants — the historical base rate for state tech champions is poor)",
+      "entry_checklist": [
+        {
+          "text": "Is the buyer's budget strategic (defense-adjacent) or commercial (must show returns)?",
+          "status": "unknown",
+          "evidence": ""
+        },
+        {
+          "text": "Does the play survive open-weights models reaching 90% of frontier capability?",
+          "status": "unknown",
+          "evidence": ""
+        },
+        {
+          "text": "Are chip-access export terms durable or one election away from reversal?",
+          "status": "unknown",
+          "evidence": ""
+        }
+      ],
+      "who_won": [
+        "NVIDIA (new price-insensitive demand base)",
+        "G42/MGX (the capital-recycling template)",
+        "US chipmakers' lobbying arms (access-for-alignment deals)"
+      ],
+      "who_died": [
+        "Pre-2024 national AI strategies that funded papers instead of compute (most of them)"
+      ],
+      "exemplars": [],
+      "open_signal": "FORMING: deals signed but datacenters not yet energized. Flips OPEN when first sovereign gigawatt cluster runs frontier training. Watch: whether open-weights progress makes the whole premise cheap before the concrete cures.",
+      "future_paths": [
+        {
+          "path": "Sovereign demand becomes a durable 15-20% of global AI capex — the cycle extender",
+          "p": 0.45,
+          "horizon": "2028",
+          "falsifier": "Sovereign share of accelerator purchases <8% in 2027 tracking"
+        },
+        {
+          "path": "Open-weights commoditization makes sovereignty cheap; the buildouts become white elephants",
+          "p": 0.3,
+          "horizon": "2029",
+          "falsifier": "Frontier-to-open capability gap widens through 2028"
+        },
+        {
+          "path": "Compute diplomacy formalizes into bloc structures (chip-access treaties mirroring arms control)",
+          "p": 0.35,
+          "horizon": "2030",
+          "falsifier": "No multilateral compute-access framework by 2029"
+        }
+      ],
+      "body": "States conclude frontier AI is a strategic capability they cannot rent from another jurisdiction. Gulf states recycle petrodollars into compute (MGX/Stargate, G42); the EU funds AI factories; Japan/India/Korea fund national champions. The structural feature: strategic buyers are price-insensitive — they don't mark compute to commercial returns, which extends the capex cycle beyond what market demand alone supports and creates a buyer-of-last-resort under GPU prices.",
+      "as_of": "2026-06-01",
+      "half_life_days": 180,
+      "signals": [],
+      "links": [
+        {
+          "to": "tree.sovereign-ai",
+          "rel": "context"
+        },
+        {
+          "to": "tree.export",
+          "rel": "context"
+        },
+        {
+          "to": "tree.capex",
+          "rel": "context"
+        }
+      ],
+      "cf": "md",
+      "review_after_months": 3,
+      "tipping_condition": "First sovereign AI program produces a publicly-deployed model that outperforms a GPT-4-class baseline on a domain-relevant benchmark AND receives domestic commercial adoption beyond government use — demonstrating the sovereignty thesis is actually strategic, not just symbolic.",
+      "distance_to_tip": "pre",
+      "order_effects": [
+        {"order":1,"text":"Gulf/EU/Asia sovereign programs buy accelerators at price-insensitive levels — GPU demand floor extends AI capex cycle beyond hyperscaler cycles","entity":null,"confidence":"hi"},
+        {"order":2,"text":"Sovereign model capabilities reach commercial-grade threshold → domestic AI startups get access without US API dependence; ecosystem flywheel activates in each geography","entity":null,"confidence":"md"},
+        {"order":3,"text":"Compute diplomacy formalizes: chip-access becomes a treaty matter (like nuclear material); countries without sovereign AI programs face leverage asymmetry in bilateral negotiations","entity":null,"confidence":"md"},
+        {"order":4,"text":"Sovereign AI creates bloc fragmentation of internet infrastructure: EU GDPR-AI stack vs US stack vs China stack — the internet splitting into sovereign compute domains, each with its own AI capabilities","entity":null,"confidence":"lo"}
+      ]
+    },
+    {
+      "id": "window.glp1-metabolic",
+      "type": "window",
+      "title": "GLP-1 / Metabolic Reset",
+      "class": "capability-window",
+      "status": "open",
+      "opened": "2021",
+      "expected_close": "2033",
+      "mechanism": "The non-AI proof that the framework generalizes. A 30-year slow variable (Novo's patient GLP-1 research since the 1990s) crossed efficacy thresholds (semaglutide ~15%, tirzepatide ~20%+ weight loss) and collided with a population that is ~40% obese in the US. Result: the largest new drug market in history, Novo briefly Europe's most valuable company, Lilly approaching $1T — and second-order demand effects (food, alcohol, retail, insurance, airlines' fuel math) that markets are still mispricing.",
+      "effects": [
+        "Novo/Lilly duopoly captured a market growing toward $100B+/yr (cf:md)",
+        "Food/beverage incumbents repricing on volume fears — the first demand-side shock to calories in history",
+        "Compounding pharmacies + gray market as the price-umbrella arbitrage (closing as supply normalizes)",
+        "Oral formulations + next-gen (triple agonists, muscle-sparing) extending the patent runway into the 2030s"
+      ],
+      "decay_logic": "Patent cliffs (semaglutide ~2031-32) + oral generics + Chinese biosims close the pricing umbrella; the BEHAVIORAL window (population-scale appetite modification effects on adjacent industries) runs longer than the pharma-profit window",
+      "entry_checklist": [
+        {
+          "text": "Is the play on the duopoly, the supply chain (peptide manufacturing, auto-injectors), or the second-order demand shifts?",
+          "status": "unknown",
+          "evidence": ""
+        },
+        {
+          "text": "Does it survive 70% price deflation post-patent-cliff?",
+          "status": "unknown",
+          "evidence": ""
+        },
+        {
+          "text": "Is the adjacent-industry effect (food, apparel, ortho) actually showing in that company's volumes, or is it narrative?",
+          "status": "unknown",
+          "evidence": ""
+        }
+      ],
+      "who_won": [
+        "Novo Nordisk (then gave back much of the rerating as supply/competition normalized — the round trip is itself the lesson)",
+        "Eli Lilly (the duopoly's better executor)",
+        "Peptide CDMOs (the picks-and-shovels: Catalent acquired by Novo holdings)"
+      ],
+      "who_died": [
+        "Pfizer's oral candidates (discontinued — being late + second-rate in a duopoly market is fatal)",
+        "Weight Watchers (bankrupt 2025 — the behavioral-modification incumbent obsoleted by pharmacology)"
+      ],
+      "exemplars": [],
+      "open_signal": "Supply still constrained in cycles; new indications (sleep apnea, cardiovascular, kidney, alcohol use) still expanding the label; adjacent-industry volume effects still emerging in earnings calls. Watch: first generic/biosimilar approvals as the close-clock.",
+      "future_paths": [
+        {
+          "path": "GLP-1 class reaches >10% of US adults; second-order demand effects become measurable macro variables",
+          "p": 0.5,
+          "horizon": "2030",
+          "falsifier": "US adult penetration stalls <5% on access/cost through 2028"
+        },
+        {
+          "path": "Muscle-sparing + oral next-gens make pharmacological body-composition control a permanent consumer category",
+          "p": 0.45,
+          "horizon": "2031",
+          "falsifier": "Next-gen trials show no improvement over injectables / safety signals emerge"
+        },
+        {
+          "path": "The food-industry demand shock proves overhyped; volumes recover as adherence disappoints",
+          "p": 0.3,
+          "horizon": "2028",
+          "falsifier": "Long-term adherence >50% at 24 months in real-world data"
+        }
+      ],
+      "body": "The non-AI proof that the framework generalizes. A 30-year slow variable (Novo's patient GLP-1 research since the 1990s) crossed efficacy thresholds (semaglutide ~15%, tirzepatide ~20%+ weight loss) and collided with a population that is ~40% obese in the US. Result: the largest new drug market in history, Novo briefly Europe's most valuable company, Lilly approaching $1T — and second-order demand effects (food, alcohol, retail, insurance, airlines' fuel math) that markets are still mispricing.",
+      "as_of": "2026-06-01",
+      "half_life_days": 365,
+      "signals": [],
+      "links": [],
+      "cf": "hi",
+      "review_after_months": 6,
+      "order_effects": [
+        {"order":1,"text":"GLP-1 drugs cross clinical efficacy threshold (~15-20% weight loss) → largest new drug market in history; Novo/Lilly at European/near-$1T market cap","entity":null,"confidence":"hi"},
+        {"order":2,"text":"Food industry demand destruction: reduced caloric consumption, alcohol demand, snack categories — Constellation Brands / PepsiCo / Anheuser-Busch re-rate on forward revenue","entity":null,"confidence":"hi"},
+        {"order":3,"text":"Airlines re-calculate fuel burn per passenger; hospitals re-model joint replacement surgery demand; life insurers reprice mortality tables; clothing retailers face body-shape composition shift","entity":null,"confidence":"md"},
+        {"order":4,"text":"Obesity as comorbidity for cancer, heart disease, diabetes declines — the most diffuse second-order: chronic disease management is the largest single cost in US healthcare; GLP-1 is a decades-long slow decompressor of that cost","entity":null,"confidence":"lo"}
+      ]
+    },
+    {
+      "id": "window.stablecoin-rails",
+      "type": "window",
+      "title": "Stablecoin Payment Rails",
+      "class": "platform",
+      "status": "forming",
+      "opened": "2025",
+      "expected_close": "2032",
+      "mechanism": "GENIUS Act (2025) gave dollar-stablecoins a federal framework; Circle's IPO gave the category a public benchmark. The quiet compounder: settlement that bypasses correspondent banking (cross-border B2B, remittances, treasury ops) grows at internet speed inside a financial system that moves at SWIFT speed. The live wildcard: AI agents transacting autonomously need programmable, instant, low-cost money far more than humans do — agent commerce may be the demand shock nobody is positioned for.",
+      "effects": [
+        "Stablecoin supply >$250B and growing; Tether among the largest holders of US Treasuries (cf:md)",
+        "Banks lobbying on deposit-flight risk — their cheapest funding source is what's actually contested",
+        "Visa/Mastercard/Stripe all building stablecoin settlement — incumbent absorption already underway",
+        "Dollarization-by-stablecoin in high-inflation economies (Argentina, Turkey, Nigeria) — monetary policy leakage as a feature"
+      ],
+      "decay_logic": "Forming → open as regulated US issuance scales 2026-27. Closes via incumbent absorption (card networks + banks issue their own, capturing the rails) or via a depeg/issuer failure triggering restrictive re-regulation — the category's recurring near-death pattern (Terra 2022)",
+      "entry_checklist": [
+        {
+          "text": "Is the play on issuers (margin = short-term rates — a rate-cut casualty), infrastructure (wallets, compliance, orchestration), or the agent-commerce wildcard?",
+          "status": "unknown",
+          "evidence": ""
+        },
+        {
+          "text": "Does it survive the card networks shipping equivalent rails?",
+          "status": "unknown",
+          "evidence": ""
+        },
+        {
+          "text": "Counterparty: is the issuer's reserve attestation real?",
+          "status": "unknown",
+          "evidence": ""
+        }
+      ],
+      "who_won": [
+        "Circle (the regulated-first bet paying off at IPO)",
+        "Tether (the offshore incumbent printing billions in float income)",
+        "Early B2B cross-border processors"
+      ],
+      "who_died": [
+        "Terra/UST (algorithmic stablecoin, $40B collapse 2022 — the design that didn't survive contact with reflexivity)",
+        "Facebook's Libra/Diem (right thesis, wrong messenger — killed by regulators 2019-22, the door GENIUS reopened for everyone else)"
+      ],
+      "exemplars": [],
+      "open_signal": "FORMING: framework live, bank/card-network entries announced but not scaled. Flips OPEN when monthly stablecoin settlement volume crosses card-network scale in any major corridor. Watch: agent-to-agent payment standards (x402 etc.) as the wildcard accelerant.",
+      "future_paths": [
+        {
+          "path": "Stablecoin rails capture >10% of cross-border B2B settlement",
+          "p": 0.4,
+          "horizon": "2029",
+          "falsifier": "Cross-border stablecoin volume share <3% in 2028 measurements"
+        },
+        {
+          "path": "Agent commerce becomes the killer app; programmable money demand explodes with autonomous agents",
+          "p": 0.3,
+          "horizon": "2029",
+          "falsifier": "Agent-initiated transaction volume immaterial (<$10B/yr) by 2028"
+        },
+        {
+          "path": "A major issuer failure triggers restrictive re-regulation and the window slams",
+          "p": 0.2,
+          "horizon": "2028",
+          "falsifier": "Top-3 issuers pass full reserve audits through 2027"
+        }
+      ],
+      "body": "GENIUS Act (2025) gave dollar-stablecoins a federal framework; Circle's IPO gave the category a public benchmark. The quiet compounder: settlement that bypasses correspondent banking (cross-border B2B, remittances, treasury ops) grows at internet speed inside a financial system that moves at SWIFT speed. The live wildcard: AI agents transacting autonomously need programmable, instant, low-cost money far more than humans do — agent commerce may be the demand shock nobody is positioned for.",
+      "as_of": "2026-06-01",
+      "half_life_days": 180,
+      "signals": [],
+      "links": [
+        {
+          "to": "tree.stablecoin-rails",
+          "rel": "context"
+        },
+        {
+          "to": "tree.agentic-shift",
+          "rel": "context"
+        }
+      ],
+      "cf": "md",
+      "review_after_months": 3,
+      "tipping_condition": "First major AI agent platform (OpenAI Operator, Anthropic, or equivalent) announces stablecoin as primary payment rail AND a top-5 US bank or Visa/Mastercard deploys a production stablecoin settlement layer.",
+      "distance_to_tip": "near",
+      "order_effects": [
+        {"order":1,"text":"GENIUS Act creates federal framework; Circle IPO benchmarks the category; on-chain settlement bypasses SWIFT for B2B/remittances at internet speed","entity":null,"confidence":"hi"},
+        {"order":2,"text":"Bank deposit-flight risk becomes material: checking accounts that earn no interest migrate to yield-bearing stablecoins; bank NIM compression follows — cheapest funding source contested","entity":null,"confidence":"md"},
+        {"order":3,"text":"AI agents transacting autonomously need programmable, instant, low-cost money — agent commerce demand emerges as demand shock that dwarfs human stablecoin usage","entity":null,"confidence":"md"},
+        {"order":4,"text":"Dollar stablecoin hegemony extends dollar network into jurisdictions with weak currencies; dollarisation-as-a-service bypasses the geopolitics of the SWIFT network — the non-obvious geopolitical consequence","entity":null,"confidence":"lo"}
+      ]
+    }
+  ]
+}

@@ -1,0 +1,245 @@
+{
+  "scenarios": [
+    {
+      "id": "scenario.sc1",
+      "type": "scenario",
+      "title": "Hormuz closure",
+      "body": "Iran closes or contests the strait → ~20 Mb/d oil + 1/5 of LNG at risk → war-risk insurance 10-50x within days (London prices it first) → Asia refiners scramble, SPR releases, oil +$30-60 → freight + goods inflation global. Watch: Lloyd's rate cards, tanker AIS, US 5th Fleet posture. Duration is everything: a week is a spike; a quarter is a recession.",
+      "order_effects": [
+        {"order":1,"text":"Hormuz transit halts — ~20 Mb/d crude + 1/5 of global LNG diverted or delayed","entity":"atlas.hormuz","confidence":"hi"},
+        {"order":2,"text":"VLCC rates 3–5×; Lloyd's war-risk premium 10–50× within hours; tanker AIS tracking spikes","entity":null,"confidence":"hi"},
+        {"order":3,"text":"East-Asia refiners (CHN/IND/JPN/KOR, ~80% of flow) bid up Atlantic-basin crude → US Gulf netbacks rise; SPR draw authorized","entity":null,"confidence":"md"},
+        {"order":4,"text":"Tanker-owner equity (Frontline/Euronav-type) re-rates before spot prints — shipping equity leads crude price by days; shipping insurers face loss-ratio crisis","entity":null,"confidence":"lo"}
+      ],
+      "layers": [
+        "choke",
+        "nrg",
+        "fin"
+      ],
+      "trace": [
+        "atlas.hormuz",
+        "atlas.ghawar",
+        "atlas.raslaffan",
+        "atlas.malacca",
+        "atlas.london"
+      ],
+      "as_of": "2026-06-01",
+      "half_life_days": 365,
+      "signals": [],
+      "links": [
+        {
+          "to": "atlas.hormuz",
+          "rel": "context"
+        },
+        {
+          "to": "atlas.ghawar",
+          "rel": "context"
+        },
+        {
+          "to": "atlas.raslaffan",
+          "rel": "context"
+        },
+        {
+          "to": "atlas.malacca",
+          "rel": "context"
+        },
+        {
+          "to": "atlas.london",
+          "rel": "context"
+        }
+      ]
+    },
+    {
+      "id": "scenario.sc2",
+      "type": "scenario",
+      "title": "Taiwan blockade",
+      "body": "Quarantine/blockade (no invasion needed) → insurance withdrawal halts shipping → TSMC wafers + ASE packaging severed → NVIDIA pipeline stops in weeks; global electronics in months → Luzon cable risk adds data severance. No meaningful substitute capacity exists (AZ fabs: single-digit %, no packaging). This is the tail that re-prices everything; even a 5% annual probability dominates expected-loss math.",
+      "order_effects": [
+        {"order":1,"text":"Taiwan Strait blockade — insurance withdrawal halts all commercial shipping; TSMC wafers + ASE packaging severed","entity":"atlas.taiwanstrait","confidence":"hi"},
+        {"order":2,"text":"NVIDIA GPU pipeline stops in weeks; global AI capex deferred 12–18 months; cloud buildout halts","entity":"atlas.tsmc","confidence":"hi"},
+        {"order":3,"text":"Cloud providers miss capacity commitments → AI startup valuations re-rate as access becomes the constraint; hyperscaler capex guidance misses for 2 consecutive quarters","entity":"atlas.ashburn","confidence":"md"},
+        {"order":4,"text":"Chinese foundries (SMIC) re-rate as partial substitutes despite 2-gen yield lag; the 'second source premium' gets priced globally as a structural cost of non-Taiwan supply chains","entity":null,"confidence":"lo"}
+      ],
+      "layers": [
+        "choke",
+        "chip",
+        "data"
+      ],
+      "trace": [
+        "atlas.taiwanstrait",
+        "atlas.tsmc",
+        "atlas.ase",
+        "atlas.luzon",
+        "atlas.nvda",
+        "atlas.ashburn"
+      ],
+      "as_of": "2026-06-01",
+      "half_life_days": 365,
+      "signals": [],
+      "links": [
+        {
+          "to": "atlas.taiwanstrait",
+          "rel": "context"
+        },
+        {
+          "to": "atlas.tsmc",
+          "rel": "context"
+        },
+        {
+          "to": "atlas.ase",
+          "rel": "context"
+        },
+        {
+          "to": "atlas.luzon",
+          "rel": "context"
+        },
+        {
+          "to": "atlas.nvda",
+          "rel": "context"
+        },
+        {
+          "to": "atlas.ashburn",
+          "rel": "context"
+        }
+      ]
+    },
+    {
+      "id": "scenario.sc3",
+      "type": "scenario",
+      "title": "China REE/magnet embargo",
+      "body": "Beijing converts the Apr-2025 licensing regime into denial (response to chip escalation) → NdFeB magnet flow stops → EV motors, wind turbines, defense systems (F-35 uses ~400kg REE) queue behind 3-5yr western separation buildout → MP/Lynas re-rate violently; DoD floors extend to other minerals. The most-rehearsed, most-likely-executed economic weapon in this atlas.",
+      "order_effects": [
+        {"order":1,"text":"NdFeB magnet flow from China halts — EV motors, wind turbines, F-35 (uses ~400kg REE) queue behind 3–5yr Western buildout","entity":"atlas.beijingec","confidence":"hi"},
+        {"order":2,"text":"MP Materials / Lynas re-rate violently as only Western separation sources; DoD emergency floors trigger; magnet prices 3–5×","entity":"atlas.mountainpass","confidence":"hi"},
+        {"order":3,"text":"EU offshore wind delivery schedules slide 18–24 months; 2030 renewable targets miss; utilities re-rate the real cost of energy transition","entity":null,"confidence":"md"},
+        {"order":4,"text":"Western REE separation capacity buildout (MP Texas, Lynas Texas, SRB) attracts $10B+ capital — but 3–5yr lead time means demand-supply gap widens before it closes; China's pricing power persists through the gap","entity":"atlas.lynas","confidence":"lo"}
+      ],
+      "layers": [
+        "min"
+      ],
+      "trace": [
+        "atlas.beijingec",
+        "atlas.bayanobo",
+        "atlas.ganzhou",
+        "atlas.mountainpass",
+        "atlas.lynas"
+      ],
+      "as_of": "2026-06-01",
+      "half_life_days": 365,
+      "signals": [],
+      "links": [
+        {
+          "to": "atlas.beijingec",
+          "rel": "context"
+        },
+        {
+          "to": "atlas.bayanobo",
+          "rel": "context"
+        },
+        {
+          "to": "atlas.ganzhou",
+          "rel": "context"
+        },
+        {
+          "to": "atlas.mountainpass",
+          "rel": "context"
+        },
+        {
+          "to": "atlas.lynas",
+          "rel": "context"
+        }
+      ]
+    },
+    {
+      "id": "scenario.sc4",
+      "type": "scenario",
+      "title": "US power crunch deepens",
+      "body": "DC demand (4.4%→6.7-12% by 2028) meets sold-out turbines + 5yr queues + transformer scarcity → capacity auction prices spike (PJM already 10x) → ratepayer politics turn against DCs → behind-the-meter gas (Abilene model) + restarts (Palisades, Crane) become the only fast paths → power, not chips, sets the AI buildout's clock speed 2026-29. This is the base case, not a tail.",
+      "order_effects": [
+        {"order":1,"text":"DC power demand hits grid capacity ceiling — PJM capacity auction prices spike 10×; turbine slots sold out to 2029","entity":"atlas.pjm","confidence":"hi"},
+        {"order":2,"text":"Hyperscalers shift to behind-the-meter gas; nuclear restarts (Palisades, Crane) get emergency permitting; GEV/Siemens Energy backlog extends to 2031","entity":"atlas.gevernova","confidence":"hi"},
+        {"order":3,"text":"AI model training queues extend; inference latency SLAs relax under load; OpenAI/Anthropic/Google announce capacity constraints — hyperscaler capex guidance misses","entity":"atlas.ashburn","confidence":"md"},
+        {"order":4,"text":"Ratepayer politics turn against DCs in Virginia/Texas; state legislation caps DC power allotments; new DC construction shifts to Alberta/Quebec hydro — geography of AI compute re-centers on cheap power","entity":null,"confidence":"lo"}
+      ],
+      "layers": [
+        "nrg",
+        "chip"
+      ],
+      "trace": [
+        "atlas.gevernova",
+        "atlas.pjm",
+        "atlas.ashburn",
+        "atlas.crane",
+        "atlas.abilene"
+      ],
+      "as_of": "2026-06-01",
+      "half_life_days": 365,
+      "signals": [],
+      "links": [
+        {
+          "to": "atlas.gevernova",
+          "rel": "context"
+        },
+        {
+          "to": "atlas.pjm",
+          "rel": "context"
+        },
+        {
+          "to": "atlas.ashburn",
+          "rel": "context"
+        },
+        {
+          "to": "atlas.crane",
+          "rel": "context"
+        },
+        {
+          "to": "atlas.abilene",
+          "rel": "context"
+        }
+      ]
+    },
+    {
+      "id": "scenario.sc5",
+      "type": "scenario",
+      "title": "Cable sabotage wave",
+      "body": "Gray-zone actors extend the Baltic/Matsu/Red-Sea pattern → simultaneous cuts at Egypt corridor + Luzon → EU-Asia latency/capacity crisis, cloud + trading reroute via US → repair-ship fleet (~60 aging vessels worldwide) becomes the binding constraint, repairs queue for months → cable-route diversity and repair capacity get repriced as strategic assets. Cheapest scenario to trigger; least modeled by markets.",
+      "order_effects": [
+        {"order":1,"text":"Egypt corridor + Luzon cuts simultaneously — EU-Asia latency triples; ~40% transoceanic capacity offline for weeks to months","entity":"atlas.egyptcorridor","confidence":"hi"},
+        {"order":2,"text":"Repair-ship fleet (~60 aging vessels globally) queues for months; traffic reroutes via US cables → US cloud providers see latency SLA breaches in EU/APAC","entity":null,"confidence":"hi"},
+        {"order":3,"text":"HFT and algorithmic-trading firms face asymmetric latency across routes; financial markets price in temporary geographic arbitrage premiums; some exchange connections effectively severed","entity":null,"confidence":"md"},
+        {"order":4,"text":"Subsea cable diversity becomes mandated tier-1 infrastructure (analogue to power redundancy); SubCom/ASN/NEC see 5–10× order bookings; cable insurance reprices as strategic asset class — least-modeled second-order in this atlas","entity":null,"confidence":"lo"}
+      ],
+      "layers": [
+        "data",
+        "choke"
+      ],
+      "trace": [
+        "atlas.egyptcorridor",
+        "atlas.luzon",
+        "atlas.sgjohor",
+        "atlas.marseille"
+      ],
+      "as_of": "2026-06-01",
+      "half_life_days": 365,
+      "signals": [],
+      "links": [
+        {
+          "to": "atlas.egyptcorridor",
+          "rel": "context"
+        },
+        {
+          "to": "atlas.luzon",
+          "rel": "context"
+        },
+        {
+          "to": "atlas.sgjohor",
+          "rel": "context"
+        },
+        {
+          "to": "atlas.marseille",
+          "rel": "context"
+        }
+      ]
+    }
+  ]
+}

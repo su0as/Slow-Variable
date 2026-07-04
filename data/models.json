@@ -1,0 +1,170 @@
+{
+  "models": [
+    {
+      "id": "model.theory_of_constraints",
+      "name": "Theory of Constraints",
+      "discipline": "systems",
+      "one_line": "Throughput is set by the single binding constraint; optimise there, ignore the rest.",
+      "source": "Goldratt",
+      "powers": ["feature.binding_constraint", "feature.min_cut", "feature.order_book_clock"]
+    },
+    {
+      "id": "model.second_order",
+      "name": "Second-Order Thinking",
+      "discipline": "decision",
+      "one_line": "Ask 'and then what?' — the third hop is where mispricing lives.",
+      "source": "Howard Marks / Munger",
+      "powers": ["feature.order_effects_chain"]
+    },
+    {
+      "id": "model.inversion",
+      "name": "Inversion",
+      "discipline": "decision",
+      "one_line": "Solve the failure case first; avoid what kills the goal rather than chasing it.",
+      "source": "Munger / Jacobi",
+      "powers": ["feature.invert"]
+    },
+    {
+      "id": "model.reflexivity",
+      "name": "Reflexivity",
+      "discipline": "economics",
+      "one_line": "Observation changes the system — a map accurate enough to trade on gets arbitraged away.",
+      "source": "Soros",
+      "powers": ["feature.edge_meter", "feature.crowd_awareness"]
+    },
+    {
+      "id": "model.red_queen",
+      "name": "Red Queen / Creative Destruction",
+      "discipline": "biology / economics",
+      "one_line": "Every rent decays; every choke breeds bypass; date-stamp all concentration bets.",
+      "source": "Van Valen / Schumpeter",
+      "powers": ["feature.decay_bar"]
+    },
+    {
+      "id": "model.margin_of_safety",
+      "name": "Margin of Safety",
+      "discipline": "investing",
+      "one_line": "Build buffer against error; the dangerous quadrant is high conviction + thin margin.",
+      "source": "Graham / Buffett",
+      "powers": ["feature.margin_indicator"]
+    },
+    {
+      "id": "model.circle_of_competence",
+      "name": "Circle of Competence",
+      "discipline": "decision",
+      "one_line": "Know the edge boundary; delegate out-of-circle rather than trusting your own judgment.",
+      "source": "Munger / Buffett",
+      "powers": ["feature.circle_strip"]
+    },
+    {
+      "id": "model.survivorship",
+      "name": "Survivorship Bias",
+      "discipline": "statistics",
+      "one_line": "Study failures as carefully as successes — the graveyard holds the most useful data.",
+      "source": "Wald",
+      "powers": ["feature.bias_check", "feature.graveyard"]
+    },
+    {
+      "id": "model.regression",
+      "name": "Regression to the Mean",
+      "discipline": "statistics",
+      "one_line": "Extreme outcomes revert; the base rate always reasserts.",
+      "source": "Galton",
+      "powers": ["feature.bias_check"]
+    },
+    {
+      "id": "model.goodhart",
+      "name": "Goodhart / Gresham",
+      "discipline": "economics",
+      "one_line": "When a measure becomes a target, it ceases to be a good measure.",
+      "source": "Goodhart / Gresham",
+      "powers": ["feature.bias_check"]
+    },
+    {
+      "id": "model.critical_mass",
+      "name": "Critical Mass / Slowly-then-all-at-once",
+      "discipline": "physics / economics",
+      "one_line": "Forming windows have a flip threshold; name the exact event that crosses it.",
+      "source": "Moore / Hemingway",
+      "powers": ["feature.tipping_meter"]
+    },
+    {
+      "id": "model.scale",
+      "name": "Scale Laws",
+      "discipline": "physics / engineering",
+      "one_line": "What works at 1× breaks at 10×; ask the question before you need the answer.",
+      "source": "West / general engineering",
+      "powers": ["feature.scale_check"]
+    },
+    {
+      "id": "model.leverage_points",
+      "name": "12 Leverage Points",
+      "discipline": "systems dynamics",
+      "one_line": "Places to intervene in a system, ranked weakest to strongest — most people push on the weakest ones (parameters) because they're the easiest to see.",
+      "source": "Donella Meadows, \"Leverage Points: Places to Intervene in a System\" (1999)",
+      "powers": ["feature.simulate_leverage_rank"],
+      "ranked_list": [
+        {"rank": 12, "point": "Constants, parameters, numbers (subsidies, taxes, standards)"},
+        {"rank": 11, "point": "Buffer sizes relative to the flows they must absorb"},
+        {"rank": 10, "point": "Structure of material stocks and flows (transport networks, population age structures)"},
+        {"rank": 9, "point": "Length of delays relative to the rate of system change"},
+        {"rank": 8, "point": "Strength of negative (balancing) feedback loops relative to what they're correcting"},
+        {"rank": 7, "point": "Gain around driving positive (reinforcing) feedback loops"},
+        {"rank": 6, "point": "Structure of information flows — who does and doesn't have access to what"},
+        {"rank": 5, "point": "Rules of the system — incentives, punishments, constraints"},
+        {"rank": 4, "point": "Power to add, change, evolve, or self-organize system structure"},
+        {"rank": 3, "point": "Goals of the system"},
+        {"rank": 2, "point": "Mindset or paradigm the system arises out of"},
+        {"rank": 1, "point": "Power to transcend paradigms entirely"}
+      ]
+    },
+    {
+      "id": "model.value_created_captured",
+      "name": "Value Created vs Value Captured",
+      "discipline": "strategy",
+      "one_line": "Creating value and keeping value are different games — a layer can do enormous good and still capture almost none of it.",
+      "source": "general value-chain strategy, in the lineage of Porter's value chain",
+      "powers": ["feature.ledger_diverging_bars"]
+    },
+    {
+      "id": "model.seven_powers",
+      "name": "7 Powers",
+      "discipline": "strategy",
+      "one_line": "Durable differential returns come from exactly seven structural barriers — scale/network economies, counter-positioning, switching costs, branding, cornered resource, process power — everything else decays to competitive parity.",
+      "source": "Hamilton Helmer, \"7 Powers\" (2016)",
+      "powers": ["feature.ledger_moat_taxonomy"]
+    },
+    {
+      "id": "model.value_migration",
+      "name": "Value Migration",
+      "discipline": "strategy",
+      "one_line": "Profit pools relocate between industries and layers over time, usually away from wherever the crowd is still counting on it staying put.",
+      "source": "Adrian Slywotzky, \"Value Migration\" (1996)",
+      "powers": ["feature.ledger_migration_scrubber"]
+    },
+    {
+      "id": "model.smiling_curve",
+      "name": "Smiling Curve",
+      "discipline": "strategy / manufacturing",
+      "one_line": "Plot margin against position in a value chain and it smiles — highest at the two ends (R&D/IP and brand/service), lowest in the assembly middle.",
+      "source": "Stan Shih, Acer (1992)",
+      "powers": ["feature.ledger_diverging_bars"]
+    },
+    {
+      "id": "model.picks_and_shovels",
+      "name": "Picks and Shovels",
+      "discipline": "investing",
+      "one_line": "In a gold rush, sell the tool everyone needs regardless of who strikes gold — capture sits upstream of who wins the contest.",
+      "source": "Gold Rush aphorism, standard in venture/investing strategy",
+      "powers": ["feature.ledger_moat_taxonomy"]
+    },
+    {
+      "id": "model.aggregation_theory",
+      "name": "Aggregation Theory",
+      "discipline": "strategy / internet economics",
+      "one_line": "Whoever owns the user or demand relationship captures the value, because they can commoditize their suppliers at will — the aggregator's switching-cost moat is the tell.",
+      "source": "Ben Thompson, Stratechery (2015)",
+      "powers": ["feature.ledger_moat_taxonomy"]
+    }
+  ]
+}

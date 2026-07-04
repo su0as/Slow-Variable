@@ -1,0 +1,1882 @@
+{
+  "nodes": [
+    {
+      "id": "atlas.hormuz",
+      "type": "choke",
+      "title": "Strait of Hormuz",
+      "aliases": [],
+      "lat": 26.6,
+      "lon": 56.5,
+      "body": "~20-21 Mb/d of crude + products (EIA 2023) — roughly 1/5 of global oil — plus ~1/5 of global LNG (Qatar, UAE).\n\nNo full bypass. Saudi East-West pipeline ~5 Mb/d and UAE Fujairah line ~1.5 Mb/d cover only a fraction. Physics: the oil is on one side, the buyers on the other.\n\nIranian shore batteries / IRGC navy vs US 5th Fleet (Bahrain). Insurance markets price the risk daily.\n\nNo replacement possible. Mitigation = pipelines (years) + SPR draws (months).\n\nClosure: oil +$30-60/bbl in days, tanker war-risk premia 10-50x, Asia refiners (CHN/IND/JPN/KOR take ~80% of flow) hit first, then global goods inflation.\n\nThe single highest-leverage physical point on Earth for the price of energy. Insurance pricing reacts faster than news.",
+      "weight": "~20-21 Mb/d of crude + products (EIA 2023) — roughly 1/5 of global oil — plus ~1/5 of global LNG (Qatar, UAE).",
+      "why_hard": "No full bypass. Saudi East-West pipeline ~5 Mb/d and UAE Fujairah line ~1.5 Mb/d cover only a fraction. Physics: the oil is on one side, the buyers on the other.",
+      "control": "Iranian shore batteries / IRGC navy vs US 5th Fleet (Bahrain). Insurance markets price the risk daily.",
+      "lead": "No replacement possible. Mitigation = pipelines (years) + SPR draws (months).",
+      "consequence": "Closure: oil +$30-60/bbl in days, tanker war-risk premia 10-50x, Asia refiners (CHN/IND/JPN/KOR take ~80% of flow) hit first, then global goods inflation.",
+      "signal_desc": "Lloyd's war-risk rates, tanker AIS transit counts, IRGC seizure tempo, US carrier positioning.",
+      "analyst_note": "The single highest-leverage physical point on Earth for the price of energy. Insurance pricing reacts faster than news.",
+      "as_of": "2026-06-01",
+      "half_life_days": 3650,
+      "signals": [
+        {
+          "label": "AIS tanker transits",
+          "url": "https://www.eia.gov/international/analysis/special-topics/World_Oil_Transit_Chokepoints",
+          "cadence_days": 7,
+          "last_checked": "2026-05-28",
+          "log": [
+            {
+              "date": "2026-05-28",
+              "note": "~21 Mb/d, war-risk premium flat, no disruption signals"
+            }
+          ]
+        },
+        {
+          "label": "VLCC spot rate (Baltic Exchange)",
+          "url": "https://www.balticexchange.com/en/data/tandv.html",
+          "cadence_days": 14,
+          "last_checked": "2026-05-14",
+          "log": [
+            {
+              "date": "2026-05-14",
+              "note": "TD3C $18k/day, elevated vs Jan baseline, not spike territory"
+            }
+          ]
+        }
+      ],
+      "links": [
+        {
+          "to": "atlas.malacca",
+          "rel": "gates",
+          "layer": "nrg"
+        }
+      ],
+      "cf": "hi",
+      "review_after_months": 12
+    },
+    {
+      "id": "atlas.malacca",
+      "type": "choke",
+      "title": "Malacca / Singapore Strait",
+      "aliases": [],
+      "lat": 1.35,
+      "lon": 103,
+      "body": "~23.7 Mb/d oil (EIA 2023) + the dominant share of China-bound container and bulk traffic. Singapore = world #1 bunkering hub.\n\nShortest sea path Indian Ocean → East Asia. Alternatives (Sunda, Lombok) add 3-5 days; the Kra canal has been studied for a century and never built.\n\nLittoral states (SG/MY/ID) in peacetime; US Navy in conflict. This is what Chinese planners call the 'Malacca dilemma'.\n\nNone. China's mitigation = overland pipelines (Myanmar, Central Asia) + NSR + strategic reserves — partial at best.\n\nInterdiction = energy blockade of Northeast Asia. China's pipeline + reserve buffer ≈ months, not years.\n\nEvery China-conflict scenario prices through this strait. Watch insurance and charter rates as the sensor.",
+      "weight": "~23.7 Mb/d oil (EIA 2023) + the dominant share of China-bound container and bulk traffic. Singapore = world #1 bunkering hub.",
+      "why_hard": "Shortest sea path Indian Ocean → East Asia. Alternatives (Sunda, Lombok) add 3-5 days; the Kra canal has been studied for a century and never built.",
+      "control": "Littoral states (SG/MY/ID) in peacetime; US Navy in conflict. This is what Chinese planners call the 'Malacca dilemma'.",
+      "lead": "None. China's mitigation = overland pipelines (Myanmar, Central Asia) + NSR + strategic reserves — partial at best.",
+      "consequence": "Interdiction = energy blockade of Northeast Asia. China's pipeline + reserve buffer ≈ months, not years.",
+      "signal_desc": "PLAN deployments, Chinese SPR fill rates, Myanmar pipeline throughput.",
+      "analyst_note": "Every China-conflict scenario prices through this strait. Watch insurance and charter rates as the sensor.",
+      "as_of": "2026-06-01",
+      "half_life_days": 3650,
+      "signals": [
+        {
+          "label": "Singapore MPA port statistics",
+          "url": "https://www.mpa.gov.sg/port-marine-services/port-operations/port-statistics",
+          "cadence_days": 30,
+          "last_checked": "2026-05-01",
+          "log": [
+            {
+              "date": "2026-05-01",
+              "note": "99,800 vessel arrivals YTD, piracy incidents nil"
+            }
+          ]
+        }
+      ],
+      "links": [
+        {
+          "to": "atlas.taiwanstrait",
+          "rel": "gates",
+          "layer": "nrg"
+        }
+      ],
+      "cf": "hi",
+      "review_after_months": 12
+    },
+    {
+      "id": "atlas.suez",
+      "type": "choke",
+      "title": "Suez Canal / Red Sea",
+      "aliases": [],
+      "lat": 30.45,
+      "lon": 32.35,
+      "body": "~12-15% of global trade pre-2023. After Houthi attacks began Nov 2023, transits fell ~50-65%; Cape reroute adds 10-14 days.\n\nOnly sea shortcut Europe↔Asia. The 2023-26 crisis is a live experiment: trade reroutes rather than stops — cost, not collapse.\n\nEgypt (canal revenue), Houthis (cheap drones/ASBMs vs $2M interceptors — cost-exchange inversion), US/EU naval escorts.\n\nCape route = instant but +30-40% distance. Effects: tonne-mile demand up, effective fleet capacity down.\n\nFreight spikes (Drewry WCI tripled in early 2024), EU energy/goods inflation, Egypt fiscal stress (canal FX revenue).\n\nProof that a $20k drone can tax $1T of trade. Asymmetric-cost weapons are repricing every chokepoint.",
+      "weight": "~12-15% of global trade pre-2023. After Houthi attacks began Nov 2023, transits fell ~50-65%; Cape reroute adds 10-14 days.",
+      "why_hard": "Only sea shortcut Europe↔Asia. The 2023-26 crisis is a live experiment: trade reroutes rather than stops — cost, not collapse.",
+      "control": "Egypt (canal revenue), Houthis (cheap drones/ASBMs vs $2M interceptors — cost-exchange inversion), US/EU naval escorts.",
+      "lead": "Cape route = instant but +30-40% distance. Effects: tonne-mile demand up, effective fleet capacity down.",
+      "consequence": "Freight spikes (Drewry WCI tripled in early 2024), EU energy/goods inflation, Egypt fiscal stress (canal FX revenue).",
+      "signal_desc": "Drewry WCI weekly, Suez daily transit counts, Houthi strike tempo, container spot vs contract spread.",
+      "analyst_note": "Proof that a $20k drone can tax $1T of trade. Asymmetric-cost weapons are repricing every chokepoint.",
+      "as_of": "2026-06-01",
+      "half_life_days": 3650,
+      "signals": [
+        {
+          "label": "Suez Canal Authority weekly transits",
+          "url": "https://www.suezcanal.gov.eg/English/PerformanceStatistics/Pages/WeeklyTonnage.aspx",
+          "cadence_days": 7,
+          "last_checked": "2026-05-07",
+          "log": [
+            {
+              "date": "2026-05-07",
+              "note": "Transit revenue recovering post-Houthi but still -30% vs 2023 baseline"
+            }
+          ]
+        },
+        {
+          "label": "UKMTO / DRYAD Houthi incident log",
+          "url": "https://www.ukmto.org",
+          "cadence_days": 7,
+          "last_checked": "2026-04-20",
+          "log": [
+            {
+              "date": "2026-04-20",
+              "note": "14 incidents in April, targeting continues, ceasefire talks stalled"
+            }
+          ]
+        }
+      ],
+      "links": [],
+      "cf": "hi",
+      "review_after_months": 12
+    },
+    {
+      "id": "atlas.babelmandeb",
+      "type": "choke",
+      "title": "Bab el-Mandeb",
+      "aliases": [],
+      "lat": 12.6,
+      "lon": 43.3,
+      "body": "~8.8 Mb/d (2023). The southern gate of the Red Sea; pairs with Suez — closing one devalues the other.\n\n18 miles wide at narrowest. Yemen shore = non-state actor with state-grade anti-ship weapons.\n\nHouthis (Iran-supplied), with US/UK strikes failing to restore traffic through 2024-25.\n\nSame as Suez: Cape reroute.\n\nSee Suez. Also Egypt's canal receipts collapse.\n\nThe cheapest veto over East-West trade in existence.",
+      "weight": "~8.8 Mb/d (2023). The southern gate of the Red Sea; pairs with Suez — closing one devalues the other.",
+      "why_hard": "18 miles wide at narrowest. Yemen shore = non-state actor with state-grade anti-ship weapons.",
+      "control": "Houthis (Iran-supplied), with US/UK strikes failing to restore traffic through 2024-25.",
+      "lead": "Same as Suez: Cape reroute.",
+      "consequence": "See Suez. Also Egypt's canal receipts collapse.",
+      "signal_desc": "Vessel transit AIS, attack claims vs confirmed hits, ceasefire signals in Yemen.",
+      "analyst_note": "The cheapest veto over East-West trade in existence.",
+      "as_of": "2026-06-01",
+      "half_life_days": 3650,
+      "signals": [],
+      "links": [],
+      "cf": "hi",
+      "review_after_months": 12
+    },
+    {
+      "id": "atlas.panama",
+      "type": "choke",
+      "title": "Panama Canal",
+      "aliases": [],
+      "lat": 9.1,
+      "lon": -79.7,
+      "body": "~5% of seaborne trade; critical for US East Coast ↔ Asia and US LNG/LPG exports.\n\nFresh-water constrained: each transit uses ~50M gallons from Gatún Lake. 2023-24 drought cut slots from 36 to ~22-24/day and draft limits.\n\nPanama Canal Authority; US political pressure resurfaced 2025 (ports, fees).\n\nWater projects = years. Climate variance is now a recurring throughput tax.\n\nLNG/container reroutes via Suez or Cape; queue auctions hit $4M/slot at peak.\n\nFirst major chokepoint where the binding constraint is rainfall. Climate → logistics transmission is real and measurable.",
+      "weight": "~5% of seaborne trade; critical for US East Coast ↔ Asia and US LNG/LPG exports.",
+      "why_hard": "Fresh-water constrained: each transit uses ~50M gallons from Gatún Lake. 2023-24 drought cut slots from 36 to ~22-24/day and draft limits.",
+      "control": "Panama Canal Authority; US political pressure resurfaced 2025 (ports, fees).",
+      "lead": "Water projects = years. Climate variance is now a recurring throughput tax.",
+      "consequence": "LNG/container reroutes via Suez or Cape; queue auctions hit $4M/slot at peak.",
+      "signal_desc": "Gatún Lake level, daily transit slots, auction premiums.",
+      "analyst_note": "First major chokepoint where the binding constraint is rainfall. Climate → logistics transmission is real and measurable.",
+      "as_of": "2026-06-01",
+      "half_life_days": 3650,
+      "signals": [],
+      "links": [],
+      "cf": "hi",
+      "review_after_months": 12
+    },
+    {
+      "id": "atlas.taiwanstrait",
+      "type": "choke",
+      "title": "Taiwan Strait",
+      "aliases": [],
+      "lat": 24.8,
+      "lon": 119.5,
+      "body": "~48% of the global container fleet transited in 2022 (Bloomberg). Plus: the island at its edge makes ~90% of leading-edge logic.\n\nGeography stacks two monopolies: a trade artery and the semiconductor apex on the same 100 miles.\n\nPLA exercises vs US 7th Fleet + Japan. 'Blockade without invasion' is the studied scenario.\n\nTrade reroutes east of Taiwan (days). Chip capacity: 4-5 years per fab, and the people don't move with the buildings.\n\nBlockade = simultaneous shipping shock + chip embargo on the world. Insurance withdrawal alone could halt traffic before a shot is fired.\n\nThe most consequential square on the board. Tail risk, not base case — but everything chips-related is a derivative of this node.",
+      "weight": "~48% of the global container fleet transited in 2022 (Bloomberg). Plus: the island at its edge makes ~90% of leading-edge logic.",
+      "why_hard": "Geography stacks two monopolies: a trade artery and the semiconductor apex on the same 100 miles.",
+      "control": "PLA exercises vs US 7th Fleet + Japan. 'Blockade without invasion' is the studied scenario.",
+      "lead": "Trade reroutes east of Taiwan (days). Chip capacity: 4-5 years per fab, and the people don't move with the buildings.",
+      "consequence": "Blockade = simultaneous shipping shock + chip embargo on the world. Insurance withdrawal alone could halt traffic before a shot is fired.",
+      "signal_desc": "War-risk insurance quotes for Taiwan calls, PLA exercise scope/duration, TSMC overseas fab acceleration, US/JP basing moves.",
+      "analyst_note": "The most consequential square on the board. Tail risk, not base case — but everything chips-related is a derivative of this node.",
+      "as_of": "2026-06-01",
+      "half_life_days": 3650,
+      "signals": [
+        {
+          "label": "Taiwan MND daily incursion reports",
+          "url": "https://www.mnd.gov.tw/english/",
+          "cadence_days": 14,
+          "last_checked": "2026-05-20",
+          "log": [
+            {
+              "date": "2026-05-20",
+              "note": "PLAAF median 12 sorties/week past median centreline, elevated but not escalatory"
+            }
+          ]
+        },
+        {
+          "label": "Commercial AIS transits (Marine Traffic)",
+          "url": "https://www.marinetraffic.com",
+          "cadence_days": 30,
+          "last_checked": "2026-05-01",
+          "log": [
+            {
+              "date": "2026-05-01",
+              "note": "Container transits -8% vs 2023 peak, re-routing via Luzon Strait continuing"
+            }
+          ]
+        }
+      ],
+      "links": [],
+      "cf": "hi",
+      "review_after_months": 12
+    },
+    {
+      "id": "atlas.bosphorus",
+      "type": "choke",
+      "title": "Bosphorus / Turkish Straits",
+      "aliases": [],
+      "lat": 41.1,
+      "lon": 29.05,
+      "body": "~3% of global oil + the entire Black Sea grain and Russian western crude trade.\n\nMontreux Convention (1936) gives Türkiye treaty control over warship passage — law as chokepoint.\n\nTürkiye. Has used Montreux to bar warships since 2022.\n\nNo alternative for Black Sea littorals.\n\nGrain price spikes (2022 showed the mechanism), Russian oil rerouting costs.\n\nAnkara's structural rent. Watch it being monetized in every negotiation.",
+      "weight": "~3% of global oil + the entire Black Sea grain and Russian western crude trade.",
+      "why_hard": "Montreux Convention (1936) gives Türkiye treaty control over warship passage — law as chokepoint.",
+      "control": "Türkiye. Has used Montreux to bar warships since 2022.",
+      "lead": "No alternative for Black Sea littorals.",
+      "consequence": "Grain price spikes (2022 showed the mechanism), Russian oil rerouting costs.",
+      "signal_desc": "Grain corridor status, Turkish transit fees, shadow-fleet insurance disputes.",
+      "analyst_note": "Ankara's structural rent. Watch it being monetized in every negotiation.",
+      "as_of": "2026-06-01",
+      "half_life_days": 3650,
+      "signals": [],
+      "links": [],
+      "cf": "hi",
+      "review_after_months": 12
+    },
+    {
+      "id": "atlas.danish",
+      "type": "choke",
+      "title": "Danish Straits",
+      "aliases": [],
+      "lat": 55.5,
+      "lon": 11,
+      "body": "Baltic exit: ~60% of Russia's seaborne crude exports pass here post-2022 rerouting.\n\nNarrow, NATO-flanked, and the legal pressure point for shadow-fleet inspection/insurance enforcement.\n\nDenmark/NATO navies; enforcement is a sanctions-design question, not a physical one.\n\nRussia's alternative = Arctic/NSR (limited, seasonal).\n\nAggressive interdiction = oil price spike + escalation; status quo = leaky sanctions.\n\nWhere the 'price cap' theory meets physical enforcement reality.",
+      "weight": "Baltic exit: ~60% of Russia's seaborne crude exports pass here post-2022 rerouting.",
+      "why_hard": "Narrow, NATO-flanked, and the legal pressure point for shadow-fleet inspection/insurance enforcement.",
+      "control": "Denmark/NATO navies; enforcement is a sanctions-design question, not a physical one.",
+      "lead": "Russia's alternative = Arctic/NSR (limited, seasonal).",
+      "consequence": "Aggressive interdiction = oil price spike + escalation; status quo = leaky sanctions.",
+      "signal_desc": "Insurance verification regimes, EU sanctions packages, tanker STS transfers off Skagen.",
+      "analyst_note": "Where the 'price cap' theory meets physical enforcement reality.",
+      "as_of": "2026-06-01",
+      "half_life_days": 3650,
+      "signals": [],
+      "links": [],
+      "cf": "md",
+      "review_after_months": 12
+    },
+    {
+      "id": "atlas.cape",
+      "type": "choke",
+      "title": "Cape of Good Hope",
+      "aliases": [],
+      "lat": -34.4,
+      "lon": 18.5,
+      "body": "The global reroute. Carried the diverted Suez traffic since late 2023; +10-14 days, +30-40% distance Asia↔EU.\n\nNot a constraint itself — the release valve. Its use rate is the inverse health-meter of Suez/Bab el-Mandeb.\n\nOpen ocean; South African port capacity (Durban congestion) is the only friction.\n\n—\n\nHigh Cape volume = structurally higher tonne-mile demand = tanker/container owner profits (the 2024 mechanism).\n\nWhen chokepoints fail, ship owners win. Disruption alpha sits in tonne-miles, not headlines.",
+      "weight": "The global reroute. Carried the diverted Suez traffic since late 2023; +10-14 days, +30-40% distance Asia↔EU.",
+      "why_hard": "Not a constraint itself — the release valve. Its use rate is the inverse health-meter of Suez/Bab el-Mandeb.",
+      "control": "Open ocean; South African port capacity (Durban congestion) is the only friction.",
+      "lead": "—",
+      "consequence": "High Cape volume = structurally higher tonne-mile demand = tanker/container owner profits (the 2024 mechanism).",
+      "signal_desc": "Cape vs Suez routing share, bunker sales at Algoa Bay/Walvis Bay.",
+      "analyst_note": "When chokepoints fail, ship owners win. Disruption alpha sits in tonne-miles, not headlines.",
+      "as_of": "2026-06-01",
+      "half_life_days": 3650,
+      "signals": [],
+      "links": [],
+      "cf": "hi",
+      "review_after_months": 12
+    },
+    {
+      "id": "atlas.nsr",
+      "type": "choke",
+      "title": "Northern Sea Route",
+      "aliases": [],
+      "lat": 74,
+      "lon": 70,
+      "body": "Arctic shortcut Asia↔Europe (~40% shorter than Suez). Tiny volumes (~38 Mt 2024, mostly Russian LNG/oil) but growing.\n\nIce retreat is opening it; Russia controls icebreaker escort and charges for it.\n\nRussia (Rosatom runs the route authority). China calls it the 'Polar Silk Road'.\n\nIce-class fleets = years; insurance and SAR coverage remain thin.\n\nLong-run: erodes Suez/Malacca rents; near-run: a sanctions-evasion corridor.\n\nSlow variable. Option value, not current cash flow.",
+      "weight": "Arctic shortcut Asia↔Europe (~40% shorter than Suez). Tiny volumes (~38 Mt 2024, mostly Russian LNG/oil) but growing.",
+      "why_hard": "Ice retreat is opening it; Russia controls icebreaker escort and charges for it.",
+      "control": "Russia (Rosatom runs the route authority). China calls it the 'Polar Silk Road'.",
+      "lead": "Ice-class fleets = years; insurance and SAR coverage remain thin.",
+      "consequence": "Long-run: erodes Suez/Malacca rents; near-run: a sanctions-evasion corridor.",
+      "signal_desc": "Transit counts, non-Russian carrier trials, ice-free season length.",
+      "analyst_note": "Slow variable. Option value, not current cash flow.",
+      "as_of": "2026-06-01",
+      "half_life_days": 3650,
+      "signals": [],
+      "links": [],
+      "cf": "md",
+      "review_after_months": 12
+    },
+    {
+      "id": "atlas.asml",
+      "type": "chip",
+      "title": "ASML — Veldhoven",
+      "aliases": [],
+      "lat": 51.42,
+      "lon": 5.4,
+      "body": "The only maker of EUV lithography machines on Earth. €28.3B revenue 2024. High-NA tools ~€350M each.\n\n30 years and ~$10B+ of accumulated R&D, plus a 5,000-supplier tree (Zeiss optics, Trumpf lasers, Cymer source). No second source exists or is close.\n\nDutch state under US pressure: EUV never exported to China; DUV restrictions tightened 2023-25.\n\nA competitor from scratch: 10-15+ years. China's SMEE is generations behind on EUV.\n\nASML stops shipping → leading-edge capacity growth stops globally within ~2 years. Single-company kill switch for Moore's law.\n\nThe deepest moat in the industrial world. Its order book is a 2-3 year leading indicator of global fab build.",
+      "weight": "The only maker of EUV lithography machines on Earth. €28.3B revenue 2024. High-NA tools ~€350M each.",
+      "why_hard": "30 years and ~$10B+ of accumulated R&D, plus a 5,000-supplier tree (Zeiss optics, Trumpf lasers, Cymer source). No second source exists or is close.",
+      "control": "Dutch state under US pressure: EUV never exported to China; DUV restrictions tightened 2023-25.",
+      "lead": "A competitor from scratch: 10-15+ years. China's SMEE is generations behind on EUV.",
+      "consequence": "ASML stops shipping → leading-edge capacity growth stops globally within ~2 years. Single-company kill switch for Moore's law.",
+      "signal_desc": "Quarterly bookings by region, High-NA adoption (Intel first), export-rule revisions.",
+      "analyst_note": "The deepest moat in the industrial world. Its order book is a 2-3 year leading indicator of global fab build.",
+      "as_of": "2026-06-01",
+      "half_life_days": 365,
+      "signals": [
+        {
+          "label": "ASML quarterly earnings — EUV delivery count",
+          "url": "https://www.asml.com/en/investors",
+          "cadence_days": 90,
+          "last_checked": "2026-04-16",
+          "log": [
+            {
+              "date": "2026-04-16",
+              "note": "Q1 2026: 10 High-NA EUV shipped, order backlog €36B, 2026 guidance maintained"
+            }
+          ]
+        },
+        {
+          "label": "ASML export licence status (MOFA NL)",
+          "url": "https://www.government.nl/topics/export-controls",
+          "cadence_days": 30,
+          "last_checked": "2026-05-01",
+          "log": [
+            {
+              "date": "2026-05-01",
+              "note": "China export restrictions unchanged, DUV maintenance licences under review"
+            }
+          ]
+        }
+      ],
+      "links": [
+        {
+          "to": "atlas.tsmc",
+          "rel": "gates",
+          "layer": "chip"
+        }
+      ],
+      "cf": "hi",
+      "review_after_months": 12,
+      "rent": {
+        "source": "EUV lithography monopoly (sole global supplier)",
+        "bypass_candidate": "High-NA delay / China SSA-EUV efforts (SMEE) / multi-patterning DUV workarounds at trailing edge",
+        "bypass_maturity": 0.12,
+        "maturity_as_of": "2026-06-01",
+        "half_life_estimate_years": 12,
+        "decay_note": "Single-supplier rent intact; no parity substitute this decade. Watch China SMEE milestones and whether DUV multi-patterning extends the useful window at 5nm-equivalent nodes."
+      }
+    },
+    {
+      "id": "atlas.zeiss",
+      "type": "chip",
+      "title": "Zeiss SMO — Oberkochen",
+      "aliases": [],
+      "lat": 48.78,
+      "lon": 10.1,
+      "body": "Sole supplier of EUV optics — mirrors polished to sub-nanometer figure error ('if a mirror were Germany, the largest bump would be 1mm').\n\nOne firm, essentially one site, feeding the one EUV maker. The supply chain narrows to a town in Swabia.\n\nGermany; integrated with ASML via long-term exclusivity.\n\nOptics capability = decades of accumulated process knowledge. Harder to copy than the lithography integration itself.\n\nSite loss (fire/quake/sabotage) = EUV production halt measured in years. A genuine single-point-of-failure for civilization-scale tech.\n\nMost analyses stop at ASML. The real apex is one layer deeper. Concentration risk is fractal.",
+      "weight": "Sole supplier of EUV optics — mirrors polished to sub-nanometer figure error ('if a mirror were Germany, the largest bump would be 1mm').",
+      "why_hard": "One firm, essentially one site, feeding the one EUV maker. The supply chain narrows to a town in Swabia.",
+      "control": "Germany; integrated with ASML via long-term exclusivity.",
+      "lead": "Optics capability = decades of accumulated process knowledge. Harder to copy than the lithography integration itself.",
+      "consequence": "Site loss (fire/quake/sabotage) = EUV production halt measured in years. A genuine single-point-of-failure for civilization-scale tech.",
+      "signal_desc": "Capacity expansion announcements, second-site plans.",
+      "analyst_note": "Most analyses stop at ASML. The real apex is one layer deeper. Concentration risk is fractal.",
+      "as_of": "2026-06-01",
+      "half_life_days": 365,
+      "signals": [],
+      "links": [
+        {
+          "to": "atlas.asml",
+          "rel": "gates",
+          "layer": "chip"
+        }
+      ],
+      "cf": "hi",
+      "review_after_months": 12
+    },
+    {
+      "id": "atlas.tsmc",
+      "type": "chip",
+      "title": "TSMC — Hsinchu/Tainan",
+      "aliases": [],
+      "lat": 24.78,
+      "lon": 121,
+      "body": "~90% of ≤5nm leading-edge logic, ~2/3 of global foundry revenue. Every NVIDIA AI GPU made here. Publishes monthly revenue.\n\nProcess knowledge compounds: yield learning curves mean the leader gets cheaper while followers burn cash. Customers (Apple, NVIDIA) co-fund the lead.\n\nTaiwan. Which is the point — the 'silicon shield' doctrine is national strategy.\n\nReplicating leading edge elsewhere: 4-5 yrs per fab, $20-30B each, and the engineer ecosystem doesn't relocate.\n\nLoss = global electronics/AI freeze. US Arizona fabs cover a single-digit % of output, without advanced packaging.\n\nTSMC monthly revenue is the cleanest free macro-AI dataset that exists. Set a recurring check.",
+      "weight": "~90% of ≤5nm leading-edge logic, ~2/3 of global foundry revenue. Every NVIDIA AI GPU made here. Publishes monthly revenue.",
+      "why_hard": "Process knowledge compounds: yield learning curves mean the leader gets cheaper while followers burn cash. Customers (Apple, NVIDIA) co-fund the lead.",
+      "control": "Taiwan. Which is the point — the 'silicon shield' doctrine is national strategy.",
+      "lead": "Replicating leading edge elsewhere: 4-5 yrs per fab, $20-30B each, and the engineer ecosystem doesn't relocate.",
+      "consequence": "Loss = global electronics/AI freeze. US Arizona fabs cover a single-digit % of output, without advanced packaging.",
+      "signal_desc": "Monthly revenue (best public real-time AI-demand sensor), CoWoS capacity adds, overseas fab milestones, strait insurance.",
+      "analyst_note": "TSMC monthly revenue is the cleanest free macro-AI dataset that exists. Set a recurring check.",
+      "as_of": "2026-06-01",
+      "half_life_days": 365,
+      "signals": [
+        {
+          "label": "TSMC monthly revenue + capacity utilisation",
+          "url": "https://ir.tsmc.com/english/financialinfo/monthly-sales",
+          "cadence_days": 30,
+          "last_checked": "2026-05-08",
+          "log": [
+            {
+              "date": "2026-05-08",
+              "note": "Apr revenue NT$279B +45% YoY; 3nm >90% utilisation; CoWoS queue 9–12 months"
+            }
+          ]
+        },
+        {
+          "label": "TSMC Arizona N4/N3 yield ramp status",
+          "url": "https://ir.tsmc.com",
+          "cadence_days": 90,
+          "last_checked": "2026-04-17",
+          "log": [
+            {
+              "date": "2026-04-17",
+              "note": "Q1 call: Arizona N4P yield at 'qualified' level, N2 wafer starts H2 2026"
+            }
+          ]
+        }
+      ],
+      "links": [
+        {
+          "to": "atlas.ase",
+          "rel": "gates",
+          "layer": "chip"
+        }
+      ],
+      "cf": "hi",
+      "review_after_months": 12,
+      "rent": {
+        "source": "Leading-edge fab monopoly (2nm/3nm process; ~90% of world's most advanced wafers)",
+        "bypass_candidate": "Samsung GAA 2nm / Intel 18A process / TSMC Arizona eventual parity / SMIC very-long-term",
+        "bypass_maturity": 0.22,
+        "maturity_as_of": "2026-06-01",
+        "half_life_estimate_years": 10,
+        "decay_note": "Samsung and Intel closing gap; TSMC AZ at ~10% US volume by 2028. The rent is real but faster-decaying than ASML. Watch Samsung N2 yield ramp — if it hits >70% by 2027, the moat width halves."
+      }
+    },
+    {
+      "id": "atlas.tsmcaz",
+      "type": "chip",
+      "title": "TSMC Arizona",
+      "aliases": [],
+      "lat": 33.45,
+      "lon": -112.07,
+      "body": "N4 volume production since Q4 2024; commitment raised to $165B (Mar 2025) across multiple fabs.\n\nThe de-risking experiment: can leading edge run profitably outside Taiwan? Costs run higher; advanced packaging mostly still returns to Taiwan.\n\nUS (CHIPS Act subsidies) + TSMC HQ decisions.\n\nEach additional fab 4-5 yrs. Packaging localization is the unfinished half.\n\nSuccess = real Taiwan-risk hedge by ~2030. Failure = proof the shield can't be copied.\n\nWatch packaging, not wafers. A wafer that flies back to Taiwan for CoWoS hasn't de-risked anything.",
+      "weight": "N4 volume production since Q4 2024; commitment raised to $165B (Mar 2025) across multiple fabs.",
+      "why_hard": "The de-risking experiment: can leading edge run profitably outside Taiwan? Costs run higher; advanced packaging mostly still returns to Taiwan.",
+      "control": "US (CHIPS Act subsidies) + TSMC HQ decisions.",
+      "lead": "Each additional fab 4-5 yrs. Packaging localization is the unfinished half.",
+      "consequence": "Success = real Taiwan-risk hedge by ~2030. Failure = proof the shield can't be copied.",
+      "signal_desc": "Yield parity claims, packaging buildout in AZ, fab 3/4 timelines.",
+      "analyst_note": "Watch packaging, not wafers. A wafer that flies back to Taiwan for CoWoS hasn't de-risked anything.",
+      "as_of": "2026-06-01",
+      "half_life_days": 365,
+      "signals": [],
+      "links": [],
+      "cf": "hi",
+      "review_after_months": 12
+    },
+    {
+      "id": "atlas.skhynix",
+      "type": "chip",
+      "title": "SK Hynix — Icheon",
+      "aliases": [],
+      "lat": 37.28,
+      "lon": 127.44,
+      "body": "~half of global HBM (high-bandwidth memory); the dominant supplier to NVIDIA. HBM repeatedly 'sold out' a year ahead.\n\nAI flipped memory from commodity to bottleneck: HBM stacks DRAM dies with TSVs — yield is brutal, qualification takes ~12 months per customer/generation.\n\nKorea; export-control alignment with US.\n\nCompetitor qualification ~12mo+; new DRAM fab years.\n\nHBM shortage directly caps GPU output regardless of TSMC capacity — and did, 2023-25.\n\nThe AI build-out's quietest tax: memory price inflation hit even Microsoft's capex guidance ($25B attributed). Memory cycles are back.",
+      "weight": "~half of global HBM (high-bandwidth memory); the dominant supplier to NVIDIA. HBM repeatedly 'sold out' a year ahead.",
+      "why_hard": "AI flipped memory from commodity to bottleneck: HBM stacks DRAM dies with TSVs — yield is brutal, qualification takes ~12 months per customer/generation.",
+      "control": "Korea; export-control alignment with US.",
+      "lead": "Competitor qualification ~12mo+; new DRAM fab years.",
+      "consequence": "HBM shortage directly caps GPU output regardless of TSMC capacity — and did, 2023-25.",
+      "signal_desc": "HBM4 qualification news, Samsung catch-up, capex splits DRAM vs HBM, memory spot prices (2026 surge).",
+      "analyst_note": "The AI build-out's quietest tax: memory price inflation hit even Microsoft's capex guidance ($25B attributed). Memory cycles are back.",
+      "as_of": "2026-06-01",
+      "half_life_days": 365,
+      "signals": [],
+      "links": [
+        {
+          "to": "atlas.tsmc",
+          "rel": "gates",
+          "layer": "chip"
+        }
+      ],
+      "cf": "hi",
+      "review_after_months": 12
+    },
+    {
+      "id": "atlas.samsung",
+      "type": "chip",
+      "title": "Samsung — Pyeongtaek",
+      "aliases": [],
+      "lat": 37,
+      "lon": 127.1,
+      "body": "Largest memory maker overall; world's biggest fab campus. But HBM3E qualification at NVIDIA lagged SK Hynix badly 2023-25.\n\nShows that incumbency ≠ bottleneck ownership. The binding asset was HBM-specific packaging yield, not DRAM scale.\n\nKorea.\n\nCatch-up = qualification cycles, ~1-2 yrs.\n\nSamsung qualifying at scale = HBM price relief = GPU margin shift.\n\nA live case study in how fast bottleneck rents migrate. Track quarterly.",
+      "weight": "Largest memory maker overall; world's biggest fab campus. But HBM3E qualification at NVIDIA lagged SK Hynix badly 2023-25.",
+      "why_hard": "Shows that incumbency ≠ bottleneck ownership. The binding asset was HBM-specific packaging yield, not DRAM scale.",
+      "control": "Korea.",
+      "lead": "Catch-up = qualification cycles, ~1-2 yrs.",
+      "consequence": "Samsung qualifying at scale = HBM price relief = GPU margin shift.",
+      "signal_desc": "NVDA qualification announcements, HBM market-share prints.",
+      "analyst_note": "A live case study in how fast bottleneck rents migrate. Track quarterly.",
+      "as_of": "2026-06-01",
+      "half_life_days": 365,
+      "signals": [],
+      "links": [],
+      "cf": "hi",
+      "review_after_months": 12
+    },
+    {
+      "id": "atlas.micron",
+      "type": "chip",
+      "title": "Micron — Boise/NY",
+      "aliases": [],
+      "lat": 43.6,
+      "lon": -116.2,
+      "body": "The US HBM/DRAM player; CHIPS-funded megafabs (Idaho, New York) on decade timelines.\n\nOnly non-Asian memory at scale = strategic premium independent of margin.\n\nUS.\n\nNY greenfield fabs: late-2020s+.\n\n—\n\nMemory is now industrial policy. Margins will be allowed that wouldn't exist in a free market.",
+      "weight": "The US HBM/DRAM player; CHIPS-funded megafabs (Idaho, New York) on decade timelines.",
+      "why_hard": "Only non-Asian memory at scale = strategic premium independent of margin.",
+      "control": "US.",
+      "lead": "NY greenfield fabs: late-2020s+.",
+      "consequence": "—",
+      "signal_desc": "HBM share gains, NY fab milestones.",
+      "analyst_note": "Memory is now industrial policy. Margins will be allowed that wouldn't exist in a free market.",
+      "as_of": "2026-06-01",
+      "half_life_days": 365,
+      "signals": [],
+      "links": [],
+      "cf": "hi",
+      "review_after_months": 12
+    },
+    {
+      "id": "atlas.tokyomat",
+      "type": "chip",
+      "title": "Japan materials complex (Tokyo)",
+      "aliases": [],
+      "lat": 35.68,
+      "lon": 139.77,
+      "body": "Shin-Etsu + SUMCO ≈ 55%+ of 300mm silicon wafers; JSR/TOK/Shin-Etsu ≈ ~90% of advanced photoresists; plus CMP slurries, masks, gases.\n\nUltra-purity chemistry with 40-year learning curves and near-zero margin for error. Invisible because boring; binding because irreplaceable.\n\nJapan — which weaponized exactly this vs Korea in 2019 (resist/HF export friction). Precedent set.\n\nQualifying alternate resist/wafer sources: years per material per fab.\n\nJapan materials embargo would halt global fabs faster than an ASML stoppage.\n\nThe least-discussed kill switch in semis. Whoever maps materials, not logos, sees the real graph.",
+      "weight": "Shin-Etsu + SUMCO ≈ 55%+ of 300mm silicon wafers; JSR/TOK/Shin-Etsu ≈ ~90% of advanced photoresists; plus CMP slurries, masks, gases.",
+      "why_hard": "Ultra-purity chemistry with 40-year learning curves and near-zero margin for error. Invisible because boring; binding because irreplaceable.",
+      "control": "Japan — which weaponized exactly this vs Korea in 2019 (resist/HF export friction). Precedent set.",
+      "lead": "Qualifying alternate resist/wafer sources: years per material per fab.",
+      "consequence": "Japan materials embargo would halt global fabs faster than an ASML stoppage.",
+      "signal_desc": "JP export-policy moves, JSR nationalization-adjacent deals (JIC buyout 2023-24), capacity adds.",
+      "analyst_note": "The least-discussed kill switch in semis. Whoever maps materials, not logos, sees the real graph.",
+      "as_of": "2026-06-01",
+      "half_life_days": 365,
+      "signals": [],
+      "links": [
+        {
+          "to": "atlas.tsmc",
+          "rel": "gates",
+          "layer": "chip"
+        }
+      ],
+      "cf": "hi",
+      "review_after_months": 12
+    },
+    {
+      "id": "atlas.nvda",
+      "type": "chip",
+      "title": "NVIDIA — Santa Clara",
+      "aliases": [],
+      "lat": 37.36,
+      "lon": -121.97,
+      "body": "~$5.0T market cap (Jun 2026), world's most valuable company. Data-center revenue $62.3B in the Jan-2026 quarter (+75% y/y). CUDA = the moat.\n\nOwns the software layer (CUDA, 2007→) that 15 years of AI code targets. Hardware is copyable; the installed ecosystem is the lock.\n\nUS export rules decide which versions ship to China (H20 saga 2024-25).\n\nCredible full-stack rival: AMD closest; hyperscaler ASICs (TPU/Trainium) erode share at the top buyers.\n\nIts order book IS the AI capex cycle. Vendor-financing structures (OpenAI $100B-scale arrangements, AMD warrants) = the cycle financing itself — Lucent 1999 rhyme.\n\nPosition: the company is real, the moat is real, AND the financing loops are a classic late-cycle flag. Both true simultaneously.",
+      "weight": "~$5.0T market cap (Jun 2026), world's most valuable company. Data-center revenue $62.3B in the Jan-2026 quarter (+75% y/y). CUDA = the moat.",
+      "why_hard": "Owns the software layer (CUDA, 2007→) that 15 years of AI code targets. Hardware is copyable; the installed ecosystem is the lock.",
+      "control": "US export rules decide which versions ship to China (H20 saga 2024-25).",
+      "lead": "Credible full-stack rival: AMD closest; hyperscaler ASICs (TPU/Trainium) erode share at the top buyers.",
+      "consequence": "Its order book IS the AI capex cycle. Vendor-financing structures (OpenAI $100B-scale arrangements, AMD warrants) = the cycle financing itself — Lucent 1999 rhyme.",
+      "signal_desc": "DC revenue growth rate, % revenue from related-party/financed customers, hyperscaler ASIC share, China-SKU policy.",
+      "analyst_note": "Position: the company is real, the moat is real, AND the financing loops are a classic late-cycle flag. Both true simultaneously.",
+      "as_of": "2026-06-01",
+      "half_life_days": 365,
+      "signals": [
+        {
+          "label": "NVIDIA data center revenue + export flags",
+          "url": "https://investor.nvidia.com",
+          "cadence_days": 90,
+          "last_checked": "2026-02-26",
+          "log": [
+            {
+              "date": "2026-02-26",
+              "note": "Q4 FY2026: DC revenue $35.6B; noted ~$15B annual revenue impact from export controls"
+            }
+          ]
+        },
+        {
+          "label": "BIS export licence decisions (H100/H20/B200)",
+          "url": "https://efts.bis.doc.gov/",
+          "cadence_days": 30,
+          "last_checked": "2026-05-01",
+          "log": [
+            {
+              "date": "2026-05-01",
+              "note": "H20 China ban confirmed Feb 2025; Nvidia proposing 'export-compliant' B20 chip"
+            }
+          ]
+        }
+      ],
+      "links": [
+        {
+          "to": "atlas.ashburn",
+          "rel": "gates",
+          "layer": "chip",
+          "sign": 1,
+          "lag_years": 0,
+          "sign_basis": "GPU supply concentration directly gates how fast Ashburn-class datacenter capacity can be energized and filled."
+        },
+        {
+          "to": "tree.export",
+          "rel": "context",
+          "sign": 1,
+          "lag_years": 2,
+          "sign_basis": "Sustained NVDA revenue/share concentration is the political trigger for tighter export-control tiers — the more dominant, the more scrutiny."
+        }
+      ],
+      "cf": "hi",
+      "review_after_months": 12,
+      "rent": {
+        "source": "AI accelerator monopoly — ~85% share of training and inference GPU market; CUDA software lock-in",
+        "bypass_candidate": "AMD MI300X / Google TPU / AWS Trainium / custom ASICs / Groq / Cerebras / DeepSeek efficiency shock reducing per-inference compute demand",
+        "bypass_maturity": 0.28,
+        "maturity_as_of": "2026-06-01",
+        "half_life_estimate_years": 7,
+        "decay_note": "Fastest-decaying rent in this atlas. AMD gaining at inference edge; hyperscalers building custom silicon; DeepSeek R1 proved training can be done on H100-equivalent at 1/15th cost. CUDA moat is software, not physics — faster to erode. Watch AMD MI400 vs GB300 benchmarks."
+      }
+    },
+    {
+      "id": "atlas.smic",
+      "type": "chip",
+      "title": "SMIC — Shanghai",
+      "aliases": [],
+      "lat": 31.18,
+      "lon": 121.6,
+      "body": "China's foundry champion. Shipped 7nm (Kirin 9000S, Aug 2023) using DUV multi-patterning — no EUV.\n\nProved export controls slow but don't stop. Cost: brutal yields and ~3-4x more litho steps; ceiling: ~5nm-class without EUV, at terrible economics.\n\nBeijing (subsidies absorb the yield losses — state pays the inefficiency tax deliberately).\n\nDomestic EUV: SMEE prototype claims, realistically 5-10+ yrs to production tools.\n\nEach SMIC node gain shifts the controls debate and the Taiwan calculus.\n\nTwo games at once: a losing sprint at the leading edge, a winning flood at mature nodes (28nm+ overcapacity → price war).",
+      "weight": "China's foundry champion. Shipped 7nm (Kirin 9000S, Aug 2023) using DUV multi-patterning — no EUV.",
+      "why_hard": "Proved export controls slow but don't stop. Cost: brutal yields and ~3-4x more litho steps; ceiling: ~5nm-class without EUV, at terrible economics.",
+      "control": "Beijing (subsidies absorb the yield losses — state pays the inefficiency tax deliberately).",
+      "lead": "Domestic EUV: SMEE prototype claims, realistically 5-10+ yrs to production tools.",
+      "consequence": "Each SMIC node gain shifts the controls debate and the Taiwan calculus.",
+      "signal_desc": "Huawei chip teardowns, SMIC capex, SMEE litho milestones, mature-node price dumping (the other front).",
+      "analyst_note": "Two games at once: a losing sprint at the leading edge, a winning flood at mature nodes (28nm+ overcapacity → price war).",
+      "as_of": "2026-06-01",
+      "half_life_days": 365,
+      "signals": [],
+      "links": [],
+      "cf": "hi",
+      "review_after_months": 12
+    },
+    {
+      "id": "atlas.huawei",
+      "type": "chip",
+      "title": "Huawei — Shenzhen",
+      "aliases": [],
+      "lat": 22.55,
+      "lon": 114.06,
+      "body": "Ascend AI accelerators + CloudMatrix rack-scale systems: China's NVIDIA-substitute, by national mandate.\n\nSanctioned since 2019, survived, and became the integration point of the whole domestic stack (chip design, networking, HarmonyOS).\n\nBeijing's priority firm; access to SMIC capacity is politically allocated.\n\nAscend competitiveness gated by SMIC yields + domestic HBM (CXMT) — packaging is the choke.\n\nCredible Ascend scale = bifurcated global AI hardware market, permanently.\n\nDon't read Huawei PR or US doom takes — read teardowns and packaging-capacity estimates.",
+      "weight": "Ascend AI accelerators + CloudMatrix rack-scale systems: China's NVIDIA-substitute, by national mandate.",
+      "why_hard": "Sanctioned since 2019, survived, and became the integration point of the whole domestic stack (chip design, networking, HarmonyOS).",
+      "control": "Beijing's priority firm; access to SMIC capacity is politically allocated.",
+      "lead": "Ascend competitiveness gated by SMIC yields + domestic HBM (CXMT) — packaging is the choke.",
+      "consequence": "Credible Ascend scale = bifurcated global AI hardware market, permanently.",
+      "signal_desc": "Ascend shipment claims vs teardown reality, CXMT HBM progress, Chinese lab model-training disclosures (which silicon).",
+      "analyst_note": "Don't read Huawei PR or US doom takes — read teardowns and packaging-capacity estimates.",
+      "as_of": "2026-06-01",
+      "half_life_days": 365,
+      "signals": [],
+      "links": [],
+      "cf": "hi",
+      "review_after_months": 12
+    },
+    {
+      "id": "atlas.ase",
+      "type": "chip",
+      "title": "ASE — Kaohsiung",
+      "aliases": [],
+      "lat": 22.6,
+      "lon": 120.3,
+      "body": "World's largest OSAT (outsourced assembly/test). Advanced packaging — where 2023-24's real bottleneck (CoWoS) lived.\n\nAI chips aren't one die — they're GPU+HBM stitched on silicon interposers. Packaging became the binding step while everyone watched lithography.\n\nTaiwan again. The packaging concentration mirrors the wafer concentration.\n\nCoWoS-class capacity adds: 1-2 yrs; US/JP packaging build barely started.\n\nPackaging outage = GPU shipments stop even with wafers in hand.\n\nRule: when a step nobody discusses sets the output rate, that's where the rent is. Packaging was 2023's proof.",
+      "weight": "World's largest OSAT (outsourced assembly/test). Advanced packaging — where 2023-24's real bottleneck (CoWoS) lived.",
+      "why_hard": "AI chips aren't one die — they're GPU+HBM stitched on silicon interposers. Packaging became the binding step while everyone watched lithography.",
+      "control": "Taiwan again. The packaging concentration mirrors the wafer concentration.",
+      "lead": "CoWoS-class capacity adds: 1-2 yrs; US/JP packaging build barely started.",
+      "consequence": "Packaging outage = GPU shipments stop even with wafers in hand.",
+      "signal_desc": "TSMC/ASE CoWoS capacity guidance, Amkor Arizona progress.",
+      "analyst_note": "Rule: when a step nobody discusses sets the output rate, that's where the rent is. Packaging was 2023's proof.",
+      "as_of": "2026-06-01",
+      "half_life_days": 365,
+      "signals": [],
+      "links": [
+        {
+          "to": "atlas.nvda",
+          "rel": "gates",
+          "layer": "chip"
+        }
+      ],
+      "cf": "hi",
+      "review_after_months": 12
+    },
+    {
+      "id": "atlas.imec",
+      "type": "chip",
+      "title": "imec — Leuven",
+      "aliases": [],
+      "lat": 50.88,
+      "lon": 4.7,
+      "body": "The neutral R&D hub where the whole industry (incl. rivals) co-develops next nodes with ASML.\n\nRoadmap consensus forms here years before products. Reading imec papers ≈ reading the future of the industry's physics.\n\nBelgium/EU; access itself is now export-policy-relevant.\n\n—\n\n—\n\nCheap foresight: their public roadmap talks tell you 2030's constraints today.",
+      "weight": "The neutral R&D hub where the whole industry (incl. rivals) co-develops next nodes with ASML.",
+      "why_hard": "Roadmap consensus forms here years before products. Reading imec papers ≈ reading the future of the industry's physics.",
+      "control": "Belgium/EU; access itself is now export-policy-relevant.",
+      "lead": "—",
+      "consequence": "—",
+      "signal_desc": "imec roadmap updates (CFET, backside power, 2D materials).",
+      "analyst_note": "Cheap foresight: their public roadmap talks tell you 2030's constraints today.",
+      "as_of": "2026-06-01",
+      "half_life_days": 365,
+      "signals": [],
+      "links": [],
+      "cf": "hi",
+      "review_after_months": 12
+    },
+    {
+      "id": "atlas.eda",
+      "type": "chip",
+      "title": "EDA duopoly — Sunnyvale",
+      "aliases": [],
+      "lat": 37.37,
+      "lon": -122.04,
+      "body": "Synopsys + Cadence ≈ ~70%+ of chip-design software. No advanced chip is designed without them.\n\nDecades of accumulated verification IP; switching costs near-absolute. Pure software chokepoint.\n\nUS — and used as a lever: GAAFET EDA restrictions 2022, brief full China cutoff episode 2025.\n\nChinese EDA (Empyrean et al.) functional at mature nodes; leading edge = years away.\n\nEDA cutoff freezes a rival's *future* designs while touching nothing physical — the most surgical weapon in the stack.\n\nSoftware chokepoints are invisible on maps but bind like physical ones. This atlas marks them deliberately.",
+      "weight": "Synopsys + Cadence ≈ ~70%+ of chip-design software. No advanced chip is designed without them.",
+      "why_hard": "Decades of accumulated verification IP; switching costs near-absolute. Pure software chokepoint.",
+      "control": "US — and used as a lever: GAAFET EDA restrictions 2022, brief full China cutoff episode 2025.",
+      "lead": "Chinese EDA (Empyrean et al.) functional at mature nodes; leading edge = years away.",
+      "consequence": "EDA cutoff freezes a rival's *future* designs while touching nothing physical — the most surgical weapon in the stack.",
+      "signal_desc": "BIS rule changes naming EDA, Chinese EDA tape-out claims.",
+      "analyst_note": "Software chokepoints are invisible on maps but bind like physical ones. This atlas marks them deliberately.",
+      "as_of": "2026-06-01",
+      "half_life_days": 365,
+      "signals": [],
+      "links": [],
+      "cf": "hi",
+      "review_after_months": 12
+    },
+    {
+      "id": "atlas.arm",
+      "type": "chip",
+      "title": "Arm — Cambridge",
+      "aliases": [],
+      "lat": 52.2,
+      "lon": 0.12,
+      "body": "The ISA licensing layer under most mobile and growing datacenter CPUs (Graviton, Grace).\n\nArchitecture as rent: everyone builds on it, nobody owns it but SoftBank.\n\nUK-listed, Japanese-owned, US-leverageable (Arm China saga showed the mess).\n\nRISC-V is the open exit — China is funding it heavily for exactly this reason.\n\nLicensing weaponization accelerates RISC-V adoption — the control destroys its own base.\n\nA chokepoint that tightens too hard creates its own bypass. General principle; Arm is the test case.",
+      "weight": "The ISA licensing layer under most mobile and growing datacenter CPUs (Graviton, Grace).",
+      "why_hard": "Architecture as rent: everyone builds on it, nobody owns it but SoftBank.",
+      "control": "UK-listed, Japanese-owned, US-leverageable (Arm China saga showed the mess).",
+      "lead": "RISC-V is the open exit — China is funding it heavily for exactly this reason.",
+      "consequence": "Licensing weaponization accelerates RISC-V adoption — the control destroys its own base.",
+      "signal_desc": "RISC-V high-performance tape-outs, Arm royalty-rate pushes.",
+      "analyst_note": "A chokepoint that tightens too hard creates its own bypass. General principle; Arm is the test case.",
+      "as_of": "2026-06-01",
+      "half_life_days": 365,
+      "signals": [],
+      "links": [],
+      "cf": "hi",
+      "review_after_months": 12
+    },
+    {
+      "id": "atlas.rapidus",
+      "type": "chip",
+      "title": "Rapidus — Hokkaido",
+      "aliases": [],
+      "lat": 42.8,
+      "lon": 141.65,
+      "body": "Japan's state-backed 2nm attempt (IBM tech transfer), pilot line 2025, production target 2027.\n\nTests whether a nation can buy back a position it lost 30 years ago. Low odds; high information value either way.\n\nJapan (¥ trillions committed).\n\nEven on plan: niche volumes, late 2020s.\n\nSuccess = the playbook for sovereign re-entry; failure = proof learning curves can't be purchased.\n\nTreat as an experiment with published results, not an investment.",
+      "weight": "Japan's state-backed 2nm attempt (IBM tech transfer), pilot line 2025, production target 2027.",
+      "why_hard": "Tests whether a nation can buy back a position it lost 30 years ago. Low odds; high information value either way.",
+      "control": "Japan (¥ trillions committed).",
+      "lead": "Even on plan: niche volumes, late 2020s.",
+      "consequence": "Success = the playbook for sovereign re-entry; failure = proof learning curves can't be purchased.",
+      "signal_desc": "Pilot yield leaks, anchor-customer announcements.",
+      "analyst_note": "Treat as an experiment with published results, not an investment.",
+      "as_of": "2026-06-01",
+      "half_life_days": 365,
+      "signals": [],
+      "links": [],
+      "cf": "md",
+      "review_after_months": 12
+    },
+    {
+      "id": "atlas.bayanobo",
+      "type": "min",
+      "title": "Bayan Obo — Inner Mongolia",
+      "aliases": [],
+      "lat": 41.8,
+      "lon": 109.97,
+      "body": "Largest rare-earth deposit on Earth. China overall: ~85-90% of REE refining, ~90% of sintered NdFeB magnets.\n\nThe choke isn't ore (REEs aren't rare) — it's separation chemistry + environmental tolerance + 30 years of scale. Mining is easy; refining is the moat.\n\nBeijing. April 2025 licensing regime put dual-use REE exports under case-by-case control — the lever is now institutionalized.\n\nWestern separation capacity: 3-5 yrs per plant; full magnet chain: longer.\n\nEmbargo hits EV motors, wind turbines, and precision-guided munitions in the same month.\n\nChina's most-rehearsed economic weapon (2010 Japan, 2025 regime). The question is calibration, not capability.",
+      "weight": "Largest rare-earth deposit on Earth. China overall: ~85-90% of REE refining, ~90% of sintered NdFeB magnets.",
+      "why_hard": "The choke isn't ore (REEs aren't rare) — it's separation chemistry + environmental tolerance + 30 years of scale. Mining is easy; refining is the moat.",
+      "control": "Beijing. April 2025 licensing regime put dual-use REE exports under case-by-case control — the lever is now institutionalized.",
+      "lead": "Western separation capacity: 3-5 yrs per plant; full magnet chain: longer.",
+      "consequence": "Embargo hits EV motors, wind turbines, and precision-guided munitions in the same month.",
+      "signal_desc": "MOFCOM license approval tempo, NdPr price, magnet export volumes.",
+      "analyst_note": "China's most-rehearsed economic weapon (2010 Japan, 2025 regime). The question is calibration, not capability.",
+      "as_of": "2026-06-01",
+      "half_life_days": 1825,
+      "signals": [],
+      "links": [
+        {
+          "to": "atlas.huawei",
+          "rel": "gates",
+          "layer": "min"
+        }
+      ],
+      "cf": "hi",
+      "review_after_months": 12,
+      "rent": {
+        "source": "Chinese REE processing concentration (~85% of global separation capacity)",
+        "bypass_candidate": "MP Materials Texas / Lynas Texas / SRB Mining separation plants; Australia Lynas Malaysian plant; European processing buildout",
+        "bypass_maturity": 0.15,
+        "maturity_as_of": "2026-06-01",
+        "half_life_estimate_years": 15,
+        "decay_note": "Separation chemistry moat is real but buildable — the 2025 licensing regime will accelerate Western capital deployment. Watch MP Texas Phase 2 completion and Lynas Texas production start. The bypass takes 5–8 years, not decades."
+      }
+    },
+    {
+      "id": "atlas.ganzhou",
+      "type": "min",
+      "title": "Ganzhou heavy REE hub",
+      "aliases": [],
+      "lat": 25.83,
+      "lon": 114.93,
+      "body": "Center of heavy rare earths (Dy, Tb — the ones that keep magnets working hot), fed partly by Myanmar ion-clay mining.\n\nHeavies are the scarcer, more military-relevant half; non-Chinese separation of heavies ≈ negligible.\n\nChina + a dependency on chaotic Myanmar supply (Kachin conflict disrupted feed 2024-25).\n\nWestern heavy-REE separation: Lynas Texas plant delayed/struggling; effectively 5+ yrs.\n\nDy/Tb cutoff degrades high-temp magnet production with no quick substitute.\n\nIf you only track one REE sub-segment, track heavies. That's where the real scarcity is.",
+      "weight": "Center of heavy rare earths (Dy, Tb — the ones that keep magnets working hot), fed partly by Myanmar ion-clay mining.",
+      "why_hard": "Heavies are the scarcer, more military-relevant half; non-Chinese separation of heavies ≈ negligible.",
+      "control": "China + a dependency on chaotic Myanmar supply (Kachin conflict disrupted feed 2024-25).",
+      "lead": "Western heavy-REE separation: Lynas Texas plant delayed/struggling; effectively 5+ yrs.",
+      "consequence": "Dy/Tb cutoff degrades high-temp magnet production with no quick substitute.",
+      "signal_desc": "Myanmar border flows, Dy/Tb spot prices, Lynas heavy-separation milestones.",
+      "analyst_note": "If you only track one REE sub-segment, track heavies. That's where the real scarcity is.",
+      "as_of": "2026-06-01",
+      "half_life_days": 1825,
+      "signals": [],
+      "links": [],
+      "cf": "hi",
+      "review_after_months": 12
+    },
+    {
+      "id": "atlas.mountainpass",
+      "type": "min",
+      "title": "Mountain Pass — MP Materials",
+      "aliases": [],
+      "lat": 35.47,
+      "lon": -115.53,
+      "body": "Only US REE mine. 2025: DoD took equity (~$400M), guaranteed $110/kg NdPr floor, Apple committed $500M; vertical magnet build (Texas).\n\nThe template for post-market industrial policy: government as price-floor counterparty, not subsidy-giver.\n\nUS DoD effectively underwrites it now.\n\nMine→magnet full chain: operating mid/late-2020s in stages.\n\nSuccess caps China's embargo leverage at the margin; the floor price tells you what Washington thinks security is worth (~2x market at signing).\n\nPrice floors = free option for producers. Watch which mineral gets the next one — that's pre-announced alpha.",
+      "weight": "Only US REE mine. 2025: DoD took equity (~$400M), guaranteed $110/kg NdPr floor, Apple committed $500M; vertical magnet build (Texas).",
+      "why_hard": "The template for post-market industrial policy: government as price-floor counterparty, not subsidy-giver.",
+      "control": "US DoD effectively underwrites it now.",
+      "lead": "Mine→magnet full chain: operating mid/late-2020s in stages.",
+      "consequence": "Success caps China's embargo leverage at the margin; the floor price tells you what Washington thinks security is worth (~2x market at signing).",
+      "signal_desc": "10X facility progress, magnet output, further DoD floor deals (the pattern will repeat in other minerals).",
+      "analyst_note": "Price floors = free option for producers. Watch which mineral gets the next one — that's pre-announced alpha.",
+      "as_of": "2026-06-01",
+      "half_life_days": 1825,
+      "signals": [],
+      "links": [],
+      "cf": "hi",
+      "review_after_months": 12
+    },
+    {
+      "id": "atlas.lynas",
+      "type": "min",
+      "title": "Lynas — Mt Weld",
+      "aliases": [],
+      "lat": -28.85,
+      "lon": 122.55,
+      "body": "The only scaled non-Chinese REE separator (mine in WA, separation in Malaysia).\n\nProof one firm can exist outside the Chinese system — and how hard it is (decade of permitting/waste fights).\n\nAustralia/Malaysia; US DoD co-funds its Texas heavy-REE plant.\n\nHeavy separation in US: delayed repeatedly.\n\n—\n\nThe non-China REE trade has one liquid pure-play. Scarcity premium on the equity itself.",
+      "weight": "The only scaled non-Chinese REE separator (mine in WA, separation in Malaysia).",
+      "why_hard": "Proof one firm can exist outside the Chinese system — and how hard it is (decade of permitting/waste fights).",
+      "control": "Australia/Malaysia; US DoD co-funds its Texas heavy-REE plant.",
+      "lead": "Heavy separation in US: delayed repeatedly.",
+      "consequence": "—",
+      "signal_desc": "Kalgoorlie cracking plant ramp, Texas plant status, Malaysia license politics.",
+      "analyst_note": "The non-China REE trade has one liquid pure-play. Scarcity premium on the equity itself.",
+      "as_of": "2026-06-01",
+      "half_life_days": 1825,
+      "signals": [],
+      "links": [],
+      "cf": "hi",
+      "review_after_months": 12
+    },
+    {
+      "id": "atlas.kolwezi",
+      "type": "min",
+      "title": "Kolwezi — DRC copper/cobalt belt",
+      "aliases": [],
+      "lat": -10.71,
+      "lon": 25.47,
+      "body": "DRC ≈ ~70-75% of world cobalt; CMOC (Tenke, KFM) made it the top producer — Chinese-owned output on Congolese ground.\n\nBattery cathodes (NMC) need it; ESG and artisanal-mining exposure make supply politically fragile both directions.\n\nKinshasa (export quota imposed 2025 to lift prices) + Chinese operators + Gécamines stakes.\n\nNew large mines: 7-10+ yrs; Indonesian nickel-byproduct cobalt is the rising alternative supply.\n\nQuota/conflict = cathode cost spike; but LFP chemistry (no cobalt) is the structural escape valve already in motion.\n\nA chokepoint being dissolved by chemistry. Lesson: substitution is the long-run enemy of every resource rent.",
+      "weight": "DRC ≈ ~70-75% of world cobalt; CMOC (Tenke, KFM) made it the top producer — Chinese-owned output on Congolese ground.",
+      "why_hard": "Battery cathodes (NMC) need it; ESG and artisanal-mining exposure make supply politically fragile both directions.",
+      "control": "Kinshasa (export quota imposed 2025 to lift prices) + Chinese operators + Gécamines stakes.",
+      "lead": "New large mines: 7-10+ yrs; Indonesian nickel-byproduct cobalt is the rising alternative supply.",
+      "consequence": "Quota/conflict = cathode cost spike; but LFP chemistry (no cobalt) is the structural escape valve already in motion.",
+      "signal_desc": "DRC quota policy, LFP vs NMC share, CMOC volumes.",
+      "analyst_note": "A chokepoint being dissolved by chemistry. Lesson: substitution is the long-run enemy of every resource rent.",
+      "as_of": "2026-06-01",
+      "half_life_days": 1825,
+      "signals": [
+        {
+          "label": "LME cobalt cash price + DRC production data",
+          "url": "https://www.lme.com/Metals/Minor-metals/Cobalt",
+          "cadence_days": 30,
+          "last_checked": "2026-05-01",
+          "log": [
+            {
+              "date": "2026-05-01",
+              "note": "Cobalt $25k/t, near 5yr low; DRC output 220kt on track; CATL stockpile strategy continuing"
+            }
+          ]
+        }
+      ],
+      "links": [
+        {
+          "to": "atlas.catl",
+          "rel": "gates",
+          "layer": "min"
+        }
+      ],
+      "cf": "hi",
+      "review_after_months": 12
+    },
+    {
+      "id": "atlas.morowali",
+      "type": "min",
+      "title": "Morowali — Indonesia nickel",
+      "aliases": [],
+      "lat": -2.6,
+      "lon": 121.9,
+      "body": ">50% of global nickel now Indonesian, built in under a decade via the 2020 raw-ore export ban forcing onshore smelting (RKEF/HPAL), with Chinese capital.\n\nTHE template of modern resource nationalism: ban the ore, capture the value-add. It worked — and crashed the nickel price, breaking LME trading in Mar 2022 en route.\n\nJakarta sets policy; Chinese firms (Tsingshan et al.) own much of the capacity.\n\nCompeting supply: years; most Western nickel projects now uneconomic at Indonesian cost.\n\nIndonesia is now trying the same playbook on bauxite, copper, tin. Every resource state watched and learned.\n\nStudy this node to predict the next ten: ore-ban nationalism is now the default move for any mineral-rich middle power.",
+      "weight": ">50% of global nickel now Indonesian, built in under a decade via the 2020 raw-ore export ban forcing onshore smelting (RKEF/HPAL), with Chinese capital.",
+      "why_hard": "THE template of modern resource nationalism: ban the ore, capture the value-add. It worked — and crashed the nickel price, breaking LME trading in Mar 2022 en route.",
+      "control": "Jakarta sets policy; Chinese firms (Tsingshan et al.) own much of the capacity.",
+      "lead": "Competing supply: years; most Western nickel projects now uneconomic at Indonesian cost.",
+      "consequence": "Indonesia is now trying the same playbook on bauxite, copper, tin. Every resource state watched and learned.",
+      "signal_desc": "Indonesian policy extensions, HPAL waste incidents, LME nickel liquidity.",
+      "analyst_note": "Study this node to predict the next ten: ore-ban nationalism is now the default move for any mineral-rich middle power.",
+      "as_of": "2026-06-01",
+      "half_life_days": 1825,
+      "signals": [],
+      "links": [
+        {
+          "to": "atlas.catl",
+          "rel": "gates",
+          "layer": "min"
+        }
+      ],
+      "cf": "hi",
+      "review_after_months": 12
+    },
+    {
+      "id": "atlas.greenbushes",
+      "type": "min",
+      "title": "Greenbushes — lithium",
+      "aliases": [],
+      "lat": -33.86,
+      "lon": 116.06,
+      "body": "World's largest hard-rock lithium mine. Lithium price round-trip: >$80k/t (2022) → <$11k/t (2024-25) — an ~85% crash.\n\nDemonstrates the commodity trap: 3-yr supply response to a price spike overshoots, because mines are lumpy and everyone FIDs at the top.\n\nAlbemarle/Tianqi/IGO JV — itself a US-China entanglement.\n\nHard-rock mine: 3-5 yrs; brine: longer. Supply is now being curtailed at the bottom — the cycle's other half.\n\nSustained low price kills Western marginal projects → Chinese-cost supply gains share → next shortage pre-loaded for late 2020s.\n\nCommodity alpha = betting against the crowd's extrapolation at both extremes. Lithium just taught the full cycle in 4 years.",
+      "weight": "World's largest hard-rock lithium mine. Lithium price round-trip: >$80k/t (2022) → <$11k/t (2024-25) — an ~85% crash.",
+      "why_hard": "Demonstrates the commodity trap: 3-yr supply response to a price spike overshoots, because mines are lumpy and everyone FIDs at the top.",
+      "control": "Albemarle/Tianqi/IGO JV — itself a US-China entanglement.",
+      "lead": "Hard-rock mine: 3-5 yrs; brine: longer. Supply is now being curtailed at the bottom — the cycle's other half.",
+      "consequence": "Sustained low price kills Western marginal projects → Chinese-cost supply gains share → next shortage pre-loaded for late 2020s.",
+      "signal_desc": "Curtailment announcements, China lepidolite cost floor, EV demand growth rate.",
+      "analyst_note": "Commodity alpha = betting against the crowd's extrapolation at both extremes. Lithium just taught the full cycle in 4 years.",
+      "as_of": "2026-06-01",
+      "half_life_days": 1825,
+      "signals": [],
+      "links": [
+        {
+          "to": "atlas.catl",
+          "rel": "gates",
+          "layer": "min"
+        }
+      ],
+      "cf": "hi",
+      "review_after_months": 12
+    },
+    {
+      "id": "atlas.atacama",
+      "type": "min",
+      "title": "Salar de Atacama",
+      "aliases": [],
+      "lat": -23.5,
+      "lon": -68.3,
+      "body": "Lowest-cost lithium brine on Earth (SQM, Albemarle). Chile = #2 producer.\n\nCost-curve floor + water politics: brine extraction in the driest desert collides with indigenous/water claims.\n\nChile — 2023 National Lithium Strategy forces Codelco JV control going forward (soft nationalization).\n\nDLE (direct lithium extraction) tech could reshape cost curves; unproven at scale.\n\nChilean policy tightening = price floor support for everyone else.\n\nOwn the bottom of the cost curve or own nothing — Atacama IS the bottom.",
+      "weight": "Lowest-cost lithium brine on Earth (SQM, Albemarle). Chile = #2 producer.",
+      "why_hard": "Cost-curve floor + water politics: brine extraction in the driest desert collides with indigenous/water claims.",
+      "control": "Chile — 2023 National Lithium Strategy forces Codelco JV control going forward (soft nationalization).",
+      "lead": "DLE (direct lithium extraction) tech could reshape cost curves; unproven at scale.",
+      "consequence": "Chilean policy tightening = price floor support for everyone else.",
+      "signal_desc": "SQM-Codelco JV terms, DLE pilot results.",
+      "analyst_note": "Own the bottom of the cost curve or own nothing — Atacama IS the bottom.",
+      "as_of": "2026-06-01",
+      "half_life_days": 1825,
+      "signals": [],
+      "links": [],
+      "cf": "hi",
+      "review_after_months": 12
+    },
+    {
+      "id": "atlas.catl",
+      "type": "min",
+      "title": "CATL — Ningde",
+      "aliases": [],
+      "lat": 26.66,
+      "lon": 119.55,
+      "body": "~35-38% of global battery cells. Owns LFP cost leadership and the sodium-ion next step.\n\nBatteries became the new oil refining: the conversion step where mineral inputs become strategic outputs. CATL is its OPEC-of-one.\n\nBeijing (export controls on LFP/cathode *technology* added 2025 — China now protects process knowledge, not just materials).\n\nWestern cell parity: Korean firms close on NMC, far on LFP cost; US plants = license-from-CATL deals (Ford).\n\nTech-export controls mean even building 'domestic' plants may require Chinese process licenses — dependency moved up the stack.\n\nThe dependency migrated from material → manufacturing → process IP. Most Western policy still aims at the first layer.",
+      "weight": "~35-38% of global battery cells. Owns LFP cost leadership and the sodium-ion next step.",
+      "why_hard": "Batteries became the new oil refining: the conversion step where mineral inputs become strategic outputs. CATL is its OPEC-of-one.",
+      "control": "Beijing (export controls on LFP/cathode *technology* added 2025 — China now protects process knowledge, not just materials).",
+      "lead": "Western cell parity: Korean firms close on NMC, far on LFP cost; US plants = license-from-CATL deals (Ford).",
+      "consequence": "Tech-export controls mean even building 'domestic' plants may require Chinese process licenses — dependency moved up the stack.",
+      "signal_desc": "China tech-export rule scope, CATL licensing deals, sodium-ion commercialization.",
+      "analyst_note": "The dependency migrated from material → manufacturing → process IP. Most Western policy still aims at the first layer.",
+      "as_of": "2026-06-01",
+      "half_life_days": 1825,
+      "signals": [
+        {
+          "label": "CATL market share + production volumes",
+          "url": "https://www.catl.com/en/investor/",
+          "cadence_days": 90,
+          "last_checked": "2026-04-01",
+          "log": [
+            {
+              "date": "2026-04-01",
+              "note": "2025 annual: 38% global EV battery share; sodium-ion ramp ongoing; EU tariff impact absorbing"
+            }
+          ]
+        }
+      ],
+      "links": [],
+      "cf": "hi",
+      "review_after_months": 12
+    },
+    {
+      "id": "atlas.beijingec",
+      "type": "min",
+      "title": "Beijing — export-control counterstrike",
+      "aliases": [],
+      "lat": 39.9,
+      "lon": 116.4,
+      "body": "The escalation ladder: gallium/germanium licensing (Aug 2023, CN ≈ 98% Ga), graphite (Dec 2023), antimony (2024), US-bound Ga/Ge ban (Dec 2024), REE+magnet licensing regime (Apr 2025), LFP tech controls (2025).\n\nEach US chip control round met a mineral/process response ~2-6 months later. The pattern is now legible and tradeable.\n\nMOFCOM/State Council.\n\n—\n\nSignals the next rung: candidates = tungsten, bismuth done; watch pharma precursors, mature-node chips as future levers.\n\nThis node is a function, not a place: f(US control) → CN counter, lag 2-6mo. Trade the function.",
+      "weight": "The escalation ladder: gallium/germanium licensing (Aug 2023, CN ≈ 98% Ga), graphite (Dec 2023), antimony (2024), US-bound Ga/Ge ban (Dec 2024), REE+magnet licensing regime (Apr 2025), LFP tech controls (2025).",
+      "why_hard": "Each US chip control round met a mineral/process response ~2-6 months later. The pattern is now legible and tradeable.",
+      "control": "MOFCOM/State Council.",
+      "lead": "—",
+      "consequence": "Signals the next rung: candidates = tungsten, bismuth done; watch pharma precursors, mature-node chips as future levers.",
+      "signal_desc": "BIS rule → MOFCOM response lag; license approval rates (the throttle is approval speed, not the rule text).",
+      "analyst_note": "This node is a function, not a place: f(US control) → CN counter, lag 2-6mo. Trade the function.",
+      "as_of": "2026-06-01",
+      "half_life_days": 1825,
+      "signals": [],
+      "links": [],
+      "cf": "hi",
+      "review_after_months": 12
+    },
+    {
+      "id": "atlas.escondida",
+      "type": "min",
+      "title": "Escondida — copper",
+      "aliases": [],
+      "lat": -24.27,
+      "lon": -69.07,
+      "body": "~5% of world copper alone (BHP). Copper = the meta-constraint of electrification: grids, DCs, EVs all draw on it.\n\nMine discovery→production now averages ~17 years (S&P). Smelter treatment charges went NEGATIVE in 2025 — smelting overcapacity (China) fighting over scarce concentrate.\n\nChile + BHP; Chinese smelters control the midstream.\n\n~17 yrs for new supply. Demand curve (AI+EV+grid) arrives faster. Structural deficit widely projected late-2020s.\n\nCopper scarcity taxes every electrification project simultaneously — the broadest single-commodity exposure that exists.\n\nHighest-conviction slow variable in metals: demand certain, supply timeline physically fixed, price the only free variable.",
+      "weight": "~5% of world copper alone (BHP). Copper = the meta-constraint of electrification: grids, DCs, EVs all draw on it.",
+      "why_hard": "Mine discovery→production now averages ~17 years (S&P). Smelter treatment charges went NEGATIVE in 2025 — smelting overcapacity (China) fighting over scarce concentrate.",
+      "control": "Chile + BHP; Chinese smelters control the midstream.",
+      "lead": "~17 yrs for new supply. Demand curve (AI+EV+grid) arrives faster. Structural deficit widely projected late-2020s.",
+      "consequence": "Copper scarcity taxes every electrification project simultaneously — the broadest single-commodity exposure that exists.",
+      "signal_desc": "TC/RC charges, Chilean ore grades (falling), major M&A (BHP-Anglo redux), substitution (aluminum) rates.",
+      "analyst_note": "Highest-conviction slow variable in metals: demand certain, supply timeline physically fixed, price the only free variable.",
+      "as_of": "2026-06-01",
+      "half_life_days": 1825,
+      "signals": [],
+      "links": [],
+      "cf": "hi",
+      "review_after_months": 12
+    },
+    {
+      "id": "atlas.kazatom",
+      "type": "min",
+      "title": "Kazakhstan uranium",
+      "aliases": [],
+      "lat": 45,
+      "lon": 67,
+      "body": "~40-43% of world uranium mining (Kazatomprom, ISR method). Enrichment is the real choke: Rosatom ≈ ~40%+ of global capacity.\n\nNuclear restart wave (AI datacenter PPAs) collides with a fuel chain that runs through Russia and a US enrichment ban (May 2024, waivers to 2028).\n\nAstana mines it; routes run via Russia or the Caspian; Moscow holds enrichment.\n\nWestern enrichment expansion (Urenco, Orano): years. HALEU for advanced reactors: only Centrus, small scale.\n\nRussian retaliation on enrichment = fuel squeeze on US reactors mid-restart-wave.\n\nEveryone watches uranium price; the binding market is SWU (enrichment). Watch the right ticker.",
+      "weight": "~40-43% of world uranium mining (Kazatomprom, ISR method). Enrichment is the real choke: Rosatom ≈ ~40%+ of global capacity.",
+      "why_hard": "Nuclear restart wave (AI datacenter PPAs) collides with a fuel chain that runs through Russia and a US enrichment ban (May 2024, waivers to 2028).",
+      "control": "Astana mines it; routes run via Russia or the Caspian; Moscow holds enrichment.",
+      "lead": "Western enrichment expansion (Urenco, Orano): years. HALEU for advanced reactors: only Centrus, small scale.",
+      "consequence": "Russian retaliation on enrichment = fuel squeeze on US reactors mid-restart-wave.",
+      "signal_desc": "Waiver usage, Urenco/Orano expansion FIDs, spot U3O8 + SWU prices (SWU is the tell).",
+      "analyst_note": "Everyone watches uranium price; the binding market is SWU (enrichment). Watch the right ticker.",
+      "as_of": "2026-06-01",
+      "half_life_days": 1825,
+      "signals": [],
+      "links": [],
+      "cf": "hi",
+      "review_after_months": 12
+    },
+    {
+      "id": "atlas.centrus",
+      "type": "min",
+      "title": "Centrus — Piketon HALEU",
+      "aliases": [],
+      "lat": 39.03,
+      "lon": -83,
+      "body": "The only US-licensed HALEU (high-assay low-enriched uranium) producer — the fuel every advanced/SMR design needs.\n\nA whole reactor generation's deployment schedule gates on one small Ohio facility plus DOE contracting.\n\nUS DOE demand contracts.\n\nScale-up: years; centrifuge cascades are slow to build.\n\nHALEU scarcity = SMR slippage = AI-power gap persists longer = more gas turbines.\n\nTiny node, huge downstream dependency tree. Classic asymmetric-information position.",
+      "weight": "The only US-licensed HALEU (high-assay low-enriched uranium) producer — the fuel every advanced/SMR design needs.",
+      "why_hard": "A whole reactor generation's deployment schedule gates on one small Ohio facility plus DOE contracting.",
+      "control": "US DOE demand contracts.",
+      "lead": "Scale-up: years; centrifuge cascades are slow to build.",
+      "consequence": "HALEU scarcity = SMR slippage = AI-power gap persists longer = more gas turbines.",
+      "signal_desc": "DOE HALEU awards, Centrus cascade expansion, TerraPower/X-energy fuel sourcing.",
+      "analyst_note": "Tiny node, huge downstream dependency tree. Classic asymmetric-information position.",
+      "as_of": "2026-06-01",
+      "half_life_days": 1825,
+      "signals": [],
+      "links": [],
+      "cf": "hi",
+      "review_after_months": 12
+    },
+    {
+      "id": "atlas.ghawar",
+      "type": "nrg",
+      "title": "Ghawar + Abqaiq",
+      "aliases": [],
+      "lat": 25.43,
+      "lon": 49.62,
+      "body": "Largest conventional oil field ever. 2019 bond prospectus revealed capacity 3.8 Mb/d — well below the 5+ Mb/d mythology.\n\nAbqaiq processing (the 2019 drone/missile attack briefly knocked out 5.7 Mb/d) showed the choke is processing infrastructure, not the reservoir.\n\nSaudi Aramco / Riyadh — also holder of most of the world's spare capacity (~3 Mb/d), i.e., the price-management buffer.\n\nSpare capacity is the only fast lever in oil; everything else moves in years.\n\nLoss of Saudi spare capacity (attack or depletion) removes the global shock absorber → every future disruption prices fully.\n\nOil's stability rests on one country's buffer. The buffer, not the flow, is the thing to model.",
+      "weight": "Largest conventional oil field ever. 2019 bond prospectus revealed capacity 3.8 Mb/d — well below the 5+ Mb/d mythology.",
+      "why_hard": "Abqaiq processing (the 2019 drone/missile attack briefly knocked out 5.7 Mb/d) showed the choke is processing infrastructure, not the reservoir.",
+      "control": "Saudi Aramco / Riyadh — also holder of most of the world's spare capacity (~3 Mb/d), i.e., the price-management buffer.",
+      "lead": "Spare capacity is the only fast lever in oil; everything else moves in years.",
+      "consequence": "Loss of Saudi spare capacity (attack or depletion) removes the global shock absorber → every future disruption prices fully.",
+      "signal_desc": "OPEC+ quota cohesion, Aramco capex on capacity, attack tempo on processing nodes.",
+      "analyst_note": "Oil's stability rests on one country's buffer. The buffer, not the flow, is the thing to model.",
+      "as_of": "2026-06-01",
+      "half_life_days": 1825,
+      "signals": [
+        {
+          "label": "Saudi Aramco production figures + spare capacity",
+          "url": "https://www.aramco.com/en/investors/results-and-reports",
+          "cadence_days": 90,
+          "last_checked": "2026-03-12",
+          "log": [
+            {
+              "date": "2026-03-12",
+              "note": "Aramco 2025 annual: 9.0 Mb/d actual, 12 Mb/d nameplate maintained; spare ~3Mb/d"
+            }
+          ]
+        }
+      ],
+      "links": [
+        {
+          "to": "atlas.hormuz",
+          "rel": "gates",
+          "layer": "nrg"
+        }
+      ],
+      "cf": "hi",
+      "review_after_months": 12
+    },
+    {
+      "id": "atlas.permian",
+      "type": "nrg",
+      "title": "Permian Basin",
+      "aliases": [],
+      "lat": 31.8,
+      "lon": -102.3,
+      "body": "~6.3-6.6 Mb/d; carried US output to ~13.3-13.5 Mb/d (world #1). Shale = the price-elastic swing supply that broke OPEC's pricing power 2014-20.\n\nDecline treadmill: wells fall ~60-70% in year one, so output = f(continuous drilling). Capital discipline era (post-2020) means growth stalls near $70-80 WTI.\n\nDozens of public/private E&Ps + Wall Street's tolerance for capex.\n\nResponse time: 6-12 months — uniquely fast for oil. But inventory of tier-1 acreage is finite; 'US production has peaked' (Diamondback letter, 2025) is now a live thesis [md confidence].\n\nPermian plateau = pricing power migrates back to OPEC+ in the late 2020s.\n\nThe single most important question in oil this decade: is the Permian plateauing? Evidence: mixed, leaning yes.",
+      "weight": "~6.3-6.6 Mb/d; carried US output to ~13.3-13.5 Mb/d (world #1). Shale = the price-elastic swing supply that broke OPEC's pricing power 2014-20.",
+      "why_hard": "Decline treadmill: wells fall ~60-70% in year one, so output = f(continuous drilling). Capital discipline era (post-2020) means growth stalls near $70-80 WTI.",
+      "control": "Dozens of public/private E&Ps + Wall Street's tolerance for capex.",
+      "lead": "Response time: 6-12 months — uniquely fast for oil. But inventory of tier-1 acreage is finite; 'US production has peaked' (Diamondback letter, 2025) is now a live thesis [md confidence].",
+      "consequence": "Permian plateau = pricing power migrates back to OPEC+ in the late 2020s.",
+      "signal_desc": "Rig counts vs output (efficiency), tier-1 inventory estimates, gas-oil ratio creep (aging signal).",
+      "analyst_note": "The single most important question in oil this decade: is the Permian plateauing? Evidence: mixed, leaning yes.",
+      "as_of": "2026-06-01",
+      "half_life_days": 1825,
+      "signals": [],
+      "links": [
+        {
+          "to": "atlas.sabine",
+          "rel": "gates",
+          "layer": "nrg"
+        }
+      ],
+      "cf": "hi",
+      "review_after_months": 12
+    },
+    {
+      "id": "atlas.raslaffan",
+      "type": "nrg",
+      "title": "Ras Laffan — Qatar LNG",
+      "aliases": [],
+      "lat": 25.93,
+      "lon": 51.55,
+      "body": "QatarEnergy expanding 77 → 142 mtpa by ~2030 — the largest LNG buildout in history, at the world's lowest cost (~$2-4/MMBtu breakeven).\n\nNorth Field is geology's gift: one reservoir, conventional, shallow. Qatar can win a price war it chooses to start.\n\nDoha. Exports transit Hormuz — chokepoint-coupled supply.\n\nTrains under construction; first new volumes ~2026-27.\n\nThe 2026-28 LNG supply wave (Qatar + US) likely cracks spot prices → coal-to-gas switching in Asia → demand response. Cycle, again.\n\nPosition for LNG glut mid/late-2020s, then the next under-investment shortage early 2030s. The cycle is the trade.",
+      "weight": "QatarEnergy expanding 77 → 142 mtpa by ~2030 — the largest LNG buildout in history, at the world's lowest cost (~$2-4/MMBtu breakeven).",
+      "why_hard": "North Field is geology's gift: one reservoir, conventional, shallow. Qatar can win a price war it chooses to start.",
+      "control": "Doha. Exports transit Hormuz — chokepoint-coupled supply.",
+      "lead": "Trains under construction; first new volumes ~2026-27.",
+      "consequence": "The 2026-28 LNG supply wave (Qatar + US) likely cracks spot prices → coal-to-gas switching in Asia → demand response. Cycle, again.",
+      "signal_desc": "Train completion dates, long-term contract signings (who locks in Asia).",
+      "analyst_note": "Position for LNG glut mid/late-2020s, then the next under-investment shortage early 2030s. The cycle is the trade.",
+      "as_of": "2026-06-01",
+      "half_life_days": 1825,
+      "signals": [],
+      "links": [
+        {
+          "to": "atlas.hormuz",
+          "rel": "gates",
+          "layer": "nrg"
+        }
+      ],
+      "cf": "hi",
+      "review_after_months": 12
+    },
+    {
+      "id": "atlas.sabine",
+      "type": "nrg",
+      "title": "Sabine Pass / US Gulf LNG",
+      "aliases": [],
+      "lat": 29.75,
+      "lon": -93.87,
+      "body": "Cheniere's flagship; US = world #1 LNG exporter since 2023. FID→first cargo = 4-5 yrs.\n\nConverted the US shale gas glut into geopolitical supply (replaced Russian pipe gas to Europe post-2022 — the fastest energy realignment ever executed).\n\nPrivate firms + DOE export permits (the 2024 'pause' showed the political lever).\n\n4-5 yrs per project; a wall of capacity arrives 2026-28.\n\nUS LNG = the marginal molecule setting both EU and Asia prices; Henry Hub↔TTF/JKM spreads = the arbitrage that funds it.\n\nEnergy flows rerouted in 18 months what diplomats argued over for 40 years. Markets > treaties when physics allows.",
+      "weight": "Cheniere's flagship; US = world #1 LNG exporter since 2023. FID→first cargo = 4-5 yrs.",
+      "why_hard": "Converted the US shale gas glut into geopolitical supply (replaced Russian pipe gas to Europe post-2022 — the fastest energy realignment ever executed).",
+      "control": "Private firms + DOE export permits (the 2024 'pause' showed the political lever).",
+      "lead": "4-5 yrs per project; a wall of capacity arrives 2026-28.",
+      "consequence": "US LNG = the marginal molecule setting both EU and Asia prices; Henry Hub↔TTF/JKM spreads = the arbitrage that funds it.",
+      "signal_desc": "DOE permit policy, FID announcements, spread compression as supply lands.",
+      "analyst_note": "Energy flows rerouted in 18 months what diplomats argued over for 40 years. Markets > treaties when physics allows.",
+      "as_of": "2026-06-01",
+      "half_life_days": 1825,
+      "signals": [],
+      "links": [
+        {
+          "to": "atlas.panama",
+          "rel": "gates",
+          "layer": "nrg"
+        },
+        {
+          "to": "atlas.marseille",
+          "rel": "gates",
+          "layer": "nrg"
+        }
+      ],
+      "cf": "hi",
+      "review_after_months": 12
+    },
+    {
+      "id": "atlas.crane",
+      "type": "nrg",
+      "title": "Crane CEC (ex-Three Mile Island 1)",
+      "aliases": [],
+      "lat": 40.15,
+      "lon": -76.72,
+      "body": "Constellation restarting TMI-1 (835 MW) under a 20-yr Microsoft PPA (Sep 2024) + $1B DOE loan. Target 2027.\n\nThe symbol-event: AI demand made a mothballed nuclear plant economic. But PJM analysis floated grid-connection slipping to 2031 (Constellation disputes) — the INTERCONNECTION QUEUE, not the reactor, is the fight.\n\nConstellation + FERC/PJM rulings (decision window mid-2026).\n\nRestart 2-4 yrs; the queue can add more than the restart takes.\n\nIf even a ready reactor with a hyperscaler PPA waits years for a grid slot, every datacenter timeline in PJM inherits that delay.\n\nThe most informative single project in US power: it isolates the bureaucratic constraint from the physical one.",
+      "weight": "Constellation restarting TMI-1 (835 MW) under a 20-yr Microsoft PPA (Sep 2024) + $1B DOE loan. Target 2027.",
+      "why_hard": "The symbol-event: AI demand made a mothballed nuclear plant economic. But PJM analysis floated grid-connection slipping to 2031 (Constellation disputes) — the INTERCONNECTION QUEUE, not the reactor, is the fight.",
+      "control": "Constellation + FERC/PJM rulings (decision window mid-2026).",
+      "lead": "Restart 2-4 yrs; the queue can add more than the restart takes.",
+      "consequence": "If even a ready reactor with a hyperscaler PPA waits years for a grid slot, every datacenter timeline in PJM inherits that delay.",
+      "signal_desc": "FERC docket outcomes, PJM queue reform, further hyperscaler-nuclear PPAs.",
+      "analyst_note": "The most informative single project in US power: it isolates the bureaucratic constraint from the physical one.",
+      "as_of": "2026-06-01",
+      "half_life_days": 1825,
+      "signals": [],
+      "links": [],
+      "cf": "hi",
+      "review_after_months": 12
+    },
+    {
+      "id": "atlas.palisades",
+      "type": "nrg",
+      "title": "Palisades — first US restart",
+      "aliases": [],
+      "lat": 42.32,
+      "lon": -86.31,
+      "body": "Holtec recommissioning (800 MW, closed 2022): NRC license restored Jul 2025, fuel loaded Oct 2025, return-to-service targeted 2026 — the first-ever US reactor restart. $1.52B DOE loan.\n\nProves the category: closed ≠ dead. Restart ≈ $1.5-2B and 2-4 yrs vs $35B and 10-15 yrs for new build (Vogtle).\n\nHoltec + NRC + DOE financing.\n\nTemplate now applies to a short list: Duane Arnold next.\n\nEach success re-rates every retired-but-intact reactor as an option, and strengthens the 'restart > new-build' capital allocation.\n\nWatch the gap between 'targeted 2026' and synchronized megawatts. Execution vs announcement is the whole game in nuclear.",
+      "weight": "Holtec recommissioning (800 MW, closed 2022): NRC license restored Jul 2025, fuel loaded Oct 2025, return-to-service targeted 2026 — the first-ever US reactor restart. $1.52B DOE loan.",
+      "why_hard": "Proves the category: closed ≠ dead. Restart ≈ $1.5-2B and 2-4 yrs vs $35B and 10-15 yrs for new build (Vogtle).",
+      "control": "Holtec + NRC + DOE financing.",
+      "lead": "Template now applies to a short list: Duane Arnold next.",
+      "consequence": "Each success re-rates every retired-but-intact reactor as an option, and strengthens the 'restart > new-build' capital allocation.",
+      "signal_desc": "Actual grid synchronization date, Duane Arnold FID, NRC process speed as precedent.",
+      "analyst_note": "Watch the gap between 'targeted 2026' and synchronized megawatts. Execution vs announcement is the whole game in nuclear.",
+      "as_of": "2026-06-01",
+      "half_life_days": 1825,
+      "signals": [
+        {
+          "label": "NRC Palisades restart docket (ML24 series)",
+          "url": "https://www.nrc.gov/reactors/operating/licensing/renewal/applications/palisades.html",
+          "cadence_days": 30,
+          "last_checked": "2026-05-15",
+          "log": [
+            {
+              "date": "2026-05-15",
+              "note": "NRC pre-application review proceeding; Holtec targeting 2025 restart slipped to 2026/27"
+            }
+          ]
+        },
+        {
+          "label": "MISO/PJM interconnection queue position",
+          "url": "https://www.misoenergy.org/planning/generator-interconnection/",
+          "cadence_days": 30,
+          "last_checked": "2026-05-01",
+          "log": [
+            {
+              "date": "2026-05-01",
+              "note": "Queue position confirmed for Palisades restart capacity; grid upgrade costs pending"
+            }
+          ]
+        }
+      ],
+      "links": [],
+      "cf": "hi",
+      "review_after_months": 12
+    },
+    {
+      "id": "atlas.vogtle",
+      "type": "nrg",
+      "title": "Vogtle 3&4",
+      "aliases": [],
+      "lat": 33.14,
+      "lon": -81.76,
+      "body": "The only new US reactors in 30 yrs: ~$35B vs ~$14B estimate, 7 years late. Both online 2023-24.\n\nThe cautionary baseline that explains the entire restart/SMR/PPA pattern: western new-build economics are broken (10-17 yr timelines: Vogtle, Flamanville, Hinkley).\n\nSouthern Company / Georgia ratepayers (who ate the overrun).\n\nNext AP1000s would be cheaper (learning curve) — if anyone dares order one. Watch for exactly that.\n\n—\n\nUntil a western reactor is built on time, treat all nuclear-renaissance projections as unpriced execution risk.",
+      "weight": "The only new US reactors in 30 yrs: ~$35B vs ~$14B estimate, 7 years late. Both online 2023-24.",
+      "why_hard": "The cautionary baseline that explains the entire restart/SMR/PPA pattern: western new-build economics are broken (10-17 yr timelines: Vogtle, Flamanville, Hinkley).",
+      "control": "Southern Company / Georgia ratepayers (who ate the overrun).",
+      "lead": "Next AP1000s would be cheaper (learning curve) — if anyone dares order one. Watch for exactly that.",
+      "consequence": "—",
+      "signal_desc": "Any new AP1000 order (would mark the regime change), SMR FOAK cost outturns vs promises.",
+      "analyst_note": "Until a western reactor is built on time, treat all nuclear-renaissance projections as unpriced execution risk.",
+      "as_of": "2026-06-01",
+      "half_life_days": 1825,
+      "signals": [],
+      "links": [],
+      "cf": "hi",
+      "review_after_months": 12
+    },
+    {
+      "id": "atlas.gevernova",
+      "type": "nrg",
+      "title": "GE Vernova — Greenville",
+      "aliases": [],
+      "lat": 34.85,
+      "lon": -82.4,
+      "body": "Heavy-duty gas turbine production hub. Order books (GEV, Siemens Energy, Mitsubishi) effectively sold out to ~2028-29; buyers pay reservation fees for slots.\n\nAI datacenters defaulted to gas for speed — and hit a manufacturing wall: turbine capacity was sized for a no-growth grid for 20 years.\n\nThree OEMs globally. Oligopoly pricing power restored overnight.\n\nFactory expansion: 2-3 yrs and OEMs are deliberately cautious (they remember 2000s overbuild).\n\nTurbine slots now gate datacenter timelines as hard as GPUs do. Projects without 2026-27 slots slip to 2029+.\n\nPicks-and-shovels logic, round two: the GPU of the power layer is a 9,000-ton machine from South Carolina.",
+      "weight": "Heavy-duty gas turbine production hub. Order books (GEV, Siemens Energy, Mitsubishi) effectively sold out to ~2028-29; buyers pay reservation fees for slots.",
+      "why_hard": "AI datacenters defaulted to gas for speed — and hit a manufacturing wall: turbine capacity was sized for a no-growth grid for 20 years.",
+      "control": "Three OEMs globally. Oligopoly pricing power restored overnight.",
+      "lead": "Factory expansion: 2-3 yrs and OEMs are deliberately cautious (they remember 2000s overbuild).",
+      "consequence": "Turbine slots now gate datacenter timelines as hard as GPUs do. Projects without 2026-27 slots slip to 2029+.",
+      "signal_desc": "OEM backlog/book-to-bill, slot reservation fees, capacity expansion FIDs.",
+      "analyst_note": "Picks-and-shovels logic, round two: the GPU of the power layer is a 9,000-ton machine from South Carolina.",
+      "as_of": "2026-06-01",
+      "half_life_days": 1825,
+      "signals": [],
+      "links": [],
+      "cf": "hi",
+      "review_after_months": 12
+    },
+    {
+      "id": "atlas.ashburn",
+      "type": "nrg",
+      "title": "Ashburn — Data Center Alley",
+      "aliases": [],
+      "lat": 39.04,
+      "lon": -77.49,
+      "body": "Densest datacenter cluster on Earth (Loudoun County, VA). US DC load: 4.4% of electricity (2023) → 6.7-12% by 2028 (LBNL, Dec 2024).\n\nFiber begat datacenters begat more fiber — 25 yrs of agglomeration. Now Dominion's interconnection queue and transformer scarcity bind the world's densest digital geography.\n\nDominion Energy's queue + Loudoun zoning politics (moratorium pressure rising).\n\nNew transmission into NoVA: late-2020s at best.\n\nNoVA saturation pushes builds to TX/OH/GA/desert-Southwest — relocating the demand shock to new grids serially.\n\nThe bellwether grid. Whatever breaks here breaks everywhere else 2-3 years later.",
+      "weight": "Densest datacenter cluster on Earth (Loudoun County, VA). US DC load: 4.4% of electricity (2023) → 6.7-12% by 2028 (LBNL, Dec 2024).",
+      "why_hard": "Fiber begat datacenters begat more fiber — 25 yrs of agglomeration. Now Dominion's interconnection queue and transformer scarcity bind the world's densest digital geography.",
+      "control": "Dominion Energy's queue + Loudoun zoning politics (moratorium pressure rising).",
+      "lead": "New transmission into NoVA: late-2020s at best.",
+      "consequence": "NoVA saturation pushes builds to TX/OH/GA/desert-Southwest — relocating the demand shock to new grids serially.",
+      "signal_desc": "Dominion queue stats, Loudoun permitting votes, NoVA vacancy/pre-lease rates.",
+      "analyst_note": "The bellwether grid. Whatever breaks here breaks everywhere else 2-3 years later.",
+      "as_of": "2026-06-01",
+      "half_life_days": 1825,
+      "signals": [
+        {
+          "label": "PJM interconnection queue — data centre loads (RTEP)",
+          "url": "https://www.pjm.com/planning/service-requests",
+          "cadence_days": 30,
+          "last_checked": "2026-05-10",
+          "log": [
+            {
+              "date": "2026-05-10",
+              "note": "Queue backlog 400GW+ total; Dominion/N.VA data centre load ~40GW requested, 8yr median wait"
+            }
+          ]
+        },
+        {
+          "label": "Loudoun County building permits (data centres)",
+          "url": "https://www.loudoun.gov/permits",
+          "cadence_days": 30,
+          "last_checked": "2026-04-01",
+          "log": [
+            {
+              "date": "2026-04-01",
+              "note": "Moratorium on new data centre permits in Ashburn corridor, redirecting to Roanoke/Richmond"
+            }
+          ]
+        }
+      ],
+      "links": [],
+      "cf": "hi",
+      "review_after_months": 12
+    },
+    {
+      "id": "atlas.abilene",
+      "type": "nrg",
+      "title": "Abilene — Stargate site",
+      "aliases": [],
+      "lat": 32.45,
+      "lon": -99.73,
+      "body": "Flagship OpenAI/Oracle/SoftBank 'Stargate' campus (Jan 2025, $500B headline across sites). Onsite gas turbines to bypass the grid queue.\n\nThe test of announcement vs steel: headline capital ≠ committed capital. Behind-the-meter gas = the queue-bypass play everyone will copy if it works.\n\nPrivate consortium + ERCOT's permissive market.\n\nBuildings fast; the constraint is turbines (see Greenville) + gas pipeline laterals.\n\nIf behind-the-meter works, the interconnection queue gets routed around — and gas demand forecasts jump again.\n\nApply the test everywhere: count megawatts energized, not dollars announced. The ratio is the hype meter.",
+      "weight": "Flagship OpenAI/Oracle/SoftBank 'Stargate' campus (Jan 2025, $500B headline across sites). Onsite gas turbines to bypass the grid queue.",
+      "why_hard": "The test of announcement vs steel: headline capital ≠ committed capital. Behind-the-meter gas = the queue-bypass play everyone will copy if it works.",
+      "control": "Private consortium + ERCOT's permissive market.",
+      "lead": "Buildings fast; the constraint is turbines (see Greenville) + gas pipeline laterals.",
+      "consequence": "If behind-the-meter works, the interconnection queue gets routed around — and gas demand forecasts jump again.",
+      "signal_desc": "Actual MW energized (not announced), turbine deliveries on-site, follow-on sites breaking ground.",
+      "analyst_note": "Apply the test everywhere: count megawatts energized, not dollars announced. The ratio is the hype meter.",
+      "as_of": "2026-06-01",
+      "half_life_days": 1825,
+      "signals": [],
+      "links": [],
+      "cf": "md",
+      "review_after_months": 12
+    },
+    {
+      "id": "atlas.threegorges",
+      "type": "nrg",
+      "title": "Three Gorges / China grid",
+      "aliases": [],
+      "lat": 30.82,
+      "lon": 111,
+      "body": "Symbol of scale: China generates ~2x US electricity, builds UHV transmission lines as routine, and added more solar in 2024-25 than the rest of the world combined.\n\nIn an AI race where power is the binding input, China's grid headroom + state-speed buildout is a structural advantage offsetting its chip disadvantage.\n\nState Grid / NDRC — central planning's home turf.\n\n—\n\nIf compute efficiency (DeepSeek-style) keeps reducing FLOPs-per-capability, the binding constraint shifts from chips (US edge) toward energy (CN edge). Watch this crossover.\n\nThe US-China AI race is chips vs electrons. Each side is strong where the other is constrained. The arbitrage closes via efficiency gains — track those hardest.",
+      "weight": "Symbol of scale: China generates ~2x US electricity, builds UHV transmission lines as routine, and added more solar in 2024-25 than the rest of the world combined.",
+      "why_hard": "In an AI race where power is the binding input, China's grid headroom + state-speed buildout is a structural advantage offsetting its chip disadvantage.",
+      "control": "State Grid / NDRC — central planning's home turf.",
+      "lead": "—",
+      "consequence": "If compute efficiency (DeepSeek-style) keeps reducing FLOPs-per-capability, the binding constraint shifts from chips (US edge) toward energy (CN edge). Watch this crossover.",
+      "signal_desc": "CN datacenter power allocations, UHV line completions, curtailment rates (they have surplus to waste).",
+      "analyst_note": "The US-China AI race is chips vs electrons. Each side is strong where the other is constrained. The arbitrage closes via efficiency gains — track those hardest.",
+      "as_of": "2026-06-01",
+      "half_life_days": 1825,
+      "signals": [],
+      "links": [],
+      "cf": "hi",
+      "review_after_months": 12
+    },
+    {
+      "id": "atlas.pjm",
+      "type": "nrg",
+      "title": "PJM Interconnection (queue)",
+      "aliases": [],
+      "lat": 40.07,
+      "lon": -75.4,
+      "body": "Largest US grid operator (65M people). National picture: ~2.6 TW of projects queued at end-2023, median wait ~5 yrs (LBNL 'Queued Up'); >95% of queue = solar/storage/wind.\n\nThe grid's bottleneck is paperwork + transmission studies, not generation technology. Electrons are slower than dollars because lawyers are slower than both.\n\nFERC rules + regional operators + state permitting.\n\nQueue reform underway; transmission lines still 8-12 yrs.\n\nEvery AI-power forecast that ignores queue physics overstates 2026-29 supply. Capacity prices in PJM already spiked 10x at the 2024-25 auction.\n\nPJM capacity auctions = the bond market of the AI-power thesis. Price moves there validate or kill the whole narrative.",
+      "weight": "Largest US grid operator (65M people). National picture: ~2.6 TW of projects queued at end-2023, median wait ~5 yrs (LBNL 'Queued Up'); >95% of queue = solar/storage/wind.",
+      "why_hard": "The grid's bottleneck is paperwork + transmission studies, not generation technology. Electrons are slower than dollars because lawyers are slower than both.",
+      "control": "FERC rules + regional operators + state permitting.",
+      "lead": "Queue reform underway; transmission lines still 8-12 yrs.",
+      "consequence": "Every AI-power forecast that ignores queue physics overstates 2026-29 supply. Capacity prices in PJM already spiked 10x at the 2024-25 auction.",
+      "signal_desc": "Capacity auction prices (the cleanest scarcity signal), queue reform outcomes, large-load interconnection rule changes.",
+      "analyst_note": "PJM capacity auctions = the bond market of the AI-power thesis. Price moves there validate or kill the whole narrative.",
+      "as_of": "2026-06-01",
+      "half_life_days": 1825,
+      "signals": [],
+      "links": [
+        {
+          "to": "tree.nuke",
+          "rel": "enables",
+          "sign": 1,
+          "lag_years": 2,
+          "sign_basis": "A queue this saturated is the forcing function behind nuclear-restart economics — PPA deals (TMI, Palisades) got signed specifically to jump the interconnection line."
+        }
+      ],
+      "cf": "hi",
+      "review_after_months": 12
+    },
+    {
+      "id": "atlas.egyptcorridor",
+      "type": "data",
+      "title": "Egypt cable corridor",
+      "aliases": [],
+      "lat": 30.06,
+      "lon": 31.25,
+      "body": "~15-17 submarine cable systems funnel through Egypt (Red Sea→Med crossing); the majority of Europe↔Asia internet traffic.\n\nGeography again: the same isthmus that makes Suez makes the internet's thinnest waist. Feb 2024: the drifting anchor of the Houthi-hit Rubymar cut 3 cables (Seacom, AAE-1, EIG).\n\nEgypt (Telecom Egypt collects transit rent); cables share the threatened Red Sea with shipping.\n\nNew routes (overland via Saudi, around Africa) = years + Egypt actively defends its rent.\n\nMulti-cable cut = Europe-Asia latency/capacity crisis; finance and cloud reroute via US (adding 100ms+ — real money in trading).\n\nThe internet has chokepoints just like oil. The repair-ship fleet (~60 vessels, old) is the hidden sub-constraint.",
+      "weight": "~15-17 submarine cable systems funnel through Egypt (Red Sea→Med crossing); the majority of Europe↔Asia internet traffic.",
+      "why_hard": "Geography again: the same isthmus that makes Suez makes the internet's thinnest waist. Feb 2024: the drifting anchor of the Houthi-hit Rubymar cut 3 cables (Seacom, AAE-1, EIG).",
+      "control": "Egypt (Telecom Egypt collects transit rent); cables share the threatened Red Sea with shipping.",
+      "lead": "New routes (overland via Saudi, around Africa) = years + Egypt actively defends its rent.",
+      "consequence": "Multi-cable cut = Europe-Asia latency/capacity crisis; finance and cloud reroute via US (adding 100ms+ — real money in trading).",
+      "signal_desc": "New route announcements (Blue-Raman via Israel/Saudi), repair-ship availability (global fleet is tiny and aging).",
+      "analyst_note": "The internet has chokepoints just like oil. The repair-ship fleet (~60 vessels, old) is the hidden sub-constraint.",
+      "as_of": "2026-06-01",
+      "half_life_days": 730,
+      "signals": [],
+      "links": [
+        {
+          "to": "atlas.marseille",
+          "rel": "gates",
+          "layer": "data"
+        }
+      ],
+      "cf": "hi",
+      "review_after_months": 12
+    },
+    {
+      "id": "atlas.marseille",
+      "type": "data",
+      "title": "Marseille landing hub",
+      "aliases": [],
+      "lat": 43.3,
+      "lon": 5.37,
+      "body": "Europe's fastest-growing interconnection hub — where Asia/Africa/ME cables land and meet EU cloud.\n\nPosition rent: the Mediterranean's digital Rotterdam.\n\nFrance; private DC operators (Digital Realty et al.).\n\n—\n\n—\n\nReal estate near landing stations = quiet, durable digital-infrastructure rent.",
+      "weight": "Europe's fastest-growing interconnection hub — where Asia/Africa/ME cables land and meet EU cloud.",
+      "why_hard": "Position rent: the Mediterranean's digital Rotterdam.",
+      "control": "France; private DC operators (Digital Realty et al.).",
+      "lead": "—",
+      "consequence": "—",
+      "signal_desc": "New cable landings, DC capacity adds.",
+      "analyst_note": "Real estate near landing stations = quiet, durable digital-infrastructure rent.",
+      "as_of": "2026-06-01",
+      "half_life_days": 730,
+      "signals": [],
+      "links": [],
+      "cf": "hi",
+      "review_after_months": 12
+    },
+    {
+      "id": "atlas.sgjohor",
+      "type": "data",
+      "title": "Singapore–Johor DC corridor",
+      "aliases": [],
+      "lat": 1.4,
+      "lon": 103.78,
+      "body": "Singapore: ~25 cable landings, SEA's hub — but a DC moratorium (2019-22) then strict caps pushed the build wave across the border: Johor became SEA's largest DC construction market.\n\nPolicy creates geography: one zoning decision relocated a billion-dollar industry 30km north into Malaysia.\n\nSingapore (caps, green requirements) / Malaysia (courting the spillover, now hitting its own power/water limits).\n\nJohor power constraints already emerging 2025-26.\n\nThe pattern repeats globally: DC demand flows to wherever power+land+permits clear fastest — a real-time map of regulatory arbitrage.\n\nTrade the spillover geography, not the hub: the hub's scarcity is priced, the neighbor's windfall often isn't.",
+      "weight": "Singapore: ~25 cable landings, SEA's hub — but a DC moratorium (2019-22) then strict caps pushed the build wave across the border: Johor became SEA's largest DC construction market.",
+      "why_hard": "Policy creates geography: one zoning decision relocated a billion-dollar industry 30km north into Malaysia.",
+      "control": "Singapore (caps, green requirements) / Malaysia (courting the spillover, now hitting its own power/water limits).",
+      "lead": "Johor power constraints already emerging 2025-26.",
+      "consequence": "The pattern repeats globally: DC demand flows to wherever power+land+permits clear fastest — a real-time map of regulatory arbitrage.",
+      "signal_desc": "Johor power-allocation policy, Singapore cap adjustments, Indonesia (Batam) as next spillover.",
+      "analyst_note": "Trade the spillover geography, not the hub: the hub's scarcity is priced, the neighbor's windfall often isn't.",
+      "as_of": "2026-06-01",
+      "half_life_days": 730,
+      "signals": [],
+      "links": [
+        {
+          "to": "atlas.egyptcorridor",
+          "rel": "gates",
+          "layer": "data"
+        }
+      ],
+      "cf": "hi",
+      "review_after_months": 12
+    },
+    {
+      "id": "atlas.luzon",
+      "type": "data",
+      "title": "Luzon Strait cable choke",
+      "aliases": [],
+      "lat": 21,
+      "lon": 121,
+      "body": "The cable corridor east of Taiwan/north of Philippines. 2006 Hengchun earthquake cut ~8 cables — Asia's internet degraded for weeks. Matsu islands cables cut 2023 (Chinese vessels implicated).\n\nSeismically active + militarily contested + carries trans-Pacific traffic: triple-risk overlay on one strait.\n\nNobody, which is the problem. Repair in contested water = the unsolved scenario.\n\nRepair ships: weeks per cable in peacetime; unavailable in conflict.\n\nTaiwan scenario = data severance alongside chip severance. Markets model the chips; few model the milliseconds.\n\nCable cuts are becoming a gray-zone language (Baltic 2023-24, Matsu, Red Sea). Learn to read it.",
+      "weight": "The cable corridor east of Taiwan/north of Philippines. 2006 Hengchun earthquake cut ~8 cables — Asia's internet degraded for weeks. Matsu islands cables cut 2023 (Chinese vessels implicated).",
+      "why_hard": "Seismically active + militarily contested + carries trans-Pacific traffic: triple-risk overlay on one strait.",
+      "control": "Nobody, which is the problem. Repair in contested water = the unsolved scenario.",
+      "lead": "Repair ships: weeks per cable in peacetime; unavailable in conflict.",
+      "consequence": "Taiwan scenario = data severance alongside chip severance. Markets model the chips; few model the milliseconds.",
+      "signal_desc": "New trans-Pacific routes avoiding the strait (south via PH), cable-cut incident tempo (gray-zone signaling).",
+      "analyst_note": "Cable cuts are becoming a gray-zone language (Baltic 2023-24, Matsu, Red Sea). Learn to read it.",
+      "as_of": "2026-06-01",
+      "half_life_days": 730,
+      "signals": [],
+      "links": [
+        {
+          "to": "atlas.sgjohor",
+          "rel": "gates",
+          "layer": "data"
+        }
+      ],
+      "cf": "hi",
+      "review_after_months": 12
+    },
+    {
+      "id": "atlas.nyc",
+      "type": "fin",
+      "title": "New York — dollar core",
+      "aliases": [],
+      "lat": 40.71,
+      "lon": -74,
+      "body": "USD: ~58% of FX reserves (IMF COFER), one side of ~88% of FX trades (BIS 2022), the invoicing default, and the Fed's swap lines = lender of last resort to the planet.\n\nNetwork effects in money are the strongest that exist: everyone holds dollars because everyone holds dollars. Exorbitant privilege = the US borrows in what it prints.\n\nFederal Reserve + OFAC (sanctions run through dollar clearing — control of the rail, not the territory).\n\nDe-dollarization is real but glacial: reserve share −10pts in ~25 yrs. Alternatives fragment (gold buying by CBs = the actual hedge flow).\n\nWeaponization (2022 reserve freeze) accelerates the slow exit — every sanction is a marketing campaign for the alternatives.\n\nThe deepest moat and the slowest variable in this atlas. Decades, not years — but the direction is set and gold is the tell.",
+      "weight": "USD: ~58% of FX reserves (IMF COFER), one side of ~88% of FX trades (BIS 2022), the invoicing default, and the Fed's swap lines = lender of last resort to the planet.",
+      "why_hard": "Network effects in money are the strongest that exist: everyone holds dollars because everyone holds dollars. Exorbitant privilege = the US borrows in what it prints.",
+      "control": "Federal Reserve + OFAC (sanctions run through dollar clearing — control of the rail, not the territory).",
+      "lead": "De-dollarization is real but glacial: reserve share −10pts in ~25 yrs. Alternatives fragment (gold buying by CBs = the actual hedge flow).",
+      "consequence": "Weaponization (2022 reserve freeze) accelerates the slow exit — every sanction is a marketing campaign for the alternatives.",
+      "signal_desc": "COFER quarterly shares, CB gold purchases (record 2022-25), CIPS/mBridge volumes, oil-in-yuan deal flow.",
+      "analyst_note": "The deepest moat and the slowest variable in this atlas. Decades, not years — but the direction is set and gold is the tell.",
+      "as_of": "2026-06-01",
+      "half_life_days": 365,
+      "signals": [],
+      "links": [
+        {
+          "to": "atlas.london",
+          "rel": "gates",
+          "layer": "fin"
+        },
+        {
+          "to": "atlas.hkcnh",
+          "rel": "gates",
+          "layer": "fin"
+        }
+      ],
+      "cf": "hi",
+      "review_after_months": 12
+    },
+    {
+      "id": "atlas.london",
+      "type": "fin",
+      "title": "London — pricing & risk",
+      "aliases": [],
+      "lat": 51.51,
+      "lon": -0.08,
+      "body": "~38% of global FX turnover (BIS 2022); LME sets metal prices (and broke, nickel Mar 2022); Lloyd's prices war risk for the world's ships.\n\nEmpire's residue: the contracts, law (English law governs most trade docs), and insurance syndicates stayed after the ships left.\n\nUK regulators; LME owned by HKEX (a quiet fact worth knowing since the 2022 nickel intervention favored a Chinese client).\n\n—\n\nInsurance withdrawal is the fastest blockade that exists: no underwriting = no sailing, no shots fired (the Taiwan and shadow-fleet mechanism).\n\nInsurance pricing > think-tank reports. It's real money betting on real probabilities, updated daily.",
+      "weight": "~38% of global FX turnover (BIS 2022); LME sets metal prices (and broke, nickel Mar 2022); Lloyd's prices war risk for the world's ships.",
+      "why_hard": "Empire's residue: the contracts, law (English law governs most trade docs), and insurance syndicates stayed after the ships left.",
+      "control": "UK regulators; LME owned by HKEX (a quiet fact worth knowing since the 2022 nickel intervention favored a Chinese client).",
+      "lead": "—",
+      "consequence": "Insurance withdrawal is the fastest blockade that exists: no underwriting = no sailing, no shots fired (the Taiwan and shadow-fleet mechanism).",
+      "signal_desc": "Lloyd's war-risk rate cards by region — the most honest geopolitical risk index published.",
+      "analyst_note": "Insurance pricing > think-tank reports. It's real money betting on real probabilities, updated daily.",
+      "as_of": "2026-06-01",
+      "half_life_days": 365,
+      "signals": [],
+      "links": [],
+      "cf": "hi",
+      "review_after_months": 12
+    },
+    {
+      "id": "atlas.swift",
+      "type": "fin",
+      "title": "SWIFT — La Hulpe",
+      "aliases": [],
+      "lat": 50.73,
+      "lon": 4.48,
+      "body": "The messaging layer of ~11,000 banks. 2022: Russian banks cut off — the canonical 'weaponized interdependence' strike.\n\nNot money itself, just messages — but excommunication from the standard = friction tax on everything. Belgium hosts it; US/EU effectively command it.\n\nG7 consensus in practice.\n\nAlternatives exist (CIPS, SPFS, mBridge CBDC pilots) — small but compounding since 2022.\n\nEach use of the weapon funds the alternatives. Same dynamic as the dollar node, faster clock.\n\nSanctions are a wasting asset: maximum power at first use, declining thereafter. Time-decay applies to weapons too.",
+      "weight": "The messaging layer of ~11,000 banks. 2022: Russian banks cut off — the canonical 'weaponized interdependence' strike.",
+      "why_hard": "Not money itself, just messages — but excommunication from the standard = friction tax on everything. Belgium hosts it; US/EU effectively command it.",
+      "control": "G7 consensus in practice.",
+      "lead": "Alternatives exist (CIPS, SPFS, mBridge CBDC pilots) — small but compounding since 2022.",
+      "consequence": "Each use of the weapon funds the alternatives. Same dynamic as the dollar node, faster clock.",
+      "signal_desc": "CIPS transaction growth, mBridge membership, INR/AED/CNY bilateral settlement deals.",
+      "analyst_note": "Sanctions are a wasting asset: maximum power at first use, declining thereafter. Time-decay applies to weapons too.",
+      "as_of": "2026-06-01",
+      "half_life_days": 365,
+      "signals": [],
+      "links": [],
+      "cf": "hi",
+      "review_after_months": 12
+    },
+    {
+      "id": "atlas.hkcnh",
+      "type": "fin",
+      "title": "Hong Kong — CNH gateway",
+      "aliases": [],
+      "lat": 22.3,
+      "lon": 114.17,
+      "body": "The offshore yuan (CNH) pool and the capital-account airlock between China's closed system and global markets.\n\nChina wants RMB influence without capital-account opening; HK is the controlled valve that squares the circle.\n\nBeijing (with HKMA's USD peg as the strange loop: the de-dollarization gateway runs on a dollar peg).\n\n—\n\nHK peg break / status change = forced repricing of the entire China-access stack.\n\nSmall node, high information density: stress here precedes stress in the mainland's external account.",
+      "weight": "The offshore yuan (CNH) pool and the capital-account airlock between China's closed system and global markets.",
+      "why_hard": "China wants RMB influence without capital-account opening; HK is the controlled valve that squares the circle.",
+      "control": "Beijing (with HKMA's USD peg as the strange loop: the de-dollarization gateway runs on a dollar peg).",
+      "lead": "—",
+      "consequence": "HK peg break / status change = forced repricing of the entire China-access stack.",
+      "signal_desc": "Southbound Connect flows, CNH-CNY basis, peg pressure episodes.",
+      "analyst_note": "Small node, high information density: stress here precedes stress in the mainland's external account.",
+      "as_of": "2026-06-01",
+      "half_life_days": 365,
+      "signals": [],
+      "links": [],
+      "cf": "hi",
+      "review_after_months": 12
+    },
+    {
+      "id": "atlas.uae-ai-cluster",
+      "type": "nrg",
+      "title": "Stargate UAE — Abu Dhabi AI Campus",
+      "aliases": ["G42 Khazna cluster", "UAE-US AI Campus"],
+      "lat": 24.47,
+      "lon": 54.37,
+      "body": "5GW UAE-US AI Campus in Abu Dhabi, anchored by G42's Khazna Data Centers with OpenAI, Oracle, Nvidia, Cisco and SoftBank (announced May 2025). First 1GW phase (\"Stargate UAE\") delivers 200MW by Q3 2026; G42 licensed to import the equivalent of ~35,000 Nvidia GB300-class chips.\n\nThe first Gulf cluster of this scale requires a US export license most administrations wouldn't grant — G42 had to divest its Huawei/China ties as the precondition. It's a test of whether chip diplomacy, not just capital, can build a sovereign AI node outside the US.\n\nUS Commerce Dept (BIS) export licensing + UAE state capital (G42, backed by Mubadala/ADQ) building via Khazna Data Centers.\n\nPhase 1 (200MW) on track for Q3 2026 per Khazna; full 5GW campus buildout runs through the decade.\n\nIf the license holds through a change of US administration, UAE becomes the first non-US sovereign 1GW+ AI cluster — proof of the price-insensitive sovereign-demand floor, and a template Saudi Arabia and other Gulf programs are already copying.\n\nApply the Abilene test here too: count megawatts energized, not gigawatts announced. The export license is the single point of political failure — one administration or one national-security review away from reversal.",
+      "weight": "5GW UAE-US AI Campus in Abu Dhabi, anchored by G42's Khazna Data Centers with OpenAI, Oracle, Nvidia, Cisco and SoftBank (announced May 2025). First 1GW phase (\"Stargate UAE\") delivers 200MW by Q3 2026; G42 licensed to import the equivalent of ~35,000 Nvidia GB300-class chips.",
+      "why_hard": "The first Gulf cluster of this scale requires a US export license most administrations wouldn't grant — G42 had to divest its Huawei/China ties as the precondition. It's a test of whether chip diplomacy, not just capital, can build a sovereign AI node outside the US.",
+      "control": "US Commerce Dept (BIS) export licensing + UAE state capital (G42, backed by Mubadala/ADQ) building via Khazna Data Centers.",
+      "lead": "Phase 1 (200MW) on track for Q3 2026 per Khazna; full 5GW campus buildout runs through the decade.",
+      "consequence": "If the license holds through a change of US administration, UAE becomes the first non-US sovereign 1GW+ AI cluster — proof of the price-insensitive sovereign-demand floor, and a template Saudi Arabia and other Gulf programs are already copying.",
+      "signal_desc": "US BIS export-license status/revocations, Khazna construction milestones (MW energized vs. announced), Nvidia GB300 shipment confirmations, G42 divestment audits.",
+      "analyst_note": "Apply the Abilene test here too: count megawatts energized, not gigawatts announced. The export license is the single point of political failure — one administration or one national-security review away from reversal.",
+      "as_of": "2026-06-01",
+      "half_life_days": 730,
+      "signals": [],
+      "links": [
+        {"to": "tree.export", "rel": "gates"},
+        {"to": "tree.sovereign-ai", "rel": "context"}
+      ],
+      "cf": "md",
+      "review_after_months": 6
+    }
+  ],
+  "arcs": [
+    {
+      "from": "atlas.ghawar",
+      "to": "atlas.hormuz",
+      "layer": "nrg"
+    },
+    {
+      "from": "atlas.raslaffan",
+      "to": "atlas.hormuz",
+      "layer": "nrg"
+    },
+    {
+      "from": "atlas.hormuz",
+      "to": "atlas.malacca",
+      "layer": "nrg"
+    },
+    {
+      "from": "atlas.malacca",
+      "to": "atlas.taiwanstrait",
+      "layer": "nrg"
+    },
+    {
+      "from": "atlas.permian",
+      "to": "atlas.sabine",
+      "layer": "nrg"
+    },
+    {
+      "from": "atlas.sabine",
+      "to": "atlas.panama",
+      "layer": "nrg"
+    },
+    {
+      "from": "atlas.sabine",
+      "to": "atlas.marseille",
+      "layer": "nrg"
+    },
+    {
+      "from": "atlas.zeiss",
+      "to": "atlas.asml",
+      "layer": "chip"
+    },
+    {
+      "from": "atlas.asml",
+      "to": "atlas.tsmc",
+      "layer": "chip"
+    },
+    {
+      "from": "atlas.tokyomat",
+      "to": "atlas.tsmc",
+      "layer": "chip"
+    },
+    {
+      "from": "atlas.skhynix",
+      "to": "atlas.tsmc",
+      "layer": "chip"
+    },
+    {
+      "from": "atlas.tsmc",
+      "to": "atlas.ase",
+      "layer": "chip"
+    },
+    {
+      "from": "atlas.ase",
+      "to": "atlas.nvda",
+      "layer": "chip"
+    },
+    {
+      "from": "atlas.nvda",
+      "to": "atlas.ashburn",
+      "layer": "chip"
+    },
+    {
+      "from": "atlas.kolwezi",
+      "to": "atlas.catl",
+      "layer": "min"
+    },
+    {
+      "from": "atlas.morowali",
+      "to": "atlas.catl",
+      "layer": "min"
+    },
+    {
+      "from": "atlas.greenbushes",
+      "to": "atlas.catl",
+      "layer": "min"
+    },
+    {
+      "from": "atlas.bayanobo",
+      "to": "atlas.huawei",
+      "layer": "min"
+    },
+    {
+      "from": "atlas.sgjohor",
+      "to": "atlas.egyptcorridor",
+      "layer": "data"
+    },
+    {
+      "from": "atlas.egyptcorridor",
+      "to": "atlas.marseille",
+      "layer": "data"
+    },
+    {
+      "from": "atlas.luzon",
+      "to": "atlas.sgjohor",
+      "layer": "data"
+    },
+    {
+      "from": "atlas.nyc",
+      "to": "atlas.london",
+      "layer": "fin"
+    },
+    {
+      "from": "atlas.nyc",
+      "to": "atlas.hkcnh",
+      "layer": "fin"
+    }
+  ]
+}

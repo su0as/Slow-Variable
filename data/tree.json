@@ -1,0 +1,1539 @@
+{
+  "eras": [
+    "SUBSTRATE 1965–2007",
+    "EMPIRICAL SHOCK 2009–2013",
+    "ARCHITECTURE 2014–2018",
+    "SCALING REGIME 2019–2022",
+    "IGNITION 2022–2024",
+    "PHYSICAL LIMITS 2024–2026",
+    "OPEN FRONTIER 2026→"
+  ],
+  "nodes": [
+    {
+      "id": "tree.moore",
+      "type": "treenode",
+      "title": "Moore's law",
+      "date_label": "1965→",
+      "era": 0,
+      "row": 0,
+      "badge": "",
+      "live": false,
+      "mechanism": "Transistor density doubles ~every 2yr; compute cost halves",
+      "body": "Transistor density doubling ~every 2 yrs made compute the only input in the economy whose price fell ~50%/yr for decades. Every downstream event in this graph is a derivative of that one curve. Physics root: photolithography wavelength scaling + materials science.",
+      "as_of": "2026-06-01",
+      "half_life_days": 1825,
+      "signals": [],
+      "links": [
+        {
+          "to": "atlas.asml",
+          "rel": "context"
+        },
+        {
+          "to": "atlas.tsmc",
+          "rel": "context"
+        },
+        {
+          "to": "atlas.nvda",
+          "rel": "context"
+        },
+        {
+          "to": "human.huang",
+          "rel": "context"
+        }
+      ],
+      "cf": "hi",
+      "review_after_months": 6
+    },
+    {
+      "id": "tree.dennard",
+      "type": "treenode",
+      "title": "Dennard scaling ends",
+      "date_label": "~2005-07",
+      "era": 0,
+      "row": 1,
+      "badge": "convergent",
+      "live": false,
+      "mechanism": "Clock speeds freeze at ~4GHz; parallelism becomes the only escape",
+      "body": "Until ~2005, shrinking transistors also cut power per transistor — chips got faster for free. Then leakage current broke the bargain: clock speeds froze near ~4GHz. The industry's only escape was PARALLELISM — many cores instead of faster cores. This single physics fact is why the future belonged to a parallel processor (the GPU) and not the CPU. Convergent: any computing civilization hits this wall.",
+      "as_of": "2026-06-01",
+      "half_life_days": 1825,
+      "signals": [],
+      "links": [
+        {
+          "to": "tree.moore",
+          "rel": "requires"
+        },
+        {
+          "to": "human.huang",
+          "rel": "context"
+        }
+      ],
+      "cf": "hi",
+      "review_after_months": 12
+    },
+    {
+      "id": "tree.gaming",
+      "type": "treenode",
+      "title": "Gaming subsidizes GPUs",
+      "date_label": "1993–2006",
+      "era": 0,
+      "row": 2,
+      "badge": "contingent",
+      "live": false,
+      "mechanism": "Consumer entertainment market pre-pays AI hardware capex via GPU demand",
+      "body": "NVIDIA (1993) and rivals built massively parallel chips because rendering pixels is embarrassingly parallel — funded by teenagers buying graphics cards. A consumer entertainment market accidentally pre-paid the capex for the AI hardware substrate. Contingent: no law says a parallel-compute industry must be bootstrapped by video games.",
+      "as_of": "2026-06-01",
+      "half_life_days": 730,
+      "signals": [],
+      "links": [
+        {
+          "to": "tree.tsmc-foundry",
+          "rel": "requires"
+        },
+        {
+          "to": "human.huang",
+          "rel": "context"
+        }
+      ],
+      "cf": "hi",
+      "review_after_months": 12
+    },
+    {
+      "id": "tree.cuda",
+      "type": "treenode",
+      "title": "CUDA",
+      "date_label": "2007",
+      "era": 0,
+      "row": 3,
+      "badge": "contingent",
+      "live": false,
+      "mechanism": "General-purpose GPU programming layer; 15yr moat via code-target lock-in",
+      "body": "Jensen Huang spent years of margin building a general-purpose programming layer on gaming chips before any market demanded it. When neural nets needed parallel compute, the ONLY ergonomic path ran through CUDA. This is the moat: 15+ yrs of code targets it. Contingent — a bet, not an inevitability — and the single best capital-allocation decision of the era.",
+      "as_of": "2026-06-01",
+      "half_life_days": 730,
+      "signals": [],
+      "links": [
+        {
+          "to": "tree.dennard",
+          "rel": "requires"
+        },
+        {
+          "to": "tree.gaming",
+          "rel": "requires"
+        },
+        {
+          "to": "atlas.nvda",
+          "rel": "context"
+        },
+        {
+          "to": "human.huang",
+          "rel": "context"
+        }
+      ],
+      "cf": "hi",
+      "review_after_months": 6
+    },
+    {
+      "id": "tree.web",
+      "type": "treenode",
+      "title": "Web accumulates data",
+      "date_label": "1995→",
+      "era": 0,
+      "row": 4,
+      "badge": "convergent",
+      "live": false,
+      "mechanism": "25yr of human knowledge written into machine-readable form as a byproduct",
+      "body": "Humanity unknowingly spent 25 years writing its collective knowledge into machine-readable form. The training corpus was a byproduct — nobody built the web to teach machines. Convergent: any networked civilization generates this exhaust.",
+      "as_of": "2026-06-01",
+      "half_life_days": 1825,
+      "signals": [],
+      "links": [],
+      "cf": "hi",
+      "review_after_months": 12
+    },
+    {
+      "id": "tree.imagenet",
+      "type": "treenode",
+      "title": "ImageNet",
+      "date_label": "2009-10",
+      "era": 1,
+      "row": 0,
+      "badge": "contingent",
+      "live": false,
+      "mechanism": "Labeled benchmark creates the scoreboard that makes ML progress legible",
+      "body": "Fei-Fei Li's labeled dataset (14M images) + public benchmark created the scoreboard that made progress legible and competitive. Lesson: measurement infrastructure precedes breakthroughs — you can't have a race without a track.",
+      "as_of": "2026-06-01",
+      "half_life_days": 730,
+      "signals": [],
+      "links": [
+        {
+          "to": "tree.web",
+          "rel": "requires"
+        }
+      ],
+      "cf": "hi",
+      "review_after_months": 12
+    },
+    {
+      "id": "tree.alexnet",
+      "type": "treenode",
+      "title": "AlexNet",
+      "date_label": "Sep 2012",
+      "era": 1,
+      "row": 1,
+      "badge": "",
+      "live": false,
+      "mechanism": "CNN + GPU cuts ImageNet error 26%→15%; every lab pivots within 24mo",
+      "body": "Krizhevsky/Sutskever/Hinton trained a CNN on TWO consumer GTX 580 gaming cards and cut ImageNet top-5 error from 26.2% to 15.3% — not an increment, a discontinuity. The signal: neural nets + GPUs + data beats 30 years of hand-engineered features. Every lab pivoted within 24 months. This is the ignition spark of the modern era.",
+      "as_of": "2026-06-01",
+      "half_life_days": 1825,
+      "signals": [],
+      "links": [
+        {
+          "to": "tree.cuda",
+          "rel": "requires"
+        },
+        {
+          "to": "tree.imagenet",
+          "rel": "requires"
+        },
+        {
+          "to": "atlas.nvda",
+          "rel": "context"
+        }
+      ],
+      "cf": "hi",
+      "review_after_months": 12
+    },
+    {
+      "id": "tree.corp",
+      "type": "treenode",
+      "title": "Corporate absorption",
+      "date_label": "2013-14",
+      "era": 1,
+      "row": 2,
+      "badge": "",
+      "live": false,
+      "mechanism": "Google/FB buy academic talent; capital compounding into the field begins",
+      "body": "Google buys DNNresearch (2013) and DeepMind (~$500M, 2014); Facebook founds FAIR (2013). Big tech converts academic talent into proprietary capability — the field's center of gravity moves from universities to corporate labs with 1000x the compute budget. Capital begins compounding into the field.",
+      "as_of": "2026-06-01",
+      "half_life_days": 1825,
+      "signals": [],
+      "links": [
+        {
+          "to": "tree.alexnet",
+          "rel": "requires"
+        }
+      ],
+      "cf": "hi",
+      "review_after_months": 12
+    },
+    {
+      "id": "tree.attn",
+      "type": "treenode",
+      "title": "Attention mechanism",
+      "date_label": "2014",
+      "era": 2,
+      "row": 0,
+      "badge": "",
+      "live": false,
+      "mechanism": "Sequence models learn what to look at; conceptual seed of transformers",
+      "body": "Bahdanau et al. let sequence models learn what to look at, fixing the bottleneck of compressing a sentence into one vector. The conceptual seed of everything after.",
+      "as_of": "2026-06-01",
+      "half_life_days": 1825,
+      "signals": [],
+      "links": [
+        {
+          "to": "tree.alexnet",
+          "rel": "requires"
+        }
+      ],
+      "cf": "hi",
+      "review_after_months": 12
+    },
+    {
+      "id": "tree.transformer",
+      "type": "treenode",
+      "title": "Transformer",
+      "date_label": "Jun 2017",
+      "era": 2,
+      "row": 1,
+      "badge": "convergent",
+      "live": false,
+      "mechanism": "Removes recurrence; trains in parallel on GPU — architecture matches hardware shape",
+      "body": "'Attention Is All You Need' (Google) removed recurrence entirely. The DEEP reason it won: unlike RNNs (sequential by construction), transformers train in parallel — they map perfectly onto GPU economics. The architecture that matched the hardware's shape captured all the compute. Convergent-ish: SOME parallel-friendly architecture had to win; that it was this one, from this team, was contingent.",
+      "as_of": "2026-06-01",
+      "half_life_days": 1825,
+      "signals": [],
+      "links": [
+        {
+          "to": "tree.attn",
+          "rel": "requires"
+        },
+        {
+          "to": "tree.corp",
+          "rel": "requires"
+        },
+        {
+          "to": "tree.cuda",
+          "rel": "requires"
+        },
+        {
+          "to": "atlas.nvda",
+          "rel": "context"
+        },
+        {
+          "to": "human.huang",
+          "rel": "context"
+        }
+      ],
+      "cf": "hi",
+      "review_after_months": 12
+    },
+    {
+      "id": "tree.selfsup",
+      "type": "treenode",
+      "title": "Self-supervision",
+      "date_label": "2018",
+      "era": 2,
+      "row": 2,
+      "badge": "",
+      "live": false,
+      "mechanism": "Next-token prediction turns raw internet text into training signal; data constraint removed",
+      "body": "GPT-1 and BERT showed next-token/masked prediction turns RAW INTERNET TEXT into training signal — no labels needed. This unlocked the web node: suddenly the world's largest dataset was usable. Data constraint: removed. Compute became the only binding input — which made scaling a pure capital question.",
+      "as_of": "2026-06-01",
+      "half_life_days": 1825,
+      "signals": [],
+      "links": [
+        {
+          "to": "tree.transformer",
+          "rel": "requires"
+        },
+        {
+          "to": "tree.web",
+          "rel": "requires"
+        }
+      ],
+      "cf": "hi",
+      "review_after_months": 12
+    },
+    {
+      "id": "tree.oai",
+      "type": "treenode",
+      "title": "OpenAI capped-profit",
+      "date_label": "Mar 2019",
+      "era": 3,
+      "row": 0,
+      "badge": "contingent",
+      "live": false,
+      "mechanism": "Institutional innovation enables billions of compute capital; creates governance fault line",
+      "body": "OpenAI restructures from nonprofit to 'capped-profit' explicitly to raise compute capital. Institutional innovation as enabler: the research agenda (scale!) needed a vehicle that could absorb billions. Contingent — and the governance fault line it created detonated in Nov 2023.",
+      "as_of": "2026-06-01",
+      "half_life_days": 730,
+      "signals": [],
+      "links": [],
+      "cf": "hi",
+      "review_after_months": 6
+    },
+    {
+      "id": "tree.msft",
+      "type": "treenode",
+      "title": "Microsoft $1B → $10B",
+      "date_label": "2019→2023",
+      "era": 3,
+      "row": 1,
+      "badge": "",
+      "live": false,
+      "mechanism": "Frontier lab + hyperscaler balance sheet template; compute = currency",
+      "body": "Microsoft invests $1B (Jul 2019, largely as Azure credits), then ~$10B (Jan 2023). The marriage of frontier lab + hyperscaler balance sheet sets the template every rival copies (Google-DeepMind internal, Amazon/Google→Anthropic). Compute access becomes the field's currency.",
+      "as_of": "2026-06-01",
+      "half_life_days": 1825,
+      "signals": [],
+      "links": [
+        {
+          "to": "tree.oai",
+          "rel": "requires"
+        }
+      ],
+      "cf": "hi",
+      "review_after_months": 6
+    },
+    {
+      "id": "tree.laws",
+      "type": "treenode",
+      "title": "Scaling laws",
+      "date_label": "2020/2022",
+      "era": 3,
+      "row": 2,
+      "badge": "",
+      "live": false,
+      "mechanism": "Loss = smooth power law of compute/data; capability becomes underwritable",
+      "body": "Kaplan et al. (Jan 2020), then Chinchilla (2022): loss falls as a SMOOTH POWER LAW of compute/data/params. THE capital unlock: capability became a predictable function of spend. You can't underwrite a miracle, but you can underwrite a power law — this paper class is why $100B datacenters became financeable.",
+      "as_of": "2026-06-01",
+      "half_life_days": 1825,
+      "signals": [],
+      "links": [
+        {
+          "to": "tree.selfsup",
+          "rel": "requires"
+        }
+      ],
+      "cf": "hi",
+      "review_after_months": 12
+    },
+    {
+      "id": "tree.gpt3",
+      "type": "treenode",
+      "title": "GPT-3",
+      "date_label": "May 2020",
+      "era": 3,
+      "row": 3,
+      "badge": "",
+      "live": false,
+      "mechanism": "175B params; in-context learning emerges; scale buys generality",
+      "body": "175B params. In-context learning emerges: one model, many tasks, no retraining. The first glimpse that scale buys GENERALITY — and the proof-of-concept the scaling-law thesis needed.",
+      "as_of": "2026-06-01",
+      "half_life_days": 1825,
+      "signals": [],
+      "links": [
+        {
+          "to": "tree.msft",
+          "rel": "requires"
+        },
+        {
+          "to": "tree.laws",
+          "rel": "requires"
+        },
+        {
+          "to": "tree.selfsup",
+          "rel": "requires"
+        }
+      ],
+      "cf": "hi",
+      "review_after_months": 6
+    },
+    {
+      "id": "tree.rlhf",
+      "type": "treenode",
+      "title": "RLHF / InstructGPT",
+      "date_label": "early 2022",
+      "era": 3,
+      "row": 4,
+      "badge": "",
+      "live": false,
+      "mechanism": "Human feedback converts text-predictor to instruction-follower; usability unlocked",
+      "body": "Reinforcement learning from human feedback converts a raw text-predictor into an assistant that follows instructions. Pure capability was never the bottleneck to adoption — USABILITY was. RLHF is the packaging step that made the product possible.",
+      "as_of": "2026-06-01",
+      "half_life_days": 1825,
+      "signals": [],
+      "links": [
+        {
+          "to": "tree.gpt3",
+          "rel": "requires"
+        }
+      ],
+      "cf": "hi",
+      "review_after_months": 6
+    },
+    {
+      "id": "tree.chatgpt",
+      "type": "treenode",
+      "title": "ChatGPT",
+      "date_label": "Nov 30 2022",
+      "era": 4,
+      "row": 0,
+      "badge": "contingent",
+      "live": true,
+      "mechanism": "Chat interface makes invisible capability legible to a billion people and every CFO",
+      "body": "A 'low-key research preview' — GPT-3.5 + RLHF + a chat box — hits 100M users in 2 months, fastest adoption in consumer history. Nothing fundamental was new that day; DISTRIBUTION was. The chat interface made invisible capability legible to a billion people and to every CFO. Contingent in timing/form; the wave it released was not.",
+      "as_of": "2026-06-01",
+      "half_life_days": 730,
+      "signals": [],
+      "links": [
+        {
+          "to": "tree.rlhf",
+          "rel": "requires"
+        },
+        {
+          "to": "window.ai-wrapper-window",
+          "rel": "context"
+        }
+      ],
+      "cf": "hi",
+      "review_after_months": 3
+    },
+    {
+      "id": "tree.race",
+      "type": "treenode",
+      "title": "Capability race",
+      "date_label": "2023→",
+      "era": 4,
+      "row": 1,
+      "badge": "",
+      "live": true,
+      "mechanism": "Game theory locks in: no major player can afford to wait; race self-sustains",
+      "body": "Google declares code red; Anthropic, Meta (Llama open-weights), Mistral, xAI pile in; MSFT's $10B lands Jan 2023. Game theory locks in: no major player can afford to wait, because scaling laws say the leader compounds. Race dynamics, once started, are self-sustaining — this is now the engine, not the spark.",
+      "as_of": "2026-06-01",
+      "half_life_days": 1825,
+      "signals": [],
+      "links": [
+        {
+          "to": "tree.chatgpt",
+          "rel": "requires"
+        },
+        {
+          "to": "human.musk",
+          "rel": "context"
+        }
+      ],
+      "cf": "hi",
+      "review_after_months": 3
+    },
+    {
+      "id": "tree.export",
+      "type": "treenode",
+      "title": "US export controls",
+      "date_label": "Oct 7 2022→",
+      "era": 4,
+      "row": 2,
+      "badge": "",
+      "live": false,
+      "mechanism": "Compute treated as strategic commodity; politicizes every chip/mineral layer",
+      "body": "BIS restricts advanced chips + tools to China (Oct 2022), tightens Oct 2023, revises 2025 (H20 saga). First time the US treats compute itself as a strategic commodity like enriched uranium. Effect: slows China's frontier training, accelerates its substitution drive — and politicizes every node in this atlas's chip layer.",
+      "as_of": "2026-06-01",
+      "half_life_days": 1825,
+      "signals": [
+        {
+          "label": "BIS Entity List updates + chip rule revisions",
+          "url": "https://www.bis.doc.gov/index.php/policy-guidance/lists-of-parties-of-concern/entity-list",
+          "cadence_days": 14,
+          "last_checked": "2026-05-20",
+          "log": [
+            {
+              "date": "2026-05-20",
+              "note": "May 2026 interim rule: A100/H100 equivalent threshold lowered; CISA chip traceability pilot"
+            }
+          ]
+        }
+      ],
+      "links": [
+        {
+          "to": "tree.gpt3",
+          "rel": "requires"
+        },
+        {
+          "to": "atlas.asml",
+          "rel": "context"
+        },
+        {
+          "to": "atlas.tsmc",
+          "rel": "context"
+        },
+        {
+          "to": "atlas.nvda",
+          "rel": "context",
+          "sign": -1,
+          "lag_years": 3,
+          "sign_basis": "Export-control tiers push excluded customers toward AMD/custom silicon faster than they otherwise would — the policy response erodes the concentration that triggered it (see atlas.nvda.rent.bypass_maturity)."
+        },
+        {
+          "to": "atlas.huawei",
+          "rel": "context"
+        }
+      ],
+      "cf": "hi",
+      "review_after_months": 3
+    },
+    {
+      "id": "tree.china",
+      "type": "treenode",
+      "title": "China counters",
+      "date_label": "2023→",
+      "era": 4,
+      "row": 3,
+      "badge": "",
+      "live": true,
+      "mechanism": "SMIC 7nm without EUV; mineral controls symmetrize the chip war",
+      "body": "SMIC ships 7nm without EUV (Kirin 9000S, Aug 2023 — sanctions' limits demonstrated); Huawei Ascend scales; Beijing answers with mineral controls: Ga/Ge (Aug 2023), graphite, antimony, REE licensing (Apr 2025). The conflict becomes symmetric: you choke chips, we choke the periodic table.",
+      "as_of": "2026-06-01",
+      "half_life_days": 1825,
+      "signals": [],
+      "links": [
+        {
+          "to": "tree.export",
+          "rel": "requires"
+        },
+        {
+          "to": "atlas.bayanobo",
+          "rel": "context"
+        },
+        {
+          "to": "atlas.ganzhou",
+          "rel": "context"
+        },
+        {
+          "to": "atlas.huawei",
+          "rel": "context"
+        }
+      ],
+      "cf": "hi",
+      "review_after_months": 3
+    },
+    {
+      "id": "tree.capex",
+      "type": "treenode",
+      "title": "Hyperscaler capex flood",
+      "date_label": "2023→",
+      "era": 4,
+      "row": 4,
+      "badge": "",
+      "live": true,
+      "mechanism": "Big-4 capex $150B (2020) → ~$700B (2026); scaling laws make it financeable",
+      "body": "Big-4 capex: ~$410B (2025) guided to ~$700-725B (2026) — vs ~$150B in 2020. Oracle joins (capex 86% of revenue!). Amazon FCF goes NEGATIVE ~$17-28B; sector debt issuance ~$108B (2025). The counter-evidence to pure-bubble: Google Cloud backlog $460B, MSFT RPO $627B — real contracted demand. Both facts are true at once; that tension defines the cycle.",
+      "as_of": "2026-06-01",
+      "half_life_days": 1825,
+      "signals": [
+        {
+          "label": "Big-4 hyperscaler quarterly capex filings",
+          "url": "https://www.sec.gov/cgi-bin/browse-edgar",
+          "cadence_days": 90,
+          "last_checked": "2026-04-30",
+          "log": [
+            {
+              "date": "2026-04-30",
+              "note": "Q1 2026: MSFT $21.4B, GOOGL $17.2B, META $13.7B, AMZN $26.3B — $78B/quarter run rate"
+            }
+          ]
+        },
+        {
+          "label": "Data centre construction starts — Dodge Data",
+          "url": "https://www.construction.com",
+          "cadence_days": 30,
+          "last_checked": "2026-05-01",
+          "log": [
+            {
+              "date": "2026-05-01",
+              "note": "Data centre starts +180% YoY in Q1; material lead times: transformers 24–48mo, switchgear 12–18mo"
+            }
+          ]
+        }
+      ],
+      "links": [
+        {
+          "to": "tree.race",
+          "rel": "requires"
+        },
+        {
+          "to": "tree.laws",
+          "rel": "requires"
+        },
+        {
+          "to": "tree.cloud",
+          "rel": "requires"
+        },
+        {
+          "to": "atlas.nvda",
+          "rel": "context",
+          "sign": 1,
+          "lag_years": 0,
+          "sign_basis": "More hyperscaler capex directly buys more accelerator capacity — same-year, no lag."
+        },
+        {
+          "to": "atlas.ashburn",
+          "rel": "context"
+        },
+        {
+          "to": "human.ellison",
+          "rel": "context"
+        },
+        {
+          "to": "window.memory-supercycle",
+          "rel": "context"
+        },
+        {
+          "to": "tree.reasoning",
+          "rel": "enables",
+          "sign": 1,
+          "lag_years": 1,
+          "sign_basis": "Capex-funded compute is the direct input to larger training/inference runs — reasoning gains lag the capex cycle by about a year."
+        }
+      ],
+      "cf": "hi",
+      "review_after_months": 3
+    },
+    {
+      "id": "tree.bottleneck",
+      "type": "treenode",
+      "title": "Bottleneck cascade",
+      "date_label": "2023-24",
+      "era": 4,
+      "row": 5,
+      "badge": "",
+      "live": false,
+      "mechanism": "GPU→CoWoS→HBM: constraint clears, reveals the next; theory of constraints live",
+      "body": "Demand shock propagates UP the supply chain in sequence: GPUs sold out → CoWoS advanced packaging binds (2023) → HBM memory binds (2023-25) → each constraint clears only to reveal the next. Textbook theory-of-constraints; this graph's whole purpose is anticipating the NEXT binding step before it prices.",
+      "as_of": "2026-06-01",
+      "half_life_days": 1825,
+      "signals": [],
+      "links": [
+        {
+          "to": "tree.capex",
+          "rel": "requires"
+        },
+        {
+          "to": "atlas.skhynix",
+          "rel": "context"
+        },
+        {
+          "to": "atlas.tsmc",
+          "rel": "context"
+        },
+        {
+          "to": "atlas.ase",
+          "rel": "context"
+        },
+        {
+          "to": "window.memory-supercycle",
+          "rel": "context"
+        }
+      ],
+      "cf": "hi",
+      "review_after_months": 3
+    },
+    {
+      "id": "tree.power",
+      "type": "treenode",
+      "title": "Power becomes binding",
+      "date_label": "2024→",
+      "era": 5,
+      "row": 0,
+      "badge": "convergent",
+      "live": true,
+      "mechanism": "US DC load 4.4%→6–12% by 2028; grid build slower than dollars",
+      "body": "US DC load 4.4% (2023) → 6.7-12% by 2028 (LBNL Dec 2024). Interconnection queues ~5yrs median, gas turbines sold out to ~2028-29, transformers 2-4yr lead. The constraint left silicon and entered the grid: electrons move slower than dollars. Convergent — exponential compute demand was always going to hit the linear-build power system.",
+      "as_of": "2026-06-01",
+      "half_life_days": 1825,
+      "signals": [],
+      "links": [
+        {
+          "to": "tree.capex",
+          "rel": "requires"
+        },
+        {
+          "to": "atlas.gevernova",
+          "rel": "context"
+        },
+        {
+          "to": "atlas.pjm",
+          "rel": "context",
+          "sign": 1,
+          "lag_years": 0,
+          "sign_basis": "AI datacenter load is a direct, same-year addition to the interconnection queue."
+        },
+        {
+          "to": "atlas.abilene",
+          "rel": "context"
+        },
+        {
+          "to": "window.energy-grid-software",
+          "rel": "context"
+        }
+      ],
+      "cf": "hi",
+      "review_after_months": 3
+    },
+    {
+      "id": "tree.nuke",
+      "type": "treenode",
+      "title": "Nuclear repricing",
+      "date_label": "2024→",
+      "era": 5,
+      "row": 1,
+      "badge": "",
+      "live": true,
+      "mechanism": "AI demand in 18mo did what climate policy couldn't in 20yr: nuclear = growth asset",
+      "body": "Microsoft signs 20-yr PPA to restart Three Mile Island unit 1 (Sep 2024); Palisades becomes first-ever US restart (license Jul 2025, fuel Oct 2025, target 2026); Google/Amazon sign SMR deals. AI demand did in 18 months what climate policy couldn't in 20 years: made nuclear a growth asset. But interconnection queues still gate even ready reactors (PJM/Crane fight).",
+      "as_of": "2026-06-01",
+      "half_life_days": 1825,
+      "signals": [],
+      "links": [
+        {
+          "to": "tree.power",
+          "rel": "requires"
+        },
+        {
+          "to": "atlas.crane",
+          "rel": "context"
+        },
+        {
+          "to": "atlas.pjm",
+          "rel": "context",
+          "sign": -1,
+          "lag_years": 3,
+          "sign_basis": "Restarted reactors add firm capacity to the grid, relieving the queue pressure that motivated the restart deals in the first place — self-correcting once plants actually come online."
+        }
+      ],
+      "cf": "hi",
+      "review_after_months": 3
+    },
+    {
+      "id": "tree.loops",
+      "type": "treenode",
+      "title": "Vendor financing loops",
+      "date_label": "2025→",
+      "era": 5,
+      "row": 2,
+      "badge": "flag",
+      "live": false,
+      "mechanism": "Suppliers financing customers who buy from suppliers — 1999 Lucent rhyme",
+      "body": "NVIDIA-OpenAI $100B-scale arrangements, OpenAI-AMD warrant deal, Oracle's $300B+ OpenAI backlog: suppliers financing customers who buy from suppliers. The 1999 Lucent/Nortel rhyme — vendor financing inflated the telecom bubble's final leg. RED FLAG: revenue quality degrades exactly when headline growth looks best. Not proof of bubble; proof of late-cycle financial structure.",
+      "as_of": "2026-06-01",
+      "half_life_days": 180,
+      "signals": [],
+      "links": [
+        {
+          "to": "tree.capex",
+          "rel": "requires"
+        },
+        {
+          "to": "human.ellison",
+          "rel": "context"
+        }
+      ],
+      "cf": "md",
+      "review_after_months": 3
+    },
+    {
+      "id": "tree.gap",
+      "type": "treenode",
+      "title": "The revenue gap",
+      "date_label": "2024→",
+      "era": 5,
+      "row": 3,
+      "badge": "flag",
+      "live": true,
+      "mechanism": "~$700B infra spend vs ~$55–60B lab revenue; gap closes via enterprise diffusion or writedowns",
+      "body": "Sequoia's '$600B question' (mid-2024), updated: AI lab revenue ~$55-60B run-rate (OpenAI ~$24-25B ARR, Anthropic ~$30B ARR by Apr 2026 — real, explosive growth) vs ~$700B+ 2026 infrastructure spend. The gap can close via enterprise diffusion — or via writedowns. History (railways 1840s, fiber 2000): infrastructure survives, capital doesn't. RED FLAG on financing structures, NOT on the technology curve.",
+      "as_of": "2026-06-01",
+      "half_life_days": 180,
+      "signals": [],
+      "links": [
+        {
+          "to": "tree.capex",
+          "rel": "requires"
+        },
+        {
+          "to": "tree.race",
+          "rel": "requires"
+        },
+        {
+          "to": "tree.loops",
+          "rel": "requires"
+        }
+      ],
+      "cf": "md",
+      "review_after_months": 3
+    },
+    {
+      "id": "tree.openw",
+      "type": "treenode",
+      "title": "DeepSeek shock",
+      "date_label": "Jan 2025",
+      "era": 5,
+      "row": 4,
+      "badge": "",
+      "live": false,
+      "mechanism": "Frontier-class at ~$6M marginal cost; efficiency substitutes for compute",
+      "body": "DeepSeek R1: frontier-class reasoning, trained under export-control constraints at claimed ~$6M marginal cost, open-weights. Jan 27 2025: NVDA −17%, ~−$590B — largest single-stock daily loss ever. The lesson priced in one day: efficiency gains can substitute for compute, and constraint breeds invention. Jevons rebuttal followed (cheaper AI → more AI demand) — both effects are real; net sign still contested.",
+      "as_of": "2026-06-01",
+      "half_life_days": 1825,
+      "signals": [],
+      "links": [
+        {
+          "to": "tree.export",
+          "rel": "requires"
+        },
+        {
+          "to": "tree.china",
+          "rel": "requires"
+        }
+      ],
+      "cf": "hi",
+      "review_after_months": 3
+    },
+    {
+      "id": "tree.deflate",
+      "type": "treenode",
+      "title": "Token price deflation",
+      "date_label": "2023→",
+      "era": 5,
+      "row": 5,
+      "badge": "",
+      "live": true,
+      "mechanism": "Cost per token ~100x+ in 2yr; application margins compress to the cost floor",
+      "body": "Cost per token of given capability down ~100x+ in ~2 yrs (GPT-4-class pricing collapse + open-weights floor). Consumer surplus explodes while measured GDP barely registers it — the Hulten/GDP-B problem live. Strategically: application-layer margins compress toward the falling cost floor; durable rents live in the LAYERS this atlas maps (chips, power, data, distribution), not in model access.",
+      "as_of": "2026-06-01",
+      "half_life_days": 1825,
+      "signals": [],
+      "links": [
+        {
+          "to": "tree.race",
+          "rel": "requires"
+        },
+        {
+          "to": "tree.openw",
+          "rel": "requires"
+        },
+        {
+          "to": "window.ai-wrapper-window",
+          "rel": "context"
+        }
+      ],
+      "cf": "hi",
+      "review_after_months": 3
+    },
+    {
+      "id": "tree.labor",
+      "type": "treenode",
+      "title": "Labor transmission (early)",
+      "date_label": "2025→",
+      "era": 5,
+      "row": 6,
+      "badge": "",
+      "live": true,
+      "mechanism": "METR RCT: devs 19% slower with AI tools; electrification diffusion pattern (decades)",
+      "body": "The honest read: productivity claims run ahead of measurement. METR RCT (Jul 2025): experienced devs on real repos were 19% SLOWER with AI tools while BELIEVING they were faster — perception-reality gap quantified. Meanwhile entry-level hiring in exposed occupations shows early softness. Diffusion follows the electrification pattern (Paul David): decades, requiring process redesign, not tool adoption. The macro productivity print is the metric that settles the bubble question — watch BLS, not demos.",
+      "as_of": "2026-06-01",
+      "half_life_days": 1825,
+      "signals": [],
+      "links": [
+        {
+          "to": "tree.chatgpt",
+          "rel": "requires"
+        },
+        {
+          "to": "window.agentic-vertical",
+          "rel": "context"
+        }
+      ],
+      "cf": "md",
+      "review_after_months": 3
+    },
+    {
+      "id": "tree.anthropic-ramp",
+      "type": "treenode",
+      "title": "Anthropic ramp",
+      "date_label": "2025→2026",
+      "era": 5,
+      "row": 7,
+      "badge": "",
+      "live": true,
+      "mechanism": "$1B→$30B ARR in ~15mo; fastest enterprise SaaS ramp on record",
+      "body": "Anthropic grew from ~$1B to ~$30B ARR between roughly early 2025 and April 2026 — approximately 15 months. Fastest enterprise SaaS scaling on record, driven by API adoption and Claude's enterprise positioning. Part of the race dynamic, but also the strongest counter-evidence to 'labs can't monetize'.",
+      "as_of": "2026-06-01",
+      "half_life_days": 1825,
+      "signals": [],
+      "links": [
+        {
+          "to": "tree.race",
+          "rel": "requires"
+        },
+        {
+          "to": "tree.rlhf",
+          "rel": "requires"
+        },
+        {
+          "to": "window.ai-wrapper-window",
+          "rel": "context"
+        }
+      ],
+      "cf": "hi",
+      "review_after_months": 3
+    },
+    {
+      "id": "tree.agentic-shift",
+      "type": "treenode",
+      "title": "Agentic shift",
+      "date_label": "2025-26",
+      "era": 5,
+      "row": 8,
+      "badge": "",
+      "live": true,
+      "mechanism": "Enterprise agent adoption crosses reliability threshold; tool-use moves from demo to deployment",
+      "body": "2025-26: enterprise agent adoption accelerates after tool-use reliability crosses service-quality thresholds. The shift from 'demo' to deployed agents in real workflows — customer support, code review, document processing. Still early; diffusion follows the electrification pattern but accelerating. The key signal: are agents replacing whole workflows, or just augmenting humans at the task level?",
+      "as_of": "2026-06-01",
+      "half_life_days": 1825,
+      "signals": [
+        {
+          "label": "SWE-bench Verified + real-world deployment evidence",
+          "url": "https://www.swebench.com",
+          "cadence_days": 30,
+          "last_checked": "2026-05-10",
+          "log": [
+            {
+              "date": "2026-05-10",
+              "note": "SWE-bench Verified 72% (Sonnet 4.6); Devin/Cursor/Copilot Workspace production enterprise deployments confirmed"
+            }
+          ]
+        }
+      ],
+      "links": [
+        {
+          "to": "tree.chatgpt",
+          "rel": "requires"
+        },
+        {
+          "to": "tree.labor",
+          "rel": "requires"
+        },
+        {
+          "to": "human.yadegari",
+          "rel": "context"
+        },
+        {
+          "to": "window.agentic-vertical",
+          "rel": "context"
+        }
+      ],
+      "cf": "md",
+      "review_after_months": 3
+    },
+    {
+      "id": "tree.acquihire-wave",
+      "type": "treenode",
+      "title": "Acqui-hire wave",
+      "date_label": "2024-25",
+      "era": 5,
+      "row": 9,
+      "badge": "",
+      "live": false,
+      "mechanism": "Incumbents buy talent/time as capability window closes for independents",
+      "body": "Inflection→MSFT ~$650M (Mar 2024), Character.AI→Google ~$2.7B license (Aug 2024), Adept→Amazon, Windsurf→Google ~$2.4B (Jul 2025, after OpenAI's $3B fell through), Scale AI→Meta $14.3B for 49% (Jun 2025). Mechanism: incumbents buying time and people, not products — the clearest evidence the capability window was closing for independents. [cf:md — verify each deal]",
+      "as_of": "2026-06-01",
+      "half_life_days": 1825,
+      "signals": [],
+      "links": [
+        {
+          "to": "tree.race",
+          "rel": "requires"
+        },
+        {
+          "to": "tree.deflate",
+          "rel": "requires"
+        },
+        {
+          "to": "human.yadegari",
+          "rel": "context"
+        },
+        {
+          "to": "human.shlomo",
+          "rel": "context"
+        },
+        {
+          "to": "window.ai-wrapper-window",
+          "rel": "context"
+        },
+        {
+          "to": "window.acquihire-signal",
+          "rel": "context"
+        }
+      ],
+      "cf": "md",
+      "review_after_months": 3
+    },
+    {
+      "id": "tree.memory-supercycle",
+      "type": "treenode",
+      "title": "Memory supercycle",
+      "date_label": "2025-26",
+      "era": 5,
+      "row": 10,
+      "badge": "",
+      "live": true,
+      "mechanism": "HBM/DRAM inflation entering hyperscaler capex; SK Hynix ASP inflecting",
+      "body": "HBM (high-bandwidth memory) demand from AI accelerators inflating SK Hynix and Micron ASPs. The bottleneck cascade cleared GPUs only to reveal advanced memory as the next binding constraint. DRAM pricing now driven by AI capex, not consumer electronics cycle — a structural break from the old memory cycle. SK Hynix HBM capacity sold out through 2026.",
+      "as_of": "2026-06-01",
+      "half_life_days": 1825,
+      "signals": [],
+      "links": [
+        {
+          "to": "tree.bottleneck",
+          "rel": "requires"
+        },
+        {
+          "to": "atlas.skhynix",
+          "rel": "context"
+        }
+      ],
+      "cf": "hi",
+      "review_after_months": 3
+    },
+    {
+      "id": "tree.wrapper-window",
+      "type": "treenode",
+      "title": "Wrapper window",
+      "date_label": "2023-26",
+      "era": 5,
+      "row": 11,
+      "badge": "",
+      "live": false,
+      "mechanism": "API capability + short-video distribution = AI consumer apps at $30M ARR from bedroom",
+      "body": "The AI capability-diffusion window: GPT-4-class APIs commoditized → solo developers building on top → viral distribution via TikTok/IG/FB creators → $1M+ ARR in weeks (Cal AI: $30M ARR, Base44: $189k profit/month before acquisition). The window creates and destroys simultaneously: while solo apps sprint, token price deflation compresses margins and platform absorption starts.",
+      "as_of": "2026-06-01",
+      "half_life_days": 1825,
+      "signals": [],
+      "links": [
+        {
+          "to": "tree.chatgpt",
+          "rel": "requires"
+        },
+        {
+          "to": "tree.deflate",
+          "rel": "requires"
+        },
+        {
+          "to": "human.yadegari",
+          "rel": "context"
+        },
+        {
+          "to": "human.shlomo",
+          "rel": "context"
+        },
+        {
+          "to": "window.ai-wrapper-window",
+          "rel": "context"
+        }
+      ],
+      "cf": "hi",
+      "review_after_months": 3
+    },
+    {
+      "id": "tree.spacex-xai-merger",
+      "type": "treenode",
+      "title": "SpaceX + xAI merger",
+      "date_label": "Feb 2026",
+      "era": 6,
+      "row": 0,
+      "badge": "flag",
+      "live": true,
+      "mechanism": "$1.25T combined valuation; 0.1433 share exchange; largest merger in history",
+      "body": "SpaceX absorbs xAI at $1.25T combined ($1T + $250B), share exchange 0.1433 — the largest merger in corporate history by headline valuation. Logic: 'orbital data centers' / 1M-satellite space-cloud FCC filing. Flag: merger pre-dates revenue justification. Context: 2025 SpaceX revenue ~$16B; xAI burned ~$9.5B in 9mo 2025. Scottish Mortgage marks it $1.25T vs the $1.75T IPO ask.",
+      "as_of": "2026-06-01",
+      "half_life_days": 180,
+      "signals": [],
+      "links": [
+        {
+          "to": "tree.race",
+          "rel": "requires"
+        },
+        {
+          "to": "human.musk",
+          "rel": "context"
+        },
+        {
+          "to": "window.orbital-compute",
+          "rel": "context"
+        }
+      ],
+      "cf": "hi",
+      "review_after_months": 3
+    },
+    {
+      "id": "tree.spacex-ipo",
+      "type": "treenode",
+      "title": "SpaceX IPO",
+      "date_label": "filed May 2026",
+      "era": 6,
+      "row": 1,
+      "badge": "flag",
+      "live": true,
+      "mechanism": "$1.75T ask on ~$16B revenue; ~$50B+ raise; ~90-110× sales multiple",
+      "body": "SpaceX filed IPO targeting $1.75T valuation (May 20 2026), ~$50B+ raise, June 2026 debut. Caveats: ~$16B 2025 revenue → ~90-110× sales ask. Starlink ARPU declining $99 (2023) → $66 (Q1 2026). Scottish Mortgage marks it $1.25T vs the ask. Precedent debate: Lucent (cycle-top IPO, 1996) vs AWS (infrastructure that grew into its valuation). The revenue gap is the test.",
+      "as_of": "2026-06-01",
+      "half_life_days": 180,
+      "signals": [],
+      "links": [
+        {
+          "to": "tree.spacex-xai-merger",
+          "rel": "requires"
+        },
+        {
+          "to": "human.musk",
+          "rel": "context"
+        },
+        {
+          "to": "window.orbital-compute",
+          "rel": "context"
+        }
+      ],
+      "cf": "hi",
+      "review_after_months": 1
+    },
+    {
+      "id": "tree.orbital-compute",
+      "type": "treenode",
+      "title": "Orbital compute",
+      "date_label": "forming",
+      "era": 6,
+      "row": 2,
+      "badge": "contingent",
+      "live": false,
+      "mechanism": "1M-satellite 'space cloud' FCC filing; gated on full Starship reuse + thermal math",
+      "body": "SpaceX FCC filing for ~1M-satellite constellation framing orbital infrastructure as compute backbone. Thesis: Starship full reuse enables $/kg collapse → orbital infrastructure becomes economically viable → compute leaves the ground. Gated on: (1) full Starship reuse achieved at cadence, (2) thermal management in orbit solved, (3) latency economics vs terrestrial. cf:lo — forming thesis, not near-term.",
+      "as_of": "2026-06-01",
+      "half_life_days": 730,
+      "signals": [],
+      "links": [
+        {
+          "to": "tree.spacex-xai-merger",
+          "rel": "requires"
+        },
+        {
+          "to": "human.musk",
+          "rel": "context"
+        },
+        {
+          "to": "window.orbital-compute",
+          "rel": "context"
+        }
+      ],
+      "cf": "lo",
+      "review_after_months": 3
+    },
+    {
+      "id": "tree.tsmc-foundry",
+      "type": "treenode",
+      "title": "Pure-play foundry",
+      "date_label": "1987",
+      "era": 0,
+      "row": 5,
+      "badge": "contingent",
+      "live": false,
+      "mechanism": "TSMC separates design from manufacturing; the fabless industry becomes possible",
+      "body": "Morris Chang founds TSMC at 56 on a business-model bet, not a technology bet: a fab that ONLY makes other people's chips can aggregate everyone's volume and never competes with its customers. The fabless industry (NVIDIA, Qualcomm, Apple silicon) exists because the foundry exists. Contingent: the IDM consensus said this model had no future — and without it, a 1993 graphics startup could never have afforded to exist.",
+      "as_of": "2026-06-01",
+      "half_life_days": 730,
+      "signals": [],
+      "links": [
+        {
+          "to": "tree.moore",
+          "rel": "requires"
+        },
+        {
+          "to": "atlas.tsmc",
+          "rel": "context"
+        },
+        {
+          "to": "human.chang",
+          "rel": "context"
+        },
+        {
+          "to": "human.su",
+          "rel": "context"
+        },
+        {
+          "to": "window.reshoring-chips",
+          "rel": "context"
+        }
+      ],
+      "cf": "hi",
+      "review_after_months": 12
+    },
+    {
+      "id": "tree.cloud",
+      "type": "treenode",
+      "title": "Compute as utility",
+      "date_label": "2006",
+      "era": 0,
+      "row": 6,
+      "badge": "contingent",
+      "live": false,
+      "mechanism": "AWS turns Amazon's internal infrastructure into metered rental compute",
+      "body": "Amazon productizes its own infrastructure pain: compute and storage as a metered utility. Google and Microsoft had the technology and didn't ship it for 4+ years — the consensus blindness was industry-wide. Cloud is the precondition for two later windows: the ZIRP SaaS decade runs on rented infrastructure, and the AI training era rents its substrate the same way. Contingent: a retailer shipped it first.",
+      "as_of": "2026-06-01",
+      "half_life_days": 730,
+      "signals": [],
+      "links": [
+        {
+          "to": "tree.web",
+          "rel": "requires"
+        },
+        {
+          "to": "human.bezos",
+          "rel": "context"
+        },
+        {
+          "to": "window.zirp-saas",
+          "rel": "context"
+        }
+      ],
+      "cf": "hi",
+      "review_after_months": 12
+    },
+    {
+      "id": "tree.smartphone",
+      "type": "treenode",
+      "title": "Smartphone",
+      "date_label": "2007",
+      "era": 0,
+      "row": 7,
+      "badge": "",
+      "live": false,
+      "mechanism": "iPhone creates mobile data exhaust + app distribution + funds the ARM ecosystem",
+      "body": "The iPhone (2007) + App Store (2008) create three substrate layers at once: a new zero-incumbent distribution channel (the app-store gold rush), an order-of-magnitude increase in human data exhaust (photos, location, behavior — future training data), and the capital flywheel that funded power-efficient ARM silicon — the lineage that now matters for inference at the edge.",
+      "as_of": "2026-06-01",
+      "half_life_days": 1825,
+      "signals": [],
+      "links": [
+        {
+          "to": "tree.moore",
+          "rel": "requires"
+        },
+        {
+          "to": "human.jobs",
+          "rel": "context"
+        },
+        {
+          "to": "human.zhang",
+          "rel": "context"
+        },
+        {
+          "to": "human.keller",
+          "rel": "context"
+        },
+        {
+          "to": "window.app-store-gold-rush",
+          "rel": "context"
+        }
+      ],
+      "cf": "hi",
+      "review_after_months": 12
+    },
+    {
+      "id": "tree.crypto-gpu",
+      "type": "treenode",
+      "title": "Crypto mines GPUs",
+      "date_label": "2013–21",
+      "era": 2,
+      "row": 3,
+      "badge": "contingent",
+      "live": false,
+      "mechanism": "Mining demand finances GPU capacity expansion — the second accidental subsidy",
+      "body": "Cryptocurrency mining became the second consumer market (after gaming) to accidentally pre-pay AI's hardware capex: mining booms 2013, 2017, 2021 funded NVIDIA/AMD capacity expansion and kept fab lines warm between gaming cycles. When the Ethereum merge (2022) ended GPU mining, the AI wave absorbed the capacity within months. Contingent: no law says speculative digital currencies must subsidize parallel compute.",
+      "as_of": "2026-06-01",
+      "half_life_days": 730,
+      "signals": [],
+      "links": [
+        {
+          "to": "tree.gaming",
+          "rel": "requires"
+        }
+      ],
+      "cf": "hi",
+      "review_after_months": 12
+    },
+    {
+      "id": "tree.alphafold",
+      "type": "treenode",
+      "title": "AlphaFold",
+      "date_label": "Nov 2020",
+      "era": 3,
+      "row": 5,
+      "badge": "",
+      "live": false,
+      "mechanism": "AI solves protein folding — the proof that deep learning does novel science",
+      "body": "DeepMind's AlphaFold2 effectively solves the 50-year protein-folding grand challenge at CASP14. 200M+ structures released free; Nobel Prize in Chemistry 2024 — the first AI-native Nobel. The significance for this graph: it is the existence proof that the scaling-era toolkit produces NOVEL SCIENCE, not just products — the branch of the tree (materials, drugs, fusion) that may matter more than everything else by 2035.",
+      "as_of": "2026-06-01",
+      "half_life_days": 1825,
+      "signals": [],
+      "links": [
+        {
+          "to": "tree.transformer",
+          "rel": "requires"
+        },
+        {
+          "to": "tree.selfsup",
+          "rel": "requires"
+        },
+        {
+          "to": "human.hassabis",
+          "rel": "context"
+        }
+      ],
+      "cf": "hi",
+      "review_after_months": 12
+    },
+    {
+      "id": "tree.reasoning",
+      "type": "treenode",
+      "title": "Reasoning models",
+      "date_label": "2024–25",
+      "era": 5,
+      "row": 12,
+      "badge": "",
+      "live": true,
+      "mechanism": "RL on chain-of-thought; test-time compute becomes the second scaling axis",
+      "body": "o1/o3, R1, and successors apply reinforcement learning to chain-of-thought: models that think longer before answering. This opens a SECOND scaling axis (test-time compute) just as pretraining data exhausts — and it compounds fastest where outputs are machine-verifiable (math, code), which is why coding became the first durable AI labor market. The inference-heavy paradigm also rewrites datacenter economics: memory and interconnect over raw FLOPs.",
+      "as_of": "2026-06-01",
+      "half_life_days": 1825,
+      "signals": [
+        {
+          "label": "AIME / GPQA benchmark leaderboard",
+          "url": "https://paperswithcode.com/sota/math-word-problems-on-aime-2024",
+          "cadence_days": 30,
+          "last_checked": "2026-05-15",
+          "log": [
+            {
+              "date": "2026-05-15",
+              "note": "OpenAI o3: AIME 87.5%, GPQA 87.7%; Gemini 2.5 Pro competitive; gap to human expert <5%"
+            }
+          ]
+        },
+        {
+          "label": "Inference cost per correct AIME solution",
+          "url": "https://artificialanalysis.ai",
+          "cadence_days": 30,
+          "last_checked": "2026-05-01",
+          "log": [
+            {
+              "date": "2026-05-01",
+              "note": "Cost curve dropping ~60% per year; o3-mini $0.80/correct vs $11 six months ago"
+            }
+          ]
+        }
+      ],
+      "links": [
+        {
+          "to": "tree.laws",
+          "rel": "requires"
+        },
+        {
+          "to": "tree.rlhf",
+          "rel": "requires"
+        },
+        {
+          "to": "human.sutskever",
+          "rel": "context"
+        },
+        {
+          "to": "human.amodei",
+          "rel": "context"
+        },
+        {
+          "to": "window.agentic-vertical",
+          "rel": "context"
+        },
+        {
+          "to": "window.memory-supercycle",
+          "rel": "context"
+        },
+        {
+          "to": "tree.capex",
+          "rel": "enables",
+          "sign": 1,
+          "lag_years": 1,
+          "sign_basis": "Visible reasoning-model capability gains are the evidence hyperscalers cite to justify the next capex cycle — the scaling-laws bet renewing itself."
+        }
+      ],
+      "cf": "hi",
+      "review_after_months": 3
+    },
+    {
+      "id": "tree.sovereign-ai",
+      "type": "treenode",
+      "title": "Sovereign AI",
+      "date_label": "2024→",
+      "era": 6,
+      "row": 3,
+      "badge": "",
+      "live": true,
+      "mechanism": "Nation-states build compute as strategic reserve; capital recycles into silicon",
+      "body": "UAE/Saudi gigawatt datacenter deals, EU AI factories, Japan's Rapidus, India's compute missions: states now treat frontier compute the way they treated oil reserves and nuclear programs. Gulf capital recycles petrodollars into the compute supply chain (Stargate, MGX). Consequence: demand becomes partly price-insensitive — strategic buyers don't mark to market, which extends the capex cycle beyond what commercial returns alone would support.",
+      "as_of": "2026-06-01",
+      "half_life_days": 1825,
+      "signals": [],
+      "links": [
+        {
+          "to": "tree.export",
+          "rel": "requires"
+        },
+        {
+          "to": "tree.capex",
+          "rel": "requires"
+        },
+        {
+          "to": "human.son",
+          "rel": "context"
+        },
+        {
+          "to": "human.keller",
+          "rel": "context"
+        },
+        {
+          "to": "window.sovereign-ai",
+          "rel": "context"
+        }
+      ],
+      "cf": "md",
+      "review_after_months": 3
+    },
+    {
+      "id": "tree.robotics-fm",
+      "type": "treenode",
+      "title": "Robotics foundation models",
+      "date_label": "forming",
+      "era": 6,
+      "row": 4,
+      "badge": "contingent",
+      "live": true,
+      "mechanism": "Vision-language-action models; embodiment as the next data frontier",
+      "body": "VLA models (Figure, Optimus, Unitree, π) attempt the AlexNet moment for manipulation. The binding constraint inverts: software was the bottleneck for 50 years of robotics; now hardware iteration speed and real-world data collection are. If it works, the labor-transmission channel (currently cognitive work only) extends to physical work — the demographic-collapse hedge every aging economy needs on the timeline demography dictates.",
+      "as_of": "2026-06-01",
+      "half_life_days": 730,
+      "signals": [],
+      "links": [
+        {
+          "to": "tree.agentic-shift",
+          "rel": "requires"
+        },
+        {
+          "to": "human.musk",
+          "rel": "context"
+        },
+        {
+          "to": "window.robotics-embodiment",
+          "rel": "context"
+        }
+      ],
+      "cf": "md",
+      "review_after_months": 3
+    },
+    {
+      "id": "tree.stablecoin-rails",
+      "type": "treenode",
+      "title": "Stablecoin rails",
+      "date_label": "2025→",
+      "era": 6,
+      "row": 5,
+      "badge": "",
+      "live": true,
+      "mechanism": "Dollar-token settlement layer grows outside correspondent banking",
+      "body": "GENIUS Act (2025) + Circle's IPO legitimized dollar-stablecoins as regulated payment infrastructure. The slow variable: settlement that bypasses correspondent banking compounds quietly — remittances, B2B cross-border, and (the live question) agent-to-agent payments, where AI agents transacting autonomously need programmable money more than humans do. Watch deposit-flight regulation: banks' cheapest funding is what's actually at stake.",
+      "as_of": "2026-06-01",
+      "half_life_days": 1825,
+      "signals": [],
+      "links": [
+        {
+          "to": "tree.web",
+          "rel": "requires"
+        },
+        {
+          "to": "window.stablecoin-rails",
+          "rel": "context"
+        }
+      ],
+      "cf": "md",
+      "review_after_months": 3
+    }
+  ]
+}

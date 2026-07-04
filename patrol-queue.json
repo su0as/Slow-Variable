@@ -1,0 +1,14 @@
+{
+  "generated_on": "2026-07-04T15:16:02.633Z",
+  "generated_on_date": "2026-07-04",
+  "kill_watch_threshold": 0.8,
+  "freshness_summary": {
+    "fresh": 176,
+    "aging": 0,
+    "stale": 0,
+    "unknown": 0
+  },
+  "total_entities_tracked": 176,
+  "kill_watch_alerts": [],
+  "stale_entities": []
+}

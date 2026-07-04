@@ -1,0 +1,589 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MAGNITUDE — Slow Variables · rev 3</title>
+<meta name="description" content="MAGNITUDE — finds the order-of-magnitude gaps: value vs. capture, consensus vs. reality, price vs. truth. Chokepoints, tech-tree causality, high-agency bets, and market windows, cross-linked with schema-enforced falsifiability. Every thesis carries a kill condition.">
+<!-- og:url / og:image use a best-guess production domain — update after first Vercel deploy confirms the real one -->
+<meta property="og:type" content="website">
+<meta property="og:title" content="MAGNITUDE — Slow Variables">
+<meta property="og:description" content="Finds the order-of-magnitude gaps — value vs. capture, consensus vs. reality, price vs. truth.">
+<meta property="og:url" content="https://slow-variable.vercel.app/">
+<meta property="og:image" content="https://slow-variable.vercel.app/assets/og.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="MAGNITUDE — Slow Variables">
+<meta name="twitter:description" content="Finds the order-of-magnitude gaps — value vs. capture, consensus vs. reality, price vs. truth.">
+<meta name="twitter:image" content="https://slow-variable.vercel.app/assets/og.png">
+<link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
+<link rel="stylesheet" href="css/main.css">
+</head>
+<body>
+
+<!-- STARFIELD (behind everything, non-interactive) -->
+<canvas id="starfield"></canvas>
+
+<!-- ONBOARDING -->
+<div id="onboard">
+  <div id="onboard-box">
+    <h2>MAGNITUDE — Slow Variables</h2>
+    <div class="ob-step"><div class="ob-n">1</div><div class="ob-text">Start on <em>Today</em> — it answers one question: what does this worldview say right now? Three cards, one plain-English claim, the windows closing soonest.</div></div>
+    <div class="ob-step"><div class="ob-n">2</div><div class="ob-text">Every card is a door. Click through to a full dossier — the map, the tech tree, the people who bet on it, all cross-linked.</div></div>
+    <div class="ob-step"><div class="ob-n">3</div><div class="ob-text">The tabs are grouped: <em>Understand</em> the claims, <em>Act</em> on them, <em>Maintain</em> the data. Use <em>Cmd/Ctrl-K</em> to jump anywhere.</div></div>
+    <button id="onboard-dismiss">Got it — start on Today</button>
+  </div>
+</div>
+
+<!-- COMMAND PALETTE -->
+<div id="palette-overlay" role="dialog" aria-modal="true" aria-label="Command palette">
+  <div id="palette-box">
+    <input id="palette-input" type="text" placeholder="Search nodes, people, trends, scenarios…" autocomplete="off" spellcheck="false">
+    <div id="palette-results"></div>
+    <div id="palette-hint">↑↓ navigate · Enter open · Esc close · Cmd-K toggle</div>
+  </div>
+</div>
+
+<!-- DATA HEALTH PANEL -->
+<div id="health-panel">
+  <div class="hphead">
+    <h3>Data Health</h3>
+    <button id="health-close" title="Close" style="color:var(--dim);font-size:12px">✕</button>
+  </div>
+  <div class="hpbody" id="health-body">Loading…</div>
+</div>
+
+<!-- UNIFIED DOSSIER -->
+<div id="dossier">
+  <div id="dhead">
+    <div id="d-reg"></div>
+    <div id="d-nm"></div>
+    <div id="d-meta"></div>
+    <button id="invert-btn" title="Invert view — what makes this false? (i)" class="btn">INVERT</button>
+    <button id="d-back" title="Back">← back</button>
+    <button id="dclose" title="Close dossier (Esc)">✕</button>
+  </div>
+  <div id="dbody"></div>
+</div>
+
+<!-- HEADER -->
+<div id="hdr">
+  <div id="mast">
+    <div class="mast-row"><span class="om-mark" title="MAGNITUDE">OM</span><div class="t">MAGNITUDE</div></div>
+    <div class="s">Orders of Magnitude · Slow Variables</div>
+  </div>
+  <div id="tabs">
+    <div class="tab-group" data-group="understand">
+      <div class="tab-group-lbl">Understand</div>
+      <div class="tab-group-row">
+        <button class="tab on" data-v="today" title="TODAY — what does this worldview say right now?">Today</button>
+        <button class="tab" data-v="thesis" title="Thesis Register — explicit claims">Thesis</button>
+        <button class="tab" data-v="atlas" title="Constraint Atlas">Atlas</button>
+        <button class="tab" data-v="tree" title="Tech Tree — Factorio mechanics">Tree</button>
+        <button class="tab" data-v="trajectory" title="TRAJECTORY — NOW→2050 axis, cones of uncertainty, kill-watch thresholds">Trajectory</button>
+        <button class="tab" data-v="ledger" title="LEDGER — value created vs. value captured, per value-chain layer">Ledger</button>
+      </div>
+    </div>
+    <div class="tab-group" data-group="act">
+      <div class="tab-group-lbl">Act</div>
+      <div class="tab-group-row">
+        <button class="tab" data-v="humans" title="Bet Atlas — high-agency individuals">Humans</button>
+        <button class="tab" data-v="trends" title="Windows Board — trend taxonomy">Trends</button>
+        <button class="tab" data-v="constraints" title="Physical lead times">Constraints</button>
+        <button class="tab" data-v="forecasts" title="Calibrated forecasts">Forecasts</button>
+        <button class="tab" data-v="simulate" title="SIMULATE — causal loop diagram, perturb a node and watch it propagate">Simulate</button>
+        <button class="tab" data-v="helm" id="helm-tab-btn" title="HELM — your private personal lens" style="display:none">Helm</button>
+      </div>
+    </div>
+    <div class="tab-group" data-group="maintain">
+      <div class="tab-group-lbl">Maintain</div>
+      <div class="tab-group-row">
+        <button class="tab" data-v="method" title="Methodology">Method</button>
+        <button class="tab" data-v="patrol" title="Signal Patrol — check queue">Patrol</button>
+        <button class="tab" data-v="brief" title="BRIEF — weekly digest">Brief</button>
+      </div>
+    </div>
+  </div>
+  <div id="hdr-right">
+    <div id="freshness-meter" class="freshness-meter" title="Click to open data health"></div>
+    <div id="coords" style="display:none">—</div>
+    <div id="vintage" style="display:none"></div>
+    <button id="search-btn" title="Search all registries (Cmd/Ctrl-K)">⌕</button>
+    <button id="health-btn" title="Data Health — staleness monitor">⊙</button>
+  </div>
+</div>
+
+<!-- VIEWS -->
+<div id="views">
+
+  <!-- TODAY (landing / home) -->
+  <div class="view scrollview on" id="v-today">
+    <div class="inner">
+      <h2 class="sec">Today</h2>
+      <div class="prose" style="margin-bottom:16px"><p>What this worldview says right now. Every card below is computed live from the registries — nothing here is hand-picked.</p></div>
+      <div id="today-cards" class="today-cards"></div>
+      <div id="today-spotlight"></div>
+      <h2 class="sec">Data Health</h2>
+      <div id="today-health"></div>
+      <h2 class="sec">Windows Closing Soonest</h2>
+      <div id="today-windows"></div>
+    </div>
+  </div>
+
+  <!-- MOBILE: DESKTOP-ONLY NOTICE (Atlas / Tree) -->
+  <div class="view scrollview" id="v-mobile-blocked">
+    <div class="inner">
+      <h2 class="sec" id="mb-title">Desktop Only</h2>
+      <div class="prose" id="mb-body"></div>
+      <button class="btn" id="mb-back-btn">← Back to Today</button>
+    </div>
+  </div>
+
+  <!-- THESIS REGISTER -->
+  <div class="view scrollview" id="v-thesis">
+    <div class="inner">
+      <h2 class="sec">Thesis Register</h2>
+      <div class="prose thesis-intro"><p>Explicit claims this tool commits to. Each carries a kill condition — a falsifiable observable that would retire the thesis. The 7 sections are instruments serving these claims.</p></div>
+      <div class="ttool-row">
+        <button class="ttool on" id="th-view-list" title="List view">List</button>
+        <button class="ttool" id="th-view-spine" title="Spine view — causal ribbon from thesis to constraints, atlas, tree, humans, windows">Spine</button>
+      </div>
+      <div id="thesis-list"></div>
+      <div id="thesis-spine-wrap" style="display:none">
+        <div id="thesis-spine-picker"></div>
+        <div id="thesis-spine-svg-wrap"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ATLAS -->
+  <div class="view" id="v-atlas">
+    <div id="map-wrap">
+      <canvas id="map"></canvas>
+      <canvas id="orbital" style="display:none"></canvas>
+      <div id="legend">
+        <div class="hd"><span>LAYERS</span><button id="lgmin" title="Collapse legend">−</button></div>
+        <div id="lgbody">
+          <div id="searchwrap"><input id="nsearch" type="text" placeholder="search nodes…" autocomplete="off" title="Filter atlas nodes (/ to focus)"></div>
+          <div id="sres"></div>
+          <div id="lyrows"></div>
+          <div id="lgfoot">click node → dossier<br>drag pan · scroll zoom</div>
+        </div>
+      </div>
+      <div id="mapstatus">—</div>
+      <div id="tip"><div class="tl"></div><div id="tip-nm"></div></div>
+      <div id="atlas-mode-toggle">
+        <button class="ttool on" id="am-mercator" title="Standard world map">MERCATOR</button>
+        <button class="ttool" id="am-orbital" title="Radial schematic — NOW at center, time-to-lock as radius, domain as angle">ORBITAL</button>
+      </div>
+      <div id="orbital-tip" style="display:none"></div>
+      <div id="map-zoom">
+        <button class="map-zbtn" id="mz-in" title="Zoom in">+</button>
+        <button class="map-zbtn" id="mz-out" title="Zoom out">−</button>
+        <button class="map-zbtn" id="mz-fit" title="Fit world" style="font-size:9px">⊡</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- TREE -->
+  <div class="view" id="v-tree">
+    <div id="tree-toolbar">
+      <button class="ttool" id="tt-full" title="Show full tree">Full Tree</button>
+      <button class="ttool" id="tt-path" title="Path-to-target: show only ancestor chain of selected node">Path to Target</button>
+      <button class="ttool" id="tt-xref" title="Toggle ghost cross-registry edges">Cross-links</button>
+      <button class="ttool" id="tt-snip" title="Counterfactual snip mode — alt-click an edge to cut it">Snip</button>
+      <button class="ttool" id="tt-mincut" title="Show minimum vertex cut separating selected node from roots">Min Cut</button>
+      <button class="ttool" id="tt-reset" title="Clear selection">Clear</button>
+      <div id="tt-year-wrap" title="Point-in-time rewind: dim everything not yet visible in year Y">
+        <input type="range" id="tt-year" min="1965" max="2026" step="1" value="2026">
+        <span id="tt-year-lb">FULL TIMELINE</span>
+      </div>
+      <span id="tree-hint">click node · ancestors white · descendants red</span>
+      <div style="margin-left:auto;display:flex;gap:3px">
+        <button class="tree-zbtn" id="tz-in" title="Zoom in">+</button>
+        <button class="tree-zbtn" id="tz-out" title="Zoom out">−</button>
+        <button class="tree-zbtn" id="tz-fit" title="Fit tree" style="font-size:9px">⊡</button>
+      </div>
+    </div>
+    <div id="snip-banner">SNIP MODE ACTIVE — Alt-click an edge to cut it · <span id="snip-count">0</span> snips · <button class="btn" id="tt-snip-clear" style="font-size:8px;padding:2px 7px;margin-left:6px">CLEAR</button></div>
+    <div id="mincut-info"></div>
+    <div id="tree-scroll">
+      <div id="tree-svg-wrap"></div>
+    </div>
+    <div id="path-hint">Path-to-target: showing only the ancestor chain of the selected node. Click again or press Clear to return to full tree.</div>
+    <canvas id="tree-minimap"></canvas>
+  </div>
+
+  <!-- TRAJECTORY -->
+  <div class="view scrollview" id="v-trajectory">
+    <div class="inner">
+      <h2 class="sec">Trajectory</h2>
+      <div class="prose" style="margin-bottom:12px"><p>Each thesis's key variable, NOW→2050. Solid = locked (lead-times, demography — already determined). Dotted = projected, inside a widening cone of uncertainty. Dashed horizontal lines are <code>kill_watch</code> trigger thresholds — the thesis dies where the cone crosses one. Only theses carrying an explicit <code>trajectory</code> field appear; the rest are honestly left out below rather than faked.</p></div>
+      <div id="traj-toolbar">
+        <div id="traj-year-wrap" title="Scrub NOW forward along every trajectory">
+          <input type="range" id="traj-year" min="2026" max="2050" step="1" value="2026">
+          <span id="traj-year-lb">NOW · 2026</span>
+        </div>
+        <span id="traj-hint">— threshold = kill_watch trigger · shaded = uncertainty cone · pins = dated tree milestones</span>
+      </div>
+      <div id="traj-charts"></div>
+      <div id="traj-forks-wrap">
+        <h2 class="sec" style="margin-top:28px">Scenario Forks From Now</h2>
+        <div id="traj-forks"></div>
+      </div>
+      <div id="traj-empty-note"></div>
+    </div>
+  </div>
+
+  <!-- LEDGER -->
+  <div class="view scrollview" id="v-ledger">
+    <div class="inner">
+      <h2 class="sec">Ledger</h2>
+      <div class="prose" style="margin-bottom:12px"><p>Value created vs. value captured, layer by layer, for a value chain. Where capture exceeds creation, the layer is extracting rent. Where creation exceeds capture, value is leaking to a layer that isn't the one doing the work — usually because it lacks a real moat. Every layer cites the mechanism, the capture metric (or an honest "asserted" flag if none is disclosed), and a moat from the 7 Powers taxonomy or "none".</p></div>
+      <div id="ledger-domain-picker" class="ttool-row"></div>
+      <div id="ledger-thesis" class="prose" style="margin-bottom:14px"></div>
+      <div id="ledger-year-wrap" title="Migration scrubber — drag to watch the profit pool migrate between layers over time">
+        <input type="range" id="ledger-year" min="2020" max="2030" step="1" value="2026">
+        <span id="ledger-year-lb">2026</span>
+      </div>
+      <div id="ledger-forecast"></div>
+      <div id="ledger-legend">
+        <span class="ledger-legend-item"><span class="ledger-legend-dot rent"></span>RENT — capture &gt; created</span>
+        <span class="ledger-legend-item"><span class="ledger-legend-dot leak"></span>LEAK — created &gt; capture</span>
+        <span class="ledger-legend-item"><span class="ledger-legend-dot moat"></span>MOAT — aligned</span>
+      </div>
+      <div id="ledger-stack-wrap">
+        <svg id="ledger-flow-svg"></svg>
+        <div id="ledger-stack"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- HUMANS -->
+  <div class="view" id="v-humans">
+    <div id="humans-banner">Bet structures are reproducible. Outcomes are power-law. Base rate of Tier-C bets surviving: low single digits. Copy the structure, never the confidence.</div>
+    <div id="humans-subtabs">
+      <button class="ttool on" id="ht-living" title="Living bets — active individuals">Living</button>
+      <button class="ttool" id="ht-scatter" title="Structure scatter — consensus delta vs asymmetry">Scatter</button>
+      <button class="ttool" id="ht-graveyard" title="Graveyard — dead bets and pattern failures">Graveyard</button>
+    </div>
+    <div id="humans-living" style="position:relative;flex:1;overflow:hidden;display:flex">
+      <div id="humans-scroll" style="flex:1;overflow:auto;padding:20px 240px 40px 80px">
+        <div id="humans-timeline-inner"></div>
+      </div>
+      <div id="bet-anatomy">
+        <h4>Bet Anatomy</h4>
+        <div class="anatomy-item"><div class="ak">Stake totality</div><div class="av">Capital + time + reputation committed simultaneously</div></div>
+        <div class="anatomy-item"><div class="ak">Asymmetry</div><div class="av">Bounded downside, unbounded upside — the bet structure, not luck</div></div>
+        <div class="anatomy-item"><div class="ak">Consensus delta</div><div class="av">How wrong the crowd thought you were: the wider, the bigger the prize</div></div>
+        <div class="anatomy-item"><div class="ak">Timing enabler</div><div class="av">The cost-curve or physics shift that made the timing right — not insight alone</div></div>
+        <div class="anatomy-item"><div class="ak">Control retention</div><div class="av">Equity and decision power held through the valley — the anti-Jobs move</div></div>
+        <div class="anatomy-item"><div class="ak">Survival mechanism</div><div class="av">What paid the bills until the curve arrived — government contracts, existing revenue, partner capital</div></div>
+        <div style="margin-top:12px;font-size:9px;color:var(--faint);line-height:1.6">Effects compound: each win mints capital + credibility for the next, larger bet.</div>
+      </div>
+    </div>
+    <!-- SCATTER sub-view -->
+    <div id="humans-scatter" style="display:none;flex:1;overflow:hidden;padding:20px 20px 40px">
+      <div id="scatter-wrap" style="position:relative;width:100%;height:100%">
+        <svg id="scatter-svg" style="width:100%;height:100%;overflow:visible"></svg>
+      </div>
+    </div>
+    <!-- GRAVEYARD sub-view -->
+    <div id="humans-graveyard" style="display:none;flex:1;overflow:auto;padding:20px 40px 40px">
+      <div class="prose" style="margin-bottom:16px;color:var(--dim);font-size:11px">Dead bets — same thesis, same structure, different outcome. Without these, the bet atlas is a survivorship machine. TIER D entries are marked DRAFT pending author verification.</div>
+      <div id="graveyard-list"></div>
+    </div>
+  </div>
+
+  <!-- TRENDS -->
+  <div class="view" id="v-trends">
+    <div id="trends-toolbar">
+      <button class="ttool on" id="tv-kanban" title="Status columns">Kanban</button>
+      <button class="ttool" id="tv-gantt" title="All windows on one time axis">Timeline</button>
+      <button class="ttool" id="tv-matrix" title="Window × Constraint dependency matrix">Matrix</button>
+      <span style="margin-left:auto;font-size:9px;color:var(--faint);letter-spacing:.06em">windows overlap — the timeline shows when, the kanban shows what state</span>
+    </div>
+    <div id="trends-gantt"></div>
+    <div id="trends-matrix" style="display:none;overflow:auto;padding:20px"></div>
+    <div id="trends-kanban">
+      <div class="kanban-col" id="kc-closed">
+        <div class="kanban-hd col-closed"><div class="col-nm">Closed</div><div class="col-count" id="kc-closed-ct"></div></div>
+        <div class="kanban-cards" id="kc-closed-cards"></div>
+      </div>
+      <div class="kanban-col" id="kc-closing">
+        <div class="kanban-hd col-closing"><div class="col-nm">Closing</div><div class="col-count" id="kc-closing-ct"></div></div>
+        <div class="kanban-cards" id="kc-closing-cards"></div>
+      </div>
+      <div class="kanban-col" id="kc-open">
+        <div class="kanban-hd col-open"><div class="col-nm">Open</div><div class="col-count" id="kc-open-ct"></div></div>
+        <div class="kanban-cards" id="kc-open-cards"></div>
+      </div>
+      <div class="kanban-col" id="kc-forming">
+        <div class="kanban-hd col-forming"><div class="col-nm">Forming</div><div class="col-count" id="kc-forming-ct"></div></div>
+        <div class="kanban-cards" id="kc-forming-cards"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- CONSTRAINTS -->
+  <div class="view scrollview" id="v-constraints">
+    <div class="inner">
+      <h2 class="sec">Order-Book Clock</h2>
+      <div class="prose" style="margin-bottom:12px;font-size:10px">Capacity arriving in year Y was committed ~lead-time years earlier. Drag the target-year marker to see which systems are already locked.</div>
+      <div id="clock-wrap">
+        <div id="clock-axis"></div>
+        <div id="clock-rows"></div>
+        <div id="clock-target-wrap"><input type="range" id="clock-target" min="2026" max="2044" step="1" value="2030"><span id="clock-target-lb">Target: 2030</span></div>
+        <div id="clock-locked-msg"></div>
+      </div>
+      <h2 class="sec">Physical Lead Times</h2>
+      <table class="grid" id="constraints-grid">
+        <thead><tr>
+          <th>System</th><th>Lead Time</th><th>Cost Estimate</th><th>Binding Constraint</th><th>Signal to Watch</th>
+        </tr></thead>
+        <tbody id="constraints-tbody"></tbody>
+      </table>
+      <h2 class="sec">Scenarios</h2>
+      <div id="scenarios-wrap"></div>
+    </div>
+  </div>
+
+  <!-- FORECASTS -->
+  <div class="view scrollview" id="v-forecasts">
+    <div class="inner">
+      <h2 class="sec">Calibrated Forecasts</h2>
+      <div id="fc-public-banner" class="fc-public-banner"></div>
+      <div id="fc-owed-banner" style="display:none"></div>
+      <div class="prose"><p>Add probability-weighted claims. Resolve them. Track your Brier score. The discipline: separate the signal from the narrative before the outcome lands.</p></div>
+      <div class="fc-add" style="margin-top:16px">
+        <input id="fc-stmt" type="text" placeholder="Claim (falsifiable, dated)…">
+        <input id="fc-p" type="number" min="0" max="1" step="0.05" placeholder="p (0-1)">
+        <input id="fc-dl" type="date" placeholder="deadline">
+        <input id="fc-resolver" type="text" placeholder="Resolver source (URL or named source)…">
+        <input id="fc-criteria" type="text" placeholder="Resolution criteria (one sentence, unambiguous)…">
+        <button class="btn" id="fc-add-btn" title="Add forecast">+ Add</button>
+        <button class="btn" id="fc-seed-btn" title="Import every future_paths claim from Humans and Trends as scoreable forecasts">⇪ Import from registries</button>
+        <button class="btn" id="fc-export-btn" title="Download your private forecasts as JSON, ready to merge into data/forecasts.json">⇪ Export my forecasts as JSON</button>
+      </div>
+      <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:12px">
+        <div class="brier-box"><div class="bl">Brier Score</div><div class="bv" id="brier-val">—</div></div>
+        <div class="brier-box"><div class="bl">Pending / Resolved</div><div class="bv" id="fc-counts" style="font-size:14px;padding-top:4px">—</div></div>
+        <div class="brier-box"><div class="bl">Reliability</div><div class="bv" id="brier-reliability" style="font-size:14px;padding-top:4px">—</div></div>
+        <div class="brier-box"><div class="bl">Resolution</div><div class="bv" id="brier-resolution" style="font-size:14px;padding-top:4px">—</div></div>
+      </div>
+      <div id="calibration-chart-wrap" style="margin-top:16px">
+        <div class="sec" style="font-size:10px;margin-bottom:8px">CALIBRATION CURVE</div>
+        <svg id="calibration-svg" width="300" height="200"></svg>
+        <div id="calibration-msg" style="font-size:10px;color:var(--dim);margin-top:6px"></div>
+      </div>
+      <div id="fc-list"></div>
+    </div>
+  </div>
+
+  <!-- SIMULATE -->
+  <div class="view" id="v-simulate">
+    <div id="sim-toolbar">
+      <span id="sim-hint">Click a node to select it, then PERTURB. Reinforcing loops (R) amplify the nudge; balancing loops (B) damp it. Dashed edges have no authored sign yet — unverified.</span>
+      <div id="sim-controls">
+        <button class="btn" id="sim-perturb-plus" disabled>PERTURB +</button>
+        <button class="btn" id="sim-perturb-minus" disabled>PERTURB −</button>
+        <button class="btn" id="sim-reset">RESET</button>
+      </div>
+    </div>
+    <div id="sim-body">
+      <div id="sim-graph-wrap">
+        <svg id="sim-svg"></svg>
+      </div>
+      <div id="sim-side">
+        <h4>Detected Loops</h4>
+        <div id="sim-loops-list"></div>
+        <h4>Dominant Now</h4>
+        <div id="sim-dominant">Run a perturbation to see which loop currently dominates.</div>
+        <h4 id="sim-leverage-hd" style="display:none">Leverage Rank — Selected Node</h4>
+        <div id="sim-leverage"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- HELM (private personal lens — only populated if pilot.json loads) -->
+  <div class="view scrollview" id="v-helm">
+    <div class="inner">
+      <h2 class="sec">Helm</h2>
+      <div class="prose" style="margin-bottom:16px"><p>Your private lens on the public data. Loaded from a local <code>pilot.json</code> that is never committed and never deployed — this whole tab doesn't exist unless that file loads. Every recommendation below cites the node/window/constraint it derives from and carries a kill condition; nothing here is advice you can't trace back to data.</p></div>
+
+      <h2 class="sec">1 · Your Position — Bet Anatomy</h2>
+      <div id="helm-anatomy"></div>
+
+      <h2 class="sec">2 · Window Matches</h2>
+      <div id="helm-windows"></div>
+
+      <h2 class="sec">3 · Leverage Points — Ranked</h2>
+      <div id="helm-leverage"></div>
+
+      <h2 class="sec">4 · Asymmetric Bets Available Now</h2>
+      <div id="helm-bets"></div>
+
+      <h2 class="sec">5 · Inversion — Where Your Bets Fight the Trajectory</h2>
+      <div id="helm-inversion"></div>
+
+      <h2 class="sec">6 · Personal Clock</h2>
+      <div id="helm-clock"></div>
+
+      <h2 class="sec">7 · Capture Blindspot</h2>
+      <div class="prose" style="margin-bottom:12px;font-size:11px;color:var(--dim)"><p>Cross-references your <code>active_bets[]</code> against <code>data/ledger.json</code>: which of your value-creation plays sit in a layer that structurally leaks value to someone else, and which ledger layers a solo technical operator could actually hold a moat in. Every line cites the layer and a kill condition.</p></div>
+      <div id="helm-capture"></div>
+    </div>
+  </div>
+
+  <!-- PATROL -->
+  <div class="view scrollview" id="v-patrol">
+    <div class="inner">
+      <h2 class="sec">Signal Patrol</h2>
+      <div class="prose"><p>Signals flagged for regular verification. Log each check to keep the queue clear and the data trustworthy.</p></div>
+      <div id="patrol-table"></div>
+    </div>
+  </div>
+
+  <!-- METHOD -->
+  <div class="view scrollview" id="v-method">
+    <div class="inner">
+      <h2 class="sec">Predictability Hierarchy</h2>
+      <div id="method-hier"></div>
+      <h2 class="sec">Operating Rules</h2>
+      <div id="method-rules"></div>
+      <h2 class="sec">Bias Checks</h2>
+      <div id="method-bias"></div>
+      <h2 class="sec">Primary Sources</h2>
+      <table class="grid"><thead><tr><th>Source</th><th>What it measures</th><th>Where</th></tr></thead>
+        <tbody id="method-sources"></tbody></table>
+      <h2 class="sec">Update Protocol</h2>
+      <div class="prose">
+        <p>This tool is designed to be maintained by AI sessions. The update protocol is in <code>UPDATE_PROTOCOL.md</code>. In brief:</p>
+        <p><em>1. Never edit engine code for data updates.</em> All data lives in <code>/data/*.json</code>. The engine reads it; it never owns it.</p>
+        <p><em>2. Every claim touched must be re-verified,</em> not assumed. Downgrade <code>cf</code> to <code>"md"</code> rather than guess.</p>
+        <p><em>3. After any data edit:</em> run <code>node js/validate.js</code>, bump <code>meta.json</code> version, set <code>last_updated</code> to today.</p>
+        <p><em>4. The Data Health panel (⊙ in the header)</em> shows which nodes are past their review window — that list is the update queue for the next session.</p>
+        <p><em>5. A weekly CI job regenerates that same queue for free,</em> with no AI and no API key — see <code>PATROL.md</code>. Turning it into actual edits happens on demand: paste this repo to a chat AI and point it at <code>AGENT_UPDATE.md</code>.</p>
+      </div>
+      <h2 class="sec">Survivorship Bias Rules</h2>
+      <div class="prose">
+        <p><em>dead_bodies is mandatory</em> for every Tier C/P entry. If you add a winning bet without listing who made the same bet and died, the validator fails.</p>
+        <p>Every future_paths entry requires a falsifier — an observable that would kill the path. Probabilities without falsifiers are not forecasts; they are opinions.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- BRIEF -->
+  <div class="view scrollview" id="v-brief">
+    <div class="inner">
+      <div id="brief-header" style="display:flex;justify-content:space-between;align-items:baseline;margin-bottom:16px">
+        <h2 class="sec" style="margin:0">BRIEF</h2>
+        <button class="btn" id="brief-copy-btn" title="Copy as Markdown">⎘ Copy as Markdown</button>
+      </div>
+      <div id="brief-body"></div>
+    </div>
+  </div>
+
+</div><!-- /views -->
+
+<!-- TRACE PANEL (fixed bottom) -->
+<div id="trace-panel">
+  <div class="trace-hd">TRACE PATH<button id="trace-close-btn" class="trace-cls" title="Close">✕</button></div>
+  <div class="trace-inputs">
+    <div class="trace-picker">
+      <input id="trace-a" type="text" placeholder="From entity…" autocomplete="off" spellcheck="false">
+      <div id="trace-suggest-a" class="trace-suggest"></div>
+    </div>
+    <span class="trace-sep">→</span>
+    <div class="trace-picker">
+      <input id="trace-b" type="text" placeholder="To entity…" autocomplete="off" spellcheck="false">
+      <div id="trace-suggest-b" class="trace-suggest"></div>
+    </div>
+    <button id="trace-go" class="btn">TRACE</button>
+  </div>
+  <div id="trace-result"></div>
+</div>
+
+<!-- KEYBOARD CHEAT SHEET -->
+<div id="kbd-overlay" style="display:none">
+  <div id="kbd-box">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px"><span style="font-size:10px;letter-spacing:.15em;color:var(--dim)">KEYBOARD SHORTCUTS</span><button onclick="document.getElementById('kbd-overlay').style.display='none'" style="background:none;border:none;color:var(--dim);cursor:pointer;font-size:14px">✕</button></div>
+    <div class="kbd-grid">
+      <div class="kbd-row"><kbd>1</kbd>–<kbd>0</kbd><span>Switch tabs</span></div>
+      <div class="kbd-row"><kbd>Cmd K</kbd><span>Command palette</span></div>
+      <div class="kbd-row"><kbd>/</kbd><span>Search atlas nodes</span></div>
+      <div class="kbd-row"><kbd>j</kbd> <kbd>k</kbd><span>Next / prev entity</span></div>
+      <div class="kbd-row"><kbd>Enter</kbd><span>Open hovered entity</span></div>
+      <div class="kbd-row"><kbd>Esc</kbd><span>Close / back</span></div>
+      <div class="kbd-row"><kbd>?</kbd><span>This overlay</span></div>
+    </div>
+  </div>
+</div>
+
+<!-- POSTMORTEM MODAL -->
+<div id="postmortem-modal" style="display:none">
+  <div id="postmortem-box">
+    <div style="font-size:10px;letter-spacing:.15em;color:var(--dim);margin-bottom:12px">POSTMORTEM — RESOLVE FALSE</div>
+    <div style="font-size:11px;color:var(--txt);margin-bottom:10px" id="pm-stmt"></div>
+    <label style="font-size:9px;color:var(--dim);letter-spacing:.1em">MISS TYPE</label>
+    <select id="pm-type" style="display:block;width:100%;margin:6px 0 12px;background:var(--bg);color:var(--txt);border:1px solid var(--line);padding:5px;font-size:10px">
+      <option value="timing">Timing — right idea, wrong window</option>
+      <option value="mechanism">Mechanism — wrong causal model</option>
+      <option value="magnitude">Magnitude — right direction, wrong size</option>
+    </select>
+    <label style="font-size:9px;color:var(--dim);letter-spacing:.1em">ONE-LINE NOTE</label>
+    <input id="pm-note" type="text" placeholder="What specifically failed…" style="display:block;width:100%;box-sizing:border-box;margin:6px 0 14px;background:var(--bg);color:var(--txt);border:1px solid var(--line);padding:5px;font-size:10px">
+    <div style="display:flex;gap:8px">
+      <button class="btn" id="pm-submit">Confirm FALSE + Save</button>
+      <button class="btn" onclick="document.getElementById('postmortem-modal').style.display='none'">Cancel</button>
+    </div>
+  </div>
+</div>
+
+<!-- BIAS CHECK MODAL -->
+<div id="bias-modal" style="display:none">
+  <div id="bias-box">
+    <div id="bias-header" style="font-size:10px;letter-spacing:.15em;color:var(--dim);margin-bottom:10px">BIAS CHECK</div>
+    <div id="bias-checks-list"></div>
+    <div style="display:flex;gap:8px;margin-top:14px">
+      <button class="btn" id="bias-save-btn">SAVE</button>
+      <button class="btn" onclick="document.getElementById('bias-modal').style.display='none'">CLOSE</button>
+    </div>
+  </div>
+</div>
+
+<!-- PROVENANCE FOOTER -->
+<div id="prov-footer">
+  <div id="prov-label">MODELS POWERING THIS TOOL</div>
+  <div id="prov-chips"></div>
+</div>
+
+<!-- MODEL TOOLTIP -->
+<div id="model-tooltip" style="display:none"></div>
+
+<!-- MISSION-STATUS GLYPH LEGEND -->
+<div id="mission-legend">
+  <div class="mg-item"><span class="mg mg-live">◉</span>LIVE</div>
+  <div class="mg-item"><span class="mg mg-killed">✕</span>KILLED</div>
+  <div class="mg-item"><span class="mg mg-watching">⊙</span>WATCHING</div>
+  <div class="mg-item"><span class="mg mg-confirmed">◈</span>CONFIRMED</div>
+</div>
+
+<!-- ENGINEERING TITLE BLOCK -->
+<div id="title-block">
+  <span class="tb-c2"></span><span class="tb-c3"></span>
+  <div class="tb-row tb-name">MAGNITUDE</div>
+  <div class="tb-row">SLOW VARIABLES</div>
+  <div class="tb-row">REV 3<span class="tb-tick"></span><span id="tb-gen">GEN —</span></div>
+</div>
+
+<script src="js/world.js"></script>
+<script src="js/store.js"></script>
+<script src="js/router.js"></script>
+<script src="js/engine.js"></script>
+<script>
+Store.ready(initApp);
+</script>
+</body>
+</html>

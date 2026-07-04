@@ -1,0 +1,25 @@
+{
+  "_comment": "This is the schema reference for HELM, Slow Variables' private personal lens. Copy this file to pilot.json (gitignored, never committed, never deployed) and fill in your own coordinates. The HELM tab only appears if pilot.json loads successfully — on the public deploy it never exists, so the tab never renders. See AGENT_UPDATE.md for how an on-demand AI pass should refresh HELM's derivations against your pilot.json.",
+
+  "age": 29,
+  "horizon_years": 10,
+  "capital_band": "small — $10k-100k deployable without touching a safety net",
+  "skills": [
+    "distributed systems",
+    "grid software",
+    "robotics",
+    "technical sales"
+  ],
+  "location_now": "Bangalore, India",
+  "location_next": "open to relocation — US, UAE, Singapore preferred",
+  "mobility": "high — no dependents, remote-capable, can move within a quarter",
+  "risk": "moderate — can absorb ~2yr of reduced income for asymmetric upside, not willing to bet all deployable capital on one thing",
+  "active_bets": [
+    "small angel check in a consumer-grade AI wrapper startup",
+    "learning Mandarin for supply-chain/manufacturing fluency"
+  ],
+  "hard_constraints": [
+    "needs visa sponsorship for US relocation",
+    "cannot relocate before Q3 2026 — existing work obligation"
+  ]
+}
