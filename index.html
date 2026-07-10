@@ -302,10 +302,36 @@
       <button class="ttool on" id="tv-kanban" title="Status columns">Kanban</button>
       <button class="ttool" id="tv-gantt" title="All windows on one time axis">Timeline</button>
       <button class="ttool" id="tv-matrix" title="Window × Constraint dependency matrix">Matrix</button>
+      <button class="ttool" id="tv-everything" title="Everything — belief vs. reality intensity, all trends, one chart">Everything</button>
       <span style="margin-left:auto;font-size:9px;color:var(--faint);letter-spacing:.06em">windows overlap — the timeline shows when, the kanban shows what state</span>
     </div>
     <div id="trends-gantt"></div>
     <div id="trends-matrix" style="display:none;overflow:auto;padding:20px"></div>
+    <div id="trends-everything" style="display:none">
+      <div id="evtg-toolbar">
+        <div id="evtg-legend"></div>
+        <div id="evtg-controls">
+          <button class="ttool" id="evtg-rising" title="Show only trends where reality is currently rising">Only Rising</button>
+          <button class="ttool" id="evtg-declining" title="Show only trends where reality is currently declining">Only Declining</button>
+          <button class="ttool" id="evtg-indexed" title="Rescale each curve to its own peak = 100 — compare growth shape, not absolute intensity">Indexed</button>
+          <button class="ttool" id="evtg-small" title="Grid of per-trend sparklines instead of one overlaid chart">Small Multiples</button>
+          <button class="ttool" id="evtg-fullscreen" title="Fullscreen">⛶</button>
+        </div>
+      </div>
+      <div id="evtg-year-wrap" title="Scrub NOW — the solid/dashed boundary on every curve moves with it">
+        <input type="range" id="evtg-year" min="1990" max="2035" step="1" value="2026">
+        <span id="evtg-year-lb">NOW · 2026</span>
+      </div>
+      <div id="evtg-chart-wrap">
+        <svg id="evtg-svg"></svg>
+      </div>
+      <div id="evtg-small-grid" style="display:none"></div>
+      <div id="evtg-vibes-key">
+        <span class="evtg-vk-item"><span class="evtg-vk-swatch derived"></span>DERIVED — computed from existing fields, not measured</span>
+        <span class="evtg-vk-item"><span class="evtg-vk-swatch authored"></span>AUTHORED — sourced curve, dated and citable</span>
+        <span class="evtg-vk-item">solid = observed · dashed = projected (widening cone) · ✕ = falsifier year</span>
+      </div>
+    </div>
     <div id="trends-kanban">
       <div class="kanban-col" id="kc-closed">
         <div class="kanban-hd col-closed"><div class="col-nm">Closed</div><div class="col-count" id="kc-closed-ct"></div></div>

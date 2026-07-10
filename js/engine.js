@@ -1194,15 +1194,19 @@ function showTrendsView(v){
   $("tv-kanban").classList.toggle("on",v==="kanban");
   $("tv-gantt").classList.toggle("on",v==="gantt");
   $("tv-matrix").classList.toggle("on",v==="matrix");
+  $("tv-everything").classList.toggle("on",v==="everything");
   $("trends-kanban").style.display=v==="kanban"?"flex":"none";
   $("trends-gantt").style.display=v==="gantt"?"block":"none";
   $("trends-matrix").style.display=v==="matrix"?"block":"none";
+  $("trends-everything").style.display=v==="everything"?"flex":"none";
   if(v==="gantt")buildGantt();
   if(v==="matrix")buildWCMatrix();
+  if(v==="everything")buildEverything();
 }
 $("tv-kanban").onclick=function(){showTrendsView("kanban")};
 $("tv-gantt").onclick=function(){showTrendsView("gantt")};
 $("tv-matrix").onclick=function(){showTrendsView("matrix")};
+$("tv-everything").onclick=function(){showTrendsView("everything")};
 
 // ── METHOD ────────────────────────────────────────────────────────────────
 function buildMethod(){
@@ -1878,6 +1882,196 @@ function evtgAllCurves(){
     return t?evtgWindowCurve(t):null;
   }).filter(Boolean);
 }
+var EVTG_COLORS=["var(--evtg-c1)","var(--evtg-c2)","var(--evtg-c3)","var(--evtg-c4)","var(--evtg-c5)","var(--evtg-c6)"];
+function evtgColorFor(id){var idx=EVTG_HOUSE.indexOf(id);return EVTG_COLORS[idx>=0?idx%EVTG_COLORS.length:0]}
+var evtgState={mode:"overlay",indexed:false,filter:null,hoverId:null,scrubYear:nowYear(),hidden:{}};
+function evtgGapAt(curve,year){return evtgValueAt(curve.points,"reality",year)-evtgValueAt(curve.points,"belief",year)}
+function evtgWidestGapId(curves){
+  var best=null,bestGap=-1;
+  curves.forEach(function(c){var g=Math.abs(evtgGapAt(c,evtgState.scrubYear));if(g>bestGap){bestGap=g;best=c.id}});
+  return best;
+}
+function evtgDirectionAt(curve,year){return evtgValueAt(curve.points,"reality",year)-evtgValueAt(curve.points,"reality",year-5)}
+// "Indexed": each curve rescaled to its own peak = 100 — a real analytical mode
+// even though belief/reality are already 0-100 by construction, because it lets
+// you compare growth SHAPE (a trend that's early-and-rising vs. one that's
+// already-huge-and-flat) independent of where each currently sits in absolute terms.
+function evtgIndexCurve(curve){
+  var maxV=0;curve.points.forEach(function(p){maxV=Math.max(maxV,p.reality,p.belief)});
+  if(maxV<=0)maxV=1;
+  var scale=100/maxV;
+  return Object.assign({},curve,{points:curve.points.map(function(p){return{year:p.year,reality:p.reality*scale,belief:p.belief*scale}})});
+}
+function evtgVisibleCurves(){
+  var curves=evtgAllCurves().filter(function(c){return!evtgState.hidden[c.id]});
+  if(evtgState.filter==="rising")curves=curves.filter(function(c){return evtgDirectionAt(c,evtgState.scrubYear)>1});
+  if(evtgState.filter==="declining")curves=curves.filter(function(c){return evtgDirectionAt(c,evtgState.scrubYear)<-1});
+  if(evtgState.indexed)curves=curves.map(evtgIndexCurve);
+  return curves;
+}
+function evtgRenderLegend(allCurves){
+  var el=$("evtg-legend");if(!el)return;
+  el.innerHTML=allCurves.map(function(c){
+    var col=evtgColorFor(c.id),gap=Math.round(Math.abs(evtgGapAt(c,evtgState.scrubYear)));
+    return'<span class="evtg-legend-item'+(evtgState.hidden[c.id]?" off":"")+'" data-cid="'+c.id+'">'
+      +'<span class="evtg-legend-swatch" style="background:'+col+'"></span>'+esc(c.name.slice(0,30))
+      +'<span class="evtg-legend-gap">'+gap+'pt gap</span></span>';
+  }).join("");
+  el.querySelectorAll(".evtg-legend-item").forEach(function(item){
+    item.onclick=function(){evtgState.hidden[item.dataset.cid]=!evtgState.hidden[item.dataset.cid];evtgRender()};
+    item.onmouseenter=function(){evtgState.hoverId=item.dataset.cid;evtgApplyHover()};
+    item.onmouseleave=function(){evtgState.hoverId=null;evtgApplyHover()};
+  });
+}
+function evtgApplyHover(){
+  var svgEl=document.getElementById("evtg-svg");
+  if(svgEl)svgEl.querySelectorAll(".evtg-group").forEach(function(g){
+    g.classList.toggle("evtg-dim",!!(evtgState.hoverId&&evtgState.hoverId!==g.dataset.cid));
+  });
+  var legendEl=$("evtg-legend");
+  if(legendEl)legendEl.querySelectorAll(".evtg-legend-item").forEach(function(item){
+    item.classList.toggle("evtg-dim",!!(evtgState.hoverId&&evtgState.hoverId!==item.dataset.cid));
+  });
+}
+function evtgRenderOverlaySVG(curves){
+  var W=1000,H=420,PADL=34,PADR=118,PADT=18,PADB=26;
+  function xOf(yr){return PADL+(yr-EVTG_Y_START)/(EVTG_Y_END-EVTG_Y_START)*(W-PADL-PADR)}
+  function yOf(v){return PADT+(1-v/100)*(H-PADT-PADB)}
+  var scrubYear=evtgState.scrubYear;
+  var svg='<svg id="evtg-svg" viewBox="0 0 '+W+' '+H+'" preserveAspectRatio="xMidYMid meet">';
+  for(var y=1990;y<=2035;y+=5){
+    svg+='<line x1="'+xOf(y)+'" y1="'+PADT+'" x2="'+xOf(y)+'" y2="'+(H-PADB)+'" stroke="rgba(255,255,255,.05)"></line>';
+    svg+='<text class="evtg-axis-label" x="'+xOf(y)+'" y="'+(H-PADB+13)+'" text-anchor="middle">'+y+"</text>";
+  }
+  [0,50,100].forEach(function(v){
+    svg+='<line x1="'+PADL+'" y1="'+yOf(v)+'" x2="'+(W-PADR)+'" y2="'+yOf(v)+'" stroke="rgba(255,255,255,.03)"></line>';
+    svg+='<text class="evtg-axis-label" x="'+(PADL-6)+'" y="'+(yOf(v)+3)+'" text-anchor="end">'+v+"</text>";
+  });
+  TREE.filter(function(n){var yr=treeYearOf(n);return yr>=EVTG_Y_START&&yr<=EVTG_Y_END}).forEach(function(n){
+    var yr=treeYearOf(n);
+    svg+='<circle class="evtg-milestone" cx="'+xOf(yr)+'" cy="'+(H-PADB+4)+'" r="1.6"><title>'+esc(n.lb)+" ("+yr+')</title></circle>';
+  });
+  var widestId=evtgWidestGapId(curves);
+  var labelRows=[]; // for right-edge label de-collision
+  curves.forEach(function(c){
+    var col=evtgColorFor(c.id),pts=c.points;
+    var dim=evtgState.hoverId&&evtgState.hoverId!==c.id;
+    svg+='<g class="evtg-group'+(dim?" evtg-dim":"")+'" data-cid="'+c.id+'">';
+    var topPath="M"+pts.map(function(p){return xOf(p.year)+","+yOf(p.reality)}).join(" L");
+    var botPath=" L"+pts.slice().reverse().map(function(p){return xOf(p.year)+","+yOf(p.belief)}).join(" L")+" Z";
+    svg+='<path class="evtg-area-gap" d="'+topPath+botPath+'" fill="'+col+'"></path>';
+    var projPts=pts.filter(function(p){return p.year>=scrubYear});
+    if(projPts.length>=2){
+      var upper=[],lower=[];
+      projPts.forEach(function(p){
+        var unc=Math.min(25,(p.year-scrubYear)*2.2);
+        upper.push(xOf(p.year)+","+yOf(evtgClamp(p.reality+unc)));
+        lower.push(xOf(p.year)+","+yOf(evtgClamp(p.reality-unc)));
+      });
+      svg+='<path class="evtg-cone" d="M'+upper.join(" L")+" L"+lower.reverse().join(" L")+'Z" fill="'+col+'"></path>';
+    }
+    ["reality","belief"].forEach(function(key){
+      var cls=key==="reality"?"evtg-line-reality":"evtg-line-belief";
+      var solidPts=pts.filter(function(p){return p.year<=scrubYear});
+      var crossPt={year:scrubYear,reality:evtgValueAt(pts,"reality",scrubYear),belief:evtgValueAt(pts,"belief",scrubYear)};
+      if(!solidPts.length||solidPts[solidPts.length-1].year<scrubYear)solidPts.push(crossPt);
+      var dashPts=[crossPt].concat(pts.filter(function(p){return p.year>scrubYear}));
+      if(solidPts.length>=2)svg+='<path class="'+cls+'" d="M'+solidPts.map(function(p){return xOf(p.year)+","+yOf(p[key])}).join(" L")+'" stroke="'+col+'"></path>';
+      if(dashPts.length>=2)svg+='<path class="'+cls+' evtg-line-proj" d="M'+dashPts.map(function(p){return xOf(p.year)+","+yOf(p[key])}).join(" L")+'" stroke="'+col+'"></path>';
+    });
+    pts.forEach(function(p){svg+='<circle class="evtg-dot" cx="'+xOf(p.year)+'" cy="'+yOf(p.reality)+'" fill="'+col+'"></circle>'});
+    if(c.killYear!=null){
+      var kx=xOf(c.killYear),ky=yOf(evtgClamp(evtgValueAt(pts,"reality",c.killYear)));
+      svg+='<g class="evtg-kill-mark" stroke="'+col+'"><line x1="'+(kx-4)+'" y1="'+(ky-4)+'" x2="'+(kx+4)+'" y2="'+(ky+4)+'"></line>'
+        +'<line x1="'+(kx-4)+'" y1="'+(ky+4)+'" x2="'+(kx+4)+'" y2="'+(ky-4)+'"></line><title>'+esc(c.killLabel)+" — "+c.killYear+"</title></g>";
+    }
+    var lastPt=pts[pts.length-1];
+    labelRows.push({id:c.id,col:col,y:yOf((lastPt.reality+lastPt.belief)/2),text:c.name.length>22?c.name.slice(0,21)+"…":c.name,edge:c.id===widestId});
+    svg+="</g>";
+  });
+  // de-collide right-edge direct labels: sort by natural y, push down any that
+  // would overlap the previous one rather than letting them stack illegibly.
+  labelRows.sort(function(a,b){return a.y-b.y});
+  for(var li=1;li<labelRows.length;li++){
+    // the EDGE badge is a second line 10px below its curve's main label — reserve
+    // room for it too, or the next curve's label lands right on top of it.
+    var minY=labelRows[li-1].y+(labelRows[li-1].edge?21:11);
+    if(labelRows[li].y<minY)labelRows[li].y=minY;
+  }
+  labelRows.forEach(function(l){
+    svg+='<text class="evtg-curve-label" x="'+(W-PADR+6)+'" y="'+l.y+'" fill="'+l.col+'">'+esc(l.text)+"</text>";
+    if(l.edge)svg+='<text class="evtg-edge-badge" x="'+(W-PADR+6)+'" y="'+(l.y+10)+'">EDGE</text>';
+  });
+  var scrubX=xOf(Math.max(EVTG_Y_START,Math.min(EVTG_Y_END,scrubYear)));
+  svg+='<line class="evtg-now-line" x1="'+scrubX+'" y1="'+PADT+'" x2="'+scrubX+'" y2="'+(H-PADB)+'"></line>';
+  svg+='<text class="evtg-now-label" x="'+scrubX+'" y="'+(PADT-4)+'" text-anchor="middle">'+(scrubYear<=nowYear()?"NOW":scrubYear)+"</text>";
+  svg+="</svg>";
+  return svg;
+}
+function evtgSparkSVG(c){
+  var W=240,H=70,PAD=5;
+  function xOf(yr){return PAD+(yr-EVTG_Y_START)/(EVTG_Y_END-EVTG_Y_START)*(W-PAD*2)}
+  function yOf(v){return PAD+(1-v/100)*(H-PAD*2)}
+  var pts=c.points,col=evtgColorFor(c.id),scrubYear=evtgState.scrubYear;
+  var svg='<svg class="evtg-spark-svg" viewBox="0 0 '+W+' '+H+'">';
+  var topPath="M"+pts.map(function(p){return xOf(p.year)+","+yOf(p.reality)}).join(" L");
+  var botPath=" L"+pts.slice().reverse().map(function(p){return xOf(p.year)+","+yOf(p.belief)}).join(" L")+" Z";
+  svg+='<path class="evtg-area-gap" d="'+topPath+botPath+'" fill="'+col+'"></path>';
+  ["reality","belief"].forEach(function(key){
+    var cls=key==="reality"?"evtg-line-reality":"evtg-line-belief";
+    var solidPts=pts.filter(function(p){return p.year<=scrubYear});
+    var dashPts=pts.filter(function(p){return p.year>=scrubYear});
+    if(solidPts.length>=2)svg+='<path class="'+cls+'" d="M'+solidPts.map(function(p){return xOf(p.year)+","+yOf(p[key])}).join(" L")+'" stroke="'+col+'"></path>';
+    if(dashPts.length>=2)svg+='<path class="'+cls+' evtg-line-proj" d="M'+dashPts.map(function(p){return xOf(p.year)+","+yOf(p[key])}).join(" L")+'" stroke="'+col+'"></path>';
+  });
+  svg+="</svg>";
+  return svg;
+}
+// openDossier only has atlas/tree/human/trend/ledger/country branches — theses
+// don't use the side-panel dossier at all, they switch to the Thesis tab and
+// scroll/highlight the matching card (see todayGoToThesis). Branch here instead
+// of silently leaving the dossier panel open with stale content for a reg it
+// doesn't handle.
+function evtgOpenCurve(c){
+  if(!c)return;
+  if(c.kind==="thesis")todayGoToThesis(c.dossierId);
+  else openDossier(c.dossierReg,c.dossierId);
+}
+function evtgRenderSmallMultiples(curves){
+  var el=$("evtg-small-grid");if(!el)return;
+  el.innerHTML=curves.map(function(c){
+    var gap=Math.round(Math.abs(evtgGapAt(c,evtgState.scrubYear)));
+    return'<div class="evtg-spark-card" data-cid="'+c.id+'"><div class="evtg-spark-hd"><div class="evtg-spark-name">'+esc(c.name.slice(0,44))+'</div><div class="evtg-spark-gap">gap '+gap+"</div></div>"+evtgSparkSVG(c)+"</div>";
+  }).join("");
+  el.querySelectorAll(".evtg-spark-card").forEach(function(card){
+    card.onclick=function(){var c=curves.filter(function(x){return x.id===card.dataset.cid})[0];evtgOpenCurve(c)};
+  });
+}
+function evtgRender(){
+  var all=evtgAllCurves();
+  evtgRenderLegend(all);
+  var visible=evtgVisibleCurves();
+  var wrapEl=$("evtg-chart-wrap"),gridEl=$("evtg-small-grid");
+  if(evtgState.mode==="small"){
+    if(wrapEl)wrapEl.style.display="none";
+    if(gridEl)gridEl.style.display="grid";
+    evtgRenderSmallMultiples(visible);
+  }else{
+    if(wrapEl)wrapEl.style.display="block";
+    if(gridEl)gridEl.style.display="none";
+    var svgEl=$("evtg-svg");
+    if(svgEl)svgEl.outerHTML=evtgRenderOverlaySVG(visible);
+    var newSvg=document.getElementById("evtg-svg");
+    if(newSvg)newSvg.querySelectorAll(".evtg-group").forEach(function(g){
+      g.onmouseenter=function(){evtgState.hoverId=g.dataset.cid;evtgApplyHover()};
+      g.onmouseleave=function(){evtgState.hoverId=null;evtgApplyHover()};
+      g.onclick=function(){var c=all.filter(function(x){return x.id===g.dataset.cid})[0];evtgOpenCurve(c)};
+    });
+  }
+}
+var evtgBuilt=false;
+function buildEverything(){evtgRender();evtgBuilt=true}
+
 function buildThesisRegister(){
   var el=$("thesis-list");if(!el)return;
   el.innerHTML=THESES.map(function(th,i){

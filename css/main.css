@@ -1140,3 +1140,56 @@ body{background:transparent}
 
 /* ── HELM §7 Capture Blindspot ───────────────────────────────────────────── */
 .helm-capture-sub{font-size:9px;letter-spacing:.14em;text-transform:uppercase;color:var(--rust);margin-bottom:8px}
+
+/* ── EVERYTHING — accountable multi-trend intensity chart ────────────────── */
+:root{
+  --evtg-c1:#ff3b30;--evtg-c2:#4a90d9;--evtg-c3:#3fae63;
+  --evtg-c4:#bf8018;--evtg-c5:#8a6fe0;--evtg-c6:#1c95a6;
+}
+#trends-everything{flex:1;overflow:auto;padding:16px 20px 40px;display:flex;flex-direction:column;min-height:0}
+#evtg-toolbar{display:flex;justify-content:space-between;align-items:flex-start;gap:16px;flex-wrap:wrap;margin-bottom:8px}
+#evtg-legend{display:flex;flex-wrap:wrap;gap:10px;flex:1;min-width:220px}
+.evtg-legend-item{display:flex;align-items:center;gap:5px;font-size:9px;letter-spacing:.04em;color:var(--dim);
+                   cursor:pointer;padding:2px 6px;border:1px solid transparent;user-select:none}
+.evtg-legend-item:hover{border-color:var(--line2);color:var(--txt)}
+.evtg-legend-item.off{opacity:.35;text-decoration:line-through}
+.evtg-legend-item.evtg-dim{opacity:.35}
+.evtg-legend-swatch{width:9px;height:9px;border-radius:50%;flex-shrink:0}
+.evtg-legend-gap{font-size:8px;color:var(--faint);letter-spacing:.03em;margin-left:2px}
+#evtg-controls{display:flex;gap:4px;flex-wrap:wrap}
+#evtg-controls .ttool.on{color:var(--rust);border-color:var(--rust-line)}
+#evtg-year-wrap{display:flex;align-items:center;gap:10px;margin-bottom:10px;padding:7px 10px;border:1px solid var(--line)}
+#evtg-year-wrap input[type=range]{flex:1;accent-color:var(--rust)}
+#evtg-year-lb{font-size:10px;letter-spacing:.08em;color:var(--rust);min-width:64px;text-align:right}
+#evtg-chart-wrap{position:relative;border:1px solid var(--line);background:rgba(0,0,0,.4)}
+#evtg-chart-wrap:fullscreen{background:#000;display:flex;align-items:center;justify-content:center;padding:24px}
+#evtg-svg{display:block;width:100%;height:auto}
+#evtg-small-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:10px;margin-top:2px}
+.evtg-spark-card{border:1px solid var(--line);padding:10px 12px;cursor:pointer}
+.evtg-spark-card:hover{border-color:var(--line2)}
+.evtg-spark-hd{display:flex;justify-content:space-between;align-items:baseline;gap:6px;margin-bottom:4px}
+.evtg-spark-name{font-size:10px;color:var(--txt)}
+.evtg-spark-gap{font-size:8px;letter-spacing:.05em;color:var(--faint);text-transform:uppercase}
+.evtg-spark-svg{display:block;width:100%;height:auto}
+#evtg-vibes-key{display:flex;flex-wrap:wrap;gap:14px;margin-top:10px;font-size:8px;letter-spacing:.04em;
+                color:var(--faint);text-transform:uppercase}
+.evtg-vk-item{display:flex;align-items:center;gap:5px}
+.evtg-vk-swatch{width:14px;height:2px;display:inline-block}
+.evtg-vk-swatch.derived{background:repeating-linear-gradient(to right,var(--dim) 0,var(--dim) 3px,transparent 3px,transparent 5px)}
+.evtg-vk-swatch.authored{background:var(--min)}
+/* SVG marks */
+.evtg-group{cursor:pointer}
+.evtg-group.evtg-dim{opacity:.14}
+.evtg-line-reality{fill:none;stroke-width:1.8}
+.evtg-line-belief{fill:none;stroke-width:1.3;stroke-dasharray:1 3;stroke-linecap:round}
+.evtg-line-proj{stroke-dasharray:4 3}
+.evtg-area-gap{opacity:.065}
+.evtg-cone{opacity:.05}
+.evtg-dot{r:2.4}
+.evtg-milestone{fill:var(--chip);opacity:.7}
+.evtg-now-line{stroke:var(--rust);stroke-width:1;opacity:.5}
+.evtg-now-label{fill:var(--rust);font-size:8px;letter-spacing:.08em;text-transform:uppercase}
+.evtg-axis-label{fill:var(--faint);font-size:8px}
+.evtg-curve-label{font-size:8px;letter-spacing:.02em}
+.evtg-kill-mark{stroke-width:1.6}
+.evtg-edge-badge{fill:var(--rust);font-size:8px;letter-spacing:.06em;text-transform:uppercase}
