@@ -1884,6 +1884,10 @@ function evtgAllCurves(){
 }
 var EVTG_COLORS=["var(--evtg-c1)","var(--evtg-c2)","var(--evtg-c3)","var(--evtg-c4)","var(--evtg-c5)","var(--evtg-c6)"];
 function evtgColorFor(id){var idx=EVTG_HOUSE.indexOf(id);return EVTG_COLORS[idx>=0?idx%EVTG_COLORS.length:0]}
+// only the actual current year is "NOW" — a scrubbed-to-1998 or scrubbed-to-2032
+// year is just that year, not "now", even though both sit on the observed/
+// projected boundary the scrubber controls.
+function evtgYearLabel(y){return y===nowYear()?"NOW":String(y)}
 var evtgState={mode:"overlay",indexed:false,filter:null,hoverId:null,scrubYear:nowYear(),hidden:{}};
 function evtgGapAt(curve,year){return evtgValueAt(curve.points,"reality",year)-evtgValueAt(curve.points,"belief",year)}
 function evtgWidestGapId(curves){
@@ -2004,7 +2008,7 @@ function evtgRenderOverlaySVG(curves){
   });
   var scrubX=xOf(Math.max(EVTG_Y_START,Math.min(EVTG_Y_END,scrubYear)));
   svg+='<line class="evtg-now-line" x1="'+scrubX+'" y1="'+PADT+'" x2="'+scrubX+'" y2="'+(H-PADB)+'"></line>';
-  svg+='<text class="evtg-now-label" x="'+scrubX+'" y="'+(PADT-4)+'" text-anchor="middle">'+(scrubYear<=nowYear()?"NOW":scrubYear)+"</text>";
+  svg+='<text class="evtg-now-label" x="'+scrubX+'" y="'+(PADT-4)+'" text-anchor="middle">'+evtgYearLabel(scrubYear)+"</text>";
   svg+="</svg>";
   return svg;
 }
@@ -2071,6 +2075,52 @@ function evtgRender(){
 }
 var evtgBuilt=false;
 function buildEverything(){evtgRender();evtgBuilt=true}
+(function(){
+  var risingBtn=$("evtg-rising"),decliningBtn=$("evtg-declining"),indexedBtn=$("evtg-indexed"),
+    smallBtn=$("evtg-small"),fsBtn=$("evtg-fullscreen"),yrEl=$("evtg-year"),yrLb=$("evtg-year-lb");
+  if(!yrEl)return;
+  // small-multiples is the mobile default (fixes the "24 illegible lines"
+  // complaint outright on a narrow screen) but it's a default, not a lock —
+  // set once at init so a user who flips it back to overlay keeps that choice
+  // across tab switches within the session, rather than it snapping back
+  // every time they revisit the view.
+  evtgState.mode=isMobile()?"small":"overlay";
+  smallBtn.classList.toggle("on",evtgState.mode==="small");
+  yrEl.value=evtgState.scrubYear;
+  yrLb.textContent=evtgYearLabel(evtgState.scrubYear);
+  yrEl.addEventListener("input",function(){
+    evtgState.scrubYear=+yrEl.value;
+    yrLb.textContent=evtgYearLabel(evtgState.scrubYear);
+    if(evtgBuilt)evtgRender();
+  });
+  risingBtn.onclick=function(){
+    evtgState.filter=evtgState.filter==="rising"?null:"rising";
+    risingBtn.classList.toggle("on",evtgState.filter==="rising");
+    decliningBtn.classList.remove("on");
+    evtgRender();
+  };
+  decliningBtn.onclick=function(){
+    evtgState.filter=evtgState.filter==="declining"?null:"declining";
+    decliningBtn.classList.toggle("on",evtgState.filter==="declining");
+    risingBtn.classList.remove("on");
+    evtgRender();
+  };
+  indexedBtn.onclick=function(){
+    evtgState.indexed=!evtgState.indexed;
+    indexedBtn.classList.toggle("on",evtgState.indexed);
+    evtgRender();
+  };
+  smallBtn.onclick=function(){
+    evtgState.mode=evtgState.mode==="small"?"overlay":"small";
+    smallBtn.classList.toggle("on",evtgState.mode==="small");
+    evtgRender();
+  };
+  fsBtn.onclick=function(){
+    var wrap=$("evtg-chart-wrap");
+    if(document.fullscreenElement)document.exitFullscreen();
+    else if(wrap&&wrap.requestFullscreen)wrap.requestFullscreen();
+  };
+})();
 
 function buildThesisRegister(){
   var el=$("thesis-list");if(!el)return;
