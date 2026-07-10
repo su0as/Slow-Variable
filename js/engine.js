@@ -1797,13 +1797,38 @@ function evtgFindThresholdCrossYear(pts,threshold){
   }
   return null;
 }
+// authored curve[] takes priority over derivation — an entity that has actually
+// been dated and sourced shouldn't be silently overwritten by a heuristic just
+// because the derivation code runs unconditionally otherwise.
+function evtgPointsFromAuthored(curve){
+  return curve.map(function(p){return{year:p.year,reality:p.reality_0_100,belief:p.belief_0_100}});
+}
+function evtgThesisKillYear(th){
+  if(th.trajectory&&th.trajectory.points&&th.trajectory.points.length>=2){
+    var y=evtgFindThresholdCrossYear(th.trajectory.points,th.trajectory.kill_threshold);
+    if(y!=null)return{killYear:y,killLabel:"KILL THRESHOLD"};
+  }
+  var prox=th.kill_watch&&th.kill_watch.proximity;
+  if(prox!=null)return{killYear:Math.round(nowYear()+(1-prox)*15),killLabel:"EST. KILL (from kill_watch.proximity)"};
+  return{killYear:null,killLabel:null};
+}
 function evtgThesisCurve(th){
+  var kill=evtgThesisKillYear(th);
+  var base={
+    id:"thesis."+th.id.replace(/^thesis\./,""),kind:"thesis",dossierReg:"thesis",dossierId:th.id,
+    name:th.plain||th.statement,status:th.confidence==="hi"?"high-confidence":th.confidence==="lo"?"low-confidence":"med-confidence",
+    killYear:kill.killYear&&kill.killYear<=EVTG_Y_END&&kill.killYear>=EVTG_Y_START?kill.killYear:null,killLabel:kill.killLabel
+  };
+  if(th.curve&&th.curve.length>=2)return Object.assign({},base,{
+    points:evtgPointsFromAuthored(th.curve),derived:false,
+    sourceNote:"authored curve — dated and sourced directly in data/theses.json, not derived"
+  });
   var awareness0to100=(th.crowd_awareness!=null?th.crowd_awareness:0.4)*100;
   var trend=th.awareness_trend||"flat";
   var asOfYear=parseInt((th.awareness_as_of||"2026-01-01").slice(0,4))||nowYear();
   var gap=(th.consensus_delta_num!=null?th.consensus_delta_num:0.4)*100;
   var hasTraj=th.trajectory&&th.trajectory.points&&th.trajectory.points.length>=2;
-  var realityKP,sourceNote,killYear,killLabel;
+  var realityKP,sourceNote;
   var beliefKP=[
     {year:EVTG_Y_START,v:evtgBeliefFromAwareness(asOfYear,awareness0to100,trend,EVTG_Y_START)},
     {year:asOfYear,v:evtgClamp(awareness0to100)},
@@ -1813,22 +1838,11 @@ function evtgThesisCurve(th){
   if(hasTraj){
     realityKP=evtgRealityFromTrajectory(th.trajectory);
     sourceNote="reality derived from trajectory.points ("+esc(th.trajectory.metric)+", "+esc(th.trajectory.source||"sourced")+"), normalized by distance from kill_threshold; belief derived from crowd_awareness/awareness_trend";
-    killYear=evtgFindThresholdCrossYear(th.trajectory.points,th.trajectory.kill_threshold);
-    killLabel="KILL THRESHOLD";
   }else{
-    realityKP=beliefKP.map(function(p){return{year:p.year,v:evtgClamp(p.v+gap),observed:p.year<=nowYear()}});
+    realityKP=beliefKP.map(function(p){return{year:p.year,v:evtgClamp(p.v+gap)}});
     sourceNote="reality derived as belief + consensus_delta_num ("+Math.round(gap)+"pt edge); belief derived from crowd_awareness/awareness_trend";
-    var prox=th.kill_watch&&th.kill_watch.proximity;
-    killYear=prox!=null?Math.round(nowYear()+(1-prox)*15):null;
-    killLabel="EST. KILL (from kill_watch.proximity)";
   }
-  beliefKP.forEach(function(p){p.observed=p.year<=nowYear()});
-  return{
-    id:"thesis."+th.id.replace(/^thesis\./,""),kind:"thesis",dossierReg:"thesis",dossierId:th.id,
-    name:th.plain||th.statement,status:th.confidence==="hi"?"high-confidence":th.confidence==="lo"?"low-confidence":"med-confidence",
-    points:evtgMergeCurves(realityKP,beliefKP),derived:true,sourceNote:sourceNote,
-    killYear:killYear&&killYear<=EVTG_Y_END&&killYear>=EVTG_Y_START?killYear:null,killLabel:killLabel
-  };
+  return Object.assign({},base,{points:evtgMergeCurves(realityKP,beliefKP),derived:true,sourceNote:sourceNote});
 }
 function evtgWindowKeyPoints(t){
   var opened=parseInt(t.opened)||nowYear()-6;
@@ -1853,23 +1867,32 @@ function evtgWindowKeyPoints(t){
   return pts;
 }
 function evtgWindowCurve(t){
-  var realityKP=evtgWindowKeyPoints(t).map(function(p){return{year:p.year,v:p.v,observed:p.year<=nowYear()}});
+  var closeNum=parseInt((t.expected_close||"").replace(/[±+?]/g,""));
+  var base={
+    id:"window."+t.id,kind:"window",dossierReg:"trend",dossierId:t.id,
+    name:t.name,status:t.status,
+    killYear:closeNum&&closeNum<=EVTG_Y_END&&closeNum>=EVTG_Y_START?closeNum:null,killLabel:"WINDOW CLOSES (expected_close)"
+  };
+  // TRENDS is the flattened compat shim and doesn't carry an authored curve[]
+  // through — read the raw registry entity for that.
+  var raw=Store.get("window."+t.id);
+  if(raw&&raw.curve&&raw.curve.length>=2)return Object.assign({},base,{
+    points:evtgPointsFromAuthored(raw.curve),derived:false,
+    sourceNote:"authored curve — dated and sourced directly in data/windows.json, not derived"
+  });
+  var realityKP=evtgWindowKeyPoints(t).map(function(p){return{year:p.year,v:p.v}});
   var lag=2;
   var beliefKP=realityKP.map(function(p){
-    return{year:p.year,v:evtgClamp(evtgValueAt(realityKP,"v",p.year-lag)*0.85),observed:p.year<=nowYear()};
+    return{year:p.year,v:evtgClamp(evtgValueAt(realityKP,"v",p.year-lag)*0.85)};
   });
   // hindsight: a fully closed window is common knowledge by the time it's old
   // news — belief converges to reality at the chart's far end rather than
   // holding a permanent 15% gap forever.
   if(t.status==="closed")beliefKP[beliefKP.length-1].v=realityKP[realityKP.length-1].v;
-  var closeNum=parseInt((t.expected_close||"").replace(/[±+?]/g,""));
-  return{
-    id:"window."+t.id,kind:"window",dossierReg:"trend",dossierId:t.id,
-    name:t.name,status:t.status,
+  return Object.assign({},base,{
     points:evtgMergeCurves(realityKP,beliefKP),derived:true,
-    sourceNote:"reality derived from status/opened/expected_close (ramp-plateau"+(t.status==="closed"?"-decay":"")+" shape); belief derived as reality lagged ~2yr, scaled 0.85 (\"the crowd catches on late\")"+(t.status==="closed"?", converging to reality once closed":""),
-    killYear:closeNum&&closeNum<=EVTG_Y_END&&closeNum>=EVTG_Y_START?closeNum:null,killLabel:"WINDOW CLOSES (expected_close)"
-  };
+    sourceNote:"reality derived from status/opened/expected_close (ramp-plateau"+(t.status==="closed"?"-decay":"")+" shape); belief derived as reality lagged ~2yr, scaled 0.85 (\"the crowd catches on late\")"+(t.status==="closed"?", converging to reality once closed":"")
+  });
 }
 function evtgAllCurves(){
   return EVTG_HOUSE.map(function(id){
@@ -1913,18 +1936,53 @@ function evtgVisibleCurves(){
   if(evtgState.indexed)curves=curves.map(evtgIndexCurve);
   return curves;
 }
+// the falsifier a curve's kill/close marker actually cites — real text already
+// authored elsewhere (kill_condition for theses, decay_logic for windows), never
+// invented here.
+function evtgFalsifierText(c){
+  if(c.kind==="thesis"){var th=THESES.filter(function(x){return x.id===c.dossierId})[0];return th?th.kill_condition:""}
+  var t=TREND_MAP[c.dossierId];return t?t.decay_logic:"";
+}
+// "resolvable" per the spec: once a curve's falsifier/close year has passed, it's
+// no longer a pending projection — it's a claim that either held or didn't. This
+// doesn't invent a probability (that's the user's judgment, same as every other
+// forecast in this tool) — it pre-fills the real, dated, falsifiable claim into
+// the existing Forecasts tab form and hands off to the same Brier/calibration
+// pipeline every other forecast in this tool feeds, rather than building a
+// parallel scoring system just for this chart.
+function evtgLogAsForecast(c){
+  var falsifier=evtgFalsifierText(c);
+  var stmt=c.name+" — "+(c.killLabel||"falsifier")+(c.killYear?" by "+c.killYear:"");
+  $("fc-stmt").value=stmt.slice(0,200);
+  $("fc-dl").value=c.killYear?c.killYear+"-01-01":"";
+  $("fc-criteria").value=falsifier||"";
+  $("fc-resolver").value="EVERYTHING chart — "+c.id;
+  Router.navigate("forecasts",{});switchTab("forecasts");
+  setTimeout(function(){var p=$("fc-p");if(p)p.focus()},150);
+}
 function evtgRenderLegend(allCurves){
   var el=$("evtg-legend");if(!el)return;
   el.innerHTML=allCurves.map(function(c){
     var col=evtgColorFor(c.id),gap=Math.round(Math.abs(evtgGapAt(c,evtgState.scrubYear)));
+    var due=c.killYear!=null&&c.killYear<=nowYear();
     return'<span class="evtg-legend-item'+(evtgState.hidden[c.id]?" off":"")+'" data-cid="'+c.id+'">'
       +'<span class="evtg-legend-swatch" style="background:'+col+'"></span>'+esc(c.name.slice(0,30))
-      +'<span class="evtg-legend-gap">'+gap+'pt gap</span></span>';
+      +'<span class="evtg-legend-prov'+(c.derived?"":" authored")+'" title="'+esc(c.sourceNote||"")+'">'+(c.derived?"DERIVED":"AUTHORED")+"</span>"
+      +'<span class="evtg-legend-gap">'+gap+'pt gap</span>'
+      +(c.killYear!=null?'<button class="evtg-legend-log'+(due?" due":"")+'" data-cid="'+c.id+'" title="'+(due?"Falsifier year has passed — ":"")+'Log as a forecast (pre-fills the Forecasts tab; you supply p)">'+(due?"⇪ DUE":"⇪")+"</button>":"")
+      +"</span>";
   }).join("");
   el.querySelectorAll(".evtg-legend-item").forEach(function(item){
     item.onclick=function(){evtgState.hidden[item.dataset.cid]=!evtgState.hidden[item.dataset.cid];evtgRender()};
     item.onmouseenter=function(){evtgState.hoverId=item.dataset.cid;evtgApplyHover()};
     item.onmouseleave=function(){evtgState.hoverId=null;evtgApplyHover()};
+  });
+  el.querySelectorAll(".evtg-legend-log").forEach(function(btn){
+    btn.onclick=function(e){
+      e.stopPropagation();
+      var c=allCurves.filter(function(x){return x.id===btn.dataset.cid})[0];
+      if(c)evtgLogAsForecast(c);
+    };
   });
 }
 function evtgApplyHover(){
@@ -2045,10 +2103,20 @@ function evtgRenderSmallMultiples(curves){
   var el=$("evtg-small-grid");if(!el)return;
   el.innerHTML=curves.map(function(c){
     var gap=Math.round(Math.abs(evtgGapAt(c,evtgState.scrubYear)));
-    return'<div class="evtg-spark-card" data-cid="'+c.id+'"><div class="evtg-spark-hd"><div class="evtg-spark-name">'+esc(c.name.slice(0,44))+'</div><div class="evtg-spark-gap">gap '+gap+"</div></div>"+evtgSparkSVG(c)+"</div>";
+    var due=c.killYear!=null&&c.killYear<=nowYear();
+    return'<div class="evtg-spark-card" data-cid="'+c.id+'"><div class="evtg-spark-hd"><div class="evtg-spark-name">'+esc(c.name.slice(0,44))+'</div><div class="evtg-spark-gap">gap '+gap+"</div></div>"+evtgSparkSVG(c)
+      +(c.killYear!=null?'<button class="evtg-legend-log'+(due?" due":"")+'" data-cid="'+c.id+'" style="margin-top:6px" title="'+(due?"Falsifier year has passed — ":"")+'Log as a forecast">'+(due?"⇪ LOG (DUE)":"⇪ LOG AS FORECAST")+"</button>":"")
+      +"</div>";
   }).join("");
   el.querySelectorAll(".evtg-spark-card").forEach(function(card){
     card.onclick=function(){var c=curves.filter(function(x){return x.id===card.dataset.cid})[0];evtgOpenCurve(c)};
+  });
+  el.querySelectorAll(".evtg-legend-log").forEach(function(btn){
+    btn.onclick=function(e){
+      e.stopPropagation();
+      var c=curves.filter(function(x){return x.id===btn.dataset.cid})[0];
+      if(c)evtgLogAsForecast(c);
+    };
   });
 }
 function evtgRender(){

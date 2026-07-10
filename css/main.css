@@ -1155,7 +1155,14 @@ body{background:transparent}
 .evtg-legend-item.off{opacity:.35;text-decoration:line-through}
 .evtg-legend-item.evtg-dim{opacity:.35}
 .evtg-legend-swatch{width:9px;height:9px;border-radius:50%;flex-shrink:0}
+.evtg-legend-prov{font-size:7px;letter-spacing:.06em;color:var(--faint);margin-left:4px;
+                   border:1px solid var(--line2);padding:0 3px}
+.evtg-legend-prov.authored{color:var(--min);border-color:var(--min)}
 .evtg-legend-gap{font-size:8px;color:var(--faint);letter-spacing:.03em;margin-left:2px}
+.evtg-legend-log{font-size:8px;letter-spacing:.05em;color:var(--faint);border:1px solid var(--line2);
+                  background:none;padding:1px 5px;margin-left:2px;cursor:pointer}
+.evtg-legend-log:hover{color:var(--txt);border-color:var(--dim)}
+.evtg-legend-log.due{color:var(--choke);border-color:var(--choke)}
 #evtg-controls{display:flex;gap:4px;flex-wrap:wrap}
 #evtg-controls .ttool.on{color:var(--rust);border-color:var(--rust-line)}
 #evtg-year-wrap{display:flex;align-items:center;gap:10px;margin-bottom:10px;padding:7px 10px;border:1px solid var(--line)}
@@ -1171,12 +1178,9 @@ body{background:transparent}
 .evtg-spark-name{font-size:10px;color:var(--txt)}
 .evtg-spark-gap{font-size:8px;letter-spacing:.05em;color:var(--faint);text-transform:uppercase}
 .evtg-spark-svg{display:block;width:100%;height:auto}
-#evtg-vibes-key{display:flex;flex-wrap:wrap;gap:14px;margin-top:10px;font-size:8px;letter-spacing:.04em;
-                color:var(--faint);text-transform:uppercase}
-.evtg-vk-item{display:flex;align-items:center;gap:5px}
-.evtg-vk-swatch{width:14px;height:2px;display:inline-block}
-.evtg-vk-swatch.derived{background:repeating-linear-gradient(to right,var(--dim) 0,var(--dim) 3px,transparent 3px,transparent 5px)}
-.evtg-vk-swatch.authored{background:var(--min)}
+#evtg-vibes-key{display:flex;flex-direction:column;gap:5px;margin-top:10px;font-size:9px;letter-spacing:.02em;
+                color:var(--faint);max-width:760px}
+.evtg-vk-item{line-height:1.55}
 /* SVG marks */
 .evtg-group{cursor:pointer}
 .evtg-group.evtg-dim{opacity:.14}

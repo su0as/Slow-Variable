@@ -1,5 +1,5 @@
 {
-  "version": "3.5.0",
+  "version": "3.6.0",
   "last_updated": "2026-07-10",
   "counts": {
     "atlas": 60,
@@ -15,9 +15,15 @@
     "ledger_domains": 1,
     "ledger_layers": 7,
     "everything_curves_authored": 0,
-    "everything_curves_derived": 6
+    "everything_curves_derived": 6,
+    "everything_house_trends": 6
   },
   "changelog": [
+    {
+      "date": "2026-07-10",
+      "by": "claude-sonnet-5",
+      "summary": "v3.6 EVERYTHING Phases B-D: new Everything sub-view on the Trends toolbar. SVG timeline 1990-2035, 6 curated house trends, two lines per trend (belief/reality) with a shaded gap area (widest labeled EDGE), solid-observed/dashed-projected with a widening uncertainty cone, milestone dots from dated tree events, an X marker at each curve's falsifier/close year. Hover dims other curves (reused Tree tab's applyTreeLighting technique); click opens the underlying dossier (added a kind-aware dispatch since theses don't use the generic dossier panel). Controls: Only Rising/Declining filters, Indexed (rescale each curve to its own peak=100), Small Multiples (grid of sparklines - the mobile default, and the actual fix for the spaghetti-chart complaint), Fullscreen, year-scrub reusing the Tree-rewind/Trajectory-scrubber slider pattern. Accountability: each legend chip tagged DERIVED or AUTHORED (render code now actually checks for an authored data/*.json curve[] before falling back to derivation, not just documented in schema); a DUE-flagged 'Log as forecast' button pre-fills the existing Forecasts tab form with real dated/sourced text and hands off to the existing Brier/calibration pipeline rather than inventing a parallel one. Categorical palette (6 hues reused from the Atlas layer legend) validated with the dataviz skill's script, all 4 checks pass. Four real bugs fixed during preview testing: a stale-DOM-id lookup that silently broke hover-dim, a dossier-open assumption that didn't hold for theses, a label de-collision pass that didn't reserve space for the two-line EDGE badge, and a NOW-label heuristic borrowed from Trajectory that mislabeled past years when scrubbed below the current year."
+    },
     {
       "date": "2026-07-10",
       "by": "claude-sonnet-5",

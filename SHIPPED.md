@@ -1,5 +1,69 @@
 # Shipped
 
+## 2026-07-10 — EVERYTHING: accountable multi-trend intensity chart
+
+Inspired by levels.io's Everything Chart, fixing its two flaws — unfalsifiable
+vibes, and 24 overlapping lines nobody could read — while keeping what people
+actually praised about it (one screen, no interaction needed to get the point).
+
+**Phase A — curve derivation engine.** Optional `curve[{year,belief_0_100,
+reality_0_100,band_0_100?}]` field documented on `windows.json`/`theses.json`;
+none authored yet, so every curve is computed by new `evtg*` functions in
+`js/engine.js` from fields that already exist: theses derive belief from
+`crowd_awareness`/`awareness_trend`, reality from `trajectory.points`
+normalized by distance-from-`kill_threshold` (polarity-safe — doesn't require
+knowing per-thesis whether a higher raw metric is good or bad) where a
+trajectory exists, else `reality = belief + consensus_delta_num`; windows
+derive reality from `status`/`opened`/`expected_close` (ramp-plateau, decay
+after close), belief as reality lagged ~2yr scaled 0.85, converging to
+reality once a window closes (hindsight). Every curve is tagged
+`derived:true`, distinct from an eventual authored one — and the render code
+actually checks for an authored `curve[]` first before falling back to
+derivation, not just in the schema docs.
+
+**Phase B — the chart.** New Everything sub-view on the Trends toolbar. SVG
+timeline 1990-2035, curated 6 house trends (`thesis.power_binds` plus 5
+windows spanning closed/closing/open/forming). Per trend: a reality line and
+a belief line, area-shaded gap between them (the widest labeled "EDGE"),
+solid where observed and dashed with a widening uncertainty cone where
+projected, milestone dots from dated tree events, an ✕ at each curve's
+falsifier/close year. Hovering a line or legend chip dims every other curve
+(same technique as the Tree tab's `applyTreeLighting`). Click opens the
+underlying dossier. Palette: 6 hues reused from the Atlas layer legend
+(already proven against this app's black surface), validated with the
+dataviz skill's script — all 4 checks pass.
+
+**Phase C — controls.** Only Rising / Only Declining (mutually exclusive,
+by each curve's reality direction over the trailing 5 years), Indexed
+(rescales each curve to its own peak = 100 — isolates growth shape from
+absolute level, a real analytical mode even though the raw values are
+already 0-100), Small Multiples (grid of per-trend sparklines — confirmed
+this is what actually fixes the illegibility complaint; it's the mobile
+default), Fullscreen. The year slider drives the same solid/dashed boundary
+every curve shares, reusing the Tree rewind / Trajectory scrubber pattern.
+
+**Phase D — accountability tie-in.** Each curve's falsifier/close year, once
+passed, is flagged DUE in its legend chip; a "Log as forecast" button
+pre-fills the existing Forecasts tab form (statement, deadline, resolution
+criteria — all real, dated, sourced text, never an invented probability) and
+hands off to the same Brier/calibration pipeline every other forecast in
+this tool already feeds, rather than building a parallel scoring system.
+Each legend chip is also tagged DERIVED or AUTHORED — the actual vibes-vs-
+verified distinction — with a key explaining it's a separate channel from
+the solid/dashed observed-vs-projected line style.
+
+Four real bugs caught in preview testing, not just polish: (1)
+`evtgApplyHover()` looked up a DOM id that got renamed away on render, so
+hover-dim silently never fired; (2) click handlers assumed every curve opens
+via the generic dossier panel, but theses use a different mechanism
+(`todayGoToThesis`) that switches tabs instead — clicking the one thesis
+curve left the dossier open showing stale content; (3) the right-edge label
+de-collision pass didn't reserve space for the widest-gap curve's two-line
+"EDGE" badge, so the next label could land on top of it; (4) the NOW-label
+logic borrowed from the Trajectory tab's `<=nowYear()` shortcut, which is
+correct there (that slider never goes below now) but wrong here (this
+slider spans 1990-2035) — scrubbing to a past year showed "NOW · 2010".
+
 ## 2026-07-04 — MAGNITUDE: rebrand + LEDGER (value created vs. value captured)
 
 **Phase A — Rebrand ORRERY → MAGNITUDE.** New wordmark "MAGNITUDE" + monogram "OM" in
