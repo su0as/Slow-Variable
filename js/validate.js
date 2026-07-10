@@ -220,6 +220,34 @@ if (ledger?.domains) {
   warn('ledger.json missing or empty — LEDGER tab will render no domains (ok if not yet seeded)');
 }
 
+// ── check optional curve[] (Everything chart) ───────────────────────────────
+// Authored curves are optional — engine.js derives one when absent (see README).
+// If an entity does author one, it must be well-formed: no fabricated-looking
+// gaps, no out-of-range scores.
+function checkCurve(entities, label) {
+  if (!entities) return;
+  entities.forEach(e => {
+    if (!e.curve) return;
+    if (!Array.isArray(e.curve) || e.curve.length < 2) {
+      err(`${e.id}: curve[] must have at least 2 points`);
+      return;
+    }
+    let lastYear = -Infinity;
+    e.curve.forEach((p, i) => {
+      if (p.year == null) err(`${e.id}: curve[${i}] missing year`);
+      else if (p.year <= lastYear) err(`${e.id}: curve[${i}].year=${p.year} must be strictly increasing`);
+      else lastYear = p.year;
+      ['belief_0_100', 'reality_0_100'].forEach(k => {
+        if (p[k] == null || p[k] < 0 || p[k] > 100) err(`${e.id}: curve[${i}].${k}=${p[k]} must be 0-100`);
+      });
+      if (p.band_0_100 != null && (p.band_0_100 < 0 || p.band_0_100 > 100))
+        err(`${e.id}: curve[${i}].band_0_100=${p.band_0_100} must be 0-100`);
+    });
+  });
+}
+checkCurve(windows?.windows, 'windows');
+checkCurve(theses?.theses,   'theses');
+
 // ── summary ──────────────────────────────────────────────────────────────────
 console.log('');
 if (errors === 0) {

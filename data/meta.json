@@ -1,6 +1,6 @@
 {
-  "version": "3.4.0",
-  "last_updated": "2026-07-04",
+  "version": "3.5.0",
+  "last_updated": "2026-07-10",
   "counts": {
     "atlas": 60,
     "tree": 46,
@@ -13,9 +13,16 @@
     "forecasts_public": 6,
     "signed_links": 9,
     "ledger_domains": 1,
-    "ledger_layers": 7
+    "ledger_layers": 7,
+    "everything_curves_authored": 0,
+    "everything_curves_derived": 6
   },
   "changelog": [
+    {
+      "date": "2026-07-10",
+      "by": "claude-sonnet-5",
+      "summary": "v3.5 Phase A: curve derivation engine for EVERYTHING (the accountable multi-trend intensity chart). Optional curve[{year,belief_0_100,reality_0_100,band_0_100?}] field documented on windows.json/theses.json — none authored yet, so every curve is computed by new js/engine.js evtg* functions from real existing fields: theses derive belief from crowd_awareness/awareness_trend, reality from trajectory.points normalized by distance-from-kill_threshold (polarity-safe — doesn't require knowing per-thesis whether a higher raw metric is good or bad) where a trajectory exists, else reality = belief + consensus_delta_num; windows derive reality from status/opened/expected_close (ramp-plateau, decay after close), belief as reality lagged ~2yr scaled 0.85, converging to reality once a window is closed (hindsight). Every derived curve is tagged derived:true, distinct from an eventual authored curve. js/validate.js gained a curve[] schema check (monotonic years, 0-100 ranges) for whenever one is authored."
+    },
     {
       "date": "2026-07-04",
       "by": "claude-sonnet-5",

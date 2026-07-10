@@ -92,11 +92,24 @@ can actually justify. A thesis can optionally carry a `trajectory` field
 the Trajectory tab charts NOW→2050 — theses without one are honestly left off that
 chart instead of backfilled with an invented curve.
 
+A window or thesis can optionally carry a `curve` field
+(`[{year,belief_0_100,reality_0_100,band_0_100?}]`) for the Trends tab's Everything
+chart — belief tracks perceived/crowd intensity, reality tracks the underlying
+mechanism's actual intensity, and the gap between them is "the edge." No entity has
+one authored yet, so every curve currently shown is computed by `js/engine.js`'s
+`evtg*` functions from fields that already exist (`crowd_awareness`/`awareness_trend`/
+`consensus_delta_num` for theses, `trajectory.points` normalized by distance from
+`kill_threshold` where present, `status`/`opened`/`expected_close` for windows) and
+tagged `derived:true` — visually distinct from an authored curve, never presented as
+measured. Same discipline as `trajectory`: an entity without enough signal to derive
+a defensible curve just doesn't appear on the chart.
+
 ### The views
 
 Today · Thesis (with a Spine causal-ribbon toggle) · Atlas (with an Orbital radial-
 schematic toggle) · Tree · Trajectory · Ledger (value created vs. value captured, with
-a migration scrubber) · Humans · Trends · Constraints · Forecasts · Simulate · Method ·
+a migration scrubber) · Humans · Trends (Kanban/Timeline/Matrix/Everything — a multi-
+trend belief-vs-reality intensity chart) · Constraints · Forecasts · Simulate · Method ·
 Patrol · Brief — plus Helm, which only exists if you have a local `pilot.json`. Atlas
 and Tree are desktop-only (canvas pan/zoom); everything else, including Ledger, works
 on mobile.
@@ -108,11 +121,11 @@ on mobile.
 | `atlas.json` | `nodes[]`, `arcs[]` | Physical/geopolitical chokepoints and control points on the world map | `lat`,`lon`,`weight`,`why_hard`,`control`,`lead`,`consequence`,`signal_desc`,`analyst_note`; optional `rent{bypass_maturity, bypass_candidate, half_life_estimate_years, decay_note}` |
 | `tree.json` | `nodes[]`, `eras[]` | The tech tree — Factorio-style requires/unlocks graph | `era`,`row`,`date_label`,`mechanism`,`body`,`badge`,`live` |
 | `humans.json` | `people[]` | High-agency individuals and their bets | `tier`(C/P/W/M),`domain`,`bets[]`(each with optional `anatomy{stake,asymmetry,consensus_delta,timing,control,survival}` 0–5),`chain[]`,`current_state`,`future_paths[]`,`dead_bodies[]`(mandatory for tier C/P),`lessons[]`; optional `circle[]` for circle-of-competence |
-| `windows.json` | `windows[]` | Market/opportunity windows (open/closing/closed/forming) | `class`,`status`,`opened`,`expected_close`,`mechanism`,`effects[]`,`decay_logic`,`entry_checklist[]`,`who_won[]`,`who_died[]`,`future_paths[]`; optional `order_effects[]`, `tipping_condition`, `distance_to_tip` |
+| `windows.json` | `windows[]` | Market/opportunity windows (open/closing/closed/forming) | `class`,`status`,`opened`,`expected_close`,`mechanism`,`effects[]`,`decay_logic`,`entry_checklist[]`,`who_won[]`,`who_died[]`,`future_paths[]`; optional `order_effects[]`, `tipping_condition`, `distance_to_tip`, `curve[{year,belief_0_100,reality_0_100,band_0_100?}]` (Everything chart — see below) |
 | `constraints.json` | `rows[]` | Physical lead-time bottlenecks (fabs, turbines, transmission, mines) | `lead_time`,`lead_min_yr`,`lead_max_yr`,`cost`,`bottleneck`,`signal` |
 | `scenarios.json` | `scenarios[]` | Tracer scenarios for the Atlas map | `layers[]`,`trace[]` (node ids to fly to), `order_effects[]` (second-order causal chains, each hop with `order`,`text`,`entity`,`confidence`) |
 | `graveyard.json` | `graveyard[]` | Failed bets/companies — the survivorship-bias correction | `tier`(usually D),`cause_of_death`,`bets[]`,`dead_bodies[]`,`lessons[]` |
-| `theses.json` | `theses[]` | The explicit, falsifiable claims the whole tool commits to | `statement`,`confidence`,`kill_condition`,`plain`(one-sentence, no jargon),`supports[]`,`crowd_awareness`,`consensus_delta_num`,`edge_basis`,`margin{tightness,buffer_note,breaks_at}`,`kill_watch{signal,current_value,trigger_value,as_of,proximity}` |
+| `theses.json` | `theses[]` | The explicit, falsifiable claims the whole tool commits to | `statement`,`confidence`,`kill_condition`,`plain`(one-sentence, no jargon),`supports[]`,`crowd_awareness`,`consensus_delta_num`,`edge_basis`,`margin{tightness,buffer_note,breaks_at}`,`kill_watch{signal,current_value,trigger_value,as_of,proximity}`; optional `trajectory{...}` (Trajectory tab), `curve[{year,belief_0_100,reality_0_100,band_0_100?}]` (Everything chart — see below) |
 | `method.json` | single object | Predictability hierarchy, operating rules, bias checklist, primary sources | `hierarchy[]`,`rules[]`,`biases[]`,`sources[]` |
 | `models.json` | `models[]` | The mental-model registry powering provenance tags (`⊢ModelName`) | `discipline`,`one_line`,`source`,`powers[]` (which UI features cite this model) |
 | `ledger.json` | `domains[]` | Value created vs. value captured across a value chain, per domain→`layers[]` | `value_created{score_0_100,mechanism,basis}`,`value_captured{score_0_100,metric,basis,confidence}`,`moat{type (7 Powers or "none"),strength_0_100,decay_note}`,`solo_accessible{value,note}` (fed to HELM's Capture Blindspot),`migration[{year,pool_share_0_100}]`,`links[]` (atlas/tree/human/constraint ids) |

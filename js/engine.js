@@ -1722,6 +1722,162 @@ function buildTrajectory(){
   });
 })();
 
+// ── EVERYTHING — accountable multi-trend intensity chart ────────────────────
+// Inspired by levels.io's Everything Chart, fixing its two flaws:
+// (1) unfalsifiable vibes — every curve here traces to a real field
+//     (crowd_awareness, awareness_trend, consensus_delta_num, trajectory.points,
+//     window status/dates). data/windows.json and data/theses.json entries MAY
+//     carry an authored curve:[{year,belief_0_100,reality_0_100,band_0_100}] —
+//     none do yet, so every curve below is honestly computed, not measured, and
+//     tagged derived:true. If an entry ever gets an authored curve[], render it
+//     directly (derived:false) instead of deriving.
+// (2) 24 illegible overlapping lines — defaults to ~6 curated "house" items,
+//     offers Indexed and Small-Multiples modes, and dims non-hovered lines
+//     (same class-toggle technique as the Tree tab's applyTreeLighting).
+var EVTG_Y_START=1990,EVTG_Y_END=2035;
+var EVTG_HOUSE=["thesis.power_binds","window.zirp-saas","window.ai-wrapper-window","window.agentic-vertical","window.memory-supercycle","window.robotics-embodiment"];
+function evtgClamp(v){return Math.max(0,Math.min(100,v))}
+function evtgValueAt(pts,key,year){
+  if(!pts.length)return 0;
+  if(year<=pts[0].year)return pts[0][key];
+  if(year>=pts[pts.length-1].year)return pts[pts.length-1][key];
+  for(var i=0;i<pts.length-1;i++){
+    var a=pts[i],b=pts[i+1];
+    if(year>=a.year&&year<=b.year){
+      var t=(year-a.year)/(b.year-a.year);
+      return a[key]+(b[key]-a[key])*t;
+    }
+  }
+  return pts[pts.length-1][key];
+}
+function evtgBeliefFromAwareness(asOfYear,awareness0to100,trend,year){
+  var slope=trend==="rising"?4:trend==="falling"?-4:0;
+  return evtgClamp(awareness0to100+slope*(year-asOfYear));
+}
+// merge two independently-built {year,v} key-point arrays (belief, reality) onto
+// the union of both arrays' years, sampling each curve at every year via
+// evtgValueAt — this is what lets the SVG shade the gap between them cleanly
+// even though each curve's own "natural" key years differ.
+function evtgMergeCurves(realityKP,beliefKP){
+  var years={};
+  realityKP.forEach(function(p){years[p.year]=1});
+  beliefKP.forEach(function(p){years[p.year]=1});
+  var sorted=Object.keys(years).map(Number).sort(function(a,b){return a-b});
+  return sorted.map(function(y){
+    return{year:y,reality:evtgValueAt(realityKP,"v",y),belief:evtgValueAt(beliefKP,"v",y)};
+  });
+}
+// polarity-safe normalization for an authored trajectory: whether a HIGHER raw
+// metric value means the thesis is more or less true varies per thesis (more
+// queue-years is bad for one, good for another) — but "distance from the
+// kill_threshold" is always monotonic in the right direction (farther = safer),
+// so it's the one generic transform that doesn't require per-thesis domain
+// knowledge or risk an inverted, misleading curve.
+function evtgRealityFromTrajectory(traj){
+  var pts=traj.points,kt=traj.kill_threshold;
+  var dists=pts.map(function(p){return kt!=null?Math.abs(p.value-kt):p.value});
+  var dMin=Math.min.apply(0,dists),dMax=Math.max.apply(0,dists);
+  var dRange=(dMax-dMin)||1;
+  return pts.map(function(p,i){
+    return{year:p.year,v:evtgClamp(((dists[i]-dMin)/dRange)*100),observed:!!p.locked};
+  });
+}
+function evtgFindThresholdCrossYear(pts,threshold){
+  if(threshold==null)return null;
+  for(var i=0;i<pts.length-1;i++){
+    var a=pts[i],b=pts[i+1];
+    if((a.value-threshold)*(b.value-threshold)<=0&&a.value!==b.value){
+      var t=(threshold-a.value)/(b.value-a.value);
+      return Math.round(a.year+(b.year-a.year)*t);
+    }
+  }
+  return null;
+}
+function evtgThesisCurve(th){
+  var awareness0to100=(th.crowd_awareness!=null?th.crowd_awareness:0.4)*100;
+  var trend=th.awareness_trend||"flat";
+  var asOfYear=parseInt((th.awareness_as_of||"2026-01-01").slice(0,4))||nowYear();
+  var gap=(th.consensus_delta_num!=null?th.consensus_delta_num:0.4)*100;
+  var hasTraj=th.trajectory&&th.trajectory.points&&th.trajectory.points.length>=2;
+  var realityKP,sourceNote,killYear,killLabel;
+  var beliefKP=[
+    {year:EVTG_Y_START,v:evtgBeliefFromAwareness(asOfYear,awareness0to100,trend,EVTG_Y_START)},
+    {year:asOfYear,v:evtgClamp(awareness0to100)},
+    {year:nowYear(),v:evtgBeliefFromAwareness(asOfYear,awareness0to100,trend,nowYear())},
+    {year:EVTG_Y_END,v:evtgBeliefFromAwareness(asOfYear,awareness0to100,trend,EVTG_Y_END)}
+  ];
+  if(hasTraj){
+    realityKP=evtgRealityFromTrajectory(th.trajectory);
+    sourceNote="reality derived from trajectory.points ("+esc(th.trajectory.metric)+", "+esc(th.trajectory.source||"sourced")+"), normalized by distance from kill_threshold; belief derived from crowd_awareness/awareness_trend";
+    killYear=evtgFindThresholdCrossYear(th.trajectory.points,th.trajectory.kill_threshold);
+    killLabel="KILL THRESHOLD";
+  }else{
+    realityKP=beliefKP.map(function(p){return{year:p.year,v:evtgClamp(p.v+gap),observed:p.year<=nowYear()}});
+    sourceNote="reality derived as belief + consensus_delta_num ("+Math.round(gap)+"pt edge); belief derived from crowd_awareness/awareness_trend";
+    var prox=th.kill_watch&&th.kill_watch.proximity;
+    killYear=prox!=null?Math.round(nowYear()+(1-prox)*15):null;
+    killLabel="EST. KILL (from kill_watch.proximity)";
+  }
+  beliefKP.forEach(function(p){p.observed=p.year<=nowYear()});
+  return{
+    id:"thesis."+th.id.replace(/^thesis\./,""),kind:"thesis",dossierReg:"thesis",dossierId:th.id,
+    name:th.plain||th.statement,status:th.confidence==="hi"?"high-confidence":th.confidence==="lo"?"low-confidence":"med-confidence",
+    points:evtgMergeCurves(realityKP,beliefKP),derived:true,sourceNote:sourceNote,
+    killYear:killYear&&killYear<=EVTG_Y_END&&killYear>=EVTG_Y_START?killYear:null,killLabel:killLabel
+  };
+}
+function evtgWindowKeyPoints(t){
+  var opened=parseInt(t.opened)||nowYear()-6;
+  var closeNum=parseInt((t.expected_close||"").replace(/[±+?]/g,""))||opened+8;
+  var span=Math.max(4,closeNum-opened);
+  var rampEnd=opened+span*0.35;
+  var peak={forming:42,open:92,closing:88,closed:90}[t.status]||70;
+  var pts=[];
+  pts.push({year:Math.max(EVTG_Y_START,opened-2),v:2});
+  pts.push({year:opened,v:t.status==="forming"?8:14});
+  pts.push({year:rampEnd,v:peak});
+  if(t.status==="closed"){
+    pts.push({year:closeNum,v:peak-4});
+    pts.push({year:Math.min(EVTG_Y_END,closeNum+Math.max(4,span*0.6)),v:18});
+  }else if(t.status==="closing"){
+    pts.push({year:closeNum,v:peak-20});
+    pts.push({year:EVTG_Y_END,v:35});
+  }else{
+    pts.push({year:closeNum,v:peak});
+    pts.push({year:EVTG_Y_END,v:Math.min(96,peak+4)});
+  }
+  return pts;
+}
+function evtgWindowCurve(t){
+  var realityKP=evtgWindowKeyPoints(t).map(function(p){return{year:p.year,v:p.v,observed:p.year<=nowYear()}});
+  var lag=2;
+  var beliefKP=realityKP.map(function(p){
+    return{year:p.year,v:evtgClamp(evtgValueAt(realityKP,"v",p.year-lag)*0.85),observed:p.year<=nowYear()};
+  });
+  // hindsight: a fully closed window is common knowledge by the time it's old
+  // news — belief converges to reality at the chart's far end rather than
+  // holding a permanent 15% gap forever.
+  if(t.status==="closed")beliefKP[beliefKP.length-1].v=realityKP[realityKP.length-1].v;
+  var closeNum=parseInt((t.expected_close||"").replace(/[±+?]/g,""));
+  return{
+    id:"window."+t.id,kind:"window",dossierReg:"trend",dossierId:t.id,
+    name:t.name,status:t.status,
+    points:evtgMergeCurves(realityKP,beliefKP),derived:true,
+    sourceNote:"reality derived from status/opened/expected_close (ramp-plateau"+(t.status==="closed"?"-decay":"")+" shape); belief derived as reality lagged ~2yr, scaled 0.85 (\"the crowd catches on late\")"+(t.status==="closed"?", converging to reality once closed":""),
+    killYear:closeNum&&closeNum<=EVTG_Y_END&&closeNum>=EVTG_Y_START?closeNum:null,killLabel:"WINDOW CLOSES (expected_close)"
+  };
+}
+function evtgAllCurves(){
+  return EVTG_HOUSE.map(function(id){
+    if(id.indexOf("thesis.")===0){
+      var th=THESES.filter(function(x){return x.id===id})[0];
+      return th?evtgThesisCurve(th):null;
+    }
+    var wid=id.replace(/^window\./,"");
+    var t=TREND_MAP[wid];
+    return t?evtgWindowCurve(t):null;
+  }).filter(Boolean);
+}
 function buildThesisRegister(){
   var el=$("thesis-list");if(!el)return;
   el.innerHTML=THESES.map(function(th,i){
