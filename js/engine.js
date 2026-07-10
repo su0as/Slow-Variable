@@ -482,7 +482,6 @@ function switchTab(v){
   document.querySelectorAll("#tabs .tab").forEach(function(t){t.classList.toggle("on",t.dataset.v===parent)});
   document.querySelectorAll(".view").forEach(function(vw){vw.classList.toggle("on",vw.id==="v-"+child)});
   renderSubnav(parent);
-  $("coords").style.display=child==="atlas"?"flex":"none";
   if(child==="atlas"){if(atlasMode==="orbital"){resizeOrbital();if(motionOK&&!orbRaf)orbRaf=requestAnimationFrame(orbTick)}else{resize();kick()}}
   if(child==="trajectory")buildTrajectory();
   if(child==="ledger")buildLedger();
@@ -1511,8 +1510,10 @@ window.addEventListener("resize",function(){if($("v-atlas").classList.contains("
 buildLegend();buildConstraints();buildScenarios();buildMethod();buildHumans();buildTrends();
 loadForecasts();renderForecasts();checkOnboarding();
 updateFreshnessMeter();buildPatrol();buildThesisRegister();buildGraveyard();buildToday();
-requestAnimationFrame(function(){resize();kick()});
-setTimeout(buildTreeIfNeeded,500);
+// Atlas canvas + tree SVG are lazy-built on first visit (see switchTab's
+// child==="atlas"/"tree" branches) rather than pre-warmed here — most
+// sessions land on Today and never touch World, so eagerly paying the
+// map/tree render cost on every load only slows the common case down.
 // Wire freshness meter click → health panel
 (function(){var fm=$("freshness-meter");if(fm)fm.onclick=openHealth})();
 
@@ -2018,11 +2019,13 @@ function evtgLogAsForecast(c){
 }
 function evtgRenderLegend(allCurves){
   var el=$("evtg-legend");if(!el)return;
+  var widestId=evtgWidestGapId(allCurves);
   el.innerHTML=allCurves.map(function(c){
     var col=evtgColorFor(c.id),gap=Math.round(Math.abs(evtgGapAt(c,evtgState.scrubYear)));
     var due=c.killYear!=null&&c.killYear<=nowYear();
-    return'<span class="evtg-legend-item'+(evtgState.hidden[c.id]?" off":"")+'" data-cid="'+c.id+'">'
-      +'<span class="evtg-legend-swatch" style="background:'+col+'"></span>'+esc(c.name.slice(0,30))
+    return'<span class="evtg-legend-item'+(evtgState.hidden[c.id]?" off":"")+'" data-cid="'+c.id+'" title="'+esc(c.name)+'">'
+      +'<span class="evtg-legend-swatch" style="background:'+col+'"></span><span class="evtg-legend-nm">'+esc(c.name)+"</span>"
+      +(c.id===widestId?'<span class="evtg-legend-edge" title="Widest belief↔reality gap of the visible set">EDGE</span>':"")
       +'<span class="evtg-legend-prov'+(c.derived?"":" authored")+'" title="'+esc(c.sourceNote||"")+'">'+(c.derived?"DERIVED":"AUTHORED")+"</span>"
       +'<span class="evtg-legend-gap">'+gap+'pt gap</span>'
       +(c.killYear!=null?'<button class="evtg-legend-log'+(due?" due":"")+'" data-cid="'+c.id+'" title="'+(due?"Falsifier year has passed — ":"")+'Log as a forecast (pre-fills the Forecasts tab; you supply p)">'+(due?"⇪ DUE":"⇪")+"</button>":"")
@@ -2052,7 +2055,11 @@ function evtgApplyHover(){
   });
 }
 function evtgRenderOverlaySVG(curves){
-  var W=1000,H=420,PADL=34,PADR=118,PADT=18,PADB=26;
+  // curve identity lives in the real, flex-wrapped #evtg-legend (which can't
+  // collide) rather than inline right-edge SVG text — that in-chart labeling
+  // used to need de-collision math and still overlapped at >4 curves, so PADR
+  // only needs to clear the kill-mark ✕ / NOW-line labels now, not name text.
+  var W=1000,H=420,PADL=34,PADR=24,PADT=18,PADB=26;
   function xOf(yr){return PADL+(yr-EVTG_Y_START)/(EVTG_Y_END-EVTG_Y_START)*(W-PADL-PADR)}
   function yOf(v){return PADT+(1-v/100)*(H-PADT-PADB)}
   var scrubYear=evtgState.scrubYear;
@@ -2069,8 +2076,6 @@ function evtgRenderOverlaySVG(curves){
     var yr=treeYearOf(n);
     svg+='<circle class="evtg-milestone" cx="'+xOf(yr)+'" cy="'+(H-PADB+4)+'" r="1.6"><title>'+esc(n.lb)+" ("+yr+')</title></circle>';
   });
-  var widestId=evtgWidestGapId(curves);
-  var labelRows=[]; // for right-edge label de-collision
   curves.forEach(function(c){
     var col=evtgColorFor(c.id),pts=c.points;
     var dim=evtgState.hoverId&&evtgState.hoverId!==c.id;
@@ -2103,22 +2108,7 @@ function evtgRenderOverlaySVG(curves){
       svg+='<g class="evtg-kill-mark" stroke="'+col+'"><line x1="'+(kx-4)+'" y1="'+(ky-4)+'" x2="'+(kx+4)+'" y2="'+(ky+4)+'"></line>'
         +'<line x1="'+(kx-4)+'" y1="'+(ky+4)+'" x2="'+(kx+4)+'" y2="'+(ky-4)+'"></line><title>'+esc(c.killLabel)+" — "+c.killYear+"</title></g>";
     }
-    var lastPt=pts[pts.length-1];
-    labelRows.push({id:c.id,col:col,y:yOf((lastPt.reality+lastPt.belief)/2),text:c.name.length>22?c.name.slice(0,21)+"…":c.name,edge:c.id===widestId});
     svg+="</g>";
-  });
-  // de-collide right-edge direct labels: sort by natural y, push down any that
-  // would overlap the previous one rather than letting them stack illegibly.
-  labelRows.sort(function(a,b){return a.y-b.y});
-  for(var li=1;li<labelRows.length;li++){
-    // the EDGE badge is a second line 10px below its curve's main label — reserve
-    // room for it too, or the next curve's label lands right on top of it.
-    var minY=labelRows[li-1].y+(labelRows[li-1].edge?21:11);
-    if(labelRows[li].y<minY)labelRows[li].y=minY;
-  }
-  labelRows.forEach(function(l){
-    svg+='<text class="evtg-curve-label" x="'+(W-PADR+6)+'" y="'+l.y+'" fill="'+l.col+'">'+esc(l.text)+"</text>";
-    if(l.edge)svg+='<text class="evtg-edge-badge" x="'+(W-PADR+6)+'" y="'+(l.y+10)+'">EDGE</text>';
   });
   var scrubX=xOf(Math.max(EVTG_Y_START,Math.min(EVTG_Y_END,scrubYear)));
   svg+='<line class="evtg-now-line" x1="'+scrubX+'" y1="'+PADT+'" x2="'+scrubX+'" y2="'+(H-PADB)+'"></line>';
@@ -2203,12 +2193,11 @@ function buildEverything(){evtgRender();evtgBuilt=true}
   var risingBtn=$("evtg-rising"),decliningBtn=$("evtg-declining"),indexedBtn=$("evtg-indexed"),
     smallBtn=$("evtg-small"),fsBtn=$("evtg-fullscreen"),yrEl=$("evtg-year"),yrLb=$("evtg-year-lb");
   if(!yrEl)return;
-  // small-multiples is the mobile default (fixes the "24 illegible lines"
-  // complaint outright on a narrow screen) but it's a default, not a lock —
-  // set once at init so a user who flips it back to overlay keeps that choice
-  // across tab switches within the session, rather than it snapping back
-  // every time they revisit the view.
-  evtgState.mode=isMobile()?"small":"overlay";
+  // small-multiples is the default everywhere (overlaid spaghetti is opt-in)
+  // but it's a default, not a lock — set once at init so a user who flips to
+  // overlay keeps that choice across tab switches within the session, rather
+  // than it snapping back every time they revisit the view.
+  evtgState.mode="small";
   smallBtn.classList.toggle("on",evtgState.mode==="small");
   yrEl.value=evtgState.scrubYear;
   yrLb.textContent=evtgYearLabel(evtgState.scrubYear);
@@ -2723,6 +2712,13 @@ function buildProvenanceFooter(){
     el.onmouseleave=function(){$("model-tooltip").style.display="none"};
   });
 }
+(function(){
+  var btn=$("models-btn"),pop=$("models-popover");if(!btn||!pop)return;
+  function closeModelsPopover(){pop.classList.remove("open");btn.classList.remove("on")}
+  btn.onclick=function(e){e.stopPropagation();var open=pop.classList.toggle("open");btn.classList.toggle("on",open)};
+  document.addEventListener("click",function(e){if(pop.classList.contains("open")&&!pop.contains(e.target)&&e.target!==btn)closeModelsPopover()});
+  document.addEventListener("keydown",function(e){if(e.key==="Escape")closeModelsPopover()});
+})();
 
 // ── §1 Second-order chains ────────────────────────────────────────────────
 function orderEffectsHTML(order_effects){

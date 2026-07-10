@@ -2,7 +2,13 @@
   --bg:#000000;--bg2:#080808;--panel:#0d0d0d;--panel2:#141414;
   --line:#1e1e1e;--line2:#2c2c2c;--txt:#f0f0f0;--dim:#888888;--faint:#484848;
   --ghost:#141414;
-  --choke:#ff3b30;--signal:#ff3b30;--signal-soft:rgba(255,59,48,.12);
+  /* --choke is the one UI accent (tab.on, headings, buttons, active states) —
+     its value is Mars-rust, same color as --rust below. Two variable names
+     because --choke predates --rust in this codebase's history and 75+ call
+     sites already reference it; repointing its value here was far lower-risk
+     than renaming every call site. --alert/--enr stay separate, genuinely
+     different reds for danger/stale/overdue states, not the brand accent. */
+  --choke:#c1440e;--signal:#ff3b30;--signal-soft:rgba(255,59,48,.12);
   --chip:#c0c0c0;--min:#e8e8e8;--enr:#ff6b55;--net:#909090;--fin:#b0b0b0;
   --alert:#ff3b30;--ok:#d8d8d8;
   --rust:#c1440e;--rust-soft:rgba(193,68,14,.14);--rust-line:rgba(193,68,14,.4);
@@ -45,12 +51,6 @@ svg text{user-select:none}
 .tab.on{color:var(--choke)}
 .tab.on::after{content:"";position:absolute;left:0;right:0;bottom:-1px;height:2px;background:var(--choke)}
 #hdr-right{display:flex;align-items:center;border-left:1px solid var(--line);flex-shrink:0}
-#coords{padding:0 14px;font-size:10px;letter-spacing:.1em;color:var(--dim);min-width:170px;
-        text-align:right;border-right:1px solid var(--line);align-self:stretch;
-        display:flex;align-items:center;justify-content:flex-end}
-#coords b{color:var(--choke);font-weight:400}
-#vintage{padding:0 14px;font-size:9px;letter-spacing:.1em;color:var(--faint);
-         text-transform:uppercase;max-width:200px;line-height:1.4;display:none}
 #health-btn{width:44px;height:52px;border-left:1px solid var(--line);display:flex;
              align-items:center;justify-content:center;color:var(--dim);font-size:11px;
              cursor:pointer;background:none;border-top:none;border-bottom:none;border-right:none}
@@ -106,6 +106,15 @@ svg text{user-select:none}
 #tip{position:absolute;pointer-events:none;background:#0d0d0d;border:1px solid var(--line2);
      padding:5px 9px;font-size:10px;letter-spacing:.06em;color:var(--txt);z-index:30;display:none;white-space:nowrap}
 #tip .tl{color:var(--faint);font-size:9px;letter-spacing:.14em;text-transform:uppercase}
+/* Coords + data-vintage readouts live only here (not in the header) — they're
+   meaningless outside a spatial map view. Bottom-left, stacked above
+   #mapstatus, since bottom-right is already crowded (zoom buttons + the
+   fixed title-block overlay). */
+#map-readout{position:absolute;left:12px;bottom:34px;z-index:10;
+             background:rgba(0,0,0,.88);border:1px solid var(--line);padding:5px 9px}
+#coords{font-size:10px;letter-spacing:.1em;color:var(--dim)}
+#coords b{color:var(--choke);font-weight:400}
+#vintage{font-size:9px;letter-spacing:.08em;color:var(--faint);text-transform:uppercase;margin-top:2px}
 #map-zoom{position:absolute;bottom:10px;right:12px;display:flex;flex-direction:column;gap:2px;z-index:10}
 .map-zbtn{width:28px;height:28px;background:rgba(0,0,0,.92);border:1px solid var(--line);
           color:var(--dim);font-size:14px;display:flex;align-items:center;justify-content:center;cursor:pointer}
@@ -509,13 +518,9 @@ td.mono-em{color:var(--txt);white-space:nowrap}
   #mast{min-width:0;width:100%;border-right:none;padding:10px 14px 6px}
   #mast .t{font-size:12px;letter-spacing:.24em}
   #tabs{flex:0 0 auto;width:100%;flex-direction:column;overflow-x:visible}
-  .tab-group{border-right:none;border-bottom:1px solid var(--line2)}
-  .tab-group-lbl{padding:6px 14px 2px}
-  .tab-group-row{overflow-x:auto;flex-wrap:nowrap}
-  .tab-group-row .tab{flex:0 0 auto;min-height:40px;font-size:11px;padding:0 14px;white-space:nowrap}
+  #tabs .tab{flex:0 0 auto;min-height:44px;font-size:11px;padding:0 14px;white-space:nowrap;border-right:none;border-bottom:1px solid var(--line2)}
   #hdr-right{flex:0 0 auto;width:100%;border-left:none;border-top:1px solid var(--line);justify-content:flex-end}
-  #coords{display:none!important}
-  #search-btn,#health-btn{width:44px;height:40px}
+  #search-btn,#health-btn{width:48px;height:44px}
 
   /* Views sit below the (now taller) header — #views already flex:1, no change needed */
   .inner{padding:20px 16px 100px}
@@ -536,14 +541,12 @@ td.mono-em{color:var(--txt);white-space:nowrap}
   /* Spine ribbon still works via horizontal scroll */
   .spine-svg-scroll{-webkit-overflow-scrolling:touch}
 
-  /* Provenance footer overlaps content on narrow screens — drop it, it's a footnote, not core UI.
-     (body-qualified selector to out-specificity the later #prov-footer{display:flex} base rule) */
-  body #prov-footer{display:none}
+  /* Models button is small enough now (a single tap target, not a chip bar)
+     that it no longer needs to be dropped on narrow screens. */
 
   #dossier{width:100%;top:auto;right:0;bottom:0;height:70vh;transform:translateY(110%);
            border-left:none;border-top:1px solid var(--line2)}
   #dossier.open{transform:translateY(0)}
-  #vintage{display:none!important}
   #bet-anatomy{display:none}
 }
 
@@ -800,10 +803,19 @@ kbd{background:#111;border:1px solid var(--line2);border-bottom:2px solid var(--
 .scale-q{font-size:10px;color:var(--dim);margin-bottom:3px}
 .scale-note{font-size:11px;color:var(--txt)}
 
-/* Provenance footer */
-#prov-footer{position:fixed;bottom:0;left:0;right:0;background:rgba(0,0,0,.92);border-top:1px solid rgba(255,255,255,.07);padding:5px 16px;display:flex;align-items:center;gap:12px;z-index:50;pointer-events:none}
-#prov-label{font-size:8px;letter-spacing:.15em;color:var(--faint);flex-shrink:0}
-#prov-chips{display:flex;flex-wrap:wrap;gap:6px;pointer-events:all}
+/* Models popover — collapsed from an always-on 18-chip footer bar into one
+   button + on-demand panel, so it no longer eats a strip of vertical space
+   on every view. */
+#models-btn{position:fixed;bottom:14px;left:50%;transform:translateX(-50%);z-index:50;
+            font-size:9px;letter-spacing:.12em;color:var(--faint);background:rgba(0,0,0,.75);
+            border:1px solid var(--line2);padding:5px 12px;cursor:pointer;transition:color .15s,border-color .15s}
+#models-btn:hover,#models-btn.on{color:var(--rust);border-color:var(--rust-line)}
+#models-popover{display:none;position:fixed;bottom:46px;left:50%;transform:translateX(-50%);z-index:50;
+                max-width:min(760px,calc(100vw - 24px));max-height:50vh;overflow:auto;
+                background:rgba(0,0,0,.94);border:1px solid var(--line2);padding:12px 14px}
+#models-popover.open{display:block}
+#prov-label{font-size:8px;letter-spacing:.15em;color:var(--faint);margin-bottom:8px}
+#prov-chips{display:flex;flex-wrap:wrap;gap:6px}
 .prov-chip{font-size:8px;letter-spacing:.08em;color:var(--faint);border:1px solid rgba(255,255,255,.1);padding:1px 6px;cursor:default;transition:color .15s,border-color .15s}
 .prov-chip:hover{color:var(--txt);border-color:rgba(255,255,255,.3)}
 #model-tooltip{position:fixed;z-index:9000;background:#0c0c0c;border:1px solid var(--line);padding:8px 12px;max-width:240px;pointer-events:none}
@@ -819,14 +831,7 @@ kbd{background:#111;border:1px solid var(--line2);border-bottom:2px solid var(--
 
 /* ── PHASE: TODAY VIEW + TAB GROUPING ──────────────────────────────────────── */
 
-/* Header tab groups */
 #tabs{align-items:stretch}
-.tab-group{display:flex;flex-direction:column;border-right:2px solid var(--line2);flex-shrink:0}
-.tab-group:last-child{border-right:none}
-.tab-group-lbl{font-size:7px;letter-spacing:.22em;color:var(--faint);padding:3px 15px 0;
-               text-transform:uppercase;flex-shrink:0;user-select:none}
-.tab-group-row{display:flex;flex:1;align-items:stretch}
-.tab-group-row .tab{padding:0 13px}
 
 /* Today cards */
 .today-cards{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:20px}
@@ -918,10 +923,8 @@ body{background:transparent}
 #starfield{position:fixed;inset:0;z-index:0;pointer-events:none;display:block}
 #hdr{background:rgba(0,0,0,.86)}
 
-/* Title block — engineering registration frame, bottom-right.
-   Sits above #prov-footer (which is a full-width bar pinned to bottom:0 at
-   z-index:50) so the two don't overlap. */
-#title-block{position:fixed;right:14px;bottom:38px;z-index:40;pointer-events:none;
+/* Title block — engineering registration frame, bottom-right. */
+#title-block{position:fixed;right:14px;bottom:14px;z-index:40;pointer-events:none;
   font-size:8px;letter-spacing:.14em;color:var(--faint);text-align:right;
   padding:8px 12px;border:1px solid var(--line2);background:rgba(0,0,0,.72);
   backdrop-filter:blur(3px)}
@@ -936,8 +939,8 @@ body{background:transparent}
 #title-block .tb-tick{display:inline-block;width:1px;height:6px;background:var(--line2);margin:0 4px;vertical-align:middle}
 @media(max-width:700px){#title-block{display:none}}
 
-/* Mission-status glyph legend — bottom-left, same reasoning as #title-block above */
-#mission-legend{position:fixed;left:14px;bottom:38px;z-index:40;
+/* Mission-status glyph legend — bottom-left */
+#mission-legend{position:fixed;left:14px;bottom:14px;z-index:40;
   font-size:8px;letter-spacing:.08em;color:var(--faint);
   padding:6px 10px;border:1px solid var(--line);background:rgba(0,0,0,.72);
   backdrop-filter:blur(3px);display:flex;gap:10px}
@@ -1157,15 +1160,21 @@ body{background:transparent}
 #evtg-toolbar{display:flex;justify-content:space-between;align-items:flex-start;gap:16px;flex-wrap:wrap;margin-bottom:8px}
 #evtg-legend{display:flex;flex-wrap:wrap;gap:10px;flex:1;min-width:220px}
 .evtg-legend-item{display:flex;align-items:center;gap:5px;font-size:9px;letter-spacing:.04em;color:var(--dim);
-                   cursor:pointer;padding:2px 6px;border:1px solid transparent;user-select:none}
+                   cursor:pointer;padding:3px 7px;border:1px solid transparent;user-select:none;max-width:280px}
 .evtg-legend-item:hover{border-color:var(--line2);color:var(--txt)}
 .evtg-legend-item.off{opacity:.35;text-decoration:line-through}
 .evtg-legend-item.evtg-dim{opacity:.35}
 .evtg-legend-swatch{width:9px;height:9px;border-radius:50%;flex-shrink:0}
-.evtg-legend-prov{font-size:7px;letter-spacing:.06em;color:var(--faint);margin-left:4px;
+/* full curve name never gets hard-truncated with no way to read it — this
+   ellipsizes visually but the item's title= attribute always carries the
+   full text for a hover tooltip */
+.evtg-legend-nm{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;min-width:0}
+.evtg-legend-edge{font-size:7px;letter-spacing:.08em;color:var(--rust);border:1px solid var(--rust-line);
+                   padding:0 3px;flex-shrink:0}
+.evtg-legend-prov{font-size:7px;letter-spacing:.06em;color:var(--faint);margin-left:4px;flex-shrink:0;
                    border:1px solid var(--line2);padding:0 3px}
 .evtg-legend-prov.authored{color:var(--min);border-color:var(--min)}
-.evtg-legend-gap{font-size:8px;color:var(--faint);letter-spacing:.03em;margin-left:2px}
+.evtg-legend-gap{font-size:8px;color:var(--faint);letter-spacing:.03em;margin-left:2px;flex-shrink:0}
 .evtg-legend-log{font-size:8px;letter-spacing:.05em;color:var(--faint);border:1px solid var(--line2);
                   background:none;padding:1px 5px;margin-left:2px;cursor:pointer}
 .evtg-legend-log:hover{color:var(--txt);border-color:var(--dim)}
@@ -1201,6 +1210,4 @@ body{background:transparent}
 .evtg-now-line{stroke:var(--rust);stroke-width:1;opacity:.5}
 .evtg-now-label{fill:var(--rust);font-size:8px;letter-spacing:.08em;text-transform:uppercase}
 .evtg-axis-label{fill:var(--faint);font-size:8px}
-.evtg-curve-label{font-size:8px;letter-spacing:.02em}
 .evtg-kill-mark{stroke-width:1.6}
-.evtg-edge-badge{fill:var(--rust);font-size:8px;letter-spacing:.06em;text-transform:uppercase}

@@ -83,8 +83,6 @@
   </div>
   <div id="hdr-right">
     <div id="freshness-meter" class="freshness-meter" title="Click to open data health"></div>
-    <div id="coords" style="display:none">—</div>
-    <div id="vintage" style="display:none"></div>
     <button id="search-btn" title="Search all registries (Cmd/Ctrl-K)">⌕</button>
     <button id="health-btn" title="Data Health — staleness monitor">⊙</button>
   </div>
@@ -155,6 +153,10 @@
         </div>
       </div>
       <div id="mapstatus">—</div>
+      <div id="map-readout">
+        <div id="coords">—</div>
+        <div id="vintage"></div>
+      </div>
       <div id="tip"><div class="tl"></div><div id="tip-nm"></div></div>
       <div id="atlas-mode-toggle">
         <button class="ttool on" id="am-mercator" title="Standard world map">MERCATOR</button>
@@ -554,8 +556,9 @@
   </div>
 </div>
 
-<!-- PROVENANCE FOOTER -->
-<div id="prov-footer">
+<!-- MODELS POPOVER (collapsed from an 18-chip always-on footer bar into one button) -->
+<button id="models-btn" title="Mental models powering this tool">⊢ MODELS</button>
+<div id="models-popover">
   <div id="prov-label">MODELS POWERING THIS TOOL</div>
   <div id="prov-chips"></div>
 </div>
