@@ -1,5 +1,128 @@
 # Shipped
 
+## 2026-07-10 — IA overhaul: 14 tabs → 5, visual legibility pass, Countries, HELM tie-in
+
+Two goals: declutter the header (14 top-level tabs was too many, and several views
+had real legibility debt), and add a Countries view without touching the "no Models
+tab" or "data/engine separation" rules. Depth stayed in the data; the surface got
+simpler. Nothing was deleted — every existing view kept its id and internal rendering
+untouched; only *which top-level tab fronts it* changed.
+
+**Phase A — IA: 14 tabs → 5.** New parent/child layer in `js/engine.js`
+(`PARENT_CHILDREN`/`CHILD_PARENT`/`renderSubnav`) sits in front of the existing
+`switchTab(v)`/`.view.on` mechanism rather than replacing it — every one of the ~15
+existing call sites that pass a child id directly (`switchTab("atlas")`,
+`switchTab("constraints")`, etc.) needed no changes. Today (Today + the old Brief
+digest, merged in as "What Changed") · World (Atlas · Tree — Countries joins in Phase
+C) · Trends (Everything, promoted out of the old flat Trends tab to a peer view ·
+Trajectory · Ledger · Windows, the renamed old kanban/timeline/matrix board) · Thesis
+(Thesis+Spine · Humans · Forecasts) · Lab (Simulate · Constraints · Patrol · Method).
+`LEGACY_ROUTE_CHILD` redirects old deep links (`#trends`, `#brief`) to exactly what
+they used to mean, distinct from a *fresh* tab click (which resolves to that parent's
+default child) — the two are unambiguous because tab clicks now resolve to a concrete
+child route before ever reaching the router, so a bare `#trends` hash is never
+produced by the UI itself and can be treated purely as legacy. Number-key shortcuts
+cut from 1-9 to 1-5. Real bug fixed: `buildBrief()`'s round-robin thesis-spotlight
+index was a module-level `var` assigned *after* the line that first invoked it
+(`buildToday()`, called eagerly at init, now also renders Brief) — moved the read
+inside the function so it's no longer order-dependent on where in the file it sits.
+
+**Phase B — visual legibility pass.** Everything chart now defaults to small-
+multiples everywhere (previously mobile-only); overlaid spaghetti is opt-in via the
+existing toggle. Removed the right-edge in-SVG curve labels entirely — they needed
+fragile de-collision math and still overlapped past ~4 curves — in favor of the
+already-existing flex-wrapped legend, which now ellipsizes long names with a `title=`
+tooltip instead of hard-truncating mid-word (`c.name.slice(0,30)` → CSS
+`text-overflow:ellipsis` + full text on hover); the legend also gained the "EDGE"
+badge the removed in-chart label used to carry. Collapsed the always-on 18-chip
+models footer bar into a single "MODELS" button + on-demand popover, freeing the
+corner decorative badges (mission-legend, title-block) to sit flush at the corner
+again instead of reserving space above a full-width bar. Moved `#coords`/`#vintage`
+out of the header entirely into the Atlas view itself (bottom-left, above the
+existing zoom-status readout) — they were never meaningful outside a spatial map.
+Unified the UI accent to Mars-rust by repointing `--choke`'s hex value to `--rust`'s
+rather than renaming 75+ call sites (`--alert`/`--enr` stay separate, genuinely
+different danger/stale reds, not the brand accent). Removed the eager
+`requestAnimationFrame(resize+kick)`/`setTimeout(buildTreeIfNeeded)` calls that used
+to pre-warm the Atlas canvas and Tree SVG on *every* page load regardless of the
+active tab — both now build lazily on first visit via `switchTab`, same as
+Everything/Simulate already did; most sessions land on Today and never touch World,
+so this was pure waste on the common path. Also cleaned up `.tab-group`/
+`.tab-group-row` CSS left dangling from Phase A's tab-flattening — the mobile media
+query was still targeting classes no longer in the DOM, silently dropping the
+"larger tap targets" treatment on mobile tabs.
+
+**Phase C — Countries view + data.** New `data/countries.json`: 12 curated nations
+(US, China, Taiwan, South Korea, Japan, India, Singapore, UAE, Saudi Arabia,
+Netherlands, Germany, Russia), each with `dynamics{demography,energy,chips,fiscal,
+stability,trajectory}`, `gov_focus[]`, `flows[]`, and `links[]` to real existing
+atlas/tree/constraint ids (TSMC, ASML, Ghawar, export controls, grid interconnection,
+etc. — nothing invented). Every score is `confidence:"asserted"` with a `basis`
+string per field, since these are editorial syntheses, not measured statistics, and
+the data says so rather than faking precision; demography numbers reuse the existing
+UN-WPP-sourced `constraints.json` figures instead of re-deriving them. Three lenses
+under World → Countries: Dynamics (small-multiples grid, sortable by any variable),
+Gov Focus (heatmap, countries × policy vectors — the vector column list is derived
+from the data itself, not hardcoded), Capital Flows (a lightweight equirectangular
+SVG, deliberately *not* the Atlas canvas's own pan/zoom projection, which is tied to
+that canvas's specific transform state and would need real reverse-engineering to
+reuse — borrows the atlas's visual language, dashed animated motionOK-gated arcs,
+rather than its rendering machinery). Extended the existing (previously demography-
+only) `renderCountryDossier` to layer in the rich dossier for these 12 while leaving
+the other ~135 ISO codes on the original view; wired countries into Cmd-K search.
+Real bug fixed during the build: the new country-list variable was first named
+`COUNTRIES`, silently clobbering an *existing* `COUNTRIES` var the Atlas map already
+used for its own demography-choropleth rendering (same scope, same name, unrelated
+meaning) — renamed to `CTRY_LIST`.
+
+**Phase D — mobile + HELM tie-in.** 5(-6)-tab header now fits a single row on mobile
+instead of stacking into a scrolling column — feasible now that Phase A cut it from
+14 tabs, which genuinely couldn't have fit. Countries defaults to Dynamics on mobile;
+Capital Flows specifically (not the whole tab) shows a "Desktop Only" note, matching
+the Atlas/Tree pattern but scoped to just the one spatial lens — Dynamics and Gov
+Focus both work fine on a phone. New HELM §8, "Where to Stand": matches
+`location_now`/`location_next` (free text, e.g. "Bangalore, India") against the 12
+curated nations by name/ISO (plus a small alias list for colloquial short forms like
+"UAE" that don't reduce to the formal name or ISO code by substring alone — kept
+short and conservative, no single-word aliases like "US" that would false-positive
+against ordinary prose). Each match renders a card citing the country, its weakest
+scored dynamic, a relevant capital flow, and a kill condition tied to that country's
+own trajectory/weakest score flipping — an honest null result if neither field names
+one of the 12, not a forced match.
+
+### Verification
+
+- `node js/validate.js` — 0 errors after every phase (188 entity IDs registered by
+  the end, up from 176).
+- Manual smoke pass per phase in a local server, desktop and mobile (375×812): all 5
+  tabs + every sub-view screenshot-verified, all 3 Countries lenses (including the
+  flow-type filter and click-through to a country dossier, then click-through again
+  from that dossier's LINKED chips to an atlas dossier and back), Cmd-K search for a
+  country, HELM's new section tested with a real local `pilot.json` (deleted before
+  commit, per the existing HELM-testing convention — `pilot.json` is gitignored and
+  never committed regardless).
+- One real testing-process bug caught, not an app bug: repeatedly reloading with
+  `#/helm` already in the URL, before `pilot.json`'s async fetch resolves, redirects
+  to Today (correct — no pilot loaded yet) and then *clicking* the Helm tab again is
+  a no-op if the hash is already `#/helm`, since browsers don't fire `hashchange` for
+  a same-value hash write. Not a bug worth touching (a real first-time visitor never
+  has `#/helm` pre-set in the URL), but worth documenting so the next session doesn't
+  re-chase it: force a hash change (click a different tab first) when testing a
+  fetch-gated route after a reload.
+
+### Deliberately not done
+
+- **No live-resize handling for the Countries Capital Flows mobile gate.** It
+  re-evaluates `isMobile()` on lens-switch, not on window resize while already
+  viewing the lens — consistent with how Atlas/Tree already don't handle live resize
+  either.
+- **No renaming of `--choke` to something clearer.** Repointing its *value* to Mars-
+  rust (rather than renaming the variable and touching 75+ call sites) was the lower-
+  risk fix for "one accent color"; the confusing legacy name is unchanged.
+- **HELM's country-name matching is deliberately crude** (substring + a short alias
+  list), same philosophy as the existing skill-matching sections — easy to audit by
+  eye, not embeddings.
+
 ## 2026-07-10 — EVERYTHING: accountable multi-trend intensity chart
 
 Inspired by levels.io's Everything Chart, fixing its two flaws — unfalsifiable

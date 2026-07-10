@@ -529,6 +529,14 @@ function ctryFlowsSVG(){
   return svg;
 }
 function renderCountriesFlows(){
+  var desktop=$("ctry-flows-desktop"),mobileNote=$("ctry-flows-mobile-note");
+  if(!desktop||!mobileNote)return;
+  // A spatial SVG map with 12 fixed points is still cramped and hard to read
+  // at phone width - same reasoning as gating Atlas/Tree behind a desktop
+  // notice, just scoped to this one lens rather than the whole view (Dynamics
+  // and Gov Focus are plain grids/tables and work fine on mobile).
+  if(isMobile()){desktop.style.display="none";mobileNote.style.display="block";return}
+  desktop.style.display="";mobileNote.style.display="none";
   var el=$("ctry-flows-svg");if(!el)return;
   el.outerHTML=ctryFlowsSVG();
   var newSvg=document.getElementById("ctry-flows-svg");
@@ -546,7 +554,8 @@ function buildCountries(){renderCountriesDynamics();renderCountriesGovFocus();re
       lensBtns.forEach(function(x){x.classList.toggle("on",x===b)});
       Object.keys(panels).forEach(function(k){if(panels[k])panels[k].style.display=k===ctryState.lens?"":"none"});
       if(sortWrap)sortWrap.style.display=ctryState.lens==="dynamics"?"flex":"none";
-      if(flowWrap)flowWrap.style.display=ctryState.lens==="flows"?"flex":"none";
+      if(flowWrap)flowWrap.style.display=(ctryState.lens==="flows"&&!isMobile())?"flex":"none";
+      if(ctryState.lens==="flows")renderCountriesFlows();
     };
   });
   document.querySelectorAll("#ctry-sort .ttool").forEach(function(b){
@@ -4100,12 +4109,68 @@ function buildHelmCapture(pilot){
     card.onclick=function(){switchTab("ledger");setTimeout(function(){openDossier("ledger",card.dataset.key)},60)};
   });
 }
+// Matches free-text location_now/location_next against the 12 curated
+// countries.json nations by name/ISO — pilot.json's location fields are
+// prose ("Bangalore, India" / "open to relocation — US, UAE, Singapore
+// preferred"), not structured codes, so this is a substring match, not an
+// exact lookup.
+// Colloquial short forms that don't reduce to the formal name or ISO-3 code
+// by substring alone ("UAE" isn't in "united arab emirates" or "are";
+// "saudi" isn't in "saudi arabia" the other direction). Kept short and
+// conservative - no single-word aliases like "US" or "america" that would
+// false-positive against ordinary prose.
+var CTRY_ALIASES={ARE:["uae"],SAU:["saudi"]};
+function helmCountryMatches(text){
+  if(!text)return[];
+  var lower=String(text).toLowerCase();
+  return CTRY_LIST.filter(function(c){
+    if(lower.indexOf(c.name.toLowerCase())!==-1||lower.indexOf(c.iso.toLowerCase())!==-1)return true;
+    return(CTRY_ALIASES[c.iso]||[]).some(function(a){return lower.indexOf(a)!==-1});
+  });
+}
+function helmStandCard(c,role){
+  var dyn=c.dynamics;
+  var arrow={rising:"↑",declining:"↓",flat:"→"}[dyn.trajectory]||"→";
+  var scored=["energy","chips","fiscal","stability"].map(function(k){return{k:k,v:dyn[k]&&dyn[k].score,note:dyn[k]&&dyn[k].note}}).filter(function(x){return x.v!=null});
+  scored.sort(function(a,b){return a.v-b.v});
+  var weakest=scored[0];
+  var flow=(c.flows||[])[0];
+  var html='<div class="helm-window-card" data-iso="'+c.iso+'"><div class="helm-window-hd"><div class="helm-window-title">'+esc(c.name)+" "+arrow+'</div><div class="helm-window-status">'+role.toUpperCase()+" · trajectory "+dyn.trajectory.toUpperCase()+"</div></div>";
+  if(weakest)html+='<div class="helm-window-reason"><b>Weakest dynamic:</b> '+weakest.k.toUpperCase()+" ("+weakest.v+"/100) — "+esc(weakest.note)+"</div>";
+  if(flow)html+='<div class="helm-window-reason"><b>Capital flow:</b> '+esc(flow.type.toUpperCase())+" → "+esc(NAMES[flow.to_iso]||flow.to_iso)+" ("+flow.magnitude_0_100+"/100) — "+esc(flow.basis)+"</div>";
+  html+='<div class="helm-window-reason"><b>Kill condition:</b> if '+esc(c.name)+"'s trajectory flips to DECLINING, or "+(weakest?weakest.k+" drops materially below "+weakest.v+"/100":"any dynamic craters")+", the case for standing here weakens — recheck this card.</div>";
+  html+='<div class="helm-window-reason"><b>Source:</b> country.'+c.iso+" · confidence: "+esc((c.confidence||"asserted").toUpperCase())+"</div></div>";
+  return html;
+}
+function buildHelmStand(pilot){
+  var el=$("helm-stand");if(!el)return;
+  var nowMatches=helmCountryMatches(pilot.location_now);
+  var nextMatches=helmCountryMatches(pilot.location_next);
+  if(!nowMatches.length&&!nextMatches.length){
+    el.innerHTML='<div class="helm-empty">Neither location_now ("'+esc(pilot.location_now||"unset")+'") nor location_next ("'+esc(pilot.location_next||"unset")+'") names one of the 12 curated countries.json nations — nothing to cross-reference this pass. That\'s an honest null result, not a bug: add a matching country name to either field to populate this section.</div>';
+    return;
+  }
+  var html="";
+  if(nowMatches.length){
+    html+='<div class="helm-capture-sub">Where you are now</div>';
+    html+=nowMatches.map(function(c){return helmStandCard(c,"now")}).join("");
+  }
+  if(nextMatches.length){
+    html+='<div class="helm-capture-sub" style="margin-top:16px">Where you might go</div>';
+    html+=nextMatches.map(function(c){return helmStandCard(c,"next")}).join("");
+  }
+  el.innerHTML=html;
+  el.querySelectorAll(".helm-window-card[data-iso]").forEach(function(card){
+    card.onclick=function(){switchTab("countries");setTimeout(function(){openDossier("country",card.dataset.iso)},60)};
+  });
+}
 function buildHelm(rawPilot){
   var pilot=helmNormalize(rawPilot);
   var hd=document.querySelector("#v-helm h2.sec");
   if(hd&&(rawPilot.callsign||rawPilot.name))hd.textContent="Helm — "+(rawPilot.callsign||rawPilot.name);
   buildHelmAnatomy(pilot);buildHelmWindows(pilot);buildHelmLeverage(pilot);
   buildHelmBets(pilot);buildHelmInversion(pilot);buildHelmClock(pilot);buildHelmCapture(pilot);
+  buildHelmStand(pilot);
 }
 fetch("pilot.json").then(function(r){
   if(!r.ok)throw new Error("no pilot.json");

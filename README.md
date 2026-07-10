@@ -72,6 +72,7 @@ js/validate.js         schema + cross-reference validator, run before every comm
 scripts/patrol-report.js  free, keyless staleness queue generator — see Patrol below
 data/*.json             all content — see schema reference below
 data/ledger.json          value created vs. value captured, per domain→layers (Ledger tab)
+data/countries.json        12 curated nations, 3 lenses (World → Countries tab)
 pilot.example.json       HELM's schema reference — copy to pilot.json (gitignored) to use it
 ```
 
@@ -106,13 +107,26 @@ a defensible curve just doesn't appear on the chart.
 
 ### The views
 
-Today · Thesis (with a Spine causal-ribbon toggle) · Atlas (with an Orbital radial-
-schematic toggle) · Tree · Trajectory · Ledger (value created vs. value captured, with
-a migration scrubber) · Humans · Trends (Kanban/Timeline/Matrix/Everything — a multi-
-trend belief-vs-reality intensity chart) · Constraints · Forecasts · Simulate · Method ·
-Patrol · Brief — plus Helm, which only exists if you have a local `pilot.json`. Atlas
-and Tree are desktop-only (canvas pan/zoom); everything else, including Ledger, works
-on mobile.
+Five top-level tabs, each fronting a row of sub-views (the existing `ttool` toggle
+pattern, now also driving a shared parent/child router layer in `js/engine.js` — see
+`PARENT_CHILDREN`/`renderSubnav`). Every sub-view keeps its own `.view` element and id
+unchanged from before the regroup; nothing about how an individual view renders moved.
+
+- **Today** — landing page + "What Changed" (the former Brief digest, merged in).
+- **World** — Atlas (canvas pan/zoom, with an Orbital radial-schematic toggle) ·
+  Countries (12 curated nations, 3 lenses: Dynamics/Gov Focus/Capital Flows) · Tree.
+- **Trends** — Everything (multi-trend belief-vs-reality intensity chart, small-
+  multiples by default) · Trajectory · Ledger (value created vs. value captured, with a
+  migration scrubber) · Windows (the former flat Trends tab — Kanban/Timeline/Matrix).
+- **Thesis** — Thesis Register (with a Spine causal-ribbon toggle) · Humans ·
+  Forecasts.
+- **Lab** — Simulate (causal loop diagram) · Constraints · Patrol · Method.
+- **Helm** — only exists if you have a local `pilot.json`; not part of the 5-tab row.
+
+Cmd/Ctrl-K search is the fastest way to any entity regardless of which tab it lives
+under. Atlas, Tree, and the Countries Capital Flows lens specifically are desktop-only
+(all three are spatial maps built for a mouse); everything else, including the rest of
+Countries, works on mobile.
 
 ## Data schema reference
 
@@ -129,6 +143,7 @@ on mobile.
 | `method.json` | single object | Predictability hierarchy, operating rules, bias checklist, primary sources | `hierarchy[]`,`rules[]`,`biases[]`,`sources[]` |
 | `models.json` | `models[]` | The mental-model registry powering provenance tags (`⊢ModelName`) | `discipline`,`one_line`,`source`,`powers[]` (which UI features cite this model) |
 | `ledger.json` | `domains[]` | Value created vs. value captured across a value chain, per domain→`layers[]` | `value_created{score_0_100,mechanism,basis}`,`value_captured{score_0_100,metric,basis,confidence}`,`moat{type (7 Powers or "none"),strength_0_100,decay_note}`,`solo_accessible{value,note}` (fed to HELM's Capture Blindspot),`migration[{year,pool_share_0_100}]`,`links[]` (atlas/tree/human/constraint ids) |
+| `countries.json` | `countries[]` | 12 curated nations — the World → Countries tab's 3 lenses | `iso`,`name`,`lat`,`lon`,`dynamics{demography,energy,chips,fiscal,stability,trajectory}` (each scored field carries a `note` as its basis),`gov_focus[{vector,intensity_0_100,direction,basis}]`,`flows[{to_iso,type,magnitude_0_100,direction,basis}]`,`links[]` (atlas/tree/constraint ids — a flat array, not `{rel,to}` pairs, unlike every other registry's `links[]`),`confidence` (almost always `"asserted"` — every score here is editorial synthesis, not a measurement) |
 | `forecasts.json` | `forecasts[]` | The **public, committed** forecast track record | `stmt`,`p`,`dl`,`falsifier`,`resolver`,`criteria`,`outcome`,`key`; merged in-app with a private localStorage set (see Forecasts tab) |
 | `meta.json` | single object | Version, data vintage, per-registry counts, changelog | bump on every data change |
 
@@ -163,8 +178,9 @@ Staleness detection and the actual fix are two separate, deliberately decoupled 
 
 - No backend, no database, no user accounts — the private layer (forecasts you add,
   overrides you mark verified) lives in `localStorage` only.
-- No attempt to make the Atlas map or Tech Tree usable on a phone — see the mobile
-  "Desktop Only" notice on those two tabs.
+- No attempt to make a spatial pan/zoom map usable on a phone — the Atlas map, the
+  Tech Tree, and the Countries tab's Capital Flows lens specifically each show a
+  mobile "Desktop Only" notice rather than a cramped, unusable version.
 - No fabricated historical forecast resolutions — `data/forecasts.json` only contains
   claims that are honestly still pending as of its vintage.
 - No AI API key anywhere in this repo or its CI, ever — the weekly patrol workflow is

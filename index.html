@@ -204,8 +204,11 @@
       <div id="ctry-dynamics" class="ctry-lens-panel"></div>
       <div id="ctry-govfocus" class="ctry-lens-panel" style="display:none"></div>
       <div id="ctry-flows" class="ctry-lens-panel" style="display:none">
-        <div id="ctry-flows-wrap"><svg id="ctry-flows-svg"></svg></div>
-        <div id="ctry-flows-note" style="font-size:9px;letter-spacing:.05em;color:var(--faint);margin-top:8px">Arc thickness = magnitude · dashed line animates in the direction of flow (static if reduced-motion is on) · click a country to open its dossier</div>
+        <div id="ctry-flows-desktop">
+          <div id="ctry-flows-wrap"><svg id="ctry-flows-svg"></svg></div>
+          <div id="ctry-flows-note" style="font-size:9px;letter-spacing:.05em;color:var(--faint);margin-top:8px">Arc thickness = magnitude · dashed line animates in the direction of flow (static if reduced-motion is on) · click a country to open its dossier</div>
+        </div>
+        <div id="ctry-flows-mobile-note" class="helm-empty" style="display:none">Capital Flows is a spatial map — built for a mouse and a wide screen. Open this page on a laptop or desktop to explore it. Dynamics and Gov Focus both work here on mobile.</div>
       </div>
     </div>
   </div>
@@ -484,6 +487,10 @@
       <h2 class="sec">7 · Capture Blindspot</h2>
       <div class="prose" style="margin-bottom:12px;font-size:11px;color:var(--dim)"><p>Cross-references your <code>active_bets[]</code> against <code>data/ledger.json</code>: which of your value-creation plays sit in a layer that structurally leaks value to someone else, and which ledger layers a solo technical operator could actually hold a moat in. Every line cites the layer and a kill condition.</p></div>
       <div id="helm-capture"></div>
+
+      <h2 class="sec">8 · Where to Stand</h2>
+      <div class="prose" style="margin-bottom:12px;font-size:11px;color:var(--dim)"><p>Matches <code>location_now</code>/<code>location_next</code> against the 12 curated nations in <code>data/countries.json</code> by name. If neither names one of the 12, this section says so honestly rather than forcing a match. Every card cites the country and a kill condition tied to its weakest scored dimension.</p></div>
+      <div id="helm-stand"></div>
     </div>
   </div>
 
