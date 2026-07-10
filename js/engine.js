@@ -104,6 +104,12 @@ var SCENARIOS=(Store.raw.scenarios.scenarios||[]).map(function(s){
 
 var DEMO=Store.raw.constraints.demography||{};
 
+// Named CTRY_LIST, not COUNTRIES - the atlas map already has its own COUNTRIES
+// var (WORLD_RAW-derived polygon centroids for the demography choropleth,
+// see below) in this same scope; reusing the name silently clobbered it.
+var CTRY_LIST=(Store.raw.countries&&Store.raw.countries.countries)||[];
+var COUNTRY_MAP={};CTRY_LIST.forEach(function(c){COUNTRY_MAP[c.iso]=c});
+
 var LEDGER_DOMAINS=(Store.raw.ledger&&Store.raw.ledger.domains)||[];
 
 var method=Store.raw.method||{};
@@ -195,9 +201,9 @@ var LCOLOR=function(ly){return LAYERS[ly]?LAYERS[ly].c:"#f0f0f0"};
 var REG_TO_PREFIX={atlas:"atlas.",tree:"tree.",human:"human.",trend:"window."};
 function toStoreId(reg,id){return(REG_TO_PREFIX[reg]||reg+".")+id}
 function fromStoreId(sid){
-  var m=sid.match(/^(atlas|tree|human|window)\.(.+)$/);
+  var m=sid.match(/^(atlas|tree|human|window|country)\.(.+)$/);
   if(!m)return null;
-  var rm={atlas:"atlas",tree:"tree",human:"human",window:"trend"};
+  var rm={atlas:"atlas",tree:"tree",human:"human",window:"trend",country:"country"};
   return{reg:rm[m[1]],id:m[2]};
 }
 
@@ -373,16 +379,191 @@ function renderTrendDossier(t){
   }
   var _sid="window."+t.id;$("dbody").innerHTML=staleBannerHTML(_sid)+b+renderConnections(_sid);attachChipNavigation();
 }
+// Generalizes the atlas/tree/human/window xchip pattern already inlined in
+// buildThesisRegister's `supports` mapping, plus a constraint.* branch, for
+// use anywhere a mixed-registry id list needs clickable chips (currently:
+// the Countries dossier's links[]).
+function xchipFor(sid){
+  var info=fromStoreId(sid);
+  if(info){
+    var e2=Store.get(sid);var nm=e2?(e2.title||sid):sid;
+    return'<span class="xchip" data-reg="'+info.reg+'" data-id="'+info.id+'">'+esc(nm)+"</span>";
+  }
+  if(sid.indexOf("constraint.")===0){
+    var cid=sid.replace("constraint.","");
+    var cm=CONSTRAINTS.filter(function(c){return c.id===sid||c.id===cid})[0];
+    var cnm=cm?cm.title:cid.replace(/-/g," ");
+    return'<span class="xchip" style="cursor:default;color:var(--faint)">'+esc(cnm)+"</span>";
+  }
+  return'<span class="xchip" style="cursor:default;color:var(--faint)">'+esc(sid)+"</span>";
+}
 function renderCountryDossier(iso){
   var p=DEMO[iso],nm=NAMES[iso]||iso;
-  setDHead("Demography 2025→2050",p<0?"var(--enr)":"var(--min)",nm,iso+" &nbsp;"+confPill("md"));
+  var rich=COUNTRY_MAP[iso];
+  setDHead(rich?"Country":"Demography 2025→2050",p<0?"var(--enr)":"var(--min)",nm,iso+" &nbsp;"+confPill("md"));
   var verdict=p<=-20?"Severe contraction. Labor scarcity, fiscal strain, automation becomes existential.":p<0?"Shrinking workforce. Growth must come entirely from productivity.":p<20?"Roughly stable. Institutions decide everything.":p<50?"Expanding workforce. Demographic dividend available — IF jobs, education, capital arrive.":"Explosive growth. Labor supply and instability risk live here simultaneously.";
   var b='<div style="font-size:28px;font-weight:600;color:'+(p<0?"var(--enr)":"var(--min)")+';padding:14px 0 6px">'+(p>0?"+":"")+p+"%</div>";
   b+=makeDSec("WORKING-AGE (15–64) 2025→2050",verdict);
   b+=makeDSec("WHY THIS IS RELIABLE","2050's workers are already born. Fertility shifts only move the tail. UN WPP 2024 medium variant.");
+  if(rich){
+    var dyn=rich.dynamics;
+    var TRAJ_WORD={rising:"RISING",declining:"DECLINING",flat:"FLAT"};
+    var gaugesHtml=["energy","chips","fiscal","stability"].map(function(k){
+      var v=dyn[k];if(!v)return"";
+      return'<div class="ctry-gauge-row"><div class="ctry-gauge-lbl">'+k+'</div><div class="ctry-gauge-track"><div class="ctry-gauge-fill" style="width:'+v.score+'%"></div></div><div class="ctry-gauge-val">'+v.score+'</div></div>'
+        +'<div style="font-size:10px;color:var(--dim);margin:2px 0 8px 64px">'+esc(v.note)+'</div>';
+    }).join("");
+    b+=makeDSec("DYNAMICS — "+(TRAJ_WORD[dyn.trajectory]||dyn.trajectory.toUpperCase()),gaugesHtml);
+    if(rich.gov_focus&&rich.gov_focus.length){
+      var DIR_ARROW={up:"↑",down:"↓",flat:"→"};
+      var gfHtml=rich.gov_focus.map(function(g){
+        return'<div style="margin-bottom:8px"><b style="color:var(--txt)">'+esc(g.vector)+'</b> <span style="color:var(--rust)">'+(DIR_ARROW[g.direction]||"")+" "+g.intensity_0_100+'/100</span><br><span style="font-size:11px;color:var(--dim)">'+esc(g.basis)+'</span></div>';
+      }).join("");
+      b+=makeDSec("GOV FOCUS",gfHtml);
+    }
+    if(rich.flows&&rich.flows.length){
+      var flHtml=rich.flows.map(function(f){
+        var toNm=NAMES[f.to_iso]||f.to_iso;
+        return'<div style="margin-bottom:8px"><b style="color:var(--txt)">'+esc(f.type.toUpperCase())+'</b> — '+esc(f.direction||(iso+" → "+f.to_iso))+' <span style="color:var(--dim)">('+f.magnitude_0_100+'/100 toward '+esc(toNm)+')</span><br><span style="font-size:11px;color:var(--dim)">'+esc(f.basis)+'</span></div>';
+      }).join("");
+      b+=makeDSec("FLOWS",flHtml);
+    }
+    if(rich.links&&rich.links.length)b+=makeDSec("LINKED",rich.links.map(xchipFor).join(""));
+    b+=makeDSec("SOURCING",rich.as_of+" — confidence: "+rich.confidence.toUpperCase()+". Scores above are an editorial synthesis with a stated basis per field, not measured statistics — treat as directional.");
+  }
   $("dbody").innerHTML=b;
+  if(rich)attachChipNavigation();
 }
 function attachChipNavigation(){document.querySelectorAll(".xchip").forEach(function(el){el.onclick=function(){openDossier(el.dataset.reg,el.dataset.id,true)}})}
+
+// ── COUNTRIES (World → Countries lens) ────────────────────────────────────
+var ctryState={lens:"dynamics",sort:"name",flowFilter:""};
+var CTRY_TRAJ_ARROW={rising:"↑",declining:"↓",flat:"→"};
+function ctrySorted(){
+  var key=ctryState.sort;
+  return CTRY_LIST.slice().sort(function(a,b){
+    if(key==="name")return a.name.localeCompare(b.name);
+    if(key==="demography")return(b.dynamics.demography.pct_change_2025_2050||0)-(a.dynamics.demography.pct_change_2025_2050||0);
+    var av=(a.dynamics[key]&&a.dynamics[key].score)||0,bv=(b.dynamics[key]&&b.dynamics[key].score)||0;
+    return bv-av;
+  });
+}
+function renderCountriesDynamics(){
+  var el=$("ctry-dynamics");if(!el)return;
+  el.innerHTML=ctrySorted().map(function(c){
+    var dyn=c.dynamics;
+    var gauges=["energy","chips","fiscal","stability"].map(function(k){
+      var v=dyn[k];if(!v)return"";
+      return'<div class="ctry-gauge-row"><div class="ctry-gauge-lbl">'+k+'</div><div class="ctry-gauge-track"><div class="ctry-gauge-fill" style="width:'+v.score+'%"></div></div><div class="ctry-gauge-val">'+v.score+'</div></div>';
+    }).join("");
+    var demo=dyn.demography,pct=demo.pct_change_2025_2050;
+    return'<div class="ctry-card" data-iso="'+c.iso+'">'
+      +'<div class="ctry-card-hd"><div><div class="ctry-card-nm">'+esc(c.name)+'</div><div class="ctry-card-iso">'+c.iso+'</div></div>'
+      +'<div class="ctry-card-traj '+dyn.trajectory+'" title="Trajectory: '+dyn.trajectory+'">'+(CTRY_TRAJ_ARROW[dyn.trajectory]||"→")+'</div></div>'
+      +gauges
+      +'<div class="ctry-card-demo"><b>DEMOGRAPHY</b> '+(pct>0?"+":"")+pct+'% working-age by 2050</div>'
+      +'</div>';
+  }).join("");
+  el.querySelectorAll(".ctry-card").forEach(function(card){card.onclick=function(){openDossier("country",card.dataset.iso)}});
+}
+function renderCountriesGovFocus(){
+  var el=$("ctry-govfocus");if(!el)return;
+  var vecCount={};
+  CTRY_LIST.forEach(function(c){(c.gov_focus||[]).forEach(function(g){vecCount[g.vector]=(vecCount[g.vector]||0)+1})});
+  var vectors=Object.keys(vecCount).sort(function(a,b){return vecCount[b]-vecCount[a]});
+  var DIR_ARROW={up:"↑",down:"↓",flat:"→"};
+  var html='<table class="ctry-heat-table"><thead><tr><th class="ctry-heat-rowhd">COUNTRY</th>'
+    +vectors.map(function(v){return"<th>"+esc(v)+"</th>"}).join("")+"</tr></thead><tbody>";
+  CTRY_LIST.forEach(function(c){
+    html+='<tr><td class="ctry-heat-rownm" data-iso="'+c.iso+'">'+esc(c.name)+"</td>";
+    vectors.forEach(function(v){
+      var g=(c.gov_focus||[]).filter(function(x){return x.vector===v})[0];
+      if(!g){html+='<td class="ctry-heat-cell"><div class="ctry-heat-empty"></div></td>';return}
+      var alpha=(g.intensity_0_100/100*.85+.1).toFixed(2);
+      html+='<td class="ctry-heat-cell" title="'+esc(c.name+" — "+v+": "+g.intensity_0_100+"/100, "+g.direction+". "+g.basis)+'">'
+        +'<div class="ctry-heat-fill" style="background:rgba(193,68,14,'+alpha+')">'+(DIR_ARROW[g.direction]||"")+"</div></td>";
+    });
+    html+="</tr>";
+  });
+  html+="</tbody></table>";
+  el.innerHTML=html;
+  el.querySelectorAll(".ctry-heat-rownm").forEach(function(td){td.onclick=function(){openDossier("country",td.dataset.iso)}});
+}
+// Lightweight equirectangular SVG projection (lon/lat linear, no pan/zoom) —
+// deliberately not the atlas canvas's own px(lon)/py(lat), which are tied to
+// that canvas's specific pan/zoom transform state and would need reverse-
+// engineering to reuse from a different view. Twelve fixed points don't need
+// a navigable map; this borrows the atlas's visual language (dashed animated
+// arcs, motionOK-gated) rather than its rendering machinery.
+var CTRY_FLOW_COLORS={chips:"#54cfe0",energy:"#ff7152",capital:"#d8c186",reserves:"#b3a0f2",talent:"#7fd394"};
+function ctryFlowsSVG(){
+  var W=1000,H=460,PAD=20;
+  function xOf(lon){return PAD+(lon+180)/360*(W-PAD*2)}
+  function yOf(lat){return PAD+(90-lat)/180*(H-PAD*2)}
+  var svg='<svg id="ctry-flows-svg" viewBox="0 0 '+W+' '+H+'" preserveAspectRatio="xMidYMid meet">';
+  var lon,lat;
+  for(lon=-180;lon<=180;lon+=30)svg+='<line class="ctry-flow-grid" x1="'+xOf(lon)+'" y1="'+PAD+'" x2="'+xOf(lon)+'" y2="'+(H-PAD)+'"></line>';
+  for(lat=-60;lat<=90;lat+=30)svg+='<line class="ctry-flow-grid" x1="'+PAD+'" y1="'+yOf(lat)+'" x2="'+(W-PAD)+'" y2="'+yOf(lat)+'"></line>';
+  var byIso={};CTRY_LIST.forEach(function(c){byIso[c.iso]=c});
+  CTRY_LIST.forEach(function(c){
+    (c.flows||[]).forEach(function(f){
+      if(ctryState.flowFilter&&f.type!==ctryState.flowFilter)return;
+      var to=byIso[f.to_iso];if(!to)return;
+      var x1=xOf(c.lon),y1=yOf(c.lat),x2=xOf(to.lon),y2=yOf(to.lat);
+      var mx=(x1+x2)/2,my=(y1+y2)/2-30;
+      var col=CTRY_FLOW_COLORS[f.type]||"#888888";
+      var w=(.6+f.magnitude_0_100/100*2.4).toFixed(2);
+      svg+='<path class="ctry-flow-arc'+(motionOK?" animated":"")+'" d="M'+x1+","+y1+" Q"+mx+","+my+" "+x2+","+y2+'" stroke="'+col+'" stroke-width="'+w+'"><title>'+esc(c.name+" → "+to.name+" ("+f.type+", "+f.magnitude_0_100+"/100): "+f.basis)+"</title></path>";
+    });
+  });
+  CTRY_LIST.forEach(function(c){
+    var dx=xOf(c.lon),dy=yOf(c.lat);
+    // the <g> itself has no geometry to hit-test - a click landing in the gap
+    // between the visible dot and its text label would otherwise miss both.
+    // This invisible circle gives the whole marker a real, comfortable target.
+    svg+='<g class="ctry-flow-dot" data-iso="'+c.iso+'"><circle class="ctry-flow-hit" cx="'+dx+'" cy="'+dy+'" r="11" fill="transparent"></circle>'
+      +'<circle class="ctry-flow-mark" cx="'+dx+'" cy="'+dy+'" r="4" fill="var(--rust)"></circle>'
+      +'<text class="ctry-flow-label" x="'+(dx+7)+'" y="'+(dy+3)+'">'+esc(c.iso)+"</text></g>";
+  });
+  svg+="</svg>";
+  return svg;
+}
+function renderCountriesFlows(){
+  var el=$("ctry-flows-svg");if(!el)return;
+  el.outerHTML=ctryFlowsSVG();
+  var newSvg=document.getElementById("ctry-flows-svg");
+  if(newSvg)newSvg.querySelectorAll(".ctry-flow-dot").forEach(function(g){g.onclick=function(){openDossier("country",g.dataset.iso)}});
+}
+var ctryBuilt=false;
+function buildCountries(){renderCountriesDynamics();renderCountriesGovFocus();renderCountriesFlows();ctryBuilt=true}
+(function(){
+  var lensBtns=document.querySelectorAll("#ctry-lenses .ttool");if(!lensBtns.length)return;
+  var panels={dynamics:$("ctry-dynamics"),govfocus:$("ctry-govfocus"),flows:$("ctry-flows")};
+  var sortWrap=$("ctry-sort"),flowWrap=$("ctry-flow-filter");
+  lensBtns.forEach(function(b){
+    b.onclick=function(){
+      ctryState.lens=b.dataset.lens;
+      lensBtns.forEach(function(x){x.classList.toggle("on",x===b)});
+      Object.keys(panels).forEach(function(k){if(panels[k])panels[k].style.display=k===ctryState.lens?"":"none"});
+      if(sortWrap)sortWrap.style.display=ctryState.lens==="dynamics"?"flex":"none";
+      if(flowWrap)flowWrap.style.display=ctryState.lens==="flows"?"flex":"none";
+    };
+  });
+  document.querySelectorAll("#ctry-sort .ttool").forEach(function(b){
+    b.onclick=function(){
+      ctryState.sort=b.dataset.sort;
+      document.querySelectorAll("#ctry-sort .ttool").forEach(function(x){x.classList.toggle("on",x===b)});
+      renderCountriesDynamics();
+    };
+  });
+  document.querySelectorAll("#ctry-flow-filter .ttool").forEach(function(b){
+    b.onclick=function(){
+      ctryState.flowFilter=b.dataset.flow;
+      document.querySelectorAll("#ctry-flow-filter .ttool").forEach(function(x){x.classList.toggle("on",x===b)});
+      renderCountriesFlows();
+    };
+  });
+})();
 
 // ── IA: 5 top-level tabs, each fronting a set of existing full-page views ──
 // Every existing .view element (v-atlas, v-tree, v-ledger, ...) keeps its own
@@ -395,7 +576,7 @@ function attachChipNavigation(){document.querySelectorAll(".xchip").forEach(func
 // existing call sites that pass a child id directly need no changes.
 var PARENT_CHILDREN={
   today:["today"],
-  world:["atlas","tree"], // Countries joins this list in Phase C
+  world:["atlas","countries","tree"],
   trends:["everything","trajectory","ledger","windows"],
   thesis:["thesis","humans","forecasts"],
   lab:["simulate","constraints","patrol","method"]
@@ -488,6 +669,7 @@ function switchTab(v){
   if(child==="everything")buildEverything();
   if(child==="simulate")buildSimulate();
   if(child==="tree")buildTreeIfNeeded();
+  if(child==="countries")buildCountries();
   if(child==="patrol")buildPatrol();
   if(child==="thesis")buildThesisRegister();
   if(child==="today")buildToday(); // now also renders the merged-in Brief section
@@ -1469,6 +1651,7 @@ function selectPaletteItem(i){
   else if(r.reg==="tree"){switchTab("tree");buildTreeIfNeeded();setTimeout(function(){selectTreeNode(r.id)},100)}
   else if(r.reg==="humans"||r.reg==="human"){switchTab("humans");openDossier("human",r.id)}
   else if(r.reg==="trends"||r.reg==="trend"){switchTab("windows");openDossier("trend",r.id)}
+  else if(r.reg==="country"){switchTab("countries");openDossier("country",r.id)}
   else if(r.reg==="scenario"){var sc=SCENARIOS.find(function(s){return s.id===r.id});if(sc)runScenario(sc)}
 }
 $("palette-input").addEventListener("input",function(){renderPalette(searchAllv2(this.value.trim()))});
@@ -2644,7 +2827,7 @@ function searchAllv2(q){
     return ACTION_CMDS.concat(recent).slice(0,16);
   }
   var res=Store.search(q);
-  var subDesc={atlas:"Atlas",tree:"Tree",human:"Person",window:"Trend"};
+  var subDesc={atlas:"Atlas",tree:"Tree",human:"Person",window:"Trend",country:"Country"};
   return res.map(function(r){var info=fromStoreId(r.id);if(!info)return null;return{reg:info.reg,id:info.id,name:r.title,sub:(subDesc[r.type]||r.type)+" · "+r.snippet.slice(0,60)}}).filter(Boolean).slice(0,16);
 }
 

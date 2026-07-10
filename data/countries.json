@@ -1,0 +1,945 @@
+{
+  "countries": [
+    {
+      "id": "country.USA",
+      "type": "country",
+      "iso": "USA",
+      "name": "United States",
+      "title": "United States",
+      "lat": 38.9,
+      "lon": -77.0,
+      "dynamics": {
+        "demography": {
+          "workforce_peak_year": 2030,
+          "median_age": 38,
+          "trend": "flat",
+          "pct_change_2025_2050": 4,
+          "note": "Working-age pool roughly flat to 2050 (UN WPP 2024 medium variant) — immigration is the swing variable, not fertility."
+        },
+        "energy": {
+          "score": 58,
+          "note": "Domestic shale + LNG give real supply slack, but the AI buildout has moved the actual constraint onto the grid — interconnection queues (constraint.grid-interconnection-us) and turbine/transformer lead times, not fuel."
+        },
+        "chips": {
+          "score": 72,
+          "note": "Owns design (NVIDIA, AMD) and EDA/IP chokepoints, and is buying back fab capacity (TSMC Arizona, Micron), but still has zero domestic leading-edge logic fab in volume as of this vintage."
+        },
+        "fiscal": {
+          "score": 55,
+          "note": "Reserve-currency privilege funds a large twin deficit that would sink a normal sovereign — durable while the dollar's role holds, not indefinitely."
+        },
+        "stability": {
+          "score": 68,
+          "note": "High institutional continuity, but policy whiplash on trade/export-control stance across administrations is itself a source of volatility for counterparties."
+        },
+        "trajectory": "rising"
+      },
+      "gov_focus": [
+        {
+          "vector": "Sovereign AI compute",
+          "intensity_0_100": 90,
+          "direction": "up",
+          "basis": "Hyperscaler capex flood (tree.capex) plus explicit federal posture treating compute as strategic — the binding constraint the government is actually chasing is power, not chips."
+        },
+        {
+          "vector": "Export-control leverage",
+          "intensity_0_100": 85,
+          "direction": "up",
+          "basis": "Oct 2022 + subsequent rounds of controls treat advanced compute as a controlled export (tree.export); enforcement scope has widened, not narrowed, each cycle."
+        },
+        {
+          "vector": "Supply-chain diversification",
+          "intensity_0_100": 60,
+          "direction": "up",
+          "basis": "CHIPS Act-funded fab reshoring (TSMC AZ, Micron, Samsung Taylor) is real capital but on a 4-5yr fab lead time — visible in spend now, not yet in output."
+        },
+        {
+          "vector": "Energy security",
+          "intensity_0_100": 50,
+          "direction": "up",
+          "basis": "Federal and state permitting pushes for gas turbines and nuclear restarts are a direct response to datacenter power demand outpacing grid buildout."
+        }
+      ],
+      "flows": [
+        {
+          "to_iso": "TWN",
+          "type": "capital",
+          "magnitude_0_100": 55,
+          "direction": "US → TWN",
+          "basis": "CHIPS Act + hyperscaler capex co-funding TSMC's overseas fab expansion program."
+        },
+        {
+          "to_iso": "ARE",
+          "type": "capital",
+          "magnitude_0_100": 45,
+          "direction": "US ↔ ARE",
+          "basis": "US hyperscaler and chipmaker deals (e.g. Microsoft–G42) route US capital and compute access into Gulf AI buildouts under revised export terms."
+        },
+        {
+          "to_iso": "IND",
+          "type": "talent",
+          "magnitude_0_100": 70,
+          "direction": "IND → US",
+          "basis": "Long-running H-1B/skilled-immigration pipeline in engineering and AI research; the largest single bilateral tech-talent flow in this set."
+        },
+        {
+          "to_iso": "KOR",
+          "type": "chips",
+          "magnitude_0_100": 60,
+          "direction": "KOR → US",
+          "basis": "HBM and DRAM imports feed directly into the US AI accelerator supply chain (NVIDIA/AMD packaging)."
+        }
+      ],
+      "links": [
+        "atlas.nvda",
+        "atlas.ashburn",
+        "atlas.pjm",
+        "atlas.tsmcaz",
+        "atlas.micron",
+        "atlas.eda",
+        "tree.export",
+        "tree.capex",
+        "constraint.grid-interconnection-us"
+      ],
+      "as_of": "2026-06-01",
+      "confidence": "asserted"
+    },
+    {
+      "id": "country.CHN",
+      "type": "country",
+      "iso": "CHN",
+      "name": "China",
+      "title": "China",
+      "lat": 39.9,
+      "lon": 116.4,
+      "dynamics": {
+        "demography": {
+          "workforce_peak_year": 2015,
+          "median_age": 39,
+          "trend": "declining",
+          "pct_change_2025_2050": -22,
+          "note": "Working-age population already past its peak (widely dated to the mid-2010s) and contracting through 2050 — the fastest large-economy demographic reversal in this set."
+        },
+        "energy": {
+          "score": 78,
+          "note": "Builds grid and generation capacity (coal, nuclear, renewables) faster than any other economy here; power is a state-directed lever, not a binding constraint the way it is for the US."
+        },
+        "chips": {
+          "score": 48,
+          "note": "Cut off from leading-edge lithography (no EUV access) and SMIC is stuck well behind the frontier on logic, but the DeepSeek shock (tree.openw) showed real algorithmic workaround capacity under the constraint, and legacy-node capacity is expanding fast."
+        },
+        "fiscal": {
+          "score": 45,
+          "note": "High state capacity to direct spending, offset by a large local-government and property-sector debt overhang that predates and outlasts any single stimulus cycle."
+        },
+        "stability": {
+          "score": 55,
+          "note": "Low day-to-day political volatility under centralized control, but capital controls, opaque local debt, and the demographic cliff are slow-moving stability risks, not fast ones."
+        },
+        "trajectory": "flat"
+      },
+      "gov_focus": [
+        {
+          "vector": "Chip self-sufficiency",
+          "intensity_0_100": 95,
+          "direction": "up",
+          "basis": "State-directed capital (Big Fund rounds, SMIC/Huawei investment) treats mature and eventually leading-edge chip production as a national-security priority, not just an industrial one."
+        },
+        {
+          "vector": "Critical minerals leverage",
+          "intensity_0_100": 90,
+          "direction": "up",
+          "basis": "Beijing's export-control counterstrike on rare earths and processing (atlas.beijingec) explicitly mirrors and retaliates against US chip controls — a live, escalating lever."
+        },
+        {
+          "vector": "Export-control leverage",
+          "intensity_0_100": 70,
+          "direction": "up",
+          "basis": "Same counterstrike posture applied more broadly — gallium, germanium, and graphite export licensing used as negotiating leverage."
+        },
+        {
+          "vector": "Demographic dividend / labor response",
+          "intensity_0_100": 40,
+          "direction": "up",
+          "basis": "Retirement-age increases and pro-natalist subsidies are underway but modest relative to the scale of the projected contraction — an acknowledged, not yet solved, problem."
+        }
+      ],
+      "flows": [
+        {
+          "to_iso": "RUS",
+          "type": "energy",
+          "magnitude_0_100": 75,
+          "direction": "RUS → CHN",
+          "basis": "Discounted Russian crude and pipeline gas redirected to China after Western sanctions cut off the European market."
+        },
+        {
+          "to_iso": "USA",
+          "type": "reserves",
+          "magnitude_0_100": 50,
+          "direction": "CHN ↔ USA",
+          "basis": "Still one of the largest holders of US Treasuries despite a multi-year diversification trend away from dollar reserves."
+        },
+        {
+          "to_iso": "KOR",
+          "type": "chips",
+          "magnitude_0_100": 40,
+          "direction": "KOR → CHN",
+          "basis": "China remains a large end-market for South Korean memory even as leading-edge logic access is cut off."
+        }
+      ],
+      "links": [
+        "atlas.smic",
+        "atlas.huawei",
+        "atlas.bayanobo",
+        "atlas.beijingec",
+        "atlas.threegorges",
+        "atlas.ganzhou",
+        "tree.china",
+        "tree.openw"
+      ],
+      "as_of": "2026-06-01",
+      "confidence": "asserted"
+    },
+    {
+      "id": "country.TWN",
+      "type": "country",
+      "iso": "TWN",
+      "name": "Taiwan",
+      "title": "Taiwan",
+      "lat": 25.0,
+      "lon": 121.6,
+      "dynamics": {
+        "demography": {
+          "workforce_peak_year": 2015,
+          "median_age": 44,
+          "trend": "declining",
+          "pct_change_2025_2050": -28,
+          "note": "One of the steepest working-age declines in this set, compounding the concentration risk already sitting on top of TSMC."
+        },
+        "energy": {
+          "score": 35,
+          "note": "Import-dependent (LNG + coal), a small and exposed grid, and a live nuclear-phaseout debate — genuinely one of the more fragile energy positions of any economy this globally load-bearing."
+        },
+        "chips": {
+          "score": 96,
+          "note": "TSMC holds the overwhelming majority of leading-edge logic fabrication worldwide (atlas.tsmc) — the single highest-leverage chokepoint on this entire atlas, full stop."
+        },
+        "fiscal": {
+          "score": 72,
+          "note": "Sustained current-account surplus driven almost entirely by semiconductor exports; fiscally strong but that strength is itself a single-industry bet."
+        },
+        "stability": {
+          "score": 30,
+          "note": "Existential geopolitical risk (PRC reunification pressure, atlas.taiwanstrait) dominates every other stability input — this is the one score in the set where the economics are strong and the tail risk is the whole story."
+        },
+        "trajectory": "flat"
+      },
+      "gov_focus": [
+        {
+          "vector": "Supply-chain diversification",
+          "intensity_0_100": 70,
+          "direction": "up",
+          "basis": "TSMC's Arizona, Japan (Kumamoto), and Germany (Dresden) fabs are a deliberate 'silicon shield' diversification play, explicitly discussed in Taiwanese government and TSMC investor communications."
+        },
+        {
+          "vector": "Energy security",
+          "intensity_0_100": 55,
+          "direction": "up",
+          "basis": "LNG terminal expansion and renewables buildout are direct responses to how exposed fab-scale power demand is to any supply disruption."
+        },
+        {
+          "vector": "Chip self-sufficiency",
+          "intensity_0_100": 40,
+          "direction": "flat",
+          "basis": "Already dominant at the leading edge; policy focus here is defensive retention of the lead (R&D subsidy, talent retention) rather than catching up."
+        }
+      ],
+      "flows": [
+        {
+          "to_iso": "USA",
+          "type": "chips",
+          "magnitude_0_100": 90,
+          "direction": "TWN → USA",
+          "basis": "The overwhelming majority of leading-edge AI accelerator and CPU die volume for US fabless designers is fabricated at TSMC."
+        },
+        {
+          "to_iso": "JPN",
+          "type": "capital",
+          "magnitude_0_100": 40,
+          "direction": "TWN → JPN",
+          "basis": "TSMC's Kumamoto fab is a direct capital and technology transfer into Japan's chip-materials-adjacent ecosystem."
+        }
+      ],
+      "links": [
+        "atlas.taiwanstrait",
+        "atlas.tsmc",
+        "atlas.tsmcaz",
+        "atlas.ase",
+        "tree.tsmc-foundry"
+      ],
+      "as_of": "2026-06-01",
+      "confidence": "asserted"
+    },
+    {
+      "id": "country.KOR",
+      "type": "country",
+      "iso": "KOR",
+      "name": "South Korea",
+      "title": "South Korea",
+      "lat": 37.6,
+      "lon": 127.0,
+      "dynamics": {
+        "demography": {
+          "workforce_peak_year": 2018,
+          "median_age": 46,
+          "trend": "declining",
+          "pct_change_2025_2050": -32,
+          "note": "The steepest working-age decline of any economy in this set, consistent with having the world's lowest total fertility rate for over a decade."
+        },
+        "energy": {
+          "score": 45,
+          "note": "Import-dependent with a domestically nuclear-heavy grid; adequate for current load but a real constraint on further heavy-industry or datacenter expansion without new nuclear or LNG capacity."
+        },
+        "chips": {
+          "score": 82,
+          "note": "SK Hynix and Samsung together hold the dominant share of HBM and DRAM production (constraint.hbm-qualification) — the memory half of the AI-accelerator supply chain runs through this country."
+        },
+        "fiscal": {
+          "score": 68,
+          "note": "Sustained export-driven current-account surplus; fiscally conservative by developed-economy standards."
+        },
+        "stability": {
+          "score": 62,
+          "note": "High institutional stability with a persistent but low-probability North Korea tail risk; the demographic collapse is a slower, larger, more certain risk than the security one."
+        },
+        "trajectory": "flat"
+      },
+      "gov_focus": [
+        {
+          "vector": "Chip self-sufficiency",
+          "intensity_0_100": 75,
+          "direction": "up",
+          "basis": "K-Chips Act-style subsidies and tax credits aim to keep HBM/memory fab investment domestic rather than losing it to US-based expansion incentives."
+        },
+        {
+          "vector": "Demographic dividend / labor response",
+          "intensity_0_100": 65,
+          "direction": "up",
+          "basis": "Government has run a large, explicitly-acknowledged pro-natalist subsidy program for years with limited measured effect on the fertility rate to date."
+        }
+      ],
+      "flows": [
+        {
+          "to_iso": "USA",
+          "type": "chips",
+          "magnitude_0_100": 65,
+          "direction": "KOR → USA",
+          "basis": "HBM/DRAM exports feed directly into US AI accelerator packaging (NVIDIA, AMD)."
+        },
+        {
+          "to_iso": "CHN",
+          "type": "chips",
+          "magnitude_0_100": 40,
+          "direction": "KOR → CHN",
+          "basis": "China remains a large memory export market despite the broader chip-control regime, since memory sits outside most leading-edge logic restrictions."
+        }
+      ],
+      "links": [
+        "atlas.skhynix",
+        "atlas.samsung",
+        "constraint.hbm-qualification",
+        "constraint.demographic-cohort"
+      ],
+      "as_of": "2026-06-01",
+      "confidence": "asserted"
+    },
+    {
+      "id": "country.JPN",
+      "type": "country",
+      "iso": "JPN",
+      "name": "Japan",
+      "title": "Japan",
+      "lat": 35.7,
+      "lon": 139.7,
+      "dynamics": {
+        "demography": {
+          "workforce_peak_year": 1995,
+          "median_age": 49,
+          "trend": "declining",
+          "pct_change_2025_2050": -26,
+          "note": "Working-age population peaked three decades ago — the longest-running contraction of any economy in this set, and the one every other aging economy here is implicitly compared against."
+        },
+        "energy": {
+          "score": 40,
+          "note": "Post-Fukushima nuclear restart has been slow and politically contested; heavy LNG dependence keeps industrial power costs structurally high relative to the US or China."
+        },
+        "chips": {
+          "score": 60,
+          "note": "Doesn't compete at leading-edge logic volume, but the Tokyo materials/equipment complex (atlas.tokyomat) is a real chokepoint feeding every fab globally, and Rapidus is a live, high-risk bet to re-enter 2nm logic."
+        },
+        "fiscal": {
+          "score": 38,
+          "note": "Debt/GDP is the highest of any economy in this set (~260% by most recent published figures), offset historically by low borrowing costs from overwhelmingly domestic bond ownership — a structure under real pressure as the BOJ normalizes policy."
+        },
+        "stability": {
+          "score": 72,
+          "note": "Very high institutional and social stability; the demographic and fiscal pressures are slow-burning, not acute."
+        },
+        "trajectory": "flat"
+      },
+      "gov_focus": [
+        {
+          "vector": "Chip self-sufficiency",
+          "intensity_0_100": 55,
+          "direction": "up",
+          "basis": "Rapidus's government-backed 2nm logic bet is an explicit attempt to re-enter leading-edge fabrication after decades of ceding ground to TSMC and Samsung."
+        },
+        {
+          "vector": "Demographic dividend / labor response",
+          "intensity_0_100": 60,
+          "direction": "up",
+          "basis": "Automation and robotics deployment is being pursued as the primary policy substitute for the labor force Japan is not going to get back — an explicit, decades-old strategic choice."
+        }
+      ],
+      "flows": [
+        {
+          "to_iso": "TWN",
+          "type": "capital",
+          "magnitude_0_100": 40,
+          "direction": "TWN → JPN",
+          "basis": "TSMC's Kumamoto fab investment is a direct inbound capital and technology flow tied to Japan's materials-supply strength."
+        },
+        {
+          "to_iso": "USA",
+          "type": "chips",
+          "magnitude_0_100": 45,
+          "direction": "JPN → USA",
+          "basis": "Semiconductor materials and equipment exports (photoresist, specialty chemicals) feed US fab capacity expansion."
+        }
+      ],
+      "links": [
+        "atlas.tokyomat",
+        "atlas.rapidus",
+        "tree.tsmc-foundry"
+      ],
+      "as_of": "2026-06-01",
+      "confidence": "asserted"
+    },
+    {
+      "id": "country.IND",
+      "type": "country",
+      "iso": "IND",
+      "name": "India",
+      "title": "India",
+      "lat": 28.6,
+      "lon": 77.2,
+      "dynamics": {
+        "demography": {
+          "workforce_peak_year": 2045,
+          "median_age": 29,
+          "trend": "rising",
+          "pct_change_2025_2050": 12,
+          "note": "One of only three economies in this set with a growing working-age population through 2050 — the demographic dividend is real, but it only pays off if jobs and capital show up to meet it."
+        },
+        "energy": {
+          "score": 42,
+          "note": "Still coal-heavy with a large and fast renewables buildout underway, but grid reliability and industrial power availability remain a real constraint on manufacturing growth outside a few states."
+        },
+        "chips": {
+          "score": 20,
+          "note": "No domestic leading-edge or even mature-node fab in volume production as of this vintage — India Semiconductor Mission incentives are real but the country is still pre-fab, not post-fab, in this stack. Score reflects that honestly rather than crediting announced-but-unbuilt capacity."
+        },
+        "fiscal": {
+          "score": 48,
+          "note": "Fiscal deficit is manageable relative to GDP but large in absolute terms given population scale; improving trend over the past decade."
+        },
+        "stability": {
+          "score": 58,
+          "note": "Robust electoral democracy with real institutional continuity, offset by execution risk on large infrastructure and industrial-policy programs."
+        },
+        "trajectory": "rising"
+      },
+      "gov_focus": [
+        {
+          "vector": "Chip self-sufficiency",
+          "intensity_0_100": 45,
+          "direction": "up",
+          "basis": "India Semiconductor Mission subsidies have attracted announced fab and packaging investment (Micron, Tata), but as of this vintage none is yet at volume leading-edge production — this is an early-stage, not mature, policy push."
+        },
+        {
+          "vector": "Demographic dividend / labor response",
+          "intensity_0_100": 85,
+          "direction": "up",
+          "basis": "Explicit, high-stakes government framing: the working-age expansion is the central economic opportunity of the next 25 years, and job-creation policy is treated as existential to capturing it rather than routine."
+        },
+        {
+          "vector": "Critical minerals leverage",
+          "intensity_0_100": 30,
+          "direction": "up",
+          "basis": "Early-stage critical-mineral partnership agreements (with Australia, others) aimed at reducing dependence on China-controlled processing, still nascent."
+        }
+      ],
+      "flows": [
+        {
+          "to_iso": "USA",
+          "type": "talent",
+          "magnitude_0_100": 80,
+          "direction": "IND → USA",
+          "basis": "The largest single source of skilled-immigration tech and engineering talent into the US by a wide margin, sustained over decades."
+        }
+      ],
+      "links": [
+        "constraint.demographic-cohort"
+      ],
+      "as_of": "2026-06-01",
+      "confidence": "asserted"
+    },
+    {
+      "id": "country.SGP",
+      "type": "country",
+      "iso": "SGP",
+      "name": "Singapore",
+      "title": "Singapore",
+      "lat": 1.35,
+      "lon": 103.8,
+      "dynamics": {
+        "demography": {
+          "workforce_peak_year": 2020,
+          "median_age": 43,
+          "trend": "declining",
+          "pct_change_2025_2050": -15,
+          "note": "Working-age population contracting despite very high immigration inflows relative to citizen population, a structural feature of the city-state model."
+        },
+        "energy": {
+          "score": 25,
+          "note": "Fully import-dependent with almost no domestic generation land or resources; grid capacity is the direct, explicit constraint behind the country's own past datacenter-construction moratorium — one of the tightest energy positions in this set."
+        },
+        "chips": {
+          "score": 50,
+          "note": "Not a leading-edge fab site, but a genuinely important assembly, test, and packaging hub (adjacent to atlas.ase-scale operations regionally) plus a growing wafer-fab presence — a mid-tier but real node in the stack, not a bystander."
+        },
+        "fiscal": {
+          "score": 88,
+          "note": "Among the strongest sovereign balance sheets in the world via GIC and Temasek's reserve holdings — this is the standout fiscal score in the set."
+        },
+        "stability": {
+          "score": 80,
+          "note": "Extremely high institutional and political stability; the real vulnerability is scale and regional-shock exposure, not internal governance."
+        },
+        "trajectory": "rising"
+      },
+      "gov_focus": [
+        {
+          "vector": "Sovereign AI compute",
+          "intensity_0_100": 60,
+          "direction": "up",
+          "basis": "The Singapore–Johor data-center and compute corridor (atlas.sgjohor) is a direct policy response to domestic energy limits — capacity is being built just across the border rather than at home."
+        },
+        {
+          "vector": "Capital recycling abroad",
+          "intensity_0_100": 85,
+          "direction": "up",
+          "basis": "GIC and Temasek deploy sovereign capital into global tech and AI infrastructure at a scale far larger than the domestic economy, a long-running and explicit state strategy."
+        },
+        {
+          "vector": "Energy security",
+          "intensity_0_100": 70,
+          "direction": "up",
+          "basis": "Regional power-grid interconnection (Laos-Thailand-Malaysia-Singapore) and LNG import diversification are direct responses to having essentially zero domestic generation slack."
+        }
+      ],
+      "flows": [
+        {
+          "to_iso": "USA",
+          "type": "capital",
+          "magnitude_0_100": 60,
+          "direction": "SGP → USA",
+          "basis": "GIC/Temasek are large, active investors in US tech and AI-infrastructure assets."
+        },
+        {
+          "to_iso": "ARE",
+          "type": "capital",
+          "magnitude_0_100": 35,
+          "direction": "SGP ↔ ARE",
+          "basis": "Both sovereign-wealth-heavy states co-invest in overlapping global AI and infrastructure deals."
+        }
+      ],
+      "links": [
+        "atlas.sgjohor",
+        "atlas.malacca"
+      ],
+      "as_of": "2026-06-01",
+      "confidence": "asserted"
+    },
+    {
+      "id": "country.ARE",
+      "type": "country",
+      "iso": "ARE",
+      "name": "United Arab Emirates",
+      "title": "United Arab Emirates",
+      "lat": 24.5,
+      "lon": 54.4,
+      "dynamics": {
+        "demography": {
+          "workforce_peak_year": 2040,
+          "median_age": 34,
+          "trend": "rising",
+          "pct_change_2025_2050": 5,
+          "note": "Positive working-age trend, but read this with real caution: the population is overwhelmingly expatriate-driven rather than citizen-fertility-driven, which is a fundamentally different mechanism than India's dividend and carries its own dependency risk."
+        },
+        "energy": {
+          "score": 70,
+          "note": "Oil wealth plus an aggressive nuclear (Barakah) and solar diversification push gives real slack — increasingly positioned as a power exporter into its own AI-compute buildout, not just an oil exporter."
+        },
+        "chips": {
+          "score": 30,
+          "note": "No domestic fabrication, but has become one of the largest single buyers/hosts of advanced AI compute globally (G42, Stargate UAE at atlas.uae-ai-cluster) under negotiated export terms — a demand-side, not supply-side, chip position."
+        },
+        "fiscal": {
+          "score": 82,
+          "note": "Very strong sovereign balance sheet via ADIA and Mubadala; oil-revenue-funded but increasingly diversified into tech and AI holdings."
+        },
+        "stability": {
+          "score": 65,
+          "note": "High short-run political stability under a consolidated monarchy; longer-run risk is concentration of power and dependence on continued Western compute-access terms."
+        },
+        "trajectory": "rising"
+      },
+      "gov_focus": [
+        {
+          "vector": "Sovereign AI compute",
+          "intensity_0_100": 95,
+          "direction": "up",
+          "basis": "The Stargate UAE / Abu Dhabi AI Campus buildout (atlas.uae-ai-cluster) and G42's partnerships are an explicit, state-level bet to become a top-tier global AI compute hub."
+        },
+        {
+          "vector": "Capital recycling abroad",
+          "intensity_0_100": 75,
+          "direction": "up",
+          "basis": "Mubadala and ADIA route oil-derived capital into global tech and AI infrastructure at a scale well beyond domestic absorption capacity."
+        },
+        {
+          "vector": "Energy security",
+          "intensity_0_100": 55,
+          "direction": "up",
+          "basis": "Barakah nuclear plant and solar buildout are explicitly framed around powering the AI-compute ambition, not just domestic consumption."
+        }
+      ],
+      "flows": [
+        {
+          "to_iso": "USA",
+          "type": "capital",
+          "magnitude_0_100": 60,
+          "direction": "ARE → USA",
+          "basis": "Mubadala/ADIA and G42 have made large, publicly disclosed investments and partnership deals with US AI and chip firms."
+        },
+        {
+          "to_iso": "SAU",
+          "type": "capital",
+          "magnitude_0_100": 30,
+          "direction": "ARE ↔ SAU",
+          "basis": "Overlapping Gulf sovereign-wealth co-investment in regional AI and infrastructure projects."
+        }
+      ],
+      "links": [
+        "atlas.uae-ai-cluster",
+        "atlas.hormuz",
+        "tree.sovereign-ai"
+      ],
+      "as_of": "2026-06-01",
+      "confidence": "asserted"
+    },
+    {
+      "id": "country.SAU",
+      "type": "country",
+      "iso": "SAU",
+      "name": "Saudi Arabia",
+      "title": "Saudi Arabia",
+      "lat": 24.7,
+      "lon": 46.7,
+      "dynamics": {
+        "demography": {
+          "workforce_peak_year": 2050,
+          "median_age": 27,
+          "trend": "rising",
+          "pct_change_2025_2050": 20,
+          "note": "The strongest working-age growth trend in this set — a genuine, citizen-driven youth bulge rather than an expatriate-inflow effect, which is the key structural difference from the UAE's demographic profile."
+        },
+        "energy": {
+          "score": 92,
+          "note": "Ghawar and Abqaiq (atlas.ghawar) remain the largest and lowest-cost conventional oil production complex on earth — the single strongest energy-control score in this set by a wide margin."
+        },
+        "chips": {
+          "score": 22,
+          "note": "No meaningful domestic fabrication capacity; PIF-funded AI ambitions are compute-demand plays (buying/hosting), not supply-chain positions."
+        },
+        "fiscal": {
+          "score": 50,
+          "note": "Vision 2030 diversification spending is enormous relative to non-oil revenue, and the budget's break-even oil price has risen with it — real strength funded by a commodity whose price the country doesn't fully control."
+        },
+        "stability": {
+          "score": 55,
+          "note": "High short-term political stability under consolidated leadership; the multi-decade Vision 2030 diversification bet carries real execution risk that won't resolve for years."
+        },
+        "trajectory": "rising"
+      },
+      "gov_focus": [
+        {
+          "vector": "Sovereign AI compute",
+          "intensity_0_100": 70,
+          "direction": "up",
+          "basis": "PIF-funded AI and data-center investment (including stakes tied to global compute buildouts) mirrors the UAE playbook, at a slightly earlier stage of execution."
+        },
+        {
+          "vector": "Capital recycling abroad",
+          "intensity_0_100": 75,
+          "direction": "up",
+          "basis": "PIF is one of the largest sovereign wealth funds globally and has been an active, publicly disclosed investor in tech, gaming, and AI-adjacent assets."
+        },
+        {
+          "vector": "Demographic dividend / labor response",
+          "intensity_0_100": 65,
+          "direction": "up",
+          "basis": "Vision 2030's job-localization (Saudization) programs are a direct, explicit policy response to needing to absorb the youth bulge into non-oil employment."
+        }
+      ],
+      "flows": [
+        {
+          "to_iso": "USA",
+          "type": "capital",
+          "magnitude_0_100": 55,
+          "direction": "SAU → USA",
+          "basis": "PIF has made large, publicly disclosed investments across US tech, gaming, and infrastructure sectors."
+        },
+        {
+          "to_iso": "CHN",
+          "type": "energy",
+          "magnitude_0_100": 65,
+          "direction": "SAU → CHN",
+          "basis": "China is one of Saudi Arabia's largest single crude-oil export markets."
+        }
+      ],
+      "links": [
+        "atlas.ghawar",
+        "atlas.hormuz",
+        "tree.sovereign-ai"
+      ],
+      "as_of": "2026-06-01",
+      "confidence": "asserted"
+    },
+    {
+      "id": "country.NLD",
+      "type": "country",
+      "iso": "NLD",
+      "name": "Netherlands",
+      "title": "Netherlands",
+      "lat": 52.4,
+      "lon": 4.9,
+      "dynamics": {
+        "demography": {
+          "workforce_peak_year": 2022,
+          "median_age": 43,
+          "trend": "flat",
+          "pct_change_2025_2050": -6,
+          "note": "Mild working-age decline, among the gentlest in this set, cushioned by continued EU labor mobility."
+        },
+        "energy": {
+          "score": 40,
+          "note": "Domestic North Sea gas production is in structural decline; import-dependent with an aggressive but not yet complete renewables buildout on a small, dense grid."
+        },
+        "chips": {
+          "score": 90,
+          "note": "ASML (atlas.asml) is the sole global source of EUV lithography systems — arguably the single most concentrated, highest-leverage chokepoint anywhere in this atlas, ahead even of TSMC's fabrication share."
+        },
+        "fiscal": {
+          "score": 78,
+          "note": "AAA-rated, sustained current-account surplus, low debt/GDP — one of the strongest fiscal positions in this set."
+        },
+        "stability": {
+          "score": 75,
+          "note": "Very high institutional stability; the live tension is being caught between US export-control demands and Chinese market access for ASML, a genuinely difficult position for a country this economically dependent on one firm."
+        },
+        "trajectory": "flat"
+      },
+      "gov_focus": [
+        {
+          "vector": "Export-control leverage",
+          "intensity_0_100": 80,
+          "direction": "up",
+          "basis": "The Dutch government has repeatedly tightened ASML export licensing to China under sustained US pressure — an ongoing, escalating policy tension explicitly tied to tree.export."
+        },
+        {
+          "vector": "Chip self-sufficiency",
+          "intensity_0_100": 30,
+          "direction": "flat",
+          "basis": "Already holds the dominant position in EUV; policy focus is retention and R&D continuity (with Zeiss/Germany) rather than catching up to anyone."
+        }
+      ],
+      "flows": [
+        {
+          "to_iso": "TWN",
+          "type": "chips",
+          "magnitude_0_100": 85,
+          "direction": "NLD → TWN",
+          "basis": "TSMC's entire leading-edge roadmap depends on ASML's EUV systems — the most concentrated single-supplier flow in this dataset."
+        },
+        {
+          "to_iso": "KOR",
+          "type": "chips",
+          "magnitude_0_100": 70,
+          "direction": "NLD → KOR",
+          "basis": "Samsung and SK Hynix are also EUV customers, though smaller volume purchasers than TSMC."
+        }
+      ],
+      "links": [
+        "atlas.asml",
+        "atlas.zeiss",
+        "tree.export"
+      ],
+      "as_of": "2026-06-01",
+      "confidence": "asserted"
+    },
+    {
+      "id": "country.DEU",
+      "type": "country",
+      "iso": "DEU",
+      "name": "Germany",
+      "title": "Germany",
+      "lat": 52.5,
+      "lon": 13.4,
+      "dynamics": {
+        "demography": {
+          "workforce_peak_year": 2020,
+          "median_age": 46,
+          "trend": "declining",
+          "pct_change_2025_2050": -15,
+          "note": "Working-age population in sustained decline, cushioned somewhat by EU and non-EU immigration relative to the natural-fertility trend alone."
+        },
+        "energy": {
+          "score": 32,
+          "note": "Post-nuclear-phaseout and post-Russian-pipeline-gas-shock, industrial energy costs have risen structurally; renewables buildout is real but storage and grid capacity lag demand — one of the more energy-stressed wealthy economies in this set."
+        },
+        "chips": {
+          "score": 55,
+          "note": "Zeiss's optics (atlas.zeiss) are a direct, load-bearing input into ASML's EUV systems — a narrow but genuinely critical chokepoint, not a broad fabrication base."
+        },
+        "fiscal": {
+          "score": 60,
+          "note": "Historically fiscally conservative (constitutional debt brake) but under real pressure from industrial-decline-driven revenue softness and rising defense/energy-transition spending demands."
+        },
+        "stability": {
+          "score": 65,
+          "note": "High institutional stability; the live slow-variable story is industrial-model stress in autos and chemicals from Chinese competition and energy costs, not political instability."
+        },
+        "trajectory": "declining"
+      },
+      "gov_focus": [
+        {
+          "vector": "Energy security",
+          "intensity_0_100": 80,
+          "direction": "up",
+          "basis": "LNG terminal buildout and renewables acceleration are a direct, urgent response to losing pipeline gas access after 2022 — the most acute energy-policy shift in this set."
+        },
+        {
+          "vector": "Supply-chain diversification",
+          "intensity_0_100": 55,
+          "direction": "up",
+          "basis": "Industrial policy responses to Chinese EV and chip competition (tariffs, subsidy proposals) reflect a broader de-risking posture, still contested domestically."
+        }
+      ],
+      "flows": [
+        {
+          "to_iso": "NLD",
+          "type": "chips",
+          "magnitude_0_100": 60,
+          "direction": "DEU → NLD",
+          "basis": "Zeiss optics are a direct input into ASML's EUV lithography systems, making Germany a co-dependent node in the same chokepoint."
+        },
+        {
+          "to_iso": "USA",
+          "type": "energy",
+          "magnitude_0_100": 40,
+          "direction": "USA → DEU",
+          "basis": "US LNG exports have become a meaningful replacement for lost Russian pipeline gas volume."
+        }
+      ],
+      "links": [
+        "atlas.zeiss",
+        "constraint.large-power-transformer"
+      ],
+      "as_of": "2026-06-01",
+      "confidence": "asserted"
+    },
+    {
+      "id": "country.RUS",
+      "type": "country",
+      "iso": "RUS",
+      "name": "Russia",
+      "title": "Russia",
+      "lat": 55.8,
+      "lon": 37.6,
+      "dynamics": {
+        "demography": {
+          "workforce_peak_year": 2010,
+          "median_age": 41,
+          "trend": "declining",
+          "pct_change_2025_2050": -15,
+          "note": "Working-age decline compounded by wartime casualties and a sustained emigration wave since 2022 — the composition of the loss (skilled emigration specifically) likely matters more than the headline number."
+        },
+        "energy": {
+          "score": 62,
+          "note": "Reserves and production capacity remain large, but Western market access is severed; the real story is redirection (to China/India at a discount) rather than reduced output."
+        },
+        "chips": {
+          "score": 10,
+          "note": "Almost entirely cut off from leading-edge and most mature-node chip access under export controls; forced onto parallel-import and grey-market channels for both consumer and military-adjacent electronics. Score reflects near-total exclusion, not a data gap."
+        },
+        "fiscal": {
+          "score": 35,
+          "note": "War-economy spending plus sanctions strain the budget, partially offset by redirected energy revenue; fiscal opacity means real confidence in any precise figure here is low — treat this score as directional, not measured."
+        },
+        "stability": {
+          "score": 25,
+          "note": "High uncertainty from sustained war-economy footing, sanctions pressure, and opaque elite dynamics — the lowest stability score in this set."
+        },
+        "trajectory": "declining"
+      },
+      "gov_focus": [
+        {
+          "vector": "Export-control leverage",
+          "intensity_0_100": 60,
+          "direction": "up",
+          "basis": "On the receiving end of controls rather than imposing them — policy focus is sanctions evasion and parallel-import workaround infrastructure, an inversion of every other country's posture on this vector."
+        },
+        {
+          "vector": "Energy security",
+          "intensity_0_100": 70,
+          "direction": "up",
+          "basis": "Active redirection of oil and gas export infrastructure toward Asian buyers (China, India) at a discount, replacing severed European pipeline and tanker routes."
+        }
+      ],
+      "flows": [
+        {
+          "to_iso": "CHN",
+          "type": "energy",
+          "magnitude_0_100": 75,
+          "direction": "RUS → CHN",
+          "basis": "Discounted crude and pipeline gas redirected to China after the loss of the European market."
+        },
+        {
+          "to_iso": "IND",
+          "type": "energy",
+          "magnitude_0_100": 55,
+          "direction": "RUS → IND",
+          "basis": "India has become one of the largest buyers of discounted Russian seaborne crude since 2022."
+        }
+      ],
+      "links": [
+        "atlas.nsr",
+        "tree.export"
+      ],
+      "as_of": "2026-06-01",
+      "confidence": "asserted"
+    }
+  ]
+}

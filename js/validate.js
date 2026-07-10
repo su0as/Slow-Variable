@@ -33,6 +33,7 @@ const theses      = loadJSON('theses.json');
 const method      = loadJSON('method.json');
 const meta        = loadJSON('meta.json');
 const ledger      = loadJSON('ledger.json');
+const countries   = loadJSON('countries.json');
 
 // ── collect all entity ids ──────────────────────────────────────────────────
 const allIds = new Set();
@@ -52,6 +53,7 @@ registerEntities(constraints?.rows,      'constraints');
 registerEntities(scenarios?.scenarios,   'scenarios');
 registerEntities(graveyard?.graveyard,   'graveyard');
 registerEntities(theses?.theses,         'theses');
+registerEntities(countries?.countries,   'countries');
 if (method?.id) allIds.add(method.id);
 console.log(`\nRegistered ${allIds.size} entity IDs`);
 
@@ -218,6 +220,66 @@ if (ledger?.domains) {
   });
 } else {
   warn('ledger.json missing or empty — LEDGER tab will render no domains (ok if not yet seeded)');
+}
+
+// ── check countries (World → Countries lens) ────────────────────────────────
+const COUNTRY_ENV = ['id','iso','name','lat','lon','dynamics','gov_focus','flows','links','as_of','confidence'];
+const DYNAMICS_SCORED = ['energy','chips','fiscal','stability'];
+const TRAJECTORIES = new Set(['rising','flat','declining']);
+const FLOW_TYPES = new Set(['chips','energy','capital','reserves','talent']);
+const DIRECTIONS = new Set(['up','flat','down']);
+if (countries?.countries) {
+  const seenIso = new Set();
+  countries.countries.forEach(c => {
+    COUNTRY_ENV.forEach(f => { if (c[f] == null) err(`${c.id || c.iso}: missing required field '${f}'`); });
+    if (c.iso) {
+      if (seenIso.has(c.iso)) err(`countries: duplicate iso ${c.iso}`);
+      seenIso.add(c.iso);
+    }
+    if (isNaN(Date.parse(c.as_of))) err(`${c.id}: invalid as_of '${c.as_of}' — use YYYY-MM-DD`);
+
+    const dyn = c.dynamics || {};
+    if (!dyn.demography) err(`${c.id}: dynamics missing demography`);
+    if (dyn.trajectory && !TRAJECTORIES.has(dyn.trajectory))
+      err(`${c.id}: dynamics.trajectory '${dyn.trajectory}' must be one of rising/flat/declining`);
+    DYNAMICS_SCORED.forEach(k => {
+      const v = dyn[k];
+      if (!v) { err(`${c.id}: dynamics missing ${k}`); return; }
+      if (v.score == null || v.score < 0 || v.score > 100) err(`${c.id}: dynamics.${k}.score=${v.score} must be 0-100`);
+      if (!v.note) err(`${c.id}: dynamics.${k} missing note (its basis)`);
+    });
+
+    (c.gov_focus || []).forEach((g,i) => {
+      const gid = `${c.id}: gov_focus[${i}]`;
+      if (!g.vector) err(`${gid} missing vector`);
+      if (g.intensity_0_100 == null || g.intensity_0_100 < 0 || g.intensity_0_100 > 100)
+        err(`${gid}.intensity_0_100=${g.intensity_0_100} must be 0-100`);
+      if (!g.direction || !DIRECTIONS.has(g.direction)) err(`${gid}.direction '${g.direction}' must be up/flat/down`);
+      if (!g.basis) err(`${gid} missing basis`);
+    });
+
+    (c.flows || []).forEach((f,i) => {
+      const fid = `${c.id}: flows[${i}]`;
+      if (!f.to_iso) err(`${fid} missing to_iso`);
+      if (!f.type || !FLOW_TYPES.has(f.type))
+        err(`${fid}.type '${f.type}' must be one of: ${[...FLOW_TYPES].join(', ')}`);
+      if (f.magnitude_0_100 == null || f.magnitude_0_100 < 0 || f.magnitude_0_100 > 100)
+        err(`${fid}.magnitude_0_100=${f.magnitude_0_100} must be 0-100`);
+      if (!f.direction) err(`${fid} missing direction`);
+      if (!f.basis) err(`${fid} missing basis`);
+    });
+
+    // links[] here is a flat array of entity ids (unlike the {rel,to} shape
+    // used elsewhere) — see UPDATE_PROTOCOL.md's countries.json field docs.
+    (c.links || []).forEach(linkId => {
+      if (!allIds.has(linkId)) err(`${c.id}: links references '${linkId}' not in entity registry`);
+    });
+
+    if (c.confidence === 'asserted' && !c.as_of)
+      err(`${c.id}: confidence 'asserted' entries still need as_of for staleness tracking`);
+  });
+} else {
+  warn('countries.json missing or empty — Countries lens will render no cards (ok if not yet seeded)');
 }
 
 // ── check optional curve[] (Everything chart) ───────────────────────────────

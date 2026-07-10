@@ -171,6 +171,45 @@
     </div>
   </div>
 
+  <!-- COUNTRIES -->
+  <div class="view scrollview" id="v-countries">
+    <div class="inner" style="max-width:1280px">
+      <h2 class="sec">Countries</h2>
+      <div class="prose" style="margin-bottom:16px"><p>Twelve curated nations, three lenses on the same underlying data. Every score is an editorial synthesis (confidence: asserted) with a stated basis, not a measured statistic — click a country for sourcing and the full picture.</p></div>
+      <div id="ctry-toolbar">
+        <div id="ctry-lenses">
+          <button class="ttool on" id="ctry-lens-dynamics" data-lens="dynamics" title="One card per country: demography, energy, chips, fiscal, stability, trajectory">Dynamics</button>
+          <button class="ttool" id="ctry-lens-govfocus" data-lens="govfocus" title="Heatmap: countries × policy vectors, cell = intensity + direction">Gov Focus</button>
+          <button class="ttool" id="ctry-lens-flows" data-lens="flows" title="Directed capital/chips/energy/talent flows between countries">Capital Flows</button>
+        </div>
+        <div id="ctry-sort">
+          <span class="ctry-sort-lbl">SORT</span>
+          <button class="ttool on" data-sort="name">Name</button>
+          <button class="ttool" data-sort="energy">Energy</button>
+          <button class="ttool" data-sort="chips">Chips</button>
+          <button class="ttool" data-sort="fiscal">Fiscal</button>
+          <button class="ttool" data-sort="stability">Stability</button>
+          <button class="ttool" data-sort="demography">Demography</button>
+        </div>
+        <div id="ctry-flow-filter" style="display:none">
+          <span class="ctry-sort-lbl">FLOW TYPE</span>
+          <button class="ttool on" data-flow="">All</button>
+          <button class="ttool" data-flow="chips">Chips</button>
+          <button class="ttool" data-flow="energy">Energy</button>
+          <button class="ttool" data-flow="capital">Capital</button>
+          <button class="ttool" data-flow="reserves">Reserves</button>
+          <button class="ttool" data-flow="talent">Talent</button>
+        </div>
+      </div>
+      <div id="ctry-dynamics" class="ctry-lens-panel"></div>
+      <div id="ctry-govfocus" class="ctry-lens-panel" style="display:none"></div>
+      <div id="ctry-flows" class="ctry-lens-panel" style="display:none">
+        <div id="ctry-flows-wrap"><svg id="ctry-flows-svg"></svg></div>
+        <div id="ctry-flows-note" style="font-size:9px;letter-spacing:.05em;color:var(--faint);margin-top:8px">Arc thickness = magnitude · dashed line animates in the direction of flow (static if reduced-motion is on) · click a country to open its dossier</div>
+      </div>
+    </div>
+  </div>
+
   <!-- TREE -->
   <div class="view" id="v-tree">
     <div id="tree-toolbar">

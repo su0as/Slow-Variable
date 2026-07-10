@@ -1,5 +1,5 @@
 {
-  "version": "3.6.0",
+  "version": "3.7.0",
   "last_updated": "2026-07-10",
   "counts": {
     "atlas": 60,
@@ -16,9 +16,15 @@
     "ledger_layers": 7,
     "everything_curves_authored": 0,
     "everything_curves_derived": 6,
-    "everything_house_trends": 6
+    "everything_house_trends": 6,
+    "countries": 12
   },
   "changelog": [
+    {
+      "date": "2026-07-10",
+      "by": "claude-sonnet-5",
+      "summary": "v3.7 Phase C: new World → Countries lens + data/countries.json, 12 curated nations (US, China, Taiwan, South Korea, Japan, India, Singapore, UAE, Saudi Arabia, Netherlands, Germany, Russia). Schema per country: dynamics{demography,energy,chips,fiscal,stability,trajectory}, gov_focus[{vector,intensity_0_100,direction,basis}], flows[{to_iso,type,magnitude_0_100,direction,basis}], links[] to real existing atlas/tree/constraint ids, confidence:\"asserted\" throughout since every score is an editorial synthesis, not a measured statistic — every field carries a basis string saying why. Demography numbers reuse the existing constraints.json UN-WPP-sourced figures rather than re-deriving. Three lenses: Dynamics (small-multiples grid, sortable by any variable), Gov Focus (heatmap, countries × policy vectors derived dynamically from the data — no hardcoded vector list), Capital Flows (lightweight equirectangular SVG — deliberately not the atlas canvas's own pan/zoom projection, which is tied to that canvas's specific transform state; borrows its visual language — dashed animated arcs, motionOK-gated — not its rendering machinery). Extended the existing renderCountryDossier (previously demography-only, DEMO-map-driven, covering ~147 ISO codes) to layer in the rich dossier for the curated 12 while leaving the other ~135 on the original view. fromStoreId/xchipFor/search (Cmd-K) all learned the country. prefix. js/validate.js gained a full countries schema check (score ranges, basis-required, link resolution). Real bug fixed during build: named the new country-list variable COUNTRIES, which silently clobbered an existing COUNTRIES var already used by the Atlas map's own demography-choropleth rendering (same scope, same name, different meaning) — renamed to CTRY_LIST."
+    },
     {
       "date": "2026-07-10",
       "by": "claude-sonnet-5",

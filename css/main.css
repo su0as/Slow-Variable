@@ -1211,3 +1211,56 @@ body{background:transparent}
 .evtg-now-label{fill:var(--rust);font-size:8px;letter-spacing:.08em;text-transform:uppercase}
 .evtg-axis-label{fill:var(--faint);font-size:8px}
 .evtg-kill-mark{stroke-width:1.6}
+
+/* ── COUNTRIES (World → Countries lens) ────────────────────────────────── */
+#ctry-toolbar{display:flex;flex-wrap:wrap;align-items:center;gap:16px;margin-bottom:16px;padding-bottom:12px;border-bottom:1px solid var(--line)}
+#ctry-lenses{display:flex;gap:4px}
+#ctry-sort,#ctry-flow-filter{display:flex;align-items:center;gap:4px}
+.ctry-sort-lbl{font-size:8px;letter-spacing:.15em;color:var(--faint);margin-right:4px}
+.ctry-lens-panel{min-height:200px}
+
+/* Dynamics: small-multiples grid, one card per country */
+#ctry-dynamics{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:12px}
+.ctry-card{border:1px solid var(--line);padding:14px 16px;cursor:pointer;transition:border-color .15s}
+.ctry-card:hover{border-color:var(--line2)}
+.ctry-card-hd{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:10px}
+.ctry-card-nm{font-size:13px;color:var(--txt);font-weight:600}
+.ctry-card-iso{font-size:9px;letter-spacing:.1em;color:var(--faint)}
+.ctry-card-traj{font-size:14px;flex-shrink:0}
+.ctry-card-traj.rising{color:var(--min)}
+.ctry-card-traj.declining{color:var(--enr)}
+.ctry-card-traj.flat{color:var(--faint)}
+.ctry-gauge-row{display:flex;align-items:center;gap:8px;margin-bottom:5px}
+.ctry-gauge-lbl{font-size:9px;letter-spacing:.06em;color:var(--faint);width:56px;flex-shrink:0;text-transform:uppercase}
+.ctry-gauge-track{flex:1;height:4px;background:#1a1a1a;position:relative}
+.ctry-gauge-fill{position:absolute;left:0;top:0;height:100%;background:var(--choke)}
+.ctry-gauge-val{font-size:9px;color:var(--dim);width:22px;text-align:right;flex-shrink:0}
+.ctry-card-demo{font-size:9px;color:var(--faint);margin-top:8px;padding-top:8px;border-top:1px solid var(--line);letter-spacing:.03em}
+.ctry-card-demo b{color:var(--dim);font-weight:400}
+
+/* Gov Focus: heatmap, countries × policy vectors */
+#ctry-govfocus{overflow-x:auto}
+.ctry-heat-table{border-collapse:collapse;font-size:10px;min-width:100%}
+.ctry-heat-table th{font-size:8px;letter-spacing:.06em;color:var(--faint);text-transform:uppercase;
+                     font-weight:400;padding:6px 8px;text-align:left;white-space:nowrap;vertical-align:bottom}
+.ctry-heat-table th.ctry-heat-rowhd{position:sticky;left:0;background:var(--bg2);z-index:2}
+.ctry-heat-table td{padding:2px;text-align:center;vertical-align:middle}
+.ctry-heat-rownm{font-size:10px;color:var(--txt);padding:6px 10px !important;white-space:nowrap;
+                  position:sticky;left:0;background:var(--bg2);text-align:left !important;border-right:1px solid var(--line)}
+.ctry-heat-cell{width:34px;height:34px;cursor:default;position:relative}
+.ctry-heat-fill{width:100%;height:100%;display:flex;align-items:center;justify-content:center;
+                 font-size:9px;color:var(--txt)}
+.ctry-heat-empty{width:100%;height:100%;background:#0d0d0d}
+
+/* Capital Flows: lightweight equirectangular SVG (not the atlas canvas — see
+   engine.js comment above ctryFlowsSVG for why this is a separate, simpler
+   projection rather than a literal reuse of the pan/zoom atlas canvas) */
+#ctry-flows-wrap{border:1px solid var(--line);background:rgba(0,0,0,.4)}
+#ctry-flows-svg{display:block;width:100%;height:auto}
+.ctry-flow-grid{stroke:rgba(255,255,255,.05)}
+.ctry-flow-arc{fill:none;stroke-dasharray:4 3}
+.ctry-flow-dot{cursor:pointer}
+.ctry-flow-dot:hover .ctry-flow-mark{stroke:var(--rust);stroke-width:2}
+.ctry-flow-label{font-size:9px;fill:var(--dim);pointer-events:none}
+@keyframes ctry-flow-march{to{stroke-dashoffset:-14}}
+.ctry-flow-arc.animated{animation:ctry-flow-march 1s linear infinite}
