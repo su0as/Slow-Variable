@@ -61,6 +61,12 @@ svg text{user-select:none}
              cursor:pointer;background:none;border-top:none;border-bottom:none;border-right:none}
 #search-btn:hover{color:var(--txt);background:#111111}
 
+/* ── SUBNAV: active parent tab's member views ── */
+#subnav{display:none;align-items:center;gap:6px;padding:7px 18px;border-bottom:1px solid var(--line);
+        flex-shrink:0;background:var(--bg2);overflow-x:auto}
+#subnav::-webkit-scrollbar{height:0}
+#subnav .ttool{flex-shrink:0}
+
 /* ── VIEWS ── */
 #views{position:relative;flex:1;overflow:hidden;min-height:0}
 .view{position:absolute;inset:0;display:none;flex-direction:column;min-height:0}
@@ -235,8 +241,9 @@ svg text{user-select:none}
 .anatomy-item .ak{font-size:9px;color:var(--choke);letter-spacing:.1em;margin-bottom:2px}
 .anatomy-item .av{font-size:10px;color:var(--dim);line-height:1.5}
 
-/* ── TRENDS ── */
-#v-trends{overflow:hidden;flex-direction:column}
+/* ── TRENDS (Everything, promoted) / WINDOWS (was Trends) ── */
+#v-everything{overflow:hidden;flex-direction:column}
+#v-windows{overflow:hidden;flex-direction:column}
 #trends-kanban{flex:1;overflow-x:auto;overflow-y:hidden;display:flex;align-items:stretch}
 .kanban-col{flex:0 0 280px;border-right:1px solid var(--line);display:flex;flex-direction:column;overflow:hidden}
 .kanban-col:last-child{border-right:none}

@@ -29,9 +29,9 @@
 <div id="onboard">
   <div id="onboard-box">
     <h2>MAGNITUDE — Slow Variables</h2>
-    <div class="ob-step"><div class="ob-n">1</div><div class="ob-text">Start on <em>Today</em> — it answers one question: what does this worldview say right now? Three cards, one plain-English claim, the windows closing soonest.</div></div>
+    <div class="ob-step"><div class="ob-n">1</div><div class="ob-text">Start on <em>Today</em> — it answers one question: what does this worldview say right now? Three cards, one plain-English claim, what changed since last time.</div></div>
     <div class="ob-step"><div class="ob-n">2</div><div class="ob-text">Every card is a door. Click through to a full dossier — the map, the tech tree, the people who bet on it, all cross-linked.</div></div>
-    <div class="ob-step"><div class="ob-n">3</div><div class="ob-text">The tabs are grouped: <em>Understand</em> the claims, <em>Act</em> on them, <em>Maintain</em> the data. Use <em>Cmd/Ctrl-K</em> to jump anywhere.</div></div>
+    <div class="ob-step"><div class="ob-n">3</div><div class="ob-text">Five tabs, each holding a few views (the row underneath switches between them) — <em>World</em>, <em>Trends</em>, <em>Thesis</em>, <em>Lab</em>. But the fastest way anywhere is <em>Cmd/Ctrl-K</em> — search jumps straight to any node, person, trend, or view without hunting through tabs.</div></div>
     <button id="onboard-dismiss">Got it — start on Today</button>
   </div>
 </div>
@@ -74,36 +74,12 @@
     <div class="s">Orders of Magnitude · Slow Variables</div>
   </div>
   <div id="tabs">
-    <div class="tab-group" data-group="understand">
-      <div class="tab-group-lbl">Understand</div>
-      <div class="tab-group-row">
-        <button class="tab on" data-v="today" title="TODAY — what does this worldview say right now?">Today</button>
-        <button class="tab" data-v="thesis" title="Thesis Register — explicit claims">Thesis</button>
-        <button class="tab" data-v="atlas" title="Constraint Atlas">Atlas</button>
-        <button class="tab" data-v="tree" title="Tech Tree — Factorio mechanics">Tree</button>
-        <button class="tab" data-v="trajectory" title="TRAJECTORY — NOW→2050 axis, cones of uncertainty, kill-watch thresholds">Trajectory</button>
-        <button class="tab" data-v="ledger" title="LEDGER — value created vs. value captured, per value-chain layer">Ledger</button>
-      </div>
-    </div>
-    <div class="tab-group" data-group="act">
-      <div class="tab-group-lbl">Act</div>
-      <div class="tab-group-row">
-        <button class="tab" data-v="humans" title="Bet Atlas — high-agency individuals">Humans</button>
-        <button class="tab" data-v="trends" title="Windows Board — trend taxonomy">Trends</button>
-        <button class="tab" data-v="constraints" title="Physical lead times">Constraints</button>
-        <button class="tab" data-v="forecasts" title="Calibrated forecasts">Forecasts</button>
-        <button class="tab" data-v="simulate" title="SIMULATE — causal loop diagram, perturb a node and watch it propagate">Simulate</button>
-        <button class="tab" data-v="helm" id="helm-tab-btn" title="HELM — your private personal lens" style="display:none">Helm</button>
-      </div>
-    </div>
-    <div class="tab-group" data-group="maintain">
-      <div class="tab-group-lbl">Maintain</div>
-      <div class="tab-group-row">
-        <button class="tab" data-v="method" title="Methodology">Method</button>
-        <button class="tab" data-v="patrol" title="Signal Patrol — check queue">Patrol</button>
-        <button class="tab" data-v="brief" title="BRIEF — weekly digest">Brief</button>
-      </div>
-    </div>
+    <button class="tab on" data-v="today" title="TODAY — what does this worldview say right now, and what changed?">Today</button>
+    <button class="tab" data-v="world" title="WORLD — Atlas, Countries, Tech Tree">World</button>
+    <button class="tab" data-v="trends" title="TRENDS — Everything chart, Trajectory, Ledger, Windows">Trends</button>
+    <button class="tab" data-v="thesis" title="THESIS — Thesis Register, Humans, Forecasts">Thesis</button>
+    <button class="tab" data-v="lab" title="LAB — Simulate, Constraints, Patrol, Method">Lab</button>
+    <button class="tab" data-v="helm" id="helm-tab-btn" title="HELM — your private personal lens" style="display:none">Helm</button>
   </div>
   <div id="hdr-right">
     <div id="freshness-meter" class="freshness-meter" title="Click to open data health"></div>
@@ -113,6 +89,8 @@
     <button id="health-btn" title="Data Health — staleness monitor">⊙</button>
   </div>
 </div>
+<!-- SUBNAV: the active parent tab's member views (hidden for single-child parents) -->
+<div id="subnav"></div>
 
 <!-- VIEWS -->
 <div id="views">
@@ -128,6 +106,11 @@
       <div id="today-health"></div>
       <h2 class="sec">Windows Closing Soonest</h2>
       <div id="today-windows"></div>
+      <div id="brief-header" style="display:flex;justify-content:space-between;align-items:baseline;margin:28px 0 16px">
+        <h2 class="sec" style="margin:0">What Changed</h2>
+        <button class="btn" id="brief-copy-btn" title="Copy as Markdown">⎘ Copy as Markdown</button>
+      </div>
+      <div id="brief-body"></div>
     </div>
   </div>
 
@@ -297,40 +280,42 @@
   </div>
 
   <!-- TRENDS -->
-  <div class="view" id="v-trends">
+  <!-- EVERYTHING (promoted to its own top-level view; was nested inside Trends) -->
+  <div class="view" id="v-everything">
+    <div id="evtg-toolbar">
+      <div id="evtg-legend"></div>
+      <div id="evtg-controls">
+        <button class="ttool" id="evtg-rising" title="Show only trends where reality is currently rising">Only Rising</button>
+        <button class="ttool" id="evtg-declining" title="Show only trends where reality is currently declining">Only Declining</button>
+        <button class="ttool" id="evtg-indexed" title="Rescale each curve to its own peak = 100 — compare growth shape, not absolute intensity">Indexed</button>
+        <button class="ttool" id="evtg-small" title="Grid of per-trend sparklines instead of one overlaid chart">Small Multiples</button>
+        <button class="ttool" id="evtg-fullscreen" title="Fullscreen">⛶</button>
+      </div>
+    </div>
+    <div id="evtg-year-wrap" title="Scrub NOW — the solid/dashed boundary on every curve moves with it">
+      <input type="range" id="evtg-year" min="1990" max="2035" step="1" value="2026">
+      <span id="evtg-year-lb">NOW · 2026</span>
+    </div>
+    <div id="evtg-chart-wrap">
+      <svg id="evtg-svg"></svg>
+    </div>
+    <div id="evtg-small-grid" style="display:none"></div>
+    <div id="evtg-vibes-key">
+      <span class="evtg-vk-item">Each curve's legend chip is tagged <b style="color:var(--dim)">DERIVED</b> (computed from existing fields, not measured) or <b style="color:var(--min)">AUTHORED</b> (a sourced curve[] on the entity — dated and citable) — that tag is the vibes-vs-verified distinction, not the line style below.</span>
+      <span class="evtg-vk-item">solid = observed (≤ scrubbed year) · dashed = projected (widening cone) · ✕ = falsifier/close year — applies to both derived and authored curves alike</span>
+    </div>
+  </div>
+
+  <!-- WINDOWS (was "Trends" — kanban/timeline/matrix; Everything promoted out above) -->
+  <div class="view" id="v-windows">
     <div id="trends-toolbar">
       <button class="ttool on" id="tv-kanban" title="Status columns">Kanban</button>
       <button class="ttool" id="tv-gantt" title="All windows on one time axis">Timeline</button>
       <button class="ttool" id="tv-matrix" title="Window × Constraint dependency matrix">Matrix</button>
-      <button class="ttool" id="tv-everything" title="Everything — belief vs. reality intensity, all trends, one chart">Everything</button>
       <span style="margin-left:auto;font-size:9px;color:var(--faint);letter-spacing:.06em">windows overlap — the timeline shows when, the kanban shows what state</span>
     </div>
     <div id="trends-gantt"></div>
     <div id="trends-matrix" style="display:none;overflow:auto;padding:20px"></div>
-    <div id="trends-everything" style="display:none">
-      <div id="evtg-toolbar">
-        <div id="evtg-legend"></div>
-        <div id="evtg-controls">
-          <button class="ttool" id="evtg-rising" title="Show only trends where reality is currently rising">Only Rising</button>
-          <button class="ttool" id="evtg-declining" title="Show only trends where reality is currently declining">Only Declining</button>
-          <button class="ttool" id="evtg-indexed" title="Rescale each curve to its own peak = 100 — compare growth shape, not absolute intensity">Indexed</button>
-          <button class="ttool" id="evtg-small" title="Grid of per-trend sparklines instead of one overlaid chart">Small Multiples</button>
-          <button class="ttool" id="evtg-fullscreen" title="Fullscreen">⛶</button>
-        </div>
-      </div>
-      <div id="evtg-year-wrap" title="Scrub NOW — the solid/dashed boundary on every curve moves with it">
-        <input type="range" id="evtg-year" min="1990" max="2035" step="1" value="2026">
-        <span id="evtg-year-lb">NOW · 2026</span>
-      </div>
-      <div id="evtg-chart-wrap">
-        <svg id="evtg-svg"></svg>
-      </div>
-      <div id="evtg-small-grid" style="display:none"></div>
-      <div id="evtg-vibes-key">
-        <span class="evtg-vk-item">Each curve's legend chip is tagged <b style="color:var(--dim)">DERIVED</b> (computed from existing fields, not measured) or <b style="color:var(--min)">AUTHORED</b> (a sourced curve[] on the entity — dated and citable) — that tag is the vibes-vs-verified distinction, not the line style below.</span>
-        <span class="evtg-vk-item">solid = observed (≤ scrubbed year) · dashed = projected (widening cone) · ✕ = falsifier/close year — applies to both derived and authored curves alike</span>
-      </div>
-    </div>
     <div id="trends-kanban">
       <div class="kanban-col" id="kc-closed">
         <div class="kanban-hd col-closed"><div class="col-nm">Closed</div><div class="col-count" id="kc-closed-ct"></div></div>
@@ -500,15 +485,6 @@
   </div>
 
   <!-- BRIEF -->
-  <div class="view scrollview" id="v-brief">
-    <div class="inner">
-      <div id="brief-header" style="display:flex;justify-content:space-between;align-items:baseline;margin-bottom:16px">
-        <h2 class="sec" style="margin:0">BRIEF</h2>
-        <button class="btn" id="brief-copy-btn" title="Copy as Markdown">⎘ Copy as Markdown</button>
-      </div>
-      <div id="brief-body"></div>
-    </div>
-  </div>
 
 </div><!-- /views -->
 
@@ -535,7 +511,7 @@
   <div id="kbd-box">
     <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px"><span style="font-size:10px;letter-spacing:.15em;color:var(--dim)">KEYBOARD SHORTCUTS</span><button onclick="document.getElementById('kbd-overlay').style.display='none'" style="background:none;border:none;color:var(--dim);cursor:pointer;font-size:14px">✕</button></div>
     <div class="kbd-grid">
-      <div class="kbd-row"><kbd>1</kbd>–<kbd>0</kbd><span>Switch tabs</span></div>
+      <div class="kbd-row"><kbd>1</kbd>–<kbd>5</kbd><span>Switch tabs</span></div>
       <div class="kbd-row"><kbd>Cmd K</kbd><span>Command palette</span></div>
       <div class="kbd-row"><kbd>/</kbd><span>Search atlas nodes</span></div>
       <div class="kbd-row"><kbd>j</kbd> <kbd>k</kbd><span>Next / prev entity</span></div>

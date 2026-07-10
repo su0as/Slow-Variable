@@ -384,8 +384,50 @@ function renderCountryDossier(iso){
 }
 function attachChipNavigation(){document.querySelectorAll(".xchip").forEach(function(el){el.onclick=function(){openDossier(el.dataset.reg,el.dataset.id,true)}})}
 
+// ── IA: 5 top-level tabs, each fronting a set of existing full-page views ──
+// Every existing .view element (v-atlas, v-tree, v-ledger, ...) keeps its own
+// id and is toggled by the exact same ".view.on" mechanism as before - nothing
+// about how a view renders or animates changed. This layer only decides WHICH
+// child view is visible under which top-level tab, so every $("v-atlas")-style
+// check scattered through this file (animation gates, resize handlers, etc.)
+// keeps working untouched. switchTab(v) still accepts either a parent id
+// (today/world/trends/thesis/lab) or a child id (atlas/tree/humans/...) -
+// existing call sites that pass a child id directly need no changes.
+var PARENT_CHILDREN={
+  today:["today"],
+  world:["atlas","tree"], // Countries joins this list in Phase C
+  trends:["everything","trajectory","ledger","windows"],
+  thesis:["thesis","humans","forecasts"],
+  lab:["simulate","constraints","patrol","method"]
+};
+var CHILD_LABEL={
+  atlas:"Atlas",tree:"Tree",countries:"Countries",
+  everything:"Everything",trajectory:"Trajectory",ledger:"Ledger",windows:"Windows",
+  thesis:"Thesis",humans:"Humans",forecasts:"Forecasts",
+  simulate:"Simulate",constraints:"Constraints",patrol:"Patrol",method:"Method"
+};
+var CHILD_PARENT={};
+Object.keys(PARENT_CHILDREN).forEach(function(p){PARENT_CHILDREN[p].forEach(function(c){CHILD_PARENT[c]=p})});
+function parentOf(v){return CHILD_PARENT[v]||v}
+var lastChildForParent={}; // remembers which child was last shown per parent
+function renderSubnav(parent){
+  var kids=PARENT_CHILDREN[parent]||[];
+  var el=$("subnav");if(!el)return;
+  if(kids.length<=1){el.style.display="none";el.innerHTML="";return}
+  el.style.display="flex";
+  var active=lastChildForParent[parent]||kids[0];
+  el.innerHTML=kids.map(function(c){return'<button class="ttool'+(c===active?" on":"")+'" data-child="'+c+'">'+esc(CHILD_LABEL[c]||c)+"</button>"}).join("");
+  el.querySelectorAll("button").forEach(function(b){b.onclick=function(){Router.navigate(b.dataset.child,{})}});
+}
+// Legacy hash routes redirect to a specific child (not just "whatever the
+// parent's own default is") so old deep links keep landing exactly where they
+// used to, even though the parent tab's own fresh-click default may differ
+// (e.g. clicking the Trends TAB defaults to Everything, but the old #/trends
+// link — which meant the kanban/timeline/matrix board — still lands on Windows).
+var LEGACY_ROUTE_CHILD={trends:"windows",brief:"today"};
+
 // Keyboard nav
-var TAB_ORDER=["today","thesis","atlas","tree","trajectory","ledger","humans","trends","constraints","forecasts","simulate","helm","method","patrol","brief"];
+var TAB_ORDER=["today","world","trends","thesis","lab"];
 document.addEventListener("keydown",function(e){
   if(e.key==="Escape"){
     closeDossier();closePalette();closeHealth();
@@ -409,7 +451,7 @@ function navigateEntities(dir){
   if(vid==="v-atlas")items=ATLAS_NODES.map(function(n){return{reg:"atlas",id:n.id}});
   else if(vid==="v-tree")items=TREE.map(function(n){return{reg:"tree",id:n.id}});
   else if(vid==="v-humans")items=HUMANS.map(function(h){return{reg:"human",id:h.id}});
-  else if(vid==="v-trends")items=TRENDS.map(function(t){return{reg:"trend",id:t.id}});
+  else if(vid==="v-windows")items=TRENDS.map(function(t){return{reg:"trend",id:t.id}});
   else if(vid==="v-ledger")items=ledgerCurrentLayerKeys();
   if(!items.length)return;
   _entityNavIndex=Math.max(0,Math.min(items.length-1,_entityNavIndex+dir));
@@ -420,30 +462,36 @@ function navigateEntities(dir){
 var MOBILE_BREAKPOINT=700;
 function isMobile(){return window.innerWidth<MOBILE_BREAKPOINT}
 function showMobileDesktopOnly(v){
-  document.querySelectorAll("#tabs .tab").forEach(function(t){t.classList.toggle("on",t.dataset.v===v)});
+  var parent=parentOf(v);
+  document.querySelectorAll("#tabs .tab").forEach(function(t){t.classList.toggle("on",t.dataset.v===parent)});
   document.querySelectorAll(".view").forEach(function(vw){vw.classList.toggle("on",vw.id==="v-mobile-blocked")});
+  renderSubnav(parent);
   var isAtlas=v==="atlas";
   $("mb-title").textContent=isAtlas?"Atlas — Desktop Only":"Tech Tree — Desktop Only";
   $("mb-body").innerHTML="<p>"+(isAtlas
     ?"The constraint map is a pan-and-zoom canvas built for a mouse and a wide screen. Open this page on a laptop or desktop to explore it."
     :"The tech tree is a wide horizontal graph meant to be read node by node on a large screen. Open this page on a laptop or desktop to explore causal chains.")
-    +"</p><p>Everything else — Today, Thesis, Trajectory, Humans, Trends, Constraints, Forecasts, Simulate, Method, Patrol, Brief — works on mobile.</p>";
+    +"</p><p>Everything else works on mobile — switch to another view in the row above, or head back to Today.</p>";
 }
 function switchTab(v){
   if(v==="helm"&&!HELM_PILOT){switchTab("today");return} // no pilot.json loaded — route stays dead, not just hidden
-  if(isMobile()&&(v==="atlas"||v==="tree")){showMobileDesktopOnly(v);return}
-  document.querySelectorAll("#tabs .tab").forEach(function(t){t.classList.toggle("on",t.dataset.v===v)});
-  document.querySelectorAll(".view").forEach(function(vw){vw.classList.toggle("on",vw.id==="v-"+v)});
-  $("coords").style.display=v==="atlas"?"flex":"none";
-  if(v==="atlas"){if(atlasMode==="orbital"){resizeOrbital();if(motionOK&&!orbRaf)orbRaf=requestAnimationFrame(orbTick)}else{resize();kick()}}
-  if(v==="trajectory")buildTrajectory();
-  if(v==="ledger")buildLedger();
-  if(v==="simulate")buildSimulate();
-  if(v==="tree")buildTreeIfNeeded();
-  if(v==="patrol")buildPatrol();
-  if(v==="thesis")buildThesisRegister();
-  if(v==="brief")buildBrief();
-  if(v==="today")buildToday();
+  var child=(v==="helm")?"helm":(PARENT_CHILDREN[v]?(lastChildForParent[v]||PARENT_CHILDREN[v][0]):v);
+  var parent=(v==="helm")?"helm":parentOf(child);
+  if(isMobile()&&(child==="atlas"||child==="tree")){lastChildForParent[parent]=child;showMobileDesktopOnly(child);return}
+  lastChildForParent[parent]=child;
+  document.querySelectorAll("#tabs .tab").forEach(function(t){t.classList.toggle("on",t.dataset.v===parent)});
+  document.querySelectorAll(".view").forEach(function(vw){vw.classList.toggle("on",vw.id==="v-"+child)});
+  renderSubnav(parent);
+  $("coords").style.display=child==="atlas"?"flex":"none";
+  if(child==="atlas"){if(atlasMode==="orbital"){resizeOrbital();if(motionOK&&!orbRaf)orbRaf=requestAnimationFrame(orbTick)}else{resize();kick()}}
+  if(child==="trajectory")buildTrajectory();
+  if(child==="ledger")buildLedger();
+  if(child==="everything")buildEverything();
+  if(child==="simulate")buildSimulate();
+  if(child==="tree")buildTreeIfNeeded();
+  if(child==="patrol")buildPatrol();
+  if(child==="thesis")buildThesisRegister();
+  if(child==="today")buildToday(); // now also renders the merged-in Brief section
 }
 (function(){var b=$("mb-back-btn");if(b)b.onclick=function(){Router.navigate("today",{})}})();
 document.querySelectorAll("#tabs .tab").forEach(function(t){t.onclick=function(){switchTab(t.dataset.v)}});
@@ -1194,19 +1242,15 @@ function showTrendsView(v){
   $("tv-kanban").classList.toggle("on",v==="kanban");
   $("tv-gantt").classList.toggle("on",v==="gantt");
   $("tv-matrix").classList.toggle("on",v==="matrix");
-  $("tv-everything").classList.toggle("on",v==="everything");
   $("trends-kanban").style.display=v==="kanban"?"flex":"none";
   $("trends-gantt").style.display=v==="gantt"?"block":"none";
   $("trends-matrix").style.display=v==="matrix"?"block":"none";
-  $("trends-everything").style.display=v==="everything"?"flex":"none";
   if(v==="gantt")buildGantt();
   if(v==="matrix")buildWCMatrix();
-  if(v==="everything")buildEverything();
 }
 $("tv-kanban").onclick=function(){showTrendsView("kanban")};
 $("tv-gantt").onclick=function(){showTrendsView("gantt")};
 $("tv-matrix").onclick=function(){showTrendsView("matrix")};
-$("tv-everything").onclick=function(){showTrendsView("everything")};
 
 // ── METHOD ────────────────────────────────────────────────────────────────
 function buildMethod(){
@@ -1416,7 +1460,7 @@ function selectPaletteItem(i){
     if(r.id==="patrol")switchTab("patrol");
     else if(r.id==="trace"){var tp=$("trace-panel");if(tp)tp.classList.add("open");setTimeout(function(){var a=$("trace-a");if(a)a.focus()},60)}
     else if(r.id==="health")openHealth();
-    else if(r.id==="brief")switchTab("brief");
+    else if(r.id==="brief")switchTab("today");
     else if(r.id==="thesis")switchTab("thesis");
     else if(r.id==="kbd"){var ko=$("kbd-overlay");if(ko)ko.style.display="flex"}
     return;
@@ -1425,7 +1469,7 @@ function selectPaletteItem(i){
   if(r.reg==="atlas"){switchTab("atlas");flyTo(NMAP[r.id])}
   else if(r.reg==="tree"){switchTab("tree");buildTreeIfNeeded();setTimeout(function(){selectTreeNode(r.id)},100)}
   else if(r.reg==="humans"||r.reg==="human"){switchTab("humans");openDossier("human",r.id)}
-  else if(r.reg==="trends"||r.reg==="trend"){switchTab("trends");openDossier("trend",r.id)}
+  else if(r.reg==="trends"||r.reg==="trend"){switchTab("windows");openDossier("trend",r.id)}
   else if(r.reg==="scenario"){var sc=SCENARIOS.find(function(s){return s.id===r.id});if(sc)runScenario(sc)}
 }
 $("palette-input").addEventListener("input",function(){renderPalette(searchAllv2(this.value.trim()))});
@@ -1473,11 +1517,21 @@ setTimeout(buildTreeIfNeeded,500);
 (function(){var fm=$("freshness-meter");if(fm)fm.onclick=openHealth})();
 
 // ── ROUTER INTEGRATION ────────────────────────────────────────────────────
-// Override tab clicks to go through Router so the URL updates
-document.querySelectorAll("#tabs .tab").forEach(function(t){t.onclick=function(){Router.navigate(t.dataset.v,{});_entityNavIndex=-1}});
+// Override tab clicks to go through Router so the URL updates. A parent tab
+// (world/trends/thesis/lab) resolves to its last-shown (or default) child
+// BEFORE hitting the router, so the route in the URL bar is always a concrete
+// child id - that's what keeps a bare "#trends" hash unambiguous: it's never
+// produced by a live tab click, so Router.on below can treat it purely as the
+// pre-restructure legacy route (the old Trends/kanban board).
+document.querySelectorAll("#tabs .tab").forEach(function(t){t.onclick=function(){
+  var v=t.dataset.v;
+  var child=(v==="helm")?"helm":(PARENT_CHILDREN[v]?(lastChildForParent[v]||PARENT_CHILDREN[v][0]):v);
+  Router.navigate(child,{});_entityNavIndex=-1;
+}});
 Router.on(function(path,params){
-  var sections=["today","thesis","atlas","tree","trajectory","ledger","humans","trends","constraints","forecasts","simulate","helm","method","patrol","brief"];
-  if(sections.indexOf(path)!==-1)switchTab(path);
+  var sections=Object.keys(PARENT_CHILDREN).concat(Object.keys(CHILD_PARENT),["helm"]);
+  if(Object.prototype.hasOwnProperty.call(LEGACY_ROUTE_CHILD,path))switchTab(LEGACY_ROUTE_CHILD[path]);
+  else if(sections.indexOf(path)!==-1)switchTab(path);
   if(params&&params.open){
     var m=params.open.match(/^(atlas|tree|human|window)\.(.+)$/);
     if(m){var regMap={atlas:"atlas",tree:"tree",human:"human",window:"trend"};setTimeout(function(){openDossier(regMap[m[1]],m[2])},150)}
@@ -1490,7 +1544,7 @@ Router.on(function(path,params){
   var m=location.hash.match(/^#(atlas|tree|human|trend):([a-z0-9_-]+)$/);
   if(!m)return;
   var reg=m[1],id=m[2];
-  switchTab({atlas:"atlas",tree:"tree",human:"humans",trend:"trends"}[reg]);
+  switchTab({atlas:"atlas",tree:"tree",human:"humans",trend:"windows"}[reg]);
   setTimeout(function(){if(reg==="tree"){buildTreeIfNeeded();selectTreeNode(id)}else openDossier(reg,id,false)},120);
 })();
 
@@ -1609,6 +1663,8 @@ function buildToday(){
     }).join("");
     winEl.querySelectorAll(".today-window-row").forEach(function(row){row.onclick=function(){openDossier("trend",row.dataset.tid)}});
   }
+
+  buildBrief(); // Brief merged into Today as "What Changed"
 }
 
 // ── TRAJECTORY (Phase B) ──────────────────────────────────────────────────
@@ -2359,9 +2415,14 @@ function renderThesisSpineSVG(tid){
 }
 
 // ── BRIEF DIGEST ──────────────────────────────────────────────────────────
-var _briefThesisIdx=parseInt(storage.getItem("sv3-brief-thesis-idx")||"0");
+// Round-robin index is read fresh from storage on every call (not hoisted as
+// a module-level var) because buildBrief() now runs as part of buildToday(),
+// which fires once eagerly during init - a module-level var assigned later
+// in this same top-to-bottom script pass would still be undefined at that
+// first call.
 function buildBrief(){
   var el=$("brief-body");if(!el)return;
+  var _briefThesisIdx=parseInt(storage.getItem("sv3-brief-thesis-idx")||"0")||0;
   var now=new Date();var lastSeen=storage.getItem("sv3-brief-last-seen")||"never";
   storage.setItem("sv3-brief-last-seen",now.toISOString().slice(0,10));
   var html="";
