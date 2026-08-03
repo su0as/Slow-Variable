@@ -1,6 +1,6 @@
 {
-  "generated_on": "2026-07-27T12:30:13.336Z",
-  "generated_on_date": "2026-07-27",
+  "generated_on": "2026-08-03T12:30:44.743Z",
+  "generated_on_date": "2026-08-03",
   "kill_watch_threshold": 0.8,
   "freshness_summary": {
     "fresh": 170,
@@ -10,5 +10,19 @@
   },
   "total_entities_tracked": 176,
   "kill_watch_alerts": [],
-  "stale_entities": []
+  "stale_entities": [
+    {
+      "id": "tree.spacex-ipo",
+      "registry": "tree",
+      "registryLabel": "Tree",
+      "title": "SpaceX IPO",
+      "vintage": "2026-06",
+      "reviewAfterMonths": 1,
+      "monthsOverdue": 1,
+      "ageUnknown": false,
+      "cf": "hi",
+      "signalToCheck": "—",
+      "signalUrl": null
+    }
+  ]
 }
