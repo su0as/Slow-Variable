@@ -1,6 +1,6 @@
 {
-  "generated_on": "2026-08-31T16:57:06.838Z",
-  "generated_on_date": "2026-08-31",
+  "generated_on": "2026-09-07T14:56:42.798Z",
+  "generated_on_date": "2026-09-07",
   "kill_watch_threshold": 0.8,
   "freshness_summary": {
     "fresh": 156,
@@ -18,7 +18,7 @@
       "title": "SpaceX IPO",
       "vintage": "2026-06",
       "reviewAfterMonths": 1,
-      "monthsOverdue": 1,
+      "monthsOverdue": 2,
       "ageUnknown": false,
       "cf": "hi",
       "signalToCheck": "—",
